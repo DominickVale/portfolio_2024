@@ -1,0 +1,12 @@
+---
+interface Props {
+  small?: boolean
+  class?: string
+}
+
+const { small, class: classes, ...rest } = Astro.props
+---
+
+<button class:list={[ "text-xs text-white", classes]} {...rest}>
+  <slot />
+</button>

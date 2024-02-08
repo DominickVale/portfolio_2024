@@ -4,12 +4,16 @@ interface Props {}
 const {} = Astro.props
 ---
 
-<nav>
-  <ul class="flex justify-between">
-    <li><a href="/"></a>HOME</li>
-    <li><a href="/works">WORKS</a></li>
-    <li><a href="/blog">BLOG</a></li>
-    <li><a href="/lab">LAB</a></li>
-    <li><a href="/contacts">CONTACTS</a></li>
+<nav class="mt-12 text-xs fixed left-0 w-full">
+  <ul class="grid grid-cols-layout gap-2">
+    <li class="col-start-2"><a href="/">HOME</a></li>
+    <div class="absolute left-0 right-0 flex justify-center">
+      <div class="flex gap-10">
+        <li><a href="/works">WORKS</a></li>
+        <li><a href="/blog">BLOG</a></li>
+        <li><a href="/lab">LAB</a></li>
+      </div>
+    </div>
+    <li class="col-start-11 ml-auto"><a href="/contacts">CONTACTS</a></li>
   </ul>
 </nav>
