@@ -1,0 +1,26 @@
+---
+interface Props {
+  highlight?: boolean;
+}
+
+const { highlight } = Astro.props
+---
+
+<li class:list={["status-item text-xs pl-3 relative text-inactive font-normal", { highlight } ] }><slot/></li>
+<style>
+  .status-item {
+    &.highlight {
+      color: white;
+      font-weight: 900;
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 33%;
+      background-color: white;
+      height: .32rem;
+      width: .32rem;
+    }
+  }
+</style>

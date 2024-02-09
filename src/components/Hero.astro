@@ -1,16 +1,16 @@
 ---
 import Btn from '../components/Btn.astro'
+import StatusItem from '../components/StatusItem.astro'
 interface Props {}
 
 const {} = Astro.props
-
-const fib = () => {
-}
 ---
 
-<main class="grid grid-cols-layout grid-rows-5 gap-x-2 gap-y-5 flex-1 h-full w-full">
-  <section class="info col-start-2 col-span-2 row-start-3 text-xs">
-    <h2 class="text-primary">> whoami</h2>
+<main
+  class="grid grid-cols-layout grid-rows-5 gap-x-2 gap-y-5 flex-1 h-full w-full my-12 overflow-hidden"
+>
+  <section class="info col-start-2 col-span-2 row-start-3 row-span-1 text-xs">
+    <h2 class="text-primary mt-[-0.75rem]">> whoami</h2>
     <p class="text-stone-300">
       I’m just the quiet, value-centered guy that gets the work done. My
       interests range from front-end web development all the way down to reverse
@@ -23,28 +23,28 @@ const fib = () => {
       <a class="" href="/works">WORKS</a>
     </div>
   </section>
-  <section
-    class="title font-display font-black col-start-2 row-start-4 col-span-12"
-  >
-    <h1 class="text-[130px] leading-[100%]">DOMINICK VALE</h1>
-  </section>
-  <section class="col-start-2 row-start-5 col-span-1">
-    <ul class="">
-      <li>FRONT-END DEVELOPER</li>
-      <li>CREATIVE DEVELOPER</li>
-      <li>WANNABE ARTIST</li>
-      <li>LEARNER</li>
-    </ul>
+  <section class="font-black font-mono col-start-2 row-start-4 col-span-12">
+    <span class="title">
+
+    </span>
+    <!-- <h1 class="font-display text-[132px] leading-[100%]">DOMINICK VALE</h1> -->
+    <!-- <div class="flex gap-[7%]"> -->
+    <!--   <ul> -->
+    <!--     <StatusItem highlight>FRONT-END DEVELOPER</StatusItem> -->
+    <!--     <StatusItem highlight>CREATIVE DEVELOPER</StatusItem> -->
+    <!--     <StatusItem>WANNABE ARTIST</StatusItem> -->
+    <!--     <StatusItem>LEARNER</StatusItem> -->
+    <!--   </ul> -->
+    <!--   <ul> -->
+    <!--     <StatusItem highlight -->
+    <!--       >STATUS: <span class="text-success">AVAILABLE</span></StatusItem -->
+    <!--     > -->
+    <!--   </ul> -->
+    <!--   <ul class="ml-[32%]"> -->
+    <!--     <div class="flex flex-col"></div> -->
+    <!--     <StatusItem highlight>AWARDS:</StatusItem> -->
+    <!--     <p class="font-mono text-xs text-inactive font-normal">COMING SOON :)</p> -->
+    <!--   </ul> -->
+    <!-- </div> -->
   </section>
 </main>
-
-<style>
-.status-item {
-  &-active {
-    color: white;
-  }
-  &::before{
-    content: "";
-  }
-}
-</style>
