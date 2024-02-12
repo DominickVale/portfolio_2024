@@ -1,6 +1,7 @@
 ---
 import Btn from '../components/Btn.astro'
 import StatusItem from '../components/StatusItem.astro'
+import ArrowsRight from '../../public/icons/arrows-right.svg'
 interface Props {}
 
 const {} = Astro.props
@@ -20,31 +21,58 @@ const {} = Astro.props
   </section>
   <section class="works col-start-11 row-start-3">
     <div class="flex justify-end">
-      <a class="" href="/works">WORKS</a>
+      <a href="/works"
+        ><p>WORKS</p>
+        <svg
+          class="mx-auto"
+          width="30"
+          height="10"
+          viewBox="0 0 30 10"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g opacity="0.2">
+            <path
+              d="M7.48202 4.99987L3.74108 1.25892L6.2589 1.25892L9.2445 4.24452L8.48915 4.99987L9.2445 5.75521L6.25877 8.74095L3.74095 8.74095L7.48202 4.99987Z"
+              fill="#D9D9D9"></path>
+          </g>
+          <g opacity="0.5">
+            <path
+              d="M17.482 4.99987L13.7411 1.25892L16.2589 1.25892L19.2445 4.24452L18.4892 4.99987L19.2445 5.75521L16.2588 8.74095L13.7409 8.74095L17.482 4.99987Z"
+              fill="#D9D9D9"></path>
+          </g>
+          <g opacity="0.8">
+            <path
+              d="M27.482 4.99987L23.7411 1.25892L26.2589 1.25892L29.2445 4.24452L28.4892 4.99987L29.2445 5.75521L26.2588 8.74095L23.7409 8.74095L27.482 4.99987Z"
+              fill="white"></path>
+          </g>
+        </svg>
+      </a>
     </div>
   </section>
   <section class="font-black font-mono col-start-2 row-start-4 col-span-12">
-    <span class="title">
-
-    </span>
-    <!-- <h1 class="font-display text-[132px] leading-[100%]">DOMINICK VALE</h1> -->
-    <!-- <div class="flex gap-[7%]"> -->
-    <!--   <ul> -->
-    <!--     <StatusItem highlight>FRONT-END DEVELOPER</StatusItem> -->
-    <!--     <StatusItem highlight>CREATIVE DEVELOPER</StatusItem> -->
-    <!--     <StatusItem>WANNABE ARTIST</StatusItem> -->
-    <!--     <StatusItem>LEARNER</StatusItem> -->
-    <!--   </ul> -->
-    <!--   <ul> -->
-    <!--     <StatusItem highlight -->
-    <!--       >STATUS: <span class="text-success">AVAILABLE</span></StatusItem -->
-    <!--     > -->
-    <!--   </ul> -->
-    <!--   <ul class="ml-[32%]"> -->
-    <!--     <div class="flex flex-col"></div> -->
-    <!--     <StatusItem highlight>AWARDS:</StatusItem> -->
-    <!--     <p class="font-mono text-xs text-inactive font-normal">COMING SOON :)</p> -->
-    <!--   </ul> -->
-    <!-- </div> -->
+    <h1 class="font-display text-[132px] leading-[100%] ml-[-0.05em]">
+      DOMINICK VALE
+    </h1>
+    <div class="flex gap-[7%] mt-4">
+      <ul>
+        <StatusItem highlight>FRONT-END DEVELOPER</StatusItem>
+        <StatusItem highlight>CREATIVE DEVELOPER</StatusItem>
+        <StatusItem>WANNABE ARTIST</StatusItem>
+        <StatusItem>LEARNER</StatusItem>
+      </ul>
+      <ul>
+        <StatusItem highlight
+          >STATUS: <span class="text-success">AVAILABLE</span></StatusItem
+        >
+      </ul>
+      <ul class="ml-[32%]">
+        <div class="flex flex-col"></div>
+        <StatusItem highlight>AWARDS:</StatusItem>
+        <p class="font-mono text-xs text-inactive font-normal">
+          COMING SOON :)
+        </p>
+      </ul>
+    </div>
   </section>
 </main>

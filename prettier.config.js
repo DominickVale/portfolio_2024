@@ -11,5 +11,11 @@ export default {
         parser: 'astro',
       },
     },
+    {
+      files: '*.svg',
+      options: {
+        parser: 'html',
+      },
+    },
   ],
 };
