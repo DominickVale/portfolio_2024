@@ -3,7 +3,7 @@ export default {
   endOfLine: 'auto',
   semi: false,
   singleQuote: true,
-  plugins: ['prettier-plugin-astro'],
+  plugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],
   overrides: [
     {
       files: '*.astro',

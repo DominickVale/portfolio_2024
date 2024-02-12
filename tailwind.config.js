@@ -5,7 +5,9 @@ export default {
     extend: {
       gridTemplateColumns: {
         // Simple 16 column grid
-        layout: "1fr repeat(10, minmax(5rem, 7rem)) 1fr",
+        'layout-lg': "1fr repeat(10, minmax(5rem, 7rem)) 1fr",
+        'layout-md': "1fr repeat(5, minmax(5rem, 7rem)) 1fr",
+        'layout-sm': "1fr 1fr 1fr 1fr",
       },
       colors: {
         primary: "#FF3D00",
@@ -22,6 +24,9 @@ export default {
         body: ['Inconsolata'],
         mono: ['Inconsolata', 'Roboto Mono']
       },
+      fontSize: {
+        display: "clamp(0px, 8.2vw, 132px)"
+      }
     },
   },
   plugins: [],

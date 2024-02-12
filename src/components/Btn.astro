@@ -1,19 +1,22 @@
 ---
-import type { HTMLAttributes } from 'astro/types'
+// import type { HTMLAttributes, Polymorphic } from 'astro/types'
 
-type LinkProps = {
-  link: string
-} & HTMLAttributes<'a'>
+// type Ap = {
+//   href: string
+// } & Polymorphic<{as: "a"}>
 
-type Props = {
-  class?: string
-  small?: boolean
-  link?: string
-} & (LinkProps | HTMLAttributes<'button'>)
+// type Bp = {
+//   href: undefined
+// } & Polymorphic<{as: "button"}>
 
-const { small, class: classes, link, ...rest } = Astro.props
+// type Props = {
+//   class?: string
+//   small?: boolean
+// } & ( Ap | Bp)
 
-const Component = link ? "a" : "button"
+const { small, class: classes, ...rest } = Astro.props
+
+const Component = Astro.props.href ? "a" : "button"
 ---
 
 <Component class:list={[ "text-xs text-white", classes]} {...rest}>

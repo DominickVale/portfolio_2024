@@ -8,10 +8,12 @@ const {} = Astro.props
 ---
 
 <main
-  class="grid grid-cols-layout grid-rows-5 gap-x-2 gap-y-5 flex-1 h-full w-full my-12 overflow-hidden"
+  class="my-12 grid h-full w-full flex-1 grid-rows-5 gap-x-2 gap-y-5 overflow-hidden px-16 lg:px-0 md:grid-cols-layout-md lg:grid-cols-layout-lg"
 >
-  <section class="info col-start-2 col-span-2 row-start-3 row-span-1 text-xs">
-    <h2 class="text-primary mt-[-0.75rem]">> whoami</h2>
+  <section
+    class="col-span-3 col-start-2 row-span-2 row-start-2 text-xs lg:col-start-2 lg:col-span-2 mt-auto"
+  >
+    <h2 class="mt-[-0.75rem] text-primary">> whoami</h2>
     <p class="text-stone-300">
       I’m just the quiet, value-centered guy that gets the work done. My
       interests range from front-end web development all the way down to reverse
@@ -21,7 +23,7 @@ const {} = Astro.props
   </section>
   <section class="works col-start-11 row-start-3">
     <div class="flex justify-end">
-      <a href="/works"
+      <Btn href="works"
         ><p>WORKS</p>
         <svg
           class="mx-auto"
@@ -47,14 +49,14 @@ const {} = Astro.props
               fill="white"></path>
           </g>
         </svg>
-      </a>
+      </Btn>
     </div>
   </section>
-  <section class="font-black font-mono col-start-2 row-start-4 col-span-12">
-    <h1 class="font-display text-[132px] leading-[100%] ml-[-0.05em]">
+  <section class="col-span-12 col-start-2 row-start-4 font-mono font-black">
+    <h1 class="ml-[-0.05em] font-display text-display xl:text-[8.2rem] leading-[100%]">
       DOMINICK VALE
     </h1>
-    <div class="flex gap-[7%] mt-4">
+    <div class="mt-4 flex gap-[7%]">
       <ul>
         <StatusItem highlight>FRONT-END DEVELOPER</StatusItem>
         <StatusItem highlight>CREATIVE DEVELOPER</StatusItem>
@@ -69,7 +71,7 @@ const {} = Astro.props
       <ul class="ml-[32%]">
         <div class="flex flex-col"></div>
         <StatusItem highlight>AWARDS:</StatusItem>
-        <p class="font-mono text-xs text-inactive font-normal">
+        <p class="font-mono text-xs font-normal text-inactive">
           COMING SOON :)
         </p>
       </ul>
