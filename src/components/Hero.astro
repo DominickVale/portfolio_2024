@@ -8,19 +8,21 @@ const {} = Astro.props
 ---
 
 <main
-  class="px-16 my-12 grid h-full w-full flex-1 grid-rows-5 gap-x-2 gap-y-5 overflow-hidden md:grid-cols-layout-md lg:grid-cols-layout-lg"
+  class="my-12 grid h-full w-full flex-1 grid-rows-5 gap-x-2 gap-y-5 overflow-hidden px-16 md:grid-cols-layout-md lg:grid-cols-layout-lg"
 >
   <section
-    class="col-span-3 col-start-2 row-span-2 row-start-2 text-xs lg:col-start-2 lg:col-span-2 flex flex-col justify-end content-start"
+    class="col-span-3 col-start-1 col-start-2 row-span-2 row-start-2 flex flex-col content-start justify-end text-xs lg:col-span-2 lg:col-span-2 lg:col-start-2"
   >
-    <h2 class="mt-[calc(-1*(.75rem + var(--grid-y-gap))))] text-primary">> whoami</h2>
+    <h2 class="mt-[calc(-1*(.75rem + var(--grid-y-gap))))] text-primary">
+      > whoami
+    </h2>
     <p class="text-stone-300">
       I’m just the quiet, value-centered guy that gets the work done. My
       interests range from front-end web development all the way down to reverse
       engineering, to mountain biking, and back to drawing...
     </p>
-    <Btn class="mt-2 mr-auto">READ MORE</Btn>
- </section>
+    <Btn class="mr-auto mt-2">READ MORE</Btn>
+  </section>
   <section class="works col-start-12 row-start-3 w-0">
     <div>
       <Btn href="works"
@@ -51,8 +53,10 @@ const {} = Astro.props
       </Btn>
     </div>
   </section>
-  <section class="col-span-11 col-start-2 row-start-4 font-mono font-black">
-    <h1 class="ml-[-0.05em] font-display text-display xl:text-[8.2rem] leading-[100%]">
+  <section class="col-span-11 col-start-1 lg:col-start-2 row-start-4 font-mono font-black">
+    <h1
+      class="text-nowrap ml-[-0.05em] text-[clamp(0px,_9cqw,_132px)] font-display leading-[100%] xl:text-[8.2rem]"
+    >
       DOMINICK VALE
     </h1>
     <div class="mt-4 flex gap-[7%]">
