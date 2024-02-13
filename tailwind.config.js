@@ -3,12 +3,6 @@ export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
     extend: {
-      gridTemplateColumns: {
-        // Simple 16 column grid
-        'layout-lg': "1fr repeat(10, minmax(5rem, 7rem)) 1fr",
-        'layout-md': "1fr repeat(5, minmax(5rem, 7rem)) 1fr",
-        'layout-sm': "1fr 1fr 1fr 1fr",
-      },
       colors: {
         primary: "#FF3D00",
         inactive: "#a7a7a7",
