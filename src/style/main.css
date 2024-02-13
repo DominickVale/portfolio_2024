@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --grid-x-gap: 1.2rem;
+  --grid-y-gap: .5rem;
+}
+
 html,
 body {
   background-color: #111010;
@@ -16,10 +21,8 @@ body {
 }
 
 .grid-bars {
-  grid-template-columns: 1fr repeat(10, minmax(1rem, 7rem)) 1fr;
-  gap: 0.5rem 1.25rem;
-  padding-left: 4rem;
-  padding-right: 4rem;
+  grid-template-columns: 1fr repeat(10, minmax(5rem, 7rem)) 1fr;
+  gap: var(--grid-x-gap) var(--grid-y-gap);
   height: 1rem;
   margin-top: 2rem;
 }
