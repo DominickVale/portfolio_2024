@@ -8,12 +8,12 @@ const {} = Astro.props
 ---
 
 <main
-  class="grid-hero my-12 grid h-full w-full flex-1 grid-rows-5 gap-x-2 gap-y-5 overflow-hidden px-16"
+  class="my-12 grid grid-cols-12 grid-rows-5 h-full w-full flex-1 overflow-hidden"
 >
   <section
-    class="col-span-4 col-start-1 row-span-2 row-start-2 flex flex-col content-start justify-end text-xs lg:col-span-5 lg:col-start-2"
+    class="row-span-2 row-start-2 flex flex-col content-start justify-end text-xs col-span-5 col-start-2"
   >
-    <h2 class="mt-[calc(-1*(.75rem + var(--grid-y-gap))))] text-primary">
+    <h2 class="text-primary">
       > whoami
     </h2>
     <p class="max-w-64 text-stone-300">
@@ -21,10 +21,12 @@ const {} = Astro.props
       interests range from front-end web development all the way down to reverse
       engineering, to mountain biking, and back to drawing...
     </p>
-    <Btn class="mr-auto mt-2 mb-14">READ MORE</Btn>
+    <Btn class="mb-14 mr-auto mt-2">READ MORE</Btn>
   </section>
-  <section class="works col-start-5 h-full w-full row-start-2 lg:col-start-12 relative">
-    <div class="flex h-full items-end">
+  <section
+    class="works relative row-start-3 h-full w-full col-start-12"
+  >
+    <div class="flex h-full items-center">
       <Btn href="works"
         ><p>WORKS</p>
         <svg
@@ -54,7 +56,7 @@ const {} = Astro.props
     </div>
   </section>
   <section
-    class="col-span-5 col-start-1 row-start-4 font-mono font-black lg:col-span-10 lg:col-start-2"
+    class="row-start-4 font-mono font-black col-span-10 col-start-2"
   >
     <!-- <h1 -->
     <!--   class="text-nowrap ml-[-0.05em] text-[clamp(0px,_9cqw,_132px)] font-display leading-[100%] xl:text-[8.2rem]" -->
@@ -62,7 +64,7 @@ const {} = Astro.props
     <!--   DOMINICK VALE -->
     <!-- </h1> -->
     <h1 class="sr-only">DOMINICK VALE</h1>
-    <img src={nameSvg.src} />
+    <img class="mt-6" src={nameSvg.src} />
     <div class="mt-10 flex gap-[7%]">
       <ul>
         <StatusItem highlight>FRONT-END DEVELOPER</StatusItem>
