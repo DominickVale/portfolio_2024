@@ -20,6 +20,18 @@ export default {
       },
       fontSize: {
         display: "clamp(0px, 8.2vw, 132px)"
+      },
+       animation: {
+        'blink-slow': 'blink-slow 2s linear infinite',
+      },
+      keyframes: {
+        'blink-slow': {
+          '0%': { opacity: '0' },
+          '49%': { opacity: '0' },
+          '50%': { opacity: '1' },
+          '99%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        }
       }
     },
   },

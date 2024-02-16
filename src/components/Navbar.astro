@@ -3,11 +3,12 @@ import Btn from '../components/Btn.astro'
 interface Props {}
 
 const {} = Astro.props
+
 ---
 
-<nav class="mt-12 text-xs fixed left-0 w-full text-inactive">
+<nav class="mt-6 sm:mt-12 text-xs fixed left-0 w-full text-inactive">
   <ul class="hidden sm:grid grid-cols-12" >
-    <li class="col-start-2 col-span-5"><a href="/">HOME</a></li>
+    <li class="col-start-2 col-span-5"><a class="active" href="/">HOME</a></li>
     <div class="absolute left-0 right-0 flex justify-center">
       <div class="flex gap-10">
         <li><a href="/works">WORKS</a></li>
@@ -21,3 +22,19 @@ const {} = Astro.props
     <Btn>MENU</Btn>
   </div>
 </nav>
+
+<style>
+nav li > a.active {
+  position: relative;
+  &::before{
+    content: '';
+    position: absolute;
+    left: -50%;
+    top: 33%;
+    background-color: theme('colors.primary');
+    height: theme("height.1");
+    width: theme("height.1");
+  }
+  @apply text-white;
+}
+</style>
