@@ -1,67 +1,42 @@
 ---
-import Btn from '../components/Btn.astro'
-import StatusItem from '../components/StatusItem.astro'
-import nameSvg from '../../public/name.svg'
+import Btn from './Btn.astro'
+import StatusItem from './StatusItem.astro'
+import WorksBtn from './WorksBtn.astro'
 interface Props {}
 
 const {} = Astro.props
 ---
 
 <main
-  class="my-12 grid h-full w-full flex-1 grid-cols-12 grid-rows-5 overflow-hidden"
+  class="my-12 grid h-full w-full flex-1 grid-cols-12 grid-rows-5"
 >
   <section
     class="col-span-10 col-start-2 row-span-2 row-start-2 flex flex-col content-start justify-end text-xs"
   >
-    <div class="flex justify-between">
-      <div>
+    <div class="flex justify-between text-center lg:text-left">
+      <div class="">
         <h2 class="text-primary">> whoami</h2>
-        <p class="max-w-64 text-stone-300">
+        <p class="text-stone-300 lg:max-w-64">
           I’m just the quiet, value-centered guy that gets the work done. My
           interests range from front-end web development all the way down to
-          reverse engineering, to mountain biking, and back to drawing...
+          reverse engineering, to mountain biking. Sounds interesting?
         </p>
         <Btn class="mb-14 mr-auto mt-2">READ MORE</Btn>
       </div>
-      <div class="mb-14 flex items-center">
-        <Btn href="works"
-          ><p>WORKS</p>
-          <svg
-            width="30"
-            height="10"
-            viewBox="0 0 30 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g opacity="0.2">
-              <path
-                d="M7.48202 4.99987L3.74108 1.25892L6.2589 1.25892L9.2445 4.24452L8.48915 4.99987L9.2445 5.75521L6.25877 8.74095L3.74095 8.74095L7.48202 4.99987Z"
-                fill="#D9D9D9"></path>
-            </g>
-            <g opacity="0.5">
-              <path
-                d="M17.482 4.99987L13.7411 1.25892L16.2589 1.25892L19.2445 4.24452L18.4892 4.99987L19.2445 5.75521L16.2588 8.74095L13.7409 8.74095L17.482 4.99987Z"
-                fill="#D9D9D9"></path>
-            </g>
-            <g opacity="0.8">
-              <path
-                d="M27.482 4.99987L23.7411 1.25892L26.2589 1.25892L29.2445 4.24452L28.4892 4.99987L29.2445 5.75521L26.2588 8.74095L23.7409 8.74095L27.482 4.99987Z"
-                fill="white"></path>
-            </g>
-          </svg>
-        </Btn>
+      <div class="hidden mb-14 lg:flex">
+        <WorksBtn />
       </div>
     </div>
   </section>
-  <section class="col-span-10 col-start-2 row-start-4 font-mono font-black">
+  <section class="hidden col-span-10 col-start-2 row-start-4 row-span-2 font-mono font-black">
     <h1
       class="ml-[-0.05em] text-nowrap font-display text-[9.2vw] leading-[100%]"
     >
       DOMINICK VALE
     </h1>
-    <h1 class="sr-only">DOMINICK VALE</h1>
+    <!-- <h1 class="sr-only">DOMINICK VALE</h1> -->
     <!-- <img class="mt-6" src={nameSvg.src} /> -->
-    <div class="mt-6 flex gap-[7%] text-sm">
+    <div class="mt-4 lg:mt-6 flex justify-between gap-[7%] text-sm">
       <ul>
         <StatusItem highlight>FRONT-END DEVELOPER</StatusItem>
         <StatusItem highlight>CREATIVE DEVELOPER</StatusItem>
@@ -73,7 +48,7 @@ const {} = Astro.props
           >STATUS: <span class="text-success">AVAILABLE</span></StatusItem
         >
       </ul>
-      <ul class="ml-[32%]">
+      <ul class="ml-[32%] hidden md:block">
         <div class="flex flex-col"></div>
         <StatusItem highlight>AWARDS:</StatusItem>
         <p class="font-mono text-xs font-normal text-inactive">
@@ -81,5 +56,8 @@ const {} = Astro.props
         </p>
       </ul>
     </div>
+      <div class="mt-6 flex justify-center lg:hidden">
+        <WorksBtn />
+      </div>
   </section>
 </main>

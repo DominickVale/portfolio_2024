@@ -19,6 +19,6 @@ const { small, class: classes, ...rest } = Astro.props
 const Component = Astro.props.href ? "a" : "button"
 ---
 
-<Component class:list={[ "text-xs text-white", classes]} {...rest}>
+<Component class:list={[ "text-xs font-black tracking-[0.2em] text-white", classes]} {...rest}>
   <slot />
 </Component>
