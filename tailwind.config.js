@@ -19,7 +19,8 @@ export default {
         mono: ['Inconsolata', 'Roboto Mono']
       },
       fontSize: {
-        display: "clamp(0px, 8.2vw, 132px)"
+        display: "clamp(0px, 8.2vw, 132px)",
+        xxs:[ "0.6rem", ".8rem"]
       },
        animation: {
         'blink-slow': 'blink-slow 2s linear infinite',
