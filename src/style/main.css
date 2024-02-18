@@ -4,8 +4,15 @@
 
 :root {
   --grid-x-gap: 1.2rem;
-  --grid-y-gap: .5rem;
+  --grid-y-gap: 0.5rem;
+  --primary: #FF3D00;
+  --inactive: #a7a7a7;
+  --success: #96D800;
+  --primary-darker: rgba(255, 46, 0, 0.78);
+  --lines: rgba(255, 255, 255, 0.2);
+  --bg-dark: #111010,
 }
+
 
 html,
 body {
@@ -38,4 +45,38 @@ body {
   .grid-hero {
     grid-template-columns: repeat(6, 1fr);
   }
+}
+
+.fui-frame {
+  --frame-bg-stroke-w: 1px;
+  --frame-bg-size: 4px;
+  position: relative;
+  padding: theme(padding.4);
+  .corners {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: 
+      linear-gradient(90deg, #fff var(--frame-bg-stroke-w), transparent 0) 0 0,
+      linear-gradient(180deg, #fff var(--frame-bg-stroke-w), transparent 0) 0 0,
+      linear-gradient(270deg, #fff var(--frame-bg-stroke-w), transparent 0) 100% 0,
+      linear-gradient(180deg, #fff var(--frame-bg-stroke-w), transparent 0) 100% 0,
+      linear-gradient(270deg, #fff var(--frame-bg-stroke-w), transparent 0) 100% 100%,
+      linear-gradient(0deg, #fff var(--frame-bg-stroke-w), transparent 0) 100% 100%,
+      linear-gradient(90deg, #fff var(--frame-bg-stroke-w), transparent 0) 0 100%,
+      linear-gradient(0deg, #fff var(--frame-bg-stroke-w), transparent 0) 0 100%;
+
+    background-repeat: no-repeat;
+    background-size: var(--frame-bg-size) var(--frame-bg-size);
+    border: var(--frame-bg-stroke-w) solid rgba(255, 255, 255, 0.2);
+  }
+}
+
+
+.vertical-text {
+  transform: rotate(-90deg);
+  transform-origin: left bottom;
+  white-space: nowrap;
 }

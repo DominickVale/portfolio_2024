@@ -4,11 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#FF3D00",
-        inactive: "#a7a7a7",
-        success: "#96D800",
+        primary: "var(--primary)",
+        inactive: "var(--inactive)",
+        success: "var(--success)",
+        "primary-darker": "var(--primary-darker)",
+        lines: "var(--lines)",
         background: {
-          dark: "#111010",
+          dark: "var(--bg-dark)",
         },
       },
       fontFamily: {
