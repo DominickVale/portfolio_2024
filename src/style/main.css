@@ -75,8 +75,14 @@ body {
 }
 
 
-.vertical-text {
+.vertical-text--left {
   transform: rotate(-90deg);
   transform-origin: left bottom;
+  white-space: nowrap;
+}
+
+.vertical-text--right {
+  transform: rotate(90deg);
+  transform-origin: right top;
   white-space: nowrap;
 }

@@ -1,7 +1,7 @@
 ---
 import Btn from './Btn.astro'
 import StatusItem from './StatusItem.astro'
-import WorksBtn from './WorksBtn.astro'
+import NextPageBtn from './NextPageBtn.astro'
 interface Props {}
 
 const {} = Astro.props
@@ -21,7 +21,7 @@ const {} = Astro.props
       <Btn class="mb-14 mr-auto mt-2">READ MORE</Btn>
     </div>
     <div class="mb-14 hidden sm:flex">
-      <WorksBtn />
+      <NextPageBtn>WORKS</NextPageBtn>
     </div>
   </div>
 </section>
@@ -52,6 +52,6 @@ const {} = Astro.props
     </ul>
   </div>
   <div class="mt-6 flex justify-center sm:hidden">
-    <WorksBtn />
+    <NextPageBtn>WORKS</NextPageBtn>
   </div>
 </section>
