@@ -5,10 +5,10 @@ interface Props {}
 const {} = Astro.props
 ---
 
-<footer class="fixed bottom-8 left-0 w-full text-xs text-inactive">
+<footer class="z-10 bottom-3 fixed md:bottom-8 left-0 w-full text-xs text-inactive">
   <ul class="grid grid-cols-12 items-center">
     <li
-      class="col-span-5 col-start-2 row-span-1 row-start-1 sm:col-span-1 sm:col-start-1 sm:text-right"
+      class="col-span-5 col-start-2 row-span-1 row-start-1 lg:col-span-1 lg:col-start-1 lg:text-right"
     >
       <p class="">v2024.0.1</p>
     </li>
@@ -19,11 +19,11 @@ const {} = Astro.props
       <MobileMenuBtn />
     </div>
     <li
-      class="col-span-5 col-start-7 row-span-1 row-start-1 justify-start text-right sm:col-span-1 sm:col-start-12 sm:flex sm:text-left"
+      class="col-span-5 col-start-7 row-span-1 row-start-1 justify-start lg:col-span-1 lg:col-start-12 lg:flex"
     >
-      <p class="min-w-24 text-right">
+      <p class="min-w-24 text-right lg:text-left">
         10<span class="animate-blink-slow">:</span>00 AM<span
-          class="hidden sm:inline"
+          class="hidden xl:inline"
         >
           (CET)</span
         >

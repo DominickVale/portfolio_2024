@@ -3,22 +3,25 @@ import Textbox from './Textbox.astro'
 import Btn from './Btn.astro'
 ---
 
-<section class="place-self-end self-center row-start-2 col-span-2 col-start-3 w-56">
+<div class="z-10 bg-background-dark md:bg-transparent fixed left-0 inset-x-0 bottom-0 w-screen h-12"></div>
+
+<section class="flex flex-col place-self-center row-start-4 col-start-2 col-span-10 md:place-self-end self-center md:self-center md:row-start-2 md:col-span-2 md:col-start-3 w-56">
+  <span class="md:hidden place-self-center mb-[4vh] text-xs opacity-60">OR</span>
   <form class="flex flex-col gap-y-3 justify-center ">
     <Textbox minlength={3} placeholder="FULL NAME" />
     <Textbox type="email" placeholder="EMAIL" />
     <Textbox minlength={30} area placeholder="MESSAGE" />
-    <Btn class="ml-3 mr-auto text-xs font-normal opacity-70">SEND IT</Btn>
+    <Btn class="mb-24 md:mb-0 ml-3 mr-auto text-xs font-normal opacity-70">SEND IT</Btn>
   </form>
 </section>
 
-<section class="mb-6 row-start-2 col-span-4 col-start-5 flex justify-center items-center">
-  <h2 class="text-sm font-black tracking-button text-white">
+<section class="mt-[15vh] md:mt-0 row-start-1 col-start-2 col-span-10 md:mb-6 md:row-start-2 md:col-span-4 md:col-start-5 flex justify-center items-center">
+  <h2 class="text-[3vw] sm:text-[2vw] md:text-xs font-black tracking-button text-white">
     DID I INTEREST YOU TODAY?
   </h2>
 </section>
 
-<div class="mb-6 row-start-2 flex justify-center col-span-2 col-start-9 mr-auto items-center">
+<div class="col-start-2 col-span-10 row-start-3 mb-6 md:row-start-2 flex justify-center md:col-span-2 md:col-start-9 md:mr-auto items-center">
   <section id="socials" class="grid grid-cols-3 grid-rows-3 gap-6 h-fit items-center">
     <div class="col-span-3 flex gap-3 items-center">
       <a href="mailto:holla@domminickvale.it">
@@ -67,8 +70,8 @@ import Btn from './Btn.astro'
   </section>
 </div>
 
-<section class="row-start-3 col-start-2 text-center col-span-10">
-  <h1 class="text-nowrap font-display font-black text-[9.2vw] leading-[100%]">
+<section class="mb-10 md:mb-0 row-start-2 md:row-start-3 col-start-2 text-center col-span-10">
+  <h1 class="text-[12vw] text-nowrap font-display font-black sm:text-[9.2vw] leading-[100%]">
     REACH OUT
   </h1>
 </section>
