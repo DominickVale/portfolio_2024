@@ -5,9 +5,11 @@ export default {
     extend: {
       colors: {
         primary: "var(--primary)",
+        "primary-lightest": "var(--primary-lightest)",
         inactive: "var(--inactive)",
         success: "var(--success)",
         "primary-darker": "var(--primary-darker)",
+        error: "red",
         lines: "var(--lines)",
         background: {
           dark: "var(--bg-dark)",
@@ -23,6 +25,9 @@ export default {
       fontSize: {
         display: "clamp(0px, 8.2vw, 132px)",
         xxs:[ "0.6rem", ".8rem"]
+      },
+      letterSpacing: {
+        button: "0.2rem"
       },
        animation: {
         'blink-slow': 'blink-slow 2s linear infinite',

@@ -1,8 +1,10 @@
 ---
 import NextPageBtn from './NextPageBtn.astro'
+import Btn from './Btn.astro'
 interface Props {}
 
 const {} = Astro.props
+const mockProjects = ['ambientify', 'vidra', 'e-corp ctf', 'react-radial-menu']
 const mockData = [
   { label: 'ROLE:', value: 'EVERYTHING' },
   { label: 'CLIENT:', value: 'N/A' },
@@ -14,8 +16,12 @@ const mockData = [
 ]
 ---
 
-<pre
-  class="col-span-1 col-start-2 row-span-1 row-start-1 mt-[8vh] block text-xxs uppercase opacity-50">
+<h1 class="sr-only">WORKS</h1>
+<div
+  class="col-span-10 col-start-2 row-start-1 mt-12 flex flex-col md:col-span-6 md:col-start-2 md:row-start-1 md:mt-0"
+>
+  <pre
+    class="ml-4 mt-[8vh] hidden text-xxs uppercase opacity-50 md:block">
     {
       `
 {
@@ -28,143 +34,115 @@ const mockData = [
 }      `}
 </pre>
 
-<div
-  class="col-span-1 col-start-12 row-start-1 mb-14 hidden h-full items-center sm:flex"
->
-  <NextPageBtn>WORKS</NextPageBtn>
-</div>
-
-<div class="col-span-10 col-start-2 row-start-1 mt-[8vh] flex flex-col">
-  <div class="relative flex flex-col sm:flex-row justify-center">
-    <div class="fui-frame">
-      <small
-        class="vertical-text--left absolute bottom-4 left-[-0.25rem] text-xxs leading-[100%] opacity-40"
-        >IMG_003.jpg</small
-      >
-      <img class="max-w-[33.333vw]" src="/ecorp.png" alt="" />
-      <!-- <small class="text-xxs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
-      <div class="absolute right-0 top-0 flex h-full w-3">
+  <div class="md:ml-4 md:mt-[3vh]">
+    <div class="relative flex flex-col justify-center">
+      <div class="fui-frame mr-auto">
         <small
-          class="vertical-text--right mt-11 w-[1.6rem] text-xxs leading-[100%] opacity-40"
-          >IMAGE_NAME-2492929.jpg</small
+          class="vertical-text--left absolute bottom-4 left-[-0.25rem] text-xxs leading-[100%] opacity-40"
+          >IMG_003.jpg</small
         >
+        <img class="w-full md:max-w-[33.333vw]" src="/ecorp.png" alt="" />
+        <!-- <small class="text-xxs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
+        <div class="absolute right-0 top-0 flex h-full w-3">
+          <small
+            class="vertical-text--right mt-11 w-[1.6rem] text-xxs leading-[100%] opacity-40"
+            >IMAGE_NAME-2492929.jpg</small
+          >
+        </div>
+        <div class="fui-corners"></div>
       </div>
-      <div class="corners"></div>
-    </div>
-    <div class="absolute bottom-[-5vh] left-1/2 h-[4vh] w-[1px] bg-lines"></div>
+      <!-- <div class="absolute bottom-[-5vh] left-1/2 h-[4vh] w-[1px] bg-lines"></div> -->
+      <div class="mt-6 hidden max-w-[70%] md:block">
+        <table class="text-xs">
+          <tbody class="grid min-w-[50%] grid-cols-[1fr_2fr] items-start gap-4">
+            <tr class="grid grid-cols-[3rem_1fr] gap-1">
+              <th class="pl-0 pr-3 text-left text-primary-darker">ROLE:</th>
+              <td class="text-left">EVERYTHING</td>
+              <th class="pl-0 pr-3 text-left text-primary-darker">CLIENT:</th>
+              <td class="text-left">N/A</td>
+            </tr>
+            <tr class="grid w-full grid-cols-[3rem_1fr] gap-1">
+              <th class="pl-0 pr-3 text-left text-primary-darker">YEAR:</th>
+              <td class="text-left">2020—ONGOING</td>
+              <th class="pl-0 pr-3 text-left text-primary-darker">TECH:</th>
+              <td class="min-w-32 text-left">
+                REACT-NATIVE, FIREBASE, ANDROID NDK, JSI, C++, REVENUECAT,
+                KOTLIN</td
+              >
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <div class="w-0 overflow-visible mt-auto">
-      <table class="w-72 ml-6 sm:w-48 lg:w-64 text-xs">
-        <tbody>
-          {
-            mockData.map((item) => (
-              <tr>
-                <th class="pl-0 pr-3 text-left text-primary-darker">
-                  {item.label}
-                </th>
-                <td class="text-left">{item.value}</td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
+      <div class="mt-4 w-full md:hidden">
+        <table class="w-full text-xxs">
+          <tbody class="flex w-full justify-between">
+            <tr class="flex flex-col">
+              <th class="tracking-widest pl-0 pr-3 text-left text-primary-darker">ROLE:</th>
+              <td class="opacity-80">EVERYTHING</td>
+            </tr>
+            <tr class="flex flex-col justify-center">
+              <th class="tracking-widest pl-0 pr-3 text-left text-primary-darker">CLIENT:</th>
+              <td class="mx-auto text-center opacity-80">N/A</td>
+            </tr>
+            <tr class="flex flex-col">
+              <th class="tracking-widest text-right text-primary-darker">YEAR:</th>
+              <td class="pr-1 text-right opacity-80">2020—ONGOING</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
-  <section class="">
-    <h1
-      class="relative mt-[40vh] whitespace-nowrap text-center font-display text-[4vw] font-black leading-[100%]"
-    >
+  <!-- <div class="mt-6 flex justify-center sm:hidden"> -->
+  <!--   <NextPageBtn>BLOG</NextPageBtn> -->
+  <!-- </div> -->
+</div>
+
+<div class="col-span-1 col-start-12 mb-14 hidden h-full items-center sm:flex">
+  <NextPageBtn>BLOG</NextPageBtn>
+</div>
+
+<section
+  class="col-span-4 col-start-8 row-start-1 hidden flex-col pt-[10vh] md:flex"
+>
+  <!-- TODO: add js impl w/ dynamic height -->
+  <div class="fui-frame hidden">
+    <div class="absolute bottom-[-3.2rem] right-0 flex">
+      <Btn class="mr-4" frame>READ CASE</Btn>
+      <Btn frame>VISIT WEBSITE</Btn>
+    </div>
+    <div class="fui-corners">
       <small
-        class="absolute left-[calc(50%-2.5em)] top-[-1vh] font-mono text-xxs font-normal opacity-60"
+        class="absolute left-5 top-[-1rem] text-xxs font-normal tracking-widest opacity-40"
         >PROJ_ID: 001</small
       >
-      NAME OF PROJECT
-    </h1>
-    <p class="mt-6 max-w-[29rem] text-xs opacity-80">
-      Lorem ipsum dolor Diam aliquam faucibusdfsgrisus aliquam eu volutpat risus
-      commodo montes aliquam eu volutpat feugiat. sit amet consectetur. Diam
-      aliquam faucibusdfsgrisus aliquam eu volutpat feugiat. sit amet
-      consectetur and something.
-    </p>
-    <!-- <svg -->
-    <!--   width="813" -->
-    <!--   height="98" -->
-    <!--   viewBox="0 0 813 98" -->
-    <!--   fill="none" -->
-    <!--   xmlns="http://www.w3.org/2000/svg" -->
-    <!-- > -->
-    <!--   <path -->
-    <!--     d="M43.5182 57C32.0191 77.8 335.045 96 398 96C460.956 96 783.981 77.8 772.482 57" -->
-    <!--     stroke="#484848"></path> -->
-    <!--   <g opacity="0.6"> -->
-    <!--     <rect -->
-    <!--       width="4.04571" -->
-    <!--       height="4.04571" -->
-    <!--       transform="matrix(0.715007 0.699118 -0.715007 0.699118 41.5 30.5059)" -->
-    <!--       fill="#D7D7D7"></rect> -->
-    <!--     <path -->
-    <!--       fill-rule="evenodd" -->
-    <!--       clip-rule="evenodd" -->
-    <!--       d="M47.6361 28.334H50.727V38.334H47.6361V39.334H50.727H51.727V38.334V28.334V27.334H50.727H47.6361V28.334ZM35.3634 28.334V27.334H32.2725H31.2725V28.334V38.334V39.334H32.2725H35.3634V38.334H32.2725V28.334H35.3634Z" -->
-    <!--       fill="white"></path> -->
-    <!--     <rect -->
-    <!--       opacity="0.6" -->
-    <!--       x="38.0908" -->
-    <!--       y="40.666" -->
-    <!--       width="6.81818" -->
-    <!--       height="1.33333" -->
-    <!--       fill="#D9D9D9"></rect> -->
-    <!--     <rect -->
-    <!--       opacity="0.6" -->
-    <!--       x="38.0908" -->
-    <!--       y="24.666" -->
-    <!--       width="6.81818" -->
-    <!--       height="1.33333" -->
-    <!--       fill="#D9D9D9"></rect> -->
-    <!--     <path -->
-    <!--       opacity="0.6" -->
-    <!--       d="M4.404 9.26H1.476L1.668 8.288H4.176L4.404 9.26ZM3 5.984L1.488 11H0.144L2.676 3.476H3.324L5.856 11H4.488L3 5.984ZM8.784 11V3.524H9.972L11.424 6.956L12.876 3.512H14.064V11H12.888V5.78L11.712 8.528H11.052L9.948 5.792V11H8.784ZM17.244 11V3.524H19.524C19.972 3.524 20.36 3.572 20.688 3.668C21.016 3.756 21.288 3.884 21.504 4.052C21.728 4.212 21.892 4.408 21.996 4.64C22.108 4.872 22.164 5.128 22.164 5.408C22.164 5.616 22.124 5.828 22.044 6.044C21.964 6.26 21.844 6.456 21.684 6.632C21.524 6.8 21.332 6.932 21.108 7.028C21.308 7.116 21.492 7.224 21.66 7.352C21.828 7.48 21.972 7.624 22.092 7.784C22.212 7.936 22.3 8.104 22.356 8.288C22.42 8.464 22.452 8.648 22.452 8.84C22.452 9.16 22.392 9.456 22.272 9.728C22.152 9.992 21.968 10.22 21.72 10.412C21.48 10.596 21.176 10.74 20.808 10.844C20.44 10.948 20.008 11 19.512 11H17.244ZM18.6 9.884H19.656C19.944 9.884 20.192 9.844 20.4 9.764C20.608 9.676 20.768 9.552 20.88 9.392C20.992 9.232 21.048 9.036 21.048 8.804C21.048 8.564 20.996 8.356 20.892 8.18C20.788 7.996 20.62 7.852 20.388 7.748C20.156 7.644 19.844 7.592 19.452 7.592H18.6V9.884ZM18.6 6.512H19.416C19.768 6.512 20.044 6.472 20.244 6.392C20.444 6.304 20.584 6.188 20.664 6.044C20.752 5.892 20.796 5.72 20.796 5.528C20.796 5.392 20.772 5.268 20.724 5.156C20.676 5.044 20.6 4.952 20.496 4.88C20.4 4.8 20.272 4.736 20.112 4.688C19.952 4.64 19.76 4.616 19.536 4.616H18.6V6.512ZM26.04 11V9.908H27.504V4.616H26.124V3.524H30.252V4.616H28.788V9.908H30.312V11H26.04ZM34.212 11V3.524H39.084V4.628H35.532V6.548H38.448V7.664H35.532V9.896H39.048V11H34.212ZM42.444 3.524H43.86L46.392 8.444L46.32 3.524H47.532H47.64V3.632C47.6 3.68 47.572 3.732 47.556 3.788C47.548 3.844 47.544 3.94 47.544 4.076V11H46.284L43.668 5.756V11H42.444V3.524ZM52.692 11V4.664H50.676V3.524H56.112V4.664H53.988V11H52.692ZM59.64 11V9.908H61.104V4.616H59.724V3.524H63.852V4.616H62.388V9.908H63.912V11H59.64ZM67.992 11V3.524H72.648V4.616H69.204V6.428H72V7.52H69.204V11H67.992ZM78.036 11V8.048L75.804 3.524H77.196L78.744 6.644L80.112 3.524H81.444L79.392 8.06V11H78.036Z" -->
-    <!--       fill="#D7D7D7"></path> -->
-    <!--   </g> -->
-    <!--   <g opacity="0.6"> -->
-    <!--     <rect -->
-    <!--       width="4.04571" -->
-    <!--       height="4.04571" -->
-    <!--       transform="matrix(0.715007 0.699118 -0.715007 0.699118 772.5 30.5059)" -->
-    <!--       fill="#D7D7D7"></rect> -->
-    <!--     <path -->
-    <!--       fill-rule="evenodd" -->
-    <!--       clip-rule="evenodd" -->
-    <!--       d="M778.637 28.334H781.728V38.334H778.637V39.334H781.728H782.728V38.334V28.334V27.334H781.728H778.637V28.334ZM766.364 28.334V27.334H763.273H762.273V28.334V38.334V39.334H763.273H766.364V38.334H763.273V28.334H766.364Z" -->
-    <!--       fill="white"></path> -->
-    <!--     <rect -->
-    <!--       opacity="0.6" -->
-    <!--       x="769.092" -->
-    <!--       y="40.666" -->
-    <!--       width="6.81818" -->
-    <!--       height="1.33333" -->
-    <!--       fill="#D9D9D9"></rect> -->
-    <!--     <rect -->
-    <!--       opacity="0.6" -->
-    <!--       x="769.092" -->
-    <!--       y="24.666" -->
-    <!--       width="6.81818" -->
-    <!--       height="1.33333" -->
-    <!--       fill="#D9D9D9"></rect> -->
-    <!--     <path -->
-    <!--       opacity="0.6" -->
-    <!--       d="M735.536 12.752C735.16 12.752 734.84 12.724 734.576 12.668C734.312 12.62 734.092 12.532 733.916 12.404C733.748 12.276 733.624 12.104 733.544 11.888C733.464 11.672 733.42 11.396 733.412 11.06C732.98 10.964 732.6 10.756 732.272 10.436C731.952 10.116 731.7 9.688 731.516 9.152C731.332 8.616 731.24 7.988 731.24 7.268C731.24 6.572 731.312 5.98 731.456 5.492C731.608 4.996 731.812 4.596 732.068 4.292C732.332 3.988 732.628 3.764 732.956 3.62C733.292 3.476 733.648 3.404 734.024 3.404C734.416 3.404 734.78 3.48 735.116 3.632C735.46 3.784 735.756 4.016 736.004 4.328C736.26 4.64 736.456 5.04 736.592 5.528C736.728 6.016 736.792 6.592 736.784 7.256C736.784 7.848 736.736 8.364 736.64 8.804C736.544 9.244 736.404 9.62 736.22 9.932C736.036 10.236 735.812 10.48 735.548 10.664C735.292 10.848 735.004 10.98 734.684 11.06C734.7 11.18 734.728 11.288 734.768 11.384C734.808 11.48 734.876 11.552 734.972 11.6C735.068 11.648 735.192 11.672 735.344 11.672L736.328 11.624L736.304 12.752H735.536ZM734.048 10.016C734.232 10.016 734.408 9.968 734.576 9.872C734.752 9.768 734.904 9.612 735.032 9.404C735.168 9.188 735.276 8.912 735.356 8.576C735.436 8.232 735.476 7.82 735.476 7.34C735.476 6.812 735.436 6.368 735.356 6.008C735.276 5.64 735.164 5.348 735.02 5.132C734.884 4.908 734.732 4.748 734.564 4.652C734.396 4.556 734.216 4.508 734.024 4.508C733.792 4.508 733.588 4.568 733.412 4.688C733.236 4.808 733.084 4.988 732.956 5.228C732.828 5.46 732.732 5.736 732.668 6.056C732.604 6.376 732.572 6.74 732.572 7.148C732.572 7.772 732.632 8.296 732.752 8.72C732.872 9.144 733.044 9.468 733.268 9.692C733.492 9.908 733.752 10.016 734.048 10.016ZM742.4 11.156C741.576 11.156 740.94 10.912 740.492 10.424C740.052 9.928 739.832 9.248 739.832 8.384V3.524H741.176H741.284V3.632C741.244 3.68 741.216 3.732 741.2 3.788C741.192 3.844 741.188 3.94 741.188 4.076V8.396C741.188 8.908 741.276 9.312 741.452 9.608C741.636 9.904 741.956 10.052 742.412 10.052C742.876 10.052 743.2 9.904 743.384 9.608C743.568 9.304 743.66 8.888 743.66 8.36V3.524H744.98V8.348C744.98 8.988 744.872 9.516 744.656 9.932C744.44 10.348 744.136 10.656 743.744 10.856C743.36 11.056 742.912 11.156 742.4 11.156ZM748.64 11V9.908H750.104V4.616H748.724V3.524H752.852V4.616H751.388V9.908H752.912V11H748.64ZM759.548 11.132C759.14 11.132 758.756 11.06 758.396 10.916C758.036 10.764 757.716 10.532 757.436 10.22C757.164 9.908 756.952 9.512 756.8 9.032C756.648 8.544 756.572 7.968 756.572 7.304C756.572 6.72 756.632 6.208 756.752 5.768C756.872 5.328 757.032 4.96 757.232 4.664C757.44 4.36 757.672 4.116 757.928 3.932C758.192 3.748 758.464 3.616 758.744 3.536C759.032 3.456 759.316 3.416 759.596 3.416C760.164 3.416 760.644 3.544 761.036 3.8C761.436 4.056 761.744 4.416 761.96 4.88L761.108 5.516L761.012 5.576L760.952 5.48C760.96 5.416 760.952 5.356 760.928 5.3C760.912 5.244 760.872 5.16 760.808 5.048C760.632 4.832 760.448 4.688 760.256 4.616C760.072 4.544 759.876 4.508 759.668 4.508C759.436 4.508 759.216 4.568 759.008 4.688C758.8 4.8 758.612 4.972 758.444 5.204C758.276 5.436 758.144 5.724 758.048 6.068C757.96 6.404 757.916 6.796 757.916 7.244C757.916 7.676 757.956 8.064 758.036 8.408C758.124 8.744 758.24 9.032 758.384 9.272C758.536 9.512 758.712 9.696 758.912 9.824C759.12 9.952 759.344 10.016 759.584 10.016C759.776 10.016 759.952 9.988 760.112 9.932C760.28 9.876 760.432 9.788 760.568 9.668C760.704 9.548 760.828 9.388 760.94 9.188L761.876 9.884C761.596 10.332 761.268 10.652 760.892 10.844C760.516 11.036 760.068 11.132 759.548 11.132ZM766.868 7.616L766.376 8.264V11H765.044V3.524H766.364H766.472V3.632C766.432 3.68 766.404 3.732 766.388 3.788C766.38 3.844 766.376 3.94 766.376 4.076V6.584L768.86 3.452C768.924 3.468 768.992 3.48 769.064 3.488C769.144 3.496 769.224 3.504 769.304 3.512C769.392 3.52 769.472 3.524 769.544 3.524C769.624 3.524 769.688 3.524 769.736 3.524H770.36L767.828 6.656L770.504 10.988L768.956 11.048L766.868 7.616ZM774.26 7.748V6.62H777.764V7.748H774.26ZM781.784 11V3.524H782.972L784.424 6.956L785.876 3.512H787.064V11H785.888V5.78L784.712 8.528H784.052L782.948 5.792V11H781.784ZM790.412 11V3.524H795.284V4.628H791.732V6.548H794.648V7.664H791.732V9.896H795.248V11H790.412ZM798.644 3.524H800.06L802.592 8.444L802.52 3.524H803.732H803.84V3.632C803.8 3.68 803.772 3.732 803.756 3.788C803.748 3.844 803.744 3.94 803.744 4.076V11H802.484L799.868 5.756V11H798.644V3.524ZM809.6 11.156C808.776 11.156 808.14 10.912 807.692 10.424C807.252 9.928 807.032 9.248 807.032 8.384V3.524H808.376H808.484V3.632C808.444 3.68 808.416 3.732 808.4 3.788C808.392 3.844 808.388 3.94 808.388 4.076V8.396C808.388 8.908 808.476 9.312 808.652 9.608C808.836 9.904 809.156 10.052 809.612 10.052C810.076 10.052 810.4 9.904 810.584 9.608C810.768 9.304 810.86 8.888 810.86 8.36V3.524H812.18V8.348C812.18 8.988 812.072 9.516 811.856 9.932C811.64 10.348 811.336 10.656 810.944 10.856C810.56 11.056 810.112 11.156 809.6 11.156Z" -->
-    <!--       fill="#D7D7D7"></path> -->
-    <!--   </g> -->
-    <!--   <circle opacity="0.9" cx="406.5" cy="96.5" r="1.5" fill="white"></circle> -->
-    <!--   <circle opacity="0.5" cx="42.5" cy="56.5" r="1.5" fill="#D9D9D9"></circle> -->
-    <!--   <circle opacity="0.5" cx="772.5" cy="56.5" r="1.5" fill="#D9D9D9" -->
-    <!--   ></circle> -->
-    <!-- </svg> -->
-  </section>
-
-  <div class="mt-6 flex justify-center sm:hidden">
-    <NextPageBtn>BLOG</NextPageBtn>
+    </div>
   </div>
-</div>
+  {
+    mockProjects.map((name, i) => (
+      <h2
+        class="project-title w-full font-display text-6xl font-bold uppercase text-primary-lightest"
+        style={`--i: ${i}`}
+        data-active={i === 0}
+      >
+        <a href={`/works/${name}`}>{name}</a>
+      </h2>
+    ))
+  }
+</section>
+<section
+  class="col-span-10 col-start-2 row-start-2 flex flex-col text-center md:hidden"
+>
+  <h2 class="font-display text-2xl font-bold text-primary-lightest opacity-50">
+    <a href="/works/ambientify">AMBIENTIFY</a>
+  </h2>
+  <h2 class="relative block my-4 font-display text-4xl font-bold text-white">
+    <a href="/works/e-corp-ctf">E-CORP-CTF</a>
+    <div class="fui-corners"></div>
+  </h2>
+  <h2 class="font-display text-2xl font-bold text-primary-lightest opacity-50">
+    <a href="/works/vidra">VIDRA</a>
+  </h2>
+</section>

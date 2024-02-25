@@ -1,0 +1,36 @@
+---
+import { type HTMLAttributes } from 'astro/types'
+
+type Props = HTMLAttributes<'input'> & { area?: boolean }
+const {area, ...props} = Astro.props
+
+const Component = Astro.props.area ? 'textarea' : 'input'
+---
+
+<div class="relative">
+  <Component
+    type="text"
+    class:list={[
+      'textbox bg-[rgba(0,0,0,0.9)] px-3 py-1 text-xs w-full',
+      area && 'min-h-16'
+    ]}
+    {...props}
+  />
+  <div
+    class:list={[
+      'absolute right-0 flex items-center pr-2',
+      area ? 'bottom-4' : 'inset-y-0'
+    ]}
+  >
+    <div class="dot h-1 w-1 rounded-full bg-white opacity-30 mr-2"></div>
+  </div>
+</div>
+
+<style>
+  .textbox:valid + .dot {
+    background-color: theme('colors.primary');
+  }
+  .textbox:invalid + .dot {
+    background-color: theme('colors.error');
+  }
+</style>

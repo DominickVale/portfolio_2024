@@ -1,20 +1,36 @@
 ---
+import MobileMenuBtn from './MobileMenuBtn.astro'
 interface Props {}
 
 const {} = Astro.props
 ---
 
-<footer class="text-xs fixed left-0 bottom-8 w-full text-inactive">
-  <ul class= "grid grid-cols-12" >
-    <li class="col-start-2"><p class="">v2024.0.1</p></li>
-    <div class="hidden absolute left-0 right-0 sm:flex justify-center">
+<footer class="fixed bottom-8 left-0 w-full text-xs text-inactive">
+  <ul class="grid grid-cols-12 items-center">
+    <li
+      class="col-span-5 col-start-2 row-span-1 row-start-1 sm:col-span-1 sm:col-start-1 sm:text-right"
+    >
+      <p class="">v2024.0.1</p>
+    </li>
+    <div class="absolute left-0 right-0 hidden justify-center sm:flex">
       <p>QUICK MENU</p>
     </div>
-    <li class="col-start-11 flex justify-end"><p class="min-w-24 text-right">10<span class="animate-blink-slow">:</span>00 AM<span class="hidden sm:inline"> (CET)</span></p></li>
+    <div class="sm:hidden col-start-5 col-span-4 flex justify-center row-start-1 row-span-1">
+      <MobileMenuBtn />
+    </div>
+    <li
+      class="col-span-5 col-start-7 row-span-1 row-start-1 justify-start text-right sm:col-span-1 sm:col-start-12 sm:flex sm:text-left"
+    >
+      <p class="min-w-24 text-right">
+        10<span class="animate-blink-slow">:</span>00 AM<span
+          class="hidden sm:inline"
+        >
+          (CET)</span
+        >
+      </p>
+    </li>
   </ul>
 </footer>
-
-
 
 <!-- <footer class="mb-8 text-xs fixed bottom-0 left-0 w-full text-inactive px-16"> -->
 <!--   <ul class="grid grid-cols-layout-lg gap-2"> --   <!--     <li class="col-start-0"><p class="text-right">v2024.0.1</p></li> -->
