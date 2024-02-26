@@ -1,7 +1,42 @@
-
 ---
+import StatusItem from '../components/StatusItem.astro'
 import Layout from '../layouts/Layout.astro'
+
+const lastUpdated = new Date().toLocaleDateString('en-GB')
+const allWorks = await Astro.glob('../pages/works/*.mdx')
+const allBlogs = await Astro.glob('../pages/blog/*.mdx')
+
+const allPosts = [...allWorks, ...allBlogs]
 ---
 
 <Layout title="Dominick Vale - ⓒ 2024">
+  <section class="relative col-start-2">
+    <div class="flex h-max">
+      <h1 class="mt-[10vh] font-display text-[9.2vw] font-black leading-[100%]">
+        BLOG
+      </h1>
+      <div
+        class="flex justify-between gap-[7%] self-end text-sm lg:mb-6 lg:ml-6"
+      >
+        <ul>
+          <StatusItem>UPDATED:&nbsp;{lastUpdated}</StatusItem>
+          <StatusItem>LEARNER</StatusItem>
+        </ul>
+      </div>
+    </div>
+    <h2
+      class="text-md ml-3 whitespace-nowrap font-mono font-black tracking-button opacity-60"
+    >
+      UNCOORDINATED THOUGHTS AND PROJECT CASES
+    </h2>
+    <section class="col-start-2 row-start-2 min-h-28">
+      {
+        allPosts.map((work) => (
+          <li>
+            <a href={work.url}>{work.frontmatter.title}</a>
+          </li>
+        ))
+      }
+    </section>
+  </section>
 </Layout>

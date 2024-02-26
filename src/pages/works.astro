@@ -1,8 +1,165 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import WorksSection from '../components/WorksSection.astro'
+import NextPageBtn from '../components/NextPageBtn.astro'
+import Btn from '../components/Btn.astro'
+interface Props {}
+
+const {} = Astro.props
+const mockProjects = ['ambientify', 'vidra', 'e-corp ctf', 'react-radial-menu']
+const mockData = [
+  { label: 'ROLE:', value: 'EVERYTHING' },
+  { label: 'CLIENT:', value: 'N/A' },
+  { label: 'YEAR:', value: '2020—ONGOING' },
+  {
+    label: 'TECH:',
+    value: 'REACT-NATIVE, FIREBASE, ANDROID NDK, JSI, C++, REVENUECAT, KOTLIN',
+  },
+]
 ---
 
 <Layout title="Dominick Vale - ⓒ 2024">
-  <WorksSection />
+  <h1 class="sr-only">WORKS</h1>
+  <div
+    class="col-span-10 col-start-2 row-start-1 mt-12 flex flex-col md:col-span-6 md:col-start-2 md:row-start-1 md:mt-0"
+  >
+    <pre
+      class="ml-4 mt-[8vh] hidden text-xxs uppercase opacity-50 md:block">
+    {
+      `
+{
+    // loading proj_id: 001
+    // done.
+    // rendering data
+    // . . .
+    // add obj(“img_003.jpg”)
+    // done.
+}      `}
+</pre>
+
+    <div class="md:ml-4 md:mt-[3vh]">
+      <div class="relative flex flex-col justify-center">
+        <div class="fui-frame mr-auto">
+          <small
+            class="vertical-text--left absolute bottom-4 left-[-0.25rem] text-xxs leading-[100%] opacity-40"
+            >IMG_003.jpg</small
+          >
+          <img class="w-full md:max-w-[33.333vw]" src="/ecorp.png" alt="" />
+          <!-- <small class="text-xxs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
+          <div class="absolute right-0 top-0 flex h-full w-3">
+            <small
+              class="vertical-text--right mt-11 w-[1.6rem] text-xxs leading-[100%] opacity-40"
+              >IMAGE_NAME-2492929.jpg</small
+            >
+          </div>
+          <div class="fui-corners"></div>
+        </div>
+        <!-- <div class="absolute bottom-[-5vh] left-1/2 h-[4vh] w-[1px] bg-lines"></div> -->
+        <div class="mt-6 hidden max-w-[70%] md:block">
+          <table class="text-xs">
+            <tbody
+              class="grid min-w-[50%] grid-cols-[1fr_2fr] items-start gap-4"
+            >
+              <tr class="grid grid-cols-[3rem_1fr] gap-1">
+                <th class="pl-0 pr-3 text-left text-primary-darker">ROLE:</th>
+                <td class="text-left">EVERYTHING</td>
+                <th class="pl-0 pr-3 text-left text-primary-darker">CLIENT:</th>
+                <td class="text-left">N/A</td>
+              </tr>
+              <tr class="grid w-full grid-cols-[3rem_1fr] gap-1">
+                <th class="pl-0 pr-3 text-left text-primary-darker">YEAR:</th>
+                <td class="text-left">2020—ONGOING</td>
+                <th class="pl-0 pr-3 text-left text-primary-darker">TECH:</th>
+                <td class="min-w-32 text-left">
+                  REACT-NATIVE, FIREBASE, ANDROID NDK, JSI, C++, REVENUECAT,
+                  KOTLIN</td
+                >
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-4 w-full md:hidden">
+          <table class="w-full text-xxs">
+            <tbody class="flex w-full justify-between">
+              <tr class="flex flex-col">
+                <th
+                  class="pl-0 pr-3 text-left tracking-widest text-primary-darker"
+                  >ROLE:</th
+                >
+                <td class="opacity-80">EVERYTHING</td>
+              </tr>
+              <tr class="flex flex-col justify-center">
+                <th
+                  class="pl-0 pr-3 text-left tracking-widest text-primary-darker"
+                  >CLIENT:</th
+                >
+                <td class="mx-auto text-center opacity-80">N/A</td>
+              </tr>
+              <tr class="flex flex-col">
+                <th class="text-right tracking-widest text-primary-darker"
+                  >YEAR:</th
+                >
+                <td class="pr-1 text-right opacity-80">2020—ONGOING</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="mt-6 flex justify-center sm:hidden"> -->
+    <!--   <NextPageBtn>BLOG</NextPageBtn> -->
+    <!-- </div> -->
+  </div>
+
+  <div class="col-span-1 col-start-12 mb-14 hidden h-full items-center sm:flex">
+    <NextPageBtn>BLOG</NextPageBtn>
+  </div>
+
+  <section
+    class="col-span-4 col-start-8 row-start-1 hidden flex-col pt-[10vh] md:flex"
+  >
+    <!-- TODO: add js impl w/ dynamic height -->
+    <div class="fui-frame hidden">
+      <div class="absolute bottom-[-3.2rem] right-0 flex">
+        <Btn class="mr-4" frame>READ CASE</Btn>
+        <Btn frame>VISIT WEBSITE</Btn>
+      </div>
+      <div class="fui-corners">
+        <small
+          class="absolute left-5 top-[-1rem] text-xxs font-normal tracking-widest opacity-40"
+          >PROJ_ID: 001</small
+        >
+      </div>
+    </div>
+    {
+      mockProjects.map((name, i) => (
+        <h2
+          class="project-title w-full font-display text-6xl font-bold uppercase text-primary-lightest"
+          style={`--i: ${i}`}
+          data-active={i === 0}
+        >
+          <a href={`/works/${name}`}>{name}</a>
+        </h2>
+      ))
+    }
+  </section>
+  <section
+    class="col-span-10 col-start-2 row-start-2 flex flex-col text-center md:hidden"
+  >
+    <h2
+      class="font-display text-2xl font-bold text-primary-lightest opacity-50"
+    >
+      <a href="/works/ambientify">AMBIENTIFY</a>
+    </h2>
+    <h2 class="relative my-4 block font-display text-4xl font-bold text-white">
+      <a href="/works/e-corp-ctf">E-CORP-CTF</a>
+      <div class="fui-corners"></div>
+    </h2>
+    <h2
+      class="font-display text-2xl font-bold text-primary-lightest opacity-50"
+    >
+      <a href="/works/vidra">VIDRA</a>
+    </h2>
+  </section>
 </Layout>
