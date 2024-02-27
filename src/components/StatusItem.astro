@@ -1,12 +1,16 @@
 ---
-interface Props {
-  highlight?: boolean;
-}
-
-const { highlight } = Astro.props
+const { highlight, class: classes } = Astro.props
 ---
 
-<li class:list={["status-item text-xs pl-3 relative text-inactive font-normal", { highlight } ] }><slot/></li>
+<li
+  class:list={[
+    'status-item relative pl-3 text-xs font-normal text-inactive',
+    { highlight },
+    classes
+  ]}
+>
+  <slot />
+</li>
 <style>
   .status-item {
     &.highlight {
@@ -19,8 +23,8 @@ const { highlight } = Astro.props
       left: 0;
       top: 33%;
       background-color: white;
-      height: .32rem;
-      width: .32rem;
+      height: 0.32rem;
+      width: 0.32rem;
     }
   }
 </style>

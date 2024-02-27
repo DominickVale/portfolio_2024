@@ -27,6 +27,17 @@ body {
   min-height: 100%;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
 .grid-bars {
   grid-template-columns: 1fr repeat(10, minmax(5rem, 7rem)) 1fr;
   gap: var(--grid-x-gap) var(--grid-y-gap);

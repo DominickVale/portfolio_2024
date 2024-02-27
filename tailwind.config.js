@@ -4,15 +4,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "var(--primary)",
-        "primary-lightest": "var(--primary-lightest)",
-        inactive: "var(--inactive)",
-        success: "var(--success)",
-        "primary-darker": "var(--primary-darker)",
-        error: "red",
-        lines: "var(--lines)",
+        primary: 'var(--primary)',
+        'primary-lightest': 'var(--primary-lightest)',
+        inactive: 'var(--inactive)',
+        success: 'var(--success)',
+        'primary-darker': 'var(--primary-darker)',
+        error: 'red',
+        lines: 'var(--lines)',
         background: {
-          dark: "var(--bg-dark)",
+          dark: 'var(--bg-dark)',
         },
       },
       fontFamily: {
@@ -20,16 +20,16 @@ export default {
         serif: ['Inconsolata'],
         display: ['Orbitron'],
         body: ['Inconsolata'],
-        mono: ['Inconsolata', 'Roboto Mono']
+        mono: ['Inconsolata', 'Roboto Mono'],
       },
       fontSize: {
-        display: "clamp(0px, 8.2vw, 132px)",
-        xxs:[ "0.6rem", ".8rem"]
+        display: 'clamp(0px, 8.2vw, 132px)',
+        xxs: ['0.6rem', '.8rem'],
       },
       letterSpacing: {
-        button: "0.2rem"
+        button: '0.2rem',
       },
-       animation: {
+      animation: {
         'blink-slow': 'blink-slow 2s linear infinite',
       },
       keyframes: {
@@ -39,8 +39,12 @@ export default {
           '50%': { opacity: '1' },
           '99%': { opacity: '1' },
           '100%': { opacity: '0' },
-        }
-      }
+        },
+      },
+      screens: {
+        xs: '420px',
+        tall: { raw: '((min-height: 650px) and (min-width: 640px))' },
+      },
     },
   },
   plugins: [],
