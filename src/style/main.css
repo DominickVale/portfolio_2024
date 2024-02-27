@@ -114,3 +114,10 @@ body {
   color: white;
   font-size: theme('fontSize.7xl'); /* will be calc dynamically in js */
 }
+
+@layer components {
+  .bg-blur{
+    background-color: theme("colors.background.dark");
+    backdrop-filter: blur(16px);
+  }
+}

@@ -43,7 +43,8 @@ export default {
       },
       screens: {
         xs: '420px',
-        tall: { raw: '((min-height: 650px) and (min-width: 640px))' },
+        tall: { raw: '((min-height: 500px) and (min-width: 640px))' },
+        taller: { raw: '((min-height: 650px) and (min-width: 640px))' },
       },
     },
   },

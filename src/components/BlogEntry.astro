@@ -4,41 +4,48 @@ const { title, tags, description, readTime, date, class: classes } = Astro.props
 
 <div
   class:list={[
-    'relative flex flex-col justify-center h-[16rem] w-[19rem] tall:h-[19rem] tall:w-[20rem] overflow-hidden bg-gray-600 p-6 px-10',
+    'bg-blur relative flex h-[16rem] w-full flex-col justify-center overflow-hidden p-6 sm:px-10 sm:w-[19rem] tall:h-[19rem] tall:w-[20rem]',
     classes,
   ]}
 >
   <div
     class="absolute left-0 right-0 top-0 flex min-w-max flex-nowrap items-center gap-3 bg-background-dark text-xxs text-white"
   >
-    {tags.map((t) => (
+    {
+      tags.map((t) => (
         <>
           <span class="marquee-tag relative ml-1">{t}</span>
-          <div class="bg-white opacity-70 w-[0.2rem] h-[0.2rem] rounded-full"/>
+          <div class="h-[0.2rem] w-[0.2rem] rounded-full bg-white opacity-70" />
         </>
-    ))}
+      ))
+    }
   </div>
   <span class="mb-3">
-    <small class="relative read-time ml-3 text-xxs uppercase text-[rgba(255,255,255,0.77)]">{readTime}</small>
+    <small
+      class="read-time relative ml-3 text-xxs uppercase text-[rgba(255,255,255,0.77)]"
+      >{readTime}</small
+    >
     <h3 class="font-display text-2xl font-black">{title}</h3>
   </span>
   <span>
-    <small class="relative text-xs uppercase text-[rgba(255,255,255,0.77)]">{date}</small>
-    <p class="text-xs h-0 tall:h-auto overflow-hidden">{description}</p>
+    <small class="relative text-xs uppercase text-[rgba(255,255,255,0.77)]"
+      >{date}</small
+    >
+    <p class="h-0 overflow-hidden text-xs tall:h-auto">{description}</p>
   </span>
 </div>
 
 <style>
-.read-time {
-  position: relative;
-  &::before{
-    content: '';
-    position: absolute;
-    left: -30%;
-    top: 33%;
-    background-color: theme('colors.primary');
-    height: theme("height.1");
-    width: theme("height.1");
+  .read-time {
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      left: -30%;
+      top: 33%;
+      background-color: theme('colors.primary');
+      height: theme('height.1');
+      width: theme('height.1');
+    }
   }
-}
 </style>
