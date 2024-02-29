@@ -8,8 +8,17 @@ type Props = {
   frontmatter: Frontmatter
 }
 const { frontmatter } = Astro.props
-const { title, description, tags, readTime, date, subtitle, lastUpdated, ttr } =
-  frontmatter
+const {
+  title,
+  description,
+  tags,
+  readTime,
+  date,
+  subtitle,
+  lastUpdated,
+  ttr,
+  project,
+} = frontmatter
 ---
 
 <BaseLayout title="Blog page" rowsMax>
@@ -52,10 +61,52 @@ const { title, description, tags, readTime, date, subtitle, lastUpdated, ttr } =
       <div class="h-1 w-1 rounded-full bg-white opacity-70"></div>
       <p>TTR: {ttr}</p>
     </span>
-
-    <slot />
+    <p class="font-copy font-light text-copy">
+      <slot name="description" />
+    </p>
   </section>
-  <section class="col-span-5 col-start-7 row-start-2 self-start">
+  <section
+    class="col-span-4 col-start-8 row-start-2 flex flex-col items-center self-start"
+  >
     <Image />
+    <div class="h-6 w-[1px] bg-lines"></div>
+    <div class="relative flex min-h-12 w-full">
+      <div class="fui-frame flex-1">
+        <table class="text-xs">
+          <tbody class="">
+            <tr class="grid grid-cols-[3rem_1fr] gap-1">
+              <th class="pl-0 pr-3 text-left text-primary-darker">ROLE:</th>
+              <td class="text-left">{project.role}</td>
+              <th class="pl-0 pr-3 text-left text-primary-darker">CLIENT:</th>
+              <td class="text-left">{project.client}</td>
+              <th class="pl-0 pr-3 text-left text-primary-darker">YEAR:</th>
+              <td class="text-left">{project.year}</td>
+              <th class="pl-0 pr-3 text-left text-primary-darker">TECH:</th>
+              <td class="min-w-32 text-left"> {project.tech.join(', ')}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="fui-corners"></div>
+      </div>
+      <div
+        class="fui-frame bg-striped flex flex-1 items-center justify-center opacity-90"
+      >
+        <Btn class="flex items-center gap-3">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 15 15"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.5813 7.07027L5.29069 1.77962L8.85149 1.77966L13.0739 6.00206L12.0057 7.07028L13.0739 8.13854L8.85144 12.361L5.29065 12.361L10.5813 7.07027Z"
+              fill="#D9D9D9"></path>
+          </svg>
+          OPEN PROJECT</Btn
+        >
+        <div class="fui-corners"></div>
+      </div>
+    </div>
   </section>
 </BaseLayout>

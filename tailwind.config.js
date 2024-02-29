@@ -11,6 +11,7 @@ export default {
         'primary-darker': 'var(--primary-darker)',
         error: 'red',
         lines: 'var(--lines)',
+        copy: 'var(--copy)',
         background: {
           dark: 'var(--bg-dark)',
         },

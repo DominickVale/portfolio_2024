@@ -12,6 +12,7 @@
   --primary-lightest: #d3afaa;
   --lines: rgba(255, 255, 255, 0.2);
   --bg-dark: #111010;
+  --copy: #D3C4C4;
 }
 
 html,
@@ -29,13 +30,13 @@ body {
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .grid-bars {
@@ -115,9 +116,19 @@ body {
   font-size: theme('fontSize.7xl'); /* will be calc dynamically in js */
 }
 
+.bg-striped {
+  background: repeating-linear-gradient(
+    45deg,
+    theme('colors.background.dark'),
+    theme('colors.background.dark') 10px,
+    rgba(0, 0, 0, 0.5) 13px,
+    rgba(0, 0, 0, 0.5) 20px
+  );
+}
+
 @layer components {
-  .bg-blur{
-    background-color: theme("colors.background.dark");
+  .bg-blur {
+    background-color: theme('colors.background.dark');
     backdrop-filter: blur(16px);
   }
 }
