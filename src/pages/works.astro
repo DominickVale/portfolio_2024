@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro'
 import NextPageBtn from '../components/NextPageBtn.astro'
 import Btn from '../components/Btn.astro'
+import Image from '../components/Image.astro'
 interface Props {}
 
 const {} = Astro.props
@@ -38,21 +39,7 @@ const mockData = [
 
     <div class="md:ml-4 md:mt-[3vh]">
       <div class="relative flex flex-col justify-center">
-        <div class="fui-frame mr-auto">
-          <small
-            class="vertical-text--left absolute bottom-4 left-[-0.25rem] text-xxs leading-[100%] opacity-40"
-            >IMG_003.jpg</small
-          >
-          <img class="w-full md:max-w-[33.333vw]" src="/ecorp.png" alt="" />
-          <!-- <small class="text-xxs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
-          <div class="absolute right-0 top-0 flex h-full w-3">
-            <small
-              class="vertical-text--right mt-11 w-[1.6rem] text-xxs leading-[100%] opacity-40"
-              >IMAGE_NAME-2492929.jpg</small
-            >
-          </div>
-          <div class="fui-corners"></div>
-        </div>
+        <Image />
         <!-- <div class="absolute bottom-[-5vh] left-1/2 h-[4vh] w-[1px] bg-lines"></div> -->
         <div class="mt-6 hidden max-w-[70%] md:block">
           <table class="text-xs">

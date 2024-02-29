@@ -21,6 +21,7 @@ export default {
         display: ['Orbitron'],
         body: ['Inconsolata'],
         mono: ['Inconsolata', 'Roboto Mono'],
+        copy: ['Roboto', 'Arial']
       },
       fontSize: {
         display: 'clamp(0px, 8.2vw, 132px)',

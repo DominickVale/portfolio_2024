@@ -2,7 +2,7 @@
 const { title, tags, description, readTime, date, class: classes } = Astro.props
 ---
 
-<div
+<article
   class:list={[
     'bg-blur relative flex h-[16rem] w-full flex-col justify-center overflow-hidden p-6 sm:px-10 sm:w-[19rem] tall:h-[19rem] tall:w-[20rem]',
     classes,
@@ -28,12 +28,10 @@ const { title, tags, description, readTime, date, class: classes } = Astro.props
     <h3 class="font-display text-2xl font-black">{title}</h3>
   </span>
   <span>
-    <small class="relative text-xs uppercase text-[rgba(255,255,255,0.77)]"
-      >{date}</small
-    >
+    <date class="relative text-xxs uppercase text-[rgba(255,255,255,0.77)]">{date}</date>
     <p class="h-0 overflow-hidden text-xs tall:h-auto">{description}</p>
   </span>
-</div>
+</article>
 
 <style>
   .read-time {

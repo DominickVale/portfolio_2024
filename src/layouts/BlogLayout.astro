@@ -1,0 +1,61 @@
+---
+import type { Frontmatter } from '../content/config'
+import BaseLayout from './Layout.astro'
+import Btn from '../components/Btn.astro'
+import Image from '../components/Image.astro'
+
+type Props = {
+  frontmatter: Frontmatter
+}
+const { frontmatter } = Astro.props
+const { title, description, tags, readTime, date, subtitle, lastUpdated, ttr } =
+  frontmatter
+---
+
+<BaseLayout title="Blog page" rowsMax>
+  <section
+    class="col-start-2 row-start-1 mt-[8vh] flex items-center gap-3 self-start opacity-70"
+  >
+    <svg
+      width="7"
+      height="8"
+      viewBox="0 0 7 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M2.52091 3.99987L6.26185 0.258921L3.74403 0.258921L0.75843 3.24452L1.51378 3.99987L0.758429 4.75521L3.74416 7.74095L6.26198 7.74095L2.52091 3.99987Z"
+        fill="#D9D9D9"></path>
+    </svg>
+    <Btn class="font-normal" href="/blog">BACK TO WORKS</Btn>
+  </section>
+  <section class="relative col-span-4 col-start-2 row-start-2">
+    <div class="flex h-max flex-col sm:flex-row">
+      <span class="relative mt-[2vh] tall:mt-[6vh] taller:mt-[10vh]">
+        <span class="absolute left-1 top-[-1rem] text-xxs opacity-50"
+          >CASE_N: 001</span
+        >
+        <h1
+          class="font-display text-[12vw] font-black leading-[100%] md:text-[3.7vw]"
+        >
+          {title}
+        </h1>
+      </span>
+    </div>
+    <h2
+      class="mb-[6vh] ml-3 mt-4 hidden whitespace-nowrap font-mono text-xs font-black tracking-button opacity-60 sm:block tall:text-base"
+    >
+      {subtitle}
+    </h2>
+    <span class="mb-2 flex items-center gap-3 text-xxs opacity-50 md:text-xs">
+      <p>LAST UPDATE: <date>{lastUpdated}</date></p>
+      <div class="h-1 w-1 rounded-full bg-white opacity-70"></div>
+      <p>TTR: {ttr}</p>
+    </span>
+
+    <slot />
+  </section>
+  <section class="col-span-5 col-start-7 row-start-2 self-start">
+    <Image />
+  </section>
+</BaseLayout>

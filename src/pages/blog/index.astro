@@ -1,0 +1,46 @@
+---
+import StatusItem from '../../components/StatusItem.astro'
+import Layout from '../../layouts/Layout.astro'
+import BlogEntry from '../../components/BlogEntry.astro'
+import { getCollection } from 'astro:content'
+
+const lastUpdated = new Date().toLocaleDateString('en-GB')
+const allPosts = await getCollection('blog')
+---
+
+<Layout title="Dominick Vale - ⓒ 2024">
+  <section class="relative col-span-10 col-start-2">
+    <div class="flex h-max flex-col sm:flex-row">
+      <h1
+        class="mt-[2vh] font-display text-[15vw] font-black leading-[100%] md:text-[calc(5vw+6.2vh)] tall:mt-[6vh] taller:mt-[10vh]"
+      >
+        BLOG
+      </h1>
+      <div class="ml-1 mr-auto mt-2 gap-[7%] self-end sm:mb-6 sm:ml-4 lg:ml-6">
+        <ul>
+          <StatusItem class="text-xxs md:text-xs"
+            >UPDATED:&nbsp;<date>{lastUpdated}</date></StatusItem
+          >
+          <StatusItem class="text-xxs md:text-xs">PROJ. CASES: 3</StatusItem>
+        </ul>
+      </div>
+    </div>
+    <h2
+      class="mb-3 ml-3 hidden whitespace-nowrap font-mono text-xs font-black tracking-button opacity-60 sm:block tall:text-base"
+    >
+      UNCOORDINATED THOUGHTS AND PROJECT CASES
+    </h2>
+  </section>
+
+  <section
+    class="max-w-screen no-scrollbar col-span-10 col-start-2 row-start-2 flex min-h-28 flex-col items-center pb-24 sm:col-span-12 sm:col-start-1 sm:flex-row sm:items-start sm:overflow-y-hidden sm:overflow-x-scroll sm:pb-0 sm:pl-32"
+  >
+    {
+      allPosts.map((post) => (
+        <a class="my-[4vh] sm:mx-[2vw] sm:my-0 xl:mx-[3rem]" href={`/blog/${post.slug}`}>
+          <BlogEntry {...post.data} />
+        </a>
+      ))
+    }
+  </section>
+</Layout>

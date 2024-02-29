@@ -1,0 +1,24 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+
+interface Props extends HTMLAttributes<'img'>{}
+
+const { class: classes, ...props} = Astro.props
+---
+
+<div class:list={[  "fui-frame mr-auto", classes ] }>
+  <small
+    class="vertical-text--left absolute bottom-4 left-[-0.25rem] text-xxs leading-[100%] opacity-40"
+    >IMG_003.jpg</small
+  >
+  <img class="w-full md:max-w-[33.333vw]" src="/ecorp.png" alt="" {...props} />
+  <!-- <small class="text-xxs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
+  <div class="absolute right-0 top-0 flex h-full w-3">
+    <small
+      class="vertical-text--right mt-11 w-[1.6rem] text-xxs leading-[100%] opacity-40"
+      >IMAGE_NAME-2492929.jpg</small
+    >
+  </div>
+  <div class="fui-corners"></div>
+</div>
