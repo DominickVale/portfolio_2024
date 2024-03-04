@@ -1,6 +1,6 @@
 <!-- this thing has a bunch of hacks since mdx + astro
 apparently isn't supposed to be used for anything more complex than a 1 column, simple blog layout -->
-<div class="blog-section col-span-12 col-start-1 mt-[10vh] grid grid-cols-12">
+<div class="flex flex-col gap-3 xl:gap-0 blog-section col-span-12 col-start-1 mt-[10vh] xl:grid grid-cols-12">
   <slot />
   <!-- all the css in the children doesn't work -->
 </div>
@@ -17,15 +17,14 @@ apparently isn't supposed to be used for anything more complex than a 1 column, 
     &:nth-child(even) {
       grid-template-areas: '. content content content content . . image image image image .';
     }
-    h2 {
-      @apply uppercase;
-    }
     p {
-      @apply text-lg;
+      @apply text-xs;
       @apply font-copy;
       @apply text-copy;
       @apply tracking-wide;
       @apply font-light;
+      @apply sm:text-sm;
+      @apply xl:text-lg;
     }
   }
 </style>

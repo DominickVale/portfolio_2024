@@ -23,7 +23,7 @@ const {
 } = frontmatter
 ---
 
-<BaseLayout title="Blog page" rowsMax>
+<BaseLayout title="Blog page" rowsMax withContacts>
   <section
     class="col-span-12 col-start-1 row-start-1 mt-0 flex items-center justify-center gap-3 opacity-70 xl:col-span-4 xl:col-start-2 xl:mt-[8vh] xl:justify-start xl:self-start"
   >
@@ -60,7 +60,7 @@ const {
       </span>
     </div>
     <h2
-      class="mb-[6vh] ml-3 mt-4 hidden whitespace-nowrap font-mono text-xs font-black tracking-button opacity-60 sm:block tall:text-base"
+      class="mb-[6vh] ml-3 mt-4 hidden whitespace-nowrap font-mono text-xs font-black sm:text-lg tracking-button opacity-60 sm:block tall:text-base"
     >
       {subtitle}
     </h2>
@@ -120,7 +120,7 @@ const {
     </div>
   </section>
   <div
-    class="col-span-12 col-start-1 row-start-4 grid auto-rows-max gap-[10vh]"
+    class="col-span-10 col-start-2 row-start-4 grid auto-rows-max xl:gap-[10vh]"
   >
     <slot />
   </div>

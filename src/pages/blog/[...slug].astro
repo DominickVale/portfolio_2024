@@ -21,12 +21,6 @@ const { Content } = await entry.render()
 
 <BlogLayout frontmatter={entry.data}>
   <Content
-    components={{ section: BlogSection, img: BlogImage, h2: BlogSectionHeader}}
+    components={{ section: BlogSection, img: BlogImage, h2: BlogSectionHeader }}
   />
-  <div
-    class="col-span-12 col-start-1 my-[15vh] grid h-full w-full flex-1 grid-cols-12"
-  >
-    <Contacts />
-  </div>
-  <div class="mt-[15vh]"></div>
 </BlogLayout>

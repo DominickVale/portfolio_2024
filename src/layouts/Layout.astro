@@ -2,13 +2,15 @@
 import '../style/main.css'
 import Navbar from '../components/Navbar.astro'
 import Footer from '../components/Footer.astro'
+import Contacts from '../components/Contacts.astro'
 
 interface Props {
   title: string
   rowsMax?: boolean
+  withContacts?: boolean
 }
 
-const { title, rowsMax } = Astro.props
+const { title, rowsMax, withContacts } = Astro.props
 ---
 
 <!doctype html>
@@ -27,9 +29,21 @@ const { title, rowsMax } = Astro.props
   </style>
   <body class="relative flex max-h-screen flex-col font-body">
     <Navbar />
-    <main class:list={[  "my-12 grid h-full w-full flex-1 grid-cols-12", rowsMax && 'auto-rows-max' ] }>
+    <main
+      class:list={[
+        'my-12 grid h-full w-full flex-1 grid-cols-12',
+        rowsMax && 'auto-rows-max',
+      ]}
+    >
       <slot />
     </main>
+      {
+        withContacts && (
+          <div class="col-span-12 col-start-1 mt-8 grid h-full w-full flex-1 grid-cols-12">
+            <Contacts />
+          </div>
+        )
+      }
     <Footer />
   </body>
 </html>
