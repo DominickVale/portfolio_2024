@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro'
 import NextPageBtn from '../components/NextPageBtn.astro'
 import Btn from '../components/Btn.astro'
+import WorkDetails from '../components/WorkDetails.astro'
 import Image from '../components/Image.astro'
 interface Props {}
 
@@ -43,25 +44,7 @@ const mockData = [
         <!-- <div class="absolute bottom-[-5vh] left-1/2 h-[4vh] w-[1px] bg-lines"></div> -->
         <div class="mt-6 hidden max-w-[70%] md:block">
           <table class="text-xs">
-            <tbody
-              class="grid min-w-[50%] grid-cols-[1fr_2fr] items-start gap-4"
-            >
-              <tr class="grid grid-cols-[3rem_1fr] gap-1">
-                <th class="pl-0 pr-3 text-left text-primary-darker">ROLE:</th>
-                <td class="text-left">EVERYTHING</td>
-                <th class="pl-0 pr-3 text-left text-primary-darker">CLIENT:</th>
-                <td class="text-left">N/A</td>
-              </tr>
-              <tr class="grid w-full grid-cols-[3rem_1fr] gap-1">
-                <th class="pl-0 pr-3 text-left text-primary-darker">YEAR:</th>
-                <td class="text-left">2020—ONGOING</td>
-                <th class="pl-0 pr-3 text-left text-primary-darker">TECH:</th>
-                <td class="min-w-32 text-left">
-                  REACT-NATIVE, FIREBASE, ANDROID NDK, JSI, C++, REVENUECAT,
-                  KOTLIN</td
-                >
-              </tr>
-            </tbody>
+            <WorkDetails />
           </table>
         </div>
 

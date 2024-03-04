@@ -1,7 +1,11 @@
 ---
 import { getCollection } from 'astro:content'
 import BlogLayout from '../../layouts/BlogLayout.astro'
-import BlogParagraph from '../../components/BlogParagraph.astro'
+import BlogSection from '../../components/blog/BlogSection.astro'
+import BlogImage from '../../components/blog/BlogImage.astro'
+import BlogSectionHeader from '../../components/blog/BlogSectionHeader.astro'
+import Contacts from '../../components/Contacts.astro'
+import BlogParagraph from '../../components/blog/BlogParagraph.astro'
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog')
@@ -16,5 +20,13 @@ const { Content } = await entry.render()
 ---
 
 <BlogLayout frontmatter={entry.data}>
-  <Content components={{ p: BlogParagraph }} />
+  <Content
+    components={{ section: BlogSection, img: BlogImage, h2: BlogSectionHeader}}
+  />
+  <div
+    class="col-span-12 col-start-1 my-[15vh] grid h-full w-full flex-1 grid-cols-12"
+  >
+    <Contacts />
+  </div>
+  <div class="mt-[15vh]"></div>
 </BlogLayout>

@@ -3,6 +3,8 @@ import type { Frontmatter } from '../content/config'
 import BaseLayout from './Layout.astro'
 import Btn from '../components/Btn.astro'
 import Image from '../components/Image.astro'
+import BlogParagraph from '../components/blog/BlogParagraph.astro'
+import WorkDetails from '../components/WorkDetails.astro'
 
 type Props = {
   frontmatter: Frontmatter
@@ -10,7 +12,6 @@ type Props = {
 const { frontmatter } = Astro.props
 const {
   title,
-  description,
   tags,
   readTime,
   date,
@@ -18,12 +19,13 @@ const {
   lastUpdated,
   ttr,
   project,
+  intro,
 } = frontmatter
 ---
 
 <BaseLayout title="Blog page" rowsMax>
   <section
-    class="col-start-2 row-start-1 mt-[8vh] flex items-center gap-3 self-start opacity-70"
+    class="col-span-12 col-start-1 row-start-1 mt-0 flex items-center justify-center gap-3 opacity-70 xl:col-span-4 xl:col-start-2 xl:mt-[8vh] xl:justify-start xl:self-start"
   >
     <svg
       width="7"
@@ -38,14 +40,20 @@ const {
     </svg>
     <Btn class="font-normal" href="/blog">BACK TO WORKS</Btn>
   </section>
-  <section class="relative col-span-4 col-start-2 row-start-2">
+  <section class="col-start-2 col-span-10 mt-[5vh] row-start-2 xl:hidden mb-[5vh]">
+    <Image class="mb-3"/>
+    <WorkDetails />
+  </section>
+  <section
+    class="relative col-span-10 col-start-2 row-start-3 xl:row-start-2 xl:col-span-4 xl:col-start-2"
+  >
     <div class="flex h-max flex-col sm:flex-row">
       <span class="relative mt-[2vh] tall:mt-[6vh] taller:mt-[10vh]">
         <span class="absolute left-1 top-[-1rem] text-xxs opacity-50"
           >CASE_N: 001</span
         >
         <h1
-          class="font-display text-[12vw] font-black leading-[100%] md:text-[3.7vw]"
+          class="font-display text-[9.2vw] font-black leading-[100%] md:text-[3.7vw]"
         >
           {title}
         </h1>
@@ -56,17 +64,19 @@ const {
     >
       {subtitle}
     </h2>
-    <span class="mb-2 flex items-center gap-3 text-xxs opacity-50 md:text-xs">
+
+    <span class="mb-2 mt-6 flex items-center gap-3 text-xxs opacity-50 md:text-xs">
       <p>LAST UPDATE: <date>{lastUpdated}</date></p>
       <div class="h-1 w-1 rounded-full bg-white opacity-70"></div>
       <p>TTR: {ttr}</p>
     </span>
-    <p class="font-copy font-light text-copy">
-      <slot name="description" />
-    </p>
+
+    <BlogParagraph>
+      {intro}
+    </BlogParagraph>
   </section>
   <section
-    class="col-span-4 col-start-8 row-start-2 flex flex-col items-center self-start"
+    class="col-span-10 col-start-1 row-start-3 hidden flex-col items-center self-start xl:col-span-4 xl:col-start-8 xl:row-start-2 xl:flex"
   >
     <Image />
     <div class="h-6 w-[1px] bg-lines"></div>
@@ -109,4 +119,9 @@ const {
       </div>
     </div>
   </section>
+  <div
+    class="col-span-12 col-start-1 row-start-4 grid auto-rows-max gap-[10vh]"
+  >
+    <slot />
+  </div>
 </BaseLayout>
