@@ -25,7 +25,7 @@ const {
 
 <BaseLayout title="Blog page" rowsMax withContacts>
   <section
-    class="col-span-12 col-start-1 row-start-1 mt-0 flex items-center justify-center gap-3 opacity-70 xl:col-span-4 xl:col-start-2 xl:mt-[8vh] xl:justify-start xl:self-start"
+    class="sm:hidden col-span-12 col-start-1 row-start-1 flex items-center justify-center gap-3 opacity-70 xl:col-span-4 xl:col-start-2 xl:mt-[8vh] xl:justify-start xl:self-start"
   >
     <svg
       width="7"
@@ -40,7 +40,7 @@ const {
     </svg>
     <Btn class="font-normal" href="/blog">BACK TO WORKS</Btn>
   </section>
-  <section class="col-start-2 col-span-10 mt-[5vh] row-start-2 xl:hidden mb-[5vh]">
+  <section class="col-start-2 col-span-10 mt-[5vh] sm:mt-[10vh] sm:mb-0 row-start-2 xl:hidden mb-[5vh]">
     <Image class="mb-3"/>
     <WorkDetails />
   </section>

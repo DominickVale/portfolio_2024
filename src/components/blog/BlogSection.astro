@@ -9,13 +9,13 @@ apparently isn't supposed to be used for anything more complex than a 1 column, 
 <style is:global>
   .blog-section {
     max-height: max-content;
-    grid-template-areas: '. image image image image . . content content content content .';
+    grid-template-areas: 'image image image image image . . content content content content content';
     .blog-image {
       grid-area: image;
       max-height: max-content;
     }
     &:nth-child(even) {
-      grid-template-areas: '. content content content content . . image image image image .';
+      grid-template-areas: 'content content content content content . . image image image image image';
     }
     p {
       @apply text-xs;
