@@ -4,7 +4,9 @@ import BaseLayout from './Layout.astro'
 import Btn from '../components/Btn.astro'
 import Image from '../components/Image.astro'
 import BlogParagraph from '../components/blog/BlogParagraph.astro'
+import OpenProjBtn from '../components/blog/OpenProjBtn.astro'
 import WorkDetails from '../components/WorkDetails.astro'
+import Marquee from '../components/Marquee.astro'
 
 type Props = {
   frontmatter: Frontmatter
@@ -25,7 +27,7 @@ const {
 
 <BaseLayout title="Blog page" rowsMax withContacts>
   <section
-    class="sm:hidden col-span-12 col-start-1 row-start-1 flex items-center justify-center gap-3 opacity-70 xl:col-span-4 xl:col-start-2 xl:mt-[8vh] xl:justify-start xl:self-start"
+    class="col-span-12 col-start-1 row-start-1 flex items-center justify-center gap-3 opacity-70 sm:hidden lg:col-span-4 lg:col-start-2 lg:mt-[8vh] lg:justify-start lg:self-start"
   >
     <svg
       width="7"
@@ -40,15 +42,28 @@ const {
     </svg>
     <Btn class="font-normal" href="/blog">BACK TO WORKS</Btn>
   </section>
-  <section class="col-start-2 col-span-10 mt-[5vh] sm:mt-[10vh] sm:mb-0 row-start-2 xl:hidden mb-[5vh]">
-    <Image class="mb-3"/>
-    <WorkDetails />
+  <section
+    class="col-span-10 col-start-2 row-start-2 mb-[5vh] mt-[5vh] sm:mb-0 sm:mt-[10vh] md:col-span-8 md:col-start-3 lg:hidden"
+  >
+    <div class="relative">
+      <Image class="mb-3" />
+      <Marquee tags={project.tech} class="top-4 left-4 right-4 bg-white text-background-dark" />
+    </div>
+    <div class="relative justify-between gap-3 flex flex-col sm:flex-row">
+      <WorkDetails small />
+      <div
+        class="hidden sm:flex fui-frame bg-striped flex-[0.8] items-center justify-center opacity-90"
+      >
+        <OpenProjBtn link={project.link} />
+        <div class="fui-corners"></div>
+      </div>
+    </div>
   </section>
   <section
-    class="relative col-span-10 col-start-2 row-start-3 xl:row-start-2 xl:col-span-4 xl:col-start-2"
+    class="relative col-span-10 col-start-2 row-start-3 md:col-span-8 md:col-start-3 lg:col-span-4 lg:col-start-2 lg:row-start-2"
   >
-    <div class="flex h-max flex-col sm:flex-row">
-      <span class="relative mt-[2vh] tall:mt-[6vh] taller:mt-[10vh]">
+    <div class="flex h-max flex-col sm:flex-row lg:mt-8">
+      <span class="relative mt-[5vh] tall:mt-[6vh] taller:mt-[10vh]">
         <span class="absolute left-1 top-[-1rem] text-xxs opacity-50"
           >CASE_N: 001</span
         >
@@ -60,12 +75,14 @@ const {
       </span>
     </div>
     <h2
-      class="mb-[6vh] ml-3 mt-4 hidden whitespace-nowrap font-mono text-xs font-black sm:text-lg tracking-button opacity-60 sm:block tall:text-base"
+      class="mb-[6vh] ml-3 mt-4 hidden whitespace-nowrap font-mono text-xs font-black tracking-button opacity-60 sm:block sm:text-lg tall:text-base"
     >
       {subtitle}
     </h2>
 
-    <span class="mb-2 mt-6 flex items-center gap-3 text-xxs opacity-50 md:text-xs">
+    <span
+      class="mb-2 mt-6 flex items-center gap-3 text-xxs opacity-50 md:text-xs"
+    >
       <p>LAST UPDATE: <date>{lastUpdated}</date></p>
       <div class="h-1 w-1 rounded-full bg-white opacity-70"></div>
       <p>TTR: {ttr}</p>
@@ -76,11 +93,11 @@ const {
     </BlogParagraph>
   </section>
   <section
-    class="col-span-10 col-start-1 row-start-3 hidden flex-col items-center self-start xl:col-span-4 xl:col-start-8 xl:row-start-2 xl:flex"
+    class="col-span-10 col-start-1 row-start-3 hidden flex-col items-center self-start lg:col-span-4 lg:col-start-8 lg:row-start-2 lg:mt-20 lg:flex"
   >
     <Image />
     <div class="h-6 w-[1px] bg-lines"></div>
-    <div class="relative flex min-h-12 w-full">
+    <div class="relative flex min-h-12 w-full flex-col xl:flex-row">
       <div class="fui-frame flex-1">
         <table class="text-xs">
           <tbody class="">
@@ -101,26 +118,13 @@ const {
       <div
         class="fui-frame bg-striped flex flex-1 items-center justify-center opacity-90"
       >
-        <Btn class="flex items-center gap-3">
-          <svg
-            width="15"
-            height="15"
-            viewBox="0 0 15 15"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10.5813 7.07027L5.29069 1.77962L8.85149 1.77966L13.0739 6.00206L12.0057 7.07028L13.0739 8.13854L8.85144 12.361L5.29065 12.361L10.5813 7.07027Z"
-              fill="#D9D9D9"></path>
-          </svg>
-          OPEN PROJECT</Btn
-        >
+        <OpenProjBtn link={project.link} />
         <div class="fui-corners"></div>
       </div>
     </div>
   </section>
   <div
-    class="col-span-10 col-start-2 row-start-4 grid auto-rows-max xl:gap-[10vh]"
+    class="col-span-10 col-start-2 row-start-4 grid auto-rows-max md:col-span-8 md:col-start-3 lg:gap-[10vh]"
   >
     <slot />
   </div>

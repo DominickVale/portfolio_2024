@@ -3,7 +3,7 @@ import Textbox from './Textbox.astro'
 import Btn from './Btn.astro'
 ---
 
-<section class="flex flex-col place-self-center row-start-4 col-start-2 col-span-10 md:place-self-end self-center md:self-center md:row-start-2 md:col-span-2 md:col-start-3 w-56">
+<section class="flex flex-col place-self-center row-start-4 col-start-2 col-span-10 md:place-self-end self-center md:self-center md:row-start-2 md:col-span-2 md:col-start-3 w-full sm:w-56">
   <span class="md:hidden place-self-center mb-[4vh] text-xs opacity-60">OR</span>
   <form class="flex flex-col gap-y-3 justify-center ">
     <Textbox minlength={3} placeholder="FULL NAME" autocapitalize='words' />
@@ -20,7 +20,7 @@ import Btn from './Btn.astro'
 </section>
 
 <div class="col-start-2 col-span-10 row-start-3 mb-6 md:row-start-2 flex justify-center md:col-span-2 md:col-start-9 md:mr-auto items-center">
-  <section id="socials" class="grid grid-cols-3 grid-rows-3 gap-6 h-fit items-center">
+  <section id="socials" class="[&>*]:mx-auto sm:mx-0 w-[60vw] sm:w-auto justify-center grid grid-cols-3 grid-rows-3 gap-6 h-fit items-center">
     <div class="col-span-3 flex gap-3 items-center">
       <a href="mailto:holla@domminickvale.it">
         <svg id="mail-icon" width="32" height="26" viewBox="0 0 32 26" fill="none" xmlns="http://www.w3.org/2000/svg">

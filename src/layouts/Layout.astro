@@ -39,7 +39,7 @@ const { title, rowsMax, withContacts } = Astro.props
     </main>
       {
         withContacts && (
-          <div class="col-span-12 col-start-1 mt-8 grid h-full w-full flex-1 grid-cols-12">
+          <div class="col-span-12 col-start-1 mt-8 grid w-full flex-1 grid-cols-12 min-h-[100vh]">
             <Contacts />
           </div>
         )
