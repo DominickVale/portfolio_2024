@@ -47,7 +47,7 @@ const {
   >
     <div class="relative">
       <Image class="mb-3" />
-      <Marquee tags={project.tech} class="top-4 left-4 right-4 bg-white text-background-dark" />
+      <Marquee tags={project.tech} class="top-4 left-4 right-4 bg-white text-background-dark min-w-0" />
     </div>
     <div class="relative justify-between gap-3 flex flex-col sm:flex-row">
       <WorkDetails small />
@@ -124,7 +124,7 @@ const {
     </div>
   </section>
   <div
-    class="col-span-10 col-start-2 row-start-4 grid auto-rows-max md:col-span-8 md:col-start-3 lg:gap-[10vh]"
+    class="col-span-10 col-start-2 row-start-4 grid auto-rows-max grid-cols-10 md:col-span-8 md:col-start-3 lg:col-span-10 lg:col-start-2"
   >
     <slot />
   </div>

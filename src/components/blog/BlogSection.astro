@@ -1,6 +1,6 @@
 <!-- this thing has a bunch of hacks since mdx + astro
 apparently isn't supposed to be used for anything more complex than a 1 column, simple blog layout -->
-<div class="flex flex-col gap-3 lg:gap-0 blog-section col-span-12 col-start-1 mt-[10vh] lg:grid grid-cols-12">
+<div class="flex flex-col gap-3 lg:gap-0 blog-section col-span-12 col-start-1 mt-[10vh] xl:mt-[20vh] lg:grid grid-cols-10">
   <slot />
   <!-- all the css in the children doesn't work -->
 </div>
@@ -10,13 +10,13 @@ apparently isn't supposed to be used for anything more complex than a 1 column, 
   .blog-section {
     position: relative;
     max-height: max-content;
-    grid-template-areas: 'image image image image image . . content content content content content';
+    grid-template-areas: 'image image image image . . content content content content';
     .blog-image {
       grid-area: image;
       max-height: max-content;
     }
     &:nth-child(even) {
-      grid-template-areas: 'content content content content content . . image image image image image';
+      grid-template-areas: 'content content content content . . image image image image';
     }
     p {
       @apply text-xs;
