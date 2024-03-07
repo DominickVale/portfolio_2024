@@ -22,11 +22,11 @@ const Component = Astro.props.href ? 'a' : 'button'
 <Component
   class:list={[
     'relative text-xs font-black tracking-button text-white',
-    frame && 'p-2 pl-3 pt-4 pr-[7vw] font-bold',
+    frame && 'h-7 w-32 flex justify-center items-center font-bold',
     classes,
   ]}
   {...rest}
 >
   <slot />
-  {frame && <div class="fui-corners" />}
+  {frame && <div class="fui-corners pointer-events-none" />}
 </Component>
