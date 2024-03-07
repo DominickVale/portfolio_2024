@@ -132,3 +132,9 @@ body {
     backdrop-filter: blur(16px);
   }
 }
+
+.font-outline {
+  --color: #949494;
+  text-shadow: -1px -1px 0 var(--color), 1px -1px 0 var(--color), -1px 1px 0 var(--color),
+    1px 1px 0 var(--color);
+}
