@@ -1,21 +1,23 @@
 ---
 import Btn from '../Btn.astro'
-
 ---
 
 <div
-  class="col-span-10 col-start-2 flex flex-col items-center justify-end pb-[10vh]"
+  class="col-span-10 col-start-2 flex h-full flex-col items-center justify-center pb-[10vh]"
 >
-  <h2 class="mb-2 text-center text-base font-black tracking-button text-white">
+  <h2 class="mb-12 text-center text-base font-black tracking-button text-white">
     HELLO THERE.<br />I'M SO GLAD THAT YOU MADE IT HERE.
   </h2>
-  <p class="text-center text-sm text-white opacity-80">
+  <p class="max-w-sm text-center text-sm text-white opacity-80">
     Funny to know that the entire history of events in our universe led to this
     exact moment. You reading this was a ~14 billions years coming.
   </p>
-  <p class="text-center text-sm text-white opacity-80">
+  <p class="mt-4 max-w-sm text-center text-sm text-white opacity-80">
     Oh, right — sorry, you wanted to know about me. What are you interested in,
     specifically?
   </p>
-  <Btn href="/home" class="mt-6 w-36" frame><span>GO HOME</span></Btn>
+  <div class="flex flex-col sm:flex-row gap-6 w-full items-center sm:w-[28rem] md:w-[32rem] justify-center sm:justify-between mt-[8vh]">
+    <Btn href="/home" class="w-52 h-[4.5rem]" frame>YOUR PERSONALITY.</Btn>
+    <Btn href="/home" class="w-52 h-[4.5rem]" frame>YOUR SKILLS.</Btn>
+  </div>
 </div>

@@ -4,6 +4,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
 import Btn from '../components/Btn.astro'
 import WorkDetails from '../components/WorkDetails.astro'
 import Image from '../components/Image.astro'
+import FakeLogs from '../components/FakeLogs.astro'
 interface Props {}
 
 const {} = Astro.props
@@ -24,20 +25,7 @@ const mockData = [
   <div
     class="col-span-10 col-start-2 row-start-1 mt-12 flex flex-col md:col-span-6 md:col-start-2 md:row-start-1 md:mt-0"
   >
-    <pre
-      class="ml-4 mt-[8vh] hidden text-xxs uppercase opacity-50 md:block">
-    {
-      `
-{
-    // loading proj_id: 001
-    // done.
-    // rendering data
-    // . . .
-    // add obj(“img_003.jpg”)
-    // done.
-}      `}
-</pre>
-
+  <FakeLogs/>
     <div class="md:ml-4 md:mt-[3vh]">
       <div class="relative flex flex-col justify-center">
         <Image />
