@@ -9,10 +9,10 @@ import NextPageBtn from '../components/NextPageBtn.astro'
   <section
     class="col-span-10 col-start-2 row-span-2 row-start-2 flex flex-col content-start justify-end text-xs"
   >
-    <div class="mt-4 flex justify-between text-center sm:text-left">
+    <div class="mt-4 flex justify-between sm:text-left">
       <div class="">
         <h2 class="text-primary">> whoami</h2>
-        <p class="text-stone-300 sm:max-w-64">
+        <p class="text-stone-300 sm:max-w-64 mb-3">
           I’m just the quiet, value-centered guy that gets the work done. My
           interests range from front-end web development all the way down to
           reverse engineering, to mountain biking. Sounds interesting?
@@ -28,7 +28,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
     class="col-span-10 col-start-2 row-span-2 row-start-4 font-mono font-black"
   >
     <h1
-      class="ml-[-0.05em] text-nowrap font-display text-[9.2vw] leading-[100%]"
+      class="ml-[-0.05em] mt-12 text-nowrap font-display text-[9.2vw] leading-[100%]"
     >
       DOMINICK VALE
     </h1>
@@ -36,9 +36,9 @@ import NextPageBtn from '../components/NextPageBtn.astro'
     <!-- <img class="mt-6" src={nameSvg.src} /> -->
     <div class="mt-4 flex justify-between gap-[7%] text-sm lg:mt-6">
       <ul>
-        <StatusItem highlight>FRONT-END DEVELOPER</StatusItem>
-        <StatusItem highlight>CREATIVE DEVELOPER</StatusItem>
-        <StatusItem>WANNABE ARTIST</StatusItem>
+        <StatusItem class="text-nowrap" highlight>FRONT-END DEVELOPER</StatusItem>
+        <StatusItem class="text-nowrap" highlight>CREATIVE DEVELOPER</StatusItem>
+        <StatusItem class="text-nowrap">WANNABE ARTIST</StatusItem>
         <StatusItem>LEARNER</StatusItem>
       </ul>
       <ul>

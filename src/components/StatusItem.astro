@@ -16,13 +16,18 @@ const { highlight, class: classes } = Astro.props
     &.highlight {
       color: white;
       font-weight: 900;
+      &::before {
+        background-color: white;
+        border-color: white;
+      }
     }
     &::before {
       content: '';
       position: absolute;
       left: 0;
       top: 33%;
-      background-color: white;
+      background-color: transparent;
+      border: 1px solid grey;
       height: 0.32rem;
       width: 0.32rem;
     }
