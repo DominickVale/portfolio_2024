@@ -39,6 +39,12 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
+@layer components {
+  .text-wrap-pretty {
+    text-wrap: pretty;
+  }
+}
+
 .grid-bars {
   grid-template-columns: 1fr repeat(10, minmax(5rem, 7rem)) 1fr;
   gap: var(--grid-x-gap) var(--grid-y-gap);
