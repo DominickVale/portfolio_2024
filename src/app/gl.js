@@ -1,7 +1,9 @@
 import * as THREE from 'three'
+import LorenzParticles from './LorenzParticles'
 
 export default class GL {
   constructor() {
+    this.clock = new THREE.Clock()
     this.canvas = document.getElementById('webgl')
     this.scene = new THREE.Scene()
     this.camera = new THREE.PerspectiveCamera(
@@ -15,15 +17,14 @@ export default class GL {
       antialias: true,
     })
 
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-    this.cube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), material)
-    this.scene.add(this.cube)
+    this.lorenz = new LorenzParticles(1000, this.scene)
   }
 
   init() {
     this.camera.position.z = 5
     this.time = 0
     this.render()
+    this.lorenz.init()
   }
 
   resize() {
@@ -37,14 +38,14 @@ export default class GL {
     return needResize
   }
 
-  render(time) {
-    this.time += 0.001
+  render() {
+    const time = this.clock.getElapsedTime()
+    this.time = time
     if (this.resize()) {
       this.camera.aspect = this.canvas.clientWidth / this.canvas.clientHeight
       this.camera.updateProjectionMatrix()
     }
-    this.cube.rotation.x = this.time
-    this.cube.rotation.z = this.time
+    this.lorenz.render(time)
     this.renderer.render(this.scene, this.camera)
     requestAnimationFrame(this.render.bind(this))
   }
