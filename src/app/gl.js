@@ -1,13 +1,25 @@
 import * as THREE from 'three'
-import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
+import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js'
+import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
+
 import positionSimulation from './shaders/positionSimulation.glsl'
 import vertexShader from './shaders/vertex.glsl'
 import fragmentShader from './shaders/fragment.glsl'
 
-const WIDTH = 32
+const WIDTH = 100
 
 export default class GL {
   constructor() {
+    this.params = {
+      sigma: 10,
+      rho: 28,
+      beta: 8 / 3,
+    }
+    this.gui = new GUI()
+    this.gui.add(this.params, 'sigma', 0, 100)
+    this.gui.add(this.params, 'rho', 0, 100)
+    this.gui.add(this.params, 'beta', 10)
+
     this.clock = new THREE.Clock()
     this.canvas = document.getElementById('webgl')
     this.scene = new THREE.Scene()
@@ -21,27 +33,26 @@ export default class GL {
       canvas: this.canvas,
       antialias: true,
     })
-    this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(this.width, this.height);
-    this.renderer.outputEncoding = THREE.sRGBEncoding;
-
+    this.renderer.setPixelRatio(window.devicePixelRatio)
+    this.renderer.setSize(this.width, this.height)
+    this.renderer.outputEncoding = THREE.sRGBEncoding
   }
 
   init() {
-    this.camera.position.z = 2
+    this.camera.position.z = 80
     this.time = 0
     this.addObjects()
     this.initGPGPU()
     this.render()
   }
 
-
   addObjects() {
     this.material = new THREE.ShaderMaterial({
       side: THREE.DoubleSide,
       uniforms: {
         uTime: { value: 0.0 },
-        positionTexture: { value: null}
+        uSize: { value: 100 * this.renderer.getPixelRatio() },
+        uPositionTexture: { value: null },
       },
       vertexShader,
       fragmentShader,
@@ -50,46 +61,72 @@ export default class GL {
     const positions = new Float32Array(WIDTH * WIDTH * 3)
     const refs = new Float32Array(WIDTH * WIDTH * 2)
     for (let i = 0; i < WIDTH * WIDTH; i++) {
-      let x = Math.random()
-      let y = Math.random()
-      let z = Math.random()
-      let xx = (i%WIDTH)/WIDTH
-      let yy = ~~(i/WIDTH)/WIDTH
-      positions.set([x, y, z], i*3)
-      refs.set([xx, yy], i*2)
+      let x = 0
+      let y = 0
+      let z = 0
+      let xx = (i % WIDTH) / WIDTH
+      let yy = ~~(i / WIDTH) / WIDTH
+      positions.set([x, y, z], i * 3)
+      refs.set([xx, yy], i * 2)
     }
 
-    console.log(refs)
-    this.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    this.geometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(positions, 3),
+    )
     this.geometry.setAttribute('reference', new THREE.BufferAttribute(refs, 2))
     this.plane = new THREE.Points(this.geometry, this.material)
-
 
     this.scene.add(this.plane)
   }
 
   // GPGPU STUFF
 
-  initGPGPU(){
-    const gpu = new GPUComputationRenderer( WIDTH, WIDTH, this.renderer );
-    const dtPosition = gpu.createTexture();
+  initGPGPU() {
+    const gpu = new GPUComputationRenderer(WIDTH, WIDTH, this.renderer)
+    const dtPosition = gpu.createTexture()
     this.initPositions(dtPosition)
-    this.positionVariable = gpu.addVariable( 'tPosition', positionSimulation, dtPosition );
-    this.positionVariable.material.uniforms['time'] = { value: 0.0 };
-    this.positionVariable.wrapT = THREE.RepeatWrapping;
-    this.positionVariable.wrapS = THREE.RepeatWrapping;
+    this.positionVariable = gpu.addVariable(
+      'tPosition',
+      positionSimulation,
+      dtPosition,
+    )
+    this.positionVariable.material.uniforms['time'] = { value: 0.0 }
+    this.positionVariable.material.uniforms['uSigma'] = {
+      value: this.params.sigma,
+    }
+    this.positionVariable.material.uniforms['uRho'] = { value: this.params.rho }
+    this.positionVariable.material.uniforms['uBeta'] = {
+      value: this.params.beta,
+    }
+    this.positionVariable.wrapT = THREE.RepeatWrapping
+    this.positionVariable.wrapS = THREE.RepeatWrapping
     gpu.init()
-    
-    this.gpu = gpu;
+
+    this.gpu = gpu
   }
 
-  
-  initPositions(texture){
+  //initializes positions of the lorenz attractor.
+  // each particle is placed into an initial positionn in a different step in time
+  initPositions(texture) {
     let arr = texture.image.data
+    const a = this.params.sigma
+    const b = this.params.rho
+    const c = this.params.beta
+
+    let x = 0.1
+    let y = 0
+    let z = 0
+
     for (let i = 0; i < arr.length; i += 4) {
-      let x = Math.random()
-      let y = Math.random()
-      let z = Math.random()
+      //lorenz attractor
+      let dt = 0.008 + 0.0005 * Math.random()
+      let dx = a * (y - x) * dt
+      let dy = (x * (b - z) - y) * dt
+      let dz = (x * y - c * z) * dt
+      x = x + dx
+      y = y + dy
+      z = z + dz
 
       arr[i] = x
       arr[i + 1] = y
@@ -98,9 +135,7 @@ export default class GL {
     }
   }
 
-//////
-
-
+  //////
 
   resize() {
     const width = this.canvas.clientWidth
@@ -116,6 +151,17 @@ export default class GL {
   render() {
     const time = this.clock.getElapsedTime()
     this.time = time
+
+    console.log(this.params)
+    // this.material.uniforms.uTime.value = time
+    this.positionVariable.material.uniforms.uSigma.value = this.params.sigma
+    this.positionVariable.material.uniforms.uRho.value = this.params.rho
+    this.positionVariable.material.uniforms.uBeta.value = this.params.beta
+
+    this.gpu.compute()
+    this.material.uniforms.uPositionTexture.value =
+      this.gpu.getCurrentRenderTarget(this.positionVariable).texture
+
     if (this.resize()) {
       this.camera.aspect = this.canvas.clientWidth / this.canvas.clientHeight
       this.camera.updateProjectionMatrix()
