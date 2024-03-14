@@ -1,24 +1,31 @@
 import * as THREE from 'three'
 import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js'
+import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
 
 import positionSimulation from './shaders/positionSimulation.glsl'
 import vertexShader from './shaders/vertex.glsl'
 import fragmentShader from './shaders/fragment.glsl'
 
-const WIDTH = 100
+const WIDTH = 128
 
 export default class GL {
   constructor() {
+
+    let app = document.getElementById("app");
+    this.stats = new Stats();
+    app.appendChild(this.stats.dom);
     this.params = {
       sigma: 10,
       rho: 28,
       beta: 8 / 3,
+      dt: 0.0005
     }
     this.gui = new GUI()
     this.gui.add(this.params, 'sigma', 0, 100)
     this.gui.add(this.params, 'rho', 0, 100)
-    this.gui.add(this.params, 'beta', 10)
+    this.gui.add(this.params, 'beta', 0, 10)
+    this.gui.add(this.params, 'dt', 0.00001, 0.01)
 
     this.clock = new THREE.Clock()
     this.canvas = document.getElementById('webgl')
@@ -92,13 +99,10 @@ export default class GL {
       dtPosition,
     )
     this.positionVariable.material.uniforms['time'] = { value: 0.0 }
-    this.positionVariable.material.uniforms['uSigma'] = {
-      value: this.params.sigma,
-    }
+    this.positionVariable.material.uniforms['uSigma'] = { value: this.params.sigma, }
     this.positionVariable.material.uniforms['uRho'] = { value: this.params.rho }
-    this.positionVariable.material.uniforms['uBeta'] = {
-      value: this.params.beta,
-    }
+    this.positionVariable.material.uniforms['uBeta'] = { value: this.params.beta, }
+    this.positionVariable.material.uniforms['uDt'] = { value: this.params.dt }
     this.positionVariable.wrapT = THREE.RepeatWrapping
     this.positionVariable.wrapS = THREE.RepeatWrapping
     gpu.init()
@@ -152,11 +156,11 @@ export default class GL {
     const time = this.clock.getElapsedTime()
     this.time = time
 
-    console.log(this.params)
     // this.material.uniforms.uTime.value = time
     this.positionVariable.material.uniforms.uSigma.value = this.params.sigma
     this.positionVariable.material.uniforms.uRho.value = this.params.rho
     this.positionVariable.material.uniforms.uBeta.value = this.params.beta
+    this.positionVariable.material.uniforms.uDt = { value: this.params.dt }
 
     this.gpu.compute()
     this.material.uniforms.uPositionTexture.value =
@@ -167,6 +171,7 @@ export default class GL {
       this.camera.updateProjectionMatrix()
     }
     this.renderer.render(this.scene, this.camera)
+    this.stats.update()
     requestAnimationFrame(this.render.bind(this))
   }
 }

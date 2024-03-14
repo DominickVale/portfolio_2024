@@ -1,4 +1,4 @@
-precision highp float;
+precision mediump float;
 
 uniform float uSize;
 varying vec2 vUv;
