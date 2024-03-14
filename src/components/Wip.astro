@@ -1,21 +1,25 @@
 ---
 import Btn from './Btn.astro'
 type Props = {
-  title: string;
-  subtitle: string;
-  bgText: string;
+  title: string
+  subtitle: string
+  bgText: string
 }
 
 const { title, subtitle, bgText } = Astro.props
 ---
 
-<div class="col-span-10 col-start-2 flex flex-col items-center justify-end pb-[10vh]">
-  <h2
-    class="font-black tracking-button text-white text-base mb-2 text-center"
-  >
-{title}
+<div
+  class="col-span-10 col-start-2 flex flex-col items-center justify-end pb-[10vh]"
+>
+  <h2 class="mb-2 text-center text-base font-black tracking-button text-white">
+    {title}
   </h2>
-  <p class="text-white opacity-80 text-sm text-center">{subtitle}</p>
-  <Btn href="/home" class="mt-6 w-36" frame><span>GO HOME</span></Btn>
-  <h1 class="opacity-30 font-outline font-black font-display text-[30vw] xs:text-9xl leading-relaxed md:text-[25vw] text-[#151212] md:leading-[100%] tracking-[3vw] pointer-events-none">{bgText}</h1>
+  <p class="text-center text-sm text-white opacity-80">{subtitle}</p>
+  <Btn href="/home" class="mt-6 w-40" frame><span>GO HOME</span></Btn>
+  <h1
+    class="font-outline pointer-events-none ml-[3vw] font-display text-[30vw] font-black leading-relaxed tracking-[3vw] text-[#151212] opacity-30 md:text-[20vw] md:leading-[100%]"
+  >
+    {bgText}
+  </h1>
 </div>

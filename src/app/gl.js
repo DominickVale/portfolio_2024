@@ -17,7 +17,7 @@ export default class GL {
       antialias: true,
     })
 
-    this.lorenz = new LorenzParticles(1000, this.scene)
+    this.lorenz = new LorenzParticles(1000, this.scene, this.renderer.getPixelRatio())
   }
 
   init() {

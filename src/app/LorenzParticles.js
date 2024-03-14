@@ -3,10 +3,11 @@ import vertexShader from './shaders/vertex.glsl'
 import fragmentShader from './shaders/fragment.glsl'
 
 export default class LorenzAttractorParticleSystem {
-  constructor(numParticles, scene) {
+  constructor(numParticles, scene, pixelRatio) {
     this.numParticles = numParticles
     this.scene = scene
     this.time = 0
+    this.pixelRatio = pixelRatio
   }
 
   init() {
@@ -23,7 +24,8 @@ export default class LorenzAttractorParticleSystem {
     this.particleShaderMaterial = new THREE.ShaderMaterial({
       uniforms: {
         color: { value: new THREE.Color(0xff6347) },
-        time: { value: 0.0 },
+        uTime: { value: 0.0 },
+        uSize: { value: 30 * this.pixelRatio },
         dt: { value: 0.01 }
       },
       vertexShader: vertexShader,
@@ -56,7 +58,7 @@ export default class LorenzAttractorParticleSystem {
 
   render(time) {
     if (this.particleShaderMaterial) {
-      this.particleShaderMaterial.uniforms.time.value += time
+      this.particleShaderMaterial.uniforms.uTime.value += time
     }
   }
 }
