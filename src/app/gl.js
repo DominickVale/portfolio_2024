@@ -22,7 +22,7 @@ export default class GL {
       sigma: 10,
       rho: 28,
       beta: 8 / 3,
-      dt: 0.0005,
+      speed: 5,
       color: this.primaryColor,
       rotationX: 0,
       rotationY: 0,
@@ -35,7 +35,7 @@ export default class GL {
     this.gui.add(this.params, 'sigma', -100, 100)
     this.gui.add(this.params, 'rho', -100, 100)
     this.gui.add(this.params, 'beta', -6, 6)
-    this.gui.add(this.params, 'dt', 0.00001, 0.01)
+    this.gui.add(this.params, 'speed', 1, 100)
     this.gui.addColor(this.params, 'color')
     this.gui.add(this.params, 'rotationX', -Math.PI, Math.PI)
     this.gui.add(this.params, 'rotationY', -Math.PI, Math.PI)
@@ -76,7 +76,6 @@ export default class GL {
   init() {
     this.camera.position.z = 72
     this.time = 0
-    this.lastElapsedTime = 0
     this.addObjects()
     this.initGPGPU()
     this.render()
@@ -161,7 +160,7 @@ export default class GL {
     this.positionVariable.material.uniforms['uBeta'] = {
       value: this.params.beta,
     }
-    this.positionVariable.material.uniforms['uDt'] = { value: this.params.dt }
+    this.positionVariable.material.uniforms['uDt'] = { value: 1 }
     this.positionVariable.wrapT = THREE.RepeatWrapping
     this.positionVariable.wrapS = THREE.RepeatWrapping
     gpu.init()
@@ -212,11 +211,7 @@ export default class GL {
   }
 
   render() {
-    const elapsedTime = this.clock.getElapsedTime();
-    const deltaTime = elapsedTime - this.lastElapsedTime;
-    this.lastElapsedTime = elapsedTime;
-
-    const scale = deltaTime === 0 ? 1 : deltaTime / this.params.dt;
+    const delta = this.clock.getDelta()
 
     // this.material.uniforms.uTime.value = elapsedtime
     if(this.oldColor !== this.params.color){
@@ -234,7 +229,7 @@ export default class GL {
     this.positionVariable.material.uniforms.uSigma.value = this.params.sigma
     this.positionVariable.material.uniforms.uRho.value = this.params.rho
     this.positionVariable.material.uniforms.uBeta.value = this.params.beta
-    this.positionVariable.material.uniforms.uDt = { value: this.params.dt / scale }
+    this.positionVariable.material.uniforms.uDt = { value: delta * 0.0001 * Math.pow(this.params.speed, 2) }
 
     this.gpu.compute()
     this.material.uniforms.uPositionTexture.value =
