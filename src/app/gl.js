@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js'
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
 
 import positionSimulation from './shaders/positionSimulation.glsl'
@@ -11,15 +11,14 @@ const WIDTH = 128
 
 export default class GL {
   constructor() {
-
-    let app = document.getElementById("app");
-    this.stats = new Stats();
-    app.appendChild(this.stats.dom);
+    const app = document.getElementById('app')
+    this.stats = new Stats()
+    app.appendChild(this.stats.dom)
     this.params = {
       sigma: 10,
       rho: 28,
       beta: 8 / 3,
-      dt: 0.0005
+      dt: 0.0003,
     }
     this.gui = new GUI()
     this.gui.add(this.params, 'sigma', 0, 100)
@@ -29,10 +28,12 @@ export default class GL {
 
     this.clock = new THREE.Clock()
     this.canvas = document.getElementById('webgl')
+    this.width = window.innerWidth
+    this.height = window.innerHeight
     this.scene = new THREE.Scene()
     this.camera = new THREE.PerspectiveCamera(
       75,
-      this.canvas.clientWidth / this.canvas.clientHeight,
+      this.width / this.height,
       0.001,
       1000,
     )
@@ -40,17 +41,25 @@ export default class GL {
       canvas: this.canvas,
       antialias: true,
     })
-    this.renderer.setPixelRatio(window.devicePixelRatio)
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     this.renderer.setSize(this.width, this.height)
     this.renderer.outputEncoding = THREE.sRGBEncoding
   }
 
   init() {
-    this.camera.position.z = 80
+    this.camera.position.z = 69
     this.time = 0
+    this.timeAcc = 0
     this.addObjects()
     this.initGPGPU()
     this.render()
+    if (this.resizeListener) {
+      window.removeEventListener('resize', this.resizeListener)
+    }
+    this.resizeListener = window.addEventListener(
+      'resize',
+      this.resize.bind(this),
+    )
   }
 
   addObjects() {
@@ -99,9 +108,13 @@ export default class GL {
       dtPosition,
     )
     this.positionVariable.material.uniforms['time'] = { value: 0.0 }
-    this.positionVariable.material.uniforms['uSigma'] = { value: this.params.sigma, }
+    this.positionVariable.material.uniforms['uSigma'] = {
+      value: this.params.sigma,
+    }
     this.positionVariable.material.uniforms['uRho'] = { value: this.params.rho }
-    this.positionVariable.material.uniforms['uBeta'] = { value: this.params.beta, }
+    this.positionVariable.material.uniforms['uBeta'] = {
+      value: this.params.beta,
+    }
     this.positionVariable.material.uniforms['uDt'] = { value: this.params.dt }
     this.positionVariable.wrapT = THREE.RepeatWrapping
     this.positionVariable.wrapS = THREE.RepeatWrapping
@@ -142,19 +155,18 @@ export default class GL {
   //////
 
   resize() {
-    const width = this.canvas.clientWidth
-    const height = this.canvas.clientHeight
-    const needResize =
-      this.canvas.width !== width || this.canvas.height !== height
-    if (needResize) {
-      this.renderer.setSize(width, height, false)
-    }
-    return needResize
+    this.width = window.innerWidth
+    this.height = window.innerHeight
+
+    this.renderer.setSize(this.width, this.height)
+    this.camera.aspect = this.width / this.height
+    this.camera.updateProjectionMatrix()
+
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   }
 
   render() {
     const time = this.clock.getElapsedTime()
-    this.time = time
 
     // this.material.uniforms.uTime.value = time
     this.positionVariable.material.uniforms.uSigma.value = this.params.sigma
@@ -166,8 +178,9 @@ export default class GL {
     this.material.uniforms.uPositionTexture.value =
       this.gpu.getCurrentRenderTarget(this.positionVariable).texture
 
+
     if (this.resize()) {
-      this.camera.aspect = this.canvas.clientWidth / this.canvas.clientHeight
+      this.camera.aspect = this.width / this.height
       this.camera.updateProjectionMatrix()
     }
     this.renderer.render(this.scene, this.camera)
