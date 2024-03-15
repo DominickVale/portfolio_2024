@@ -12,9 +12,6 @@ void main() {
     vec3 pos = texture(uPositionTexture, reference).xyz;
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.);
 
-    vec4 viewPosition = viewMatrix * mvPosition;
-    vec4 projectedPosition = projectionMatrix * viewPosition;
-
-    gl_PointSize = uSize * (1.0 / - viewPosition.z);
+    gl_PointSize = uSize * (1.0 / -mvPosition.z);
     gl_Position = projectionMatrix * mvPosition;
 }

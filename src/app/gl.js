@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
 
@@ -7,24 +8,41 @@ import positionSimulation from './shaders/positionSimulation.glsl'
 import vertexShader from './shaders/vertex.glsl'
 import fragmentShader from './shaders/fragment.glsl'
 
-const WIDTH = 128
+const WIDTH = 350
 
 export default class GL {
   constructor() {
     const app = document.getElementById('app')
+    // get primary color from css global variables
+    this.primaryColor = getComputedStyle(app).getPropertyValue('--primary')
+    this.oldColor = this.primaryColor
     this.stats = new Stats()
     app.appendChild(this.stats.dom)
     this.params = {
       sigma: 10,
       rho: 28,
       beta: 8 / 3,
-      dt: 0.0003,
+      dt: 0.0005,
+      color: this.primaryColor,
+      rotationX: 0,
+      rotationY: 0,
+      rotationZ: Math.PI * 0.85,
+      positionX: 0,
+      positionY: 4.5,
+      positionZ: 0,
     }
     this.gui = new GUI()
-    this.gui.add(this.params, 'sigma', 0, 100)
-    this.gui.add(this.params, 'rho', 0, 100)
-    this.gui.add(this.params, 'beta', 0, 10)
+    this.gui.add(this.params, 'sigma', -100, 100)
+    this.gui.add(this.params, 'rho', -100, 100)
+    this.gui.add(this.params, 'beta', -6, 6)
     this.gui.add(this.params, 'dt', 0.00001, 0.01)
+    this.gui.addColor(this.params, 'color')
+    this.gui.add(this.params, 'rotationX', -Math.PI, Math.PI)
+    this.gui.add(this.params, 'rotationY', -Math.PI, Math.PI)
+    this.gui.add(this.params, 'rotationZ', -Math.PI, Math.PI)
+    this.gui.add(this.params, 'positionX', -50, 50)
+    this.gui.add(this.params, 'positionY', -50, 50)
+    this.gui.add(this.params, 'positionZ', -50, 50)
 
     this.clock = new THREE.Clock()
     this.canvas = document.getElementById('webgl')
@@ -44,12 +62,21 @@ export default class GL {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     this.renderer.setSize(this.width, this.height)
     this.renderer.outputEncoding = THREE.sRGBEncoding
+
+    // orbit control
+    this.controls = new OrbitControls(this.camera, app)
+    this.controls.enableDamping = true
+    this.controls.dampingFactor = 0.05
+    this.controls.enabled = false
+
+    // add control for orbit control enabled
+    this.gui.add(this.controls, 'enabled').name('Orbit controls')
   }
 
   init() {
-    this.camera.position.z = 69
+    this.camera.position.z = 72
     this.time = 0
-    this.timeAcc = 0
+    this.lastElapsedTime = 0
     this.addObjects()
     this.initGPGPU()
     this.render()
@@ -63,17 +90,28 @@ export default class GL {
   }
 
   addObjects() {
+    // use public/star.png as alpha map
+    const texture = new THREE.TextureLoader().load(
+      'star.png'
+    )
+    console.log(texture)
+
     this.material = new THREE.ShaderMaterial({
       side: THREE.DoubleSide,
+      blending: THREE.AdditiveBlending,
+      vertexColors: true,
       uniforms: {
         uTime: { value: 0.0 },
-        uSize: { value: 100 * this.renderer.getPixelRatio() },
+        uColor: { value: new THREE.Color(this.params.color)},
+        uSize: { value: 30 * this.renderer.getPixelRatio() },
         uPositionTexture: { value: null },
+        uStarTexture: { value: texture },
       },
       vertexShader,
       fragmentShader,
     })
     this.geometry = new THREE.BufferGeometry()
+
     const positions = new Float32Array(WIDTH * WIDTH * 3)
     const refs = new Float32Array(WIDTH * WIDTH * 2)
     for (let i = 0; i < WIDTH * WIDTH; i++) {
@@ -90,8 +128,16 @@ export default class GL {
       'position',
       new THREE.BufferAttribute(positions, 3),
     )
+    this.geometry.center()
     this.geometry.setAttribute('reference', new THREE.BufferAttribute(refs, 2))
     this.plane = new THREE.Points(this.geometry, this.material)
+    this.plane.rotation.x = this.params.rotationX
+    this.plane.rotation.y = this.params.rotationY
+    this.plane.rotation.z = this.params.rotationZ
+    this.plane.position.x = this.params.positionX
+    this.plane.position.y = this.params.positionY
+    this.plane.position.z = this.params.positionZ
+    this.plane.geometry.center()
 
     this.scene.add(this.plane)
   }
@@ -124,7 +170,7 @@ export default class GL {
   }
 
   //initializes positions of the lorenz attractor.
-  // each particle is placed into an initial positionn in a different step in time
+  // each particle is placed into an initial position in a different step in time
   initPositions(texture) {
     let arr = texture.image.data
     const a = this.params.sigma
@@ -136,7 +182,7 @@ export default class GL {
     let z = 0
 
     for (let i = 0; i < arr.length; i += 4) {
-      //lorenz attractor
+      //lorenz attractor, euler's method
       let dt = 0.008 + 0.0005 * Math.random()
       let dx = a * (y - x) * dt
       let dy = (x * (b - z) - y) * dt
@@ -166,13 +212,29 @@ export default class GL {
   }
 
   render() {
-    const time = this.clock.getElapsedTime()
+    const elapsedTime = this.clock.getElapsedTime();
+    const deltaTime = elapsedTime - this.lastElapsedTime;
+    this.lastElapsedTime = elapsedTime;
 
-    // this.material.uniforms.uTime.value = time
+    const scale = deltaTime === 0 ? 1 : deltaTime / this.params.dt;
+
+    // this.material.uniforms.uTime.value = elapsedtime
+    if(this.oldColor !== this.params.color){
+      this.material.uniforms.uColor.value = new THREE.Color(this.params.color)
+      this.oldColor = this.params.color
+    }
+
+    this.plane.rotation.x = this.params.rotationX
+    this.plane.rotation.y = this.params.rotationY
+    this.plane.rotation.z = this.params.rotationZ
+    this.plane.position.x = this.params.positionX
+    this.plane.position.y = this.params.positionY
+    this.plane.position.z = this.params.positionZ
+
     this.positionVariable.material.uniforms.uSigma.value = this.params.sigma
     this.positionVariable.material.uniforms.uRho.value = this.params.rho
     this.positionVariable.material.uniforms.uBeta.value = this.params.beta
-    this.positionVariable.material.uniforms.uDt = { value: this.params.dt }
+    this.positionVariable.material.uniforms.uDt = { value: this.params.dt / scale }
 
     this.gpu.compute()
     this.material.uniforms.uPositionTexture.value =
