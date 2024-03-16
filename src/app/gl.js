@@ -73,10 +73,10 @@ export default class GL {
     this.gui.add(this.controls, 'enabled').name('Orbit controls')
   }
 
-  init() {
+  async init() {
     this.camera.position.z = 72
     this.time = 0
-    this.addObjects()
+    await this.addObjects()
     this.initGPGPU()
     this.render()
     if (this.resizeListener) {
@@ -88,12 +88,15 @@ export default class GL {
     )
   }
 
-  addObjects() {
+  async addObjects() {
     // use public/star.png as alpha map
-    const texture = new THREE.TextureLoader().load(
-      'star.png'
-    )
+    const loader = new THREE.TextureLoader()
+    const texture = await loader.loadAsync('star.png')
     console.log(texture)
+    texture.minFilter = THREE.LinearMipMapLinearFilter
+    texture.flipY = false
+    texture.needsUpdate = true
+    texture.premultiplyAlpha = true
 
     this.material = new THREE.ShaderMaterial({
       side: THREE.DoubleSide,
@@ -108,6 +111,7 @@ export default class GL {
       },
       vertexShader,
       fragmentShader,
+      transparent: true
     })
     this.geometry = new THREE.BufferGeometry()
 
