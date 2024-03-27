@@ -1,0 +1,105 @@
+<div
+  id="radial-menu"
+  class="fixed left-1/2 top-1/2 h-96 w-96 border-2 border-solid border-green-500"
+>
+  <div id="radial-menu-content" class="relative flex items-center justify-center border-2 border-solid border-blue-500 w-full h-full">
+    <div 
+      class="font-xs h-6 w-6 rounded-full bg-white text-center text-black"
+    >
+      ICON
+    </div>
+  </div>
+</div>
+
+<style></style>
+
+<script>
+  import { $, degToRad } from '../../app/utils'
+
+  console.log('Creating radial menu')
+  const mockElements = [
+    {
+      id: '1',
+      name: 'Home',
+      icon: '🏠',
+    },
+    {
+      id: '2',
+      name: 'Projects',
+      icon: '🏗️',
+    },
+    {
+      id: '3',
+      name: 'About',
+      icon: '👤',
+    },
+    {
+      id: '4',
+      name: 'Contact',
+      icon: '📧',
+    },
+  ]
+
+  const menuEl = $('#radial-menu')
+  const menuContentEl = $('#radial-menu-content')
+  const menuBounds = menuEl.getBoundingClientRect()
+  const menuSize = {
+    width: menuBounds.width,
+    height: menuBounds.height,
+  }
+  const menuCenter = {
+    x: menuSize.width / 2,
+    y: menuSize.height / 2,
+  }
+
+  const RADIUS = (menuSize.width / 2) * 1
+
+  mockElements.forEach((el, i, arr) => {
+    const angleDeg = (360 / arr.length) * i
+    console.log(angleDeg)
+    const angleRad = degToRad(angleDeg) - (Math.PI / 2) // we remove Math.pi/2 because of flipped y-axis
+    const position = {
+      x: menuCenter.x + Math.cos(angleRad) * ( RADIUS / 2),
+      y: menuCenter.y + Math.sin(angleRad) * ( RADIUS / 2),
+    }
+
+    const elEl = document.createElement('a')
+    elEl.id = el.id
+    elEl.className =
+      'font-xs text-center text-black flex justify-center items-center border-[1px] border-green-500 relative'
+    elEl.style.position = 'absolute'
+    elEl.style.height = RADIUS + 'px'
+    elEl.style.width = RADIUS + 'px'
+    elEl.style.top = position.y - (RADIUS / 2) + 'px'
+    elEl.style.left = position.x - (RADIUS / 2) + "px"
+
+    const iconEl = document.createElement('div')
+    iconEl.className = 'font-xs h-6 w-6 rounded-full bg-white text-center text-black'
+    iconEl.innerHTML = el.icon
+
+    const svgns = "http://www.w3.org/2000/svg";
+    const svgEl = document.createElementNS(svgns, "svg");
+    const path = document.createElementNS(svgns, "path");
+
+    path.setAttributeNS(null, "d", `
+      M ${RADIUS / 4} ${RADIUS}
+      A ${RADIUS/4} ${RADIUS/4} 0 0 1 ${RADIUS - (RADIUS / 4)} ${RADIUS}
+      l ${RADIUS / 4} -${RADIUS - (RADIUS / 4)}
+      A ${RADIUS} ${RADIUS} 0 0 0 0 ${RADIUS / 4}
+      z`);
+    path.setAttributeNS(null, "stroke", "red");
+    path.setAttributeNS(null, "stroke-width", "2");
+
+    svgEl.style.position = "absolute";
+    svgEl.style.transform = `rotate(${angleDeg}deg)`;
+    svgEl.style.width = "100%";
+    svgEl.style.height = "100%";
+    svgEl.appendChild(path);
+
+    elEl.appendChild(svgEl)
+    elEl.appendChild(iconEl)
+
+    menuContentEl.appendChild(elEl)
+    //set position
+  })
+</script>

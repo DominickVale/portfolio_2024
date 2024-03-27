@@ -104,7 +104,6 @@ export default class GL {
   async addObjects() {
     const loader = new THREE.TextureLoader()
     const texture = await loader.loadAsync('star.png')
-    console.log(texture)
     texture.minFilter = THREE.LinearMipMapLinearFilter
 
     this.material = new THREE.ShaderMaterial({

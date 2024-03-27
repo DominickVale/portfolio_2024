@@ -1,7 +1,7 @@
 import GL from './gl'
 
 //@TODO: add to settings in radial menu
-const DEBUG = true
+const DEBUG = false
 
 export default class App {
   constructor() {
