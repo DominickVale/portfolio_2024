@@ -14,7 +14,7 @@
 <style></style>
 
 <script>
-  import { $, degToRad } from '../../app/utils'
+  import { $, degToRad, radToDeg } from '../../app/utils'
 
   console.log('Creating radial menu')
   const mockElements = [
@@ -29,77 +29,80 @@
       icon: '🏗️',
     },
     {
-      id: '3',
-      name: 'About',
-      icon: '👤',
+      id: '1',
+      name: 'Home',
+      icon: '🏠',
     },
     {
-      id: '4',
-      name: 'Contact',
-      icon: '📧',
+      id: '2',
+      name: 'Projects',
+      icon: '🏗️',
+    },
+    {
+      id: '2',
+      name: 'Projects',
+      icon: '🏗️',
     },
   ]
 
-  const menuEl = $('#radial-menu')
-  const menuContentEl = $('#radial-menu-content')
-  const menuBounds = menuEl.getBoundingClientRect()
-  const menuSize = {
+const menuEl = $('#radial-menu')
+const menuContentEl = $('#radial-menu-content')
+const menuBounds = menuEl.getBoundingClientRect()
+const menuSize = {
     width: menuBounds.width,
     height: menuBounds.height,
-  }
-  const menuCenter = {
+}
+const menuCenter = {
     x: menuSize.width / 2,
     y: menuSize.height / 2,
-  }
+}
 
-  const RADIUS = (menuSize.width / 2) * 1
+const RADIUS = 100
+const INNER_RADIUS = 10
+const svgNS = "http://www.w3.org/2000/svg";
 
-  mockElements.forEach((el, i, arr) => {
-    const angleDeg = (360 / arr.length) * i
-    console.log(angleDeg)
-    const angleRad = degToRad(angleDeg) - (Math.PI / 2) // we remove Math.pi/2 because of flipped y-axis
-    const position = {
-      x: menuCenter.x + Math.cos(angleRad) * ( RADIUS / 2),
-      y: menuCenter.y + Math.sin(angleRad) * ( RADIUS / 2),
-    }
+const radialMenu = document.createElementNS(svgNS, "svg");
+radialMenu.style.position = "fixed";
+radialMenu.style.top = "10vh"
+radialMenu.style.left = "10vw"
+radialMenu.setAttribute("width", "100%");
+radialMenu.setAttribute("height", "100%");
+radialMenu.setAttribute("viewBox", `0 0 ${menuSize.width} ${menuSize.height}`);
 
-    const elEl = document.createElement('a')
-    elEl.id = el.id
-    elEl.className =
-      'font-xs text-center text-black flex justify-center items-center border-[1px] border-green-500 relative'
-    elEl.style.position = 'absolute'
-    elEl.style.height = RADIUS + 'px'
-    elEl.style.width = RADIUS + 'px'
-    elEl.style.top = position.y - (RADIUS / 2) + 'px'
-    elEl.style.left = position.x - (RADIUS / 2) + "px"
+const sliceAngle = (2 * Math.PI) / mockElements.length;
 
-    const iconEl = document.createElement('div')
-    iconEl.className = 'font-xs h-6 w-6 rounded-full bg-white text-center text-black'
-    iconEl.innerHTML = el.icon
+for (let i = 0; i < mockElements.length; i++) {
+    const startAngle = i * sliceAngle;
+    const endAngle = startAngle + sliceAngle;
 
-    const svgns = "http://www.w3.org/2000/svg";
-    const svgEl = document.createElementNS(svgns, "svg");
-    const path = document.createElementNS(svgns, "path");
+    const slice = document.createElementNS(svgNS, "path");
+    slice.setAttribute("fill", "gray");
+    slice.setAttribute("stroke", "black");
+    slice.setAttribute("stroke-width", "1");
 
-    path.setAttributeNS(null, "d", `
-      M ${RADIUS / 4} ${RADIUS}
-      A ${RADIUS/4} ${RADIUS/4} 0 0 1 ${RADIUS - (RADIUS / 4)} ${RADIUS}
-      l ${RADIUS / 4} -${RADIUS - (RADIUS / 4)}
-      A ${RADIUS} ${RADIUS} 0 0 0 0 ${RADIUS / 4}
-      z`);
-    path.setAttributeNS(null, "stroke", "red");
-    path.setAttributeNS(null, "stroke-width", "2");
+    const outerStartX = menuCenter.x + RADIUS * Math.cos(startAngle);
+    const outerStartY = menuCenter.y + RADIUS * Math.sin(startAngle);
+    const outerEndX = menuCenter.x + RADIUS * Math.cos(endAngle);
+    const outerEndY = menuCenter.y + RADIUS * Math.sin(endAngle);
 
-    svgEl.style.position = "absolute";
-    svgEl.style.transform = `rotate(${angleDeg}deg)`;
-    svgEl.style.width = "100%";
-    svgEl.style.height = "100%";
-    svgEl.appendChild(path);
+    const innerStartX = menuCenter.x + INNER_RADIUS * Math.cos(startAngle);
+    const innerStartY = menuCenter.y + INNER_RADIUS * Math.sin(startAngle);
+    const innerEndX = menuCenter.x + INNER_RADIUS * Math.cos(endAngle);
+    const innerEndY = menuCenter.y + INNER_RADIUS * Math.sin(endAngle);
 
-    elEl.appendChild(svgEl)
-    elEl.appendChild(iconEl)
+    const pathData = `M ${outerStartX} ${outerStartY}
+                      A ${RADIUS} ${RADIUS} 0 0 1 ${outerEndX} ${outerEndY}
+                      L ${innerEndX} ${innerEndY}
+                      A ${INNER_RADIUS} ${INNER_RADIUS} 0 0 0 ${innerStartX} ${innerStartY}
+                      Z`;
 
-    menuContentEl.appendChild(elEl)
-    //set position
-  })
+    slice.setAttribute("d", pathData);
+    slice.style.cursor = "pointer";
+    slice.addEventListener("mouseenter", () => slice.setAttribute("fill", "red"));
+    slice.addEventListener("mouseleave", () => slice.setAttribute("fill", "gray"));
+
+    radialMenu.appendChild(slice);
+}
+
+menuEl.appendChild(radialMenu)
 </script>
