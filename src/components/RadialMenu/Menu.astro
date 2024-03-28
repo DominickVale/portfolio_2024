@@ -22,7 +22,7 @@
     height: var(--size);
     position: absolute;
     transform-origin: 100% 100% 0;
-    transform: rotate(var(--rotate)) skew(var(--skew));
+    transform: rotate(var(--rotate)) skew(var(--skew)) translate(var(--gap), var(--gap));
     cursor: pointer;
     overflow: hidden;
   }
@@ -85,6 +85,7 @@
   const INNER_RADIUS = "40px"
   const CENTRAL_ANGLE = 360 / mockElements.length
   const SKEW = 90 - CENTRAL_ANGLE
+  const GAP = "-0.1rem"
 
   function getSpecialValues(angle, length) {
     switch (length) {
@@ -128,6 +129,7 @@
     const unrotateAngle = -(90 - angle / 2)
     bgEl.style.setProperty('--unrotate', unrotateAngle + 'deg')
     shapeEl.style.setProperty('--skew', SKEW + 'deg')
+    shapeEl.style.setProperty('--gap', GAP)
     shapeEl.style.setProperty('--inner-radius', INNER_RADIUS)
 
     shapeEl.appendChild(bgEl)
