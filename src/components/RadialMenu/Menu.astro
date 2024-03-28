@@ -1,15 +1,8 @@
 <div
-  class="fixed left-1/2 top-1/2 h-[400px] w-[400px] translate-x-[-50%] translate-y-[-50%] overflow-visible rounded-full"
+  class="fixed left-1/2 top-1/2 h-[25vw] w-[25vw] translate-x-[-50%] translate-y-[-50%]"
 >
-  <div
-    class="absolute left-1/2 top-1/2 h-[500px] w-[500px] translate-x-[-50%] translate-y-[-50%]"
-  >
-    <ul
-      id="radial-menu"
-      class="relative h-full w-full border-2 border-green-500"
-    >
-    </ul>
-  </div>
+  <ul id="radial-menu" class="relative h-full w-full">
+  </ul>
 </div>
 
 <style is:global>
@@ -21,29 +14,31 @@
     color: red;
     z-index: 100;
   }
-  .radial-menu-item:hover .radial-menu-item-bg{
-    background: radial-gradient(transparent 40px, red 40px);
+  .radial-menu-item:hover .radial-menu-item-bg {
+    background: radial-gradient(transparent var(--inner-radius), red var(--inner-radius));
   }
   .radial-menu-item-shape {
     width: var(--size);
     height: var(--size);
     position: absolute;
-    border: 1px solid red;
     transform-origin: 100% 100% 0;
     transform: rotate(var(--rotate)) skew(var(--skew));
     cursor: pointer;
     overflow: hidden;
   }
 
-  .radial-menu-item-bg{
+  .radial-menu-item-bg {
     display: block;
     width: 200%;
     height: 200%;
     transform-origin: 50% 50%;
     border-radius: 50%;
-    transform: skew(calc(var(--skew)* -1)) rotate(calc(var(--unrotate)));
+    transform: skew(calc(var(--skew) * -1)) rotate(calc(var(--unrotate)));
     color: black;
-    background: radial-gradient(transparent 40px, rgba(109, 109, 109, 0.925) 40px);
+    background: radial-gradient(
+      transparent var(--inner-radius),
+      rgba(109, 109, 109, 0.925) var(--inner-radius)
+    );
     outline: none;
   }
 </style>
@@ -53,18 +48,6 @@
 
   console.log('Creating radial menu')
   const mockElements = [
-    {
-      id: '1',
-      name: 'Home',
-      icon: '🏠',
-      link: '/',
-    },
-    {
-      id: '1',
-      name: 'Home',
-      icon: '🏠',
-      link: '/',
-    },
     {
       id: '1',
       name: 'Home',
@@ -99,6 +82,7 @@
   }
 
   const RADIUS = menuSize.width / 2
+  const INNER_RADIUS = "40px"
   const CENTRAL_ANGLE = 360 / mockElements.length
   const SKEW = 90 - CENTRAL_ANGLE
 
@@ -121,18 +105,18 @@
     const angleDeg = CENTRAL_ANGLE * i - 90
     const angleRad = degToRad(angleDeg)
     const labelPosition = {
-      x: Math.cos(angleRad - Math.PI / 2) * (RADIUS / 2.314) + RADIUS,
-      y: Math.sin(angleRad - Math.PI / 2) * (RADIUS / 2.314) + RADIUS,
+      x: Math.cos(angleRad - Math.PI / 2) * (RADIUS/1.8) + RADIUS,
+      y: Math.sin(angleRad - Math.PI / 2) * (RADIUS/1.8) + RADIUS,
     }
     const elEl = document.createElement('li')
-    elEl.className = 'radial-menu-item'
     const shapeEl = document.createElement('div')
-    shapeEl.className = 'radial-menu-item-shape'
     const bgEl = document.createElement('div')
-    bgEl.className = 'radial-menu-item-bg'
-
     const labelEl = document.createElement('span')
+    elEl.className = 'radial-menu-item'
+    shapeEl.className = 'radial-menu-item-shape'
+    bgEl.className = 'radial-menu-item-bg'
     labelEl.className = 'radial-menu-item-label'
+
     labelEl.innerHTML = el.name
 
     labelEl.style.setProperty('--x', labelPosition.x + 'px')
@@ -140,11 +124,11 @@
 
     shapeEl.style.setProperty('--size', RADIUS + 'px')
     const angle = getSpecialValues(angleDeg, arr.length).angleDeg
-    shapeEl.style.setProperty( '--rotate', angle + 'deg')
-    const unrotateAngle = -(90 - (angle / 2))
+    shapeEl.style.setProperty('--rotate', angle + 'deg')
+    const unrotateAngle = -(90 - angle / 2)
     bgEl.style.setProperty('--unrotate', unrotateAngle + 'deg')
-    bgEl.style.setProperty('--unskew', -SKEW + 'deg')
     shapeEl.style.setProperty('--skew', SKEW + 'deg')
+    shapeEl.style.setProperty('--inner-radius', INNER_RADIUS)
 
     shapeEl.appendChild(bgEl)
     elEl.appendChild(shapeEl)
