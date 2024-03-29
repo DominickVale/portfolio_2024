@@ -31,8 +31,13 @@ const { id, size } = Astro.props
   .radial-menu-item-shape {
     width: var(--size);
     height: var(--size);
+
     position: absolute;
     transform-origin: 100% 100% 0;
+    bottom: 50%;
+    right: 50%;
+
+    transform-origin: 100% 100%;
     transform: rotate(var(--rotate)) skew(var(--skew)) translate(var(--gap), var(--gap));
     cursor: pointer;
     overflow: hidden;

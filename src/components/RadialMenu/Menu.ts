@@ -96,7 +96,7 @@ export default class Menu {
       labelEl.style.setProperty('--x', labelPosition.x + 'px')
       labelEl.style.setProperty('--y', labelPosition.y + 'px')
 
-      shapeEl.style.setProperty('--size', this._radius + 'px')
+      shapeEl.style.setProperty('--size', this._radius * 1.3 + 'px')
       shapeEl.style.setProperty('--rotate', angleDeg + 'deg')
       shapeEl.style.setProperty('--skew', this._skew + 'deg')
       shapeEl.style.setProperty('--gap', this.gap)
