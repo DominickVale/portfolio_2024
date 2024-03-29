@@ -41,7 +41,49 @@ const { title, rowsMax, withContacts } = Astro.props
         rowsMax && 'auto-rows-max',
       ]}
     >
-      <RadialMenu id="main-menu">
+      <RadialMenu id="main-menu-3" size="18.75em">
+        <MenuSlice>
+          <a href="/">HOME</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/projects">PROJECTS</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/about">ABOUT</a>
+        </MenuSlice>
+      </RadialMenu>
+      <RadialMenu id="main-menu-4" size="20vw">
+        <MenuSlice>
+          <a href="/">HOME</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/projects">PROJECTS</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/about">ABOUT</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/about">ABOUT2</a>
+        </MenuSlice>
+      </RadialMenu>
+      <RadialMenu id="main-menu-5" size="20vw">
+        <MenuSlice>
+          <a href="/">HOME</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/projects">PROJECTS</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/about">ABOUT</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/blog">BLOG</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/contact">CONTACT</a>
+        </MenuSlice>
+      </RadialMenu>
+      <RadialMenu id="main-menu-6" size="20vw">
         <MenuSlice>
           <a href="/">HOME</a>
         </MenuSlice>
@@ -58,7 +100,30 @@ const { title, rowsMax, withContacts } = Astro.props
           <a href="/contact">CONTACT</a>
         </MenuSlice>
         <MenuSlice>
-          <a href="/resume">RESUME</a>
+          <a href="/contact">CONTACT2</a>
+        </MenuSlice>
+      </RadialMenu>
+      <RadialMenu id="main-menu-7" size="20vw">
+        <MenuSlice>
+          <a href="/">HOME</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/projects">PROJECTS</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/about">ABOUT</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/blog">BLOG</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/contact">CONTACT</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/contact">CONTACT2</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/blog">BLOG2</a>
         </MenuSlice>
       </RadialMenu>
       <slot />
@@ -75,10 +140,12 @@ const { title, rowsMax, withContacts } = Astro.props
   <script>
     import '../app'
     import Menu from '../components/RadialMenu/Menu'
-
     window.addEventListener('DOMContentLoaded', () => {
-      const menu = new Menu('main-menu')
+      const menu3 = new Menu('main-menu-3', { position: { x: 200, y: 300 } })
+      const menu4 = new Menu('main-menu-4', { position: { x: 550, y: 300 } })
+      const menu5 = new Menu('main-menu-5', { position: { x: 900, y: 300 } })
+      const menu6 = new Menu('main-menu-6', { position: { x: 1250, y: 300 } })
+      const menu7 = new Menu('main-menu-7', { position: { x: 1600, y: 300 } })
     })
-
   </script>
 </html>

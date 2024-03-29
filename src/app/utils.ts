@@ -1,3 +1,5 @@
+export const TAU = Math.PI * 2;
+
 export const $ = (selector: string, parentElement: HTMLElement = document.body): HTMLElement | null =>
 	parentElement.querySelector(selector);
 

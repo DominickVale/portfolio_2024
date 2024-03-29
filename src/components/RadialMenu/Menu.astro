@@ -1,13 +1,15 @@
 ---
 type Props = {
    id: string
+    size: string
 }
 
-const { id } = Astro.props
+const { id, size } = Astro.props
 ---
 <div
   id={id}
-  class="fixed left-1/2 top-1/2 h-[25vw] w-[25vw] translate-x-[-50%] translate-y-[-50%]"
+  class='fixed h-[var(--size)] w-[var(--size)] left-[var(--pos-x)] top-[var(--pos-y)] translate-x-[-50%] translate-y-[-50%] rounded-full overflow-hidden'
+  style=`--size: ${size};`
 >
   <ul class="radial-menu relative h-full w-full">
     <slot/>
@@ -42,7 +44,7 @@ const { id } = Astro.props
     height: 200%;
     transform-origin: 50% 50%;
     border-radius: 50%;
-    transform: skew(calc(var(--skew) * -1)) rotate(calc(var(--unrotate)));
+    transform: skew(calc(var(--skew) * -1)) rotate(calc(var(--rotate) * -1));
     color: black;
     background: radial-gradient(
       transparent var(--inner-radius),
