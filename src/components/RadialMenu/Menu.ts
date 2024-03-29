@@ -2,7 +2,7 @@ import type { Vec2 } from '../../app/types'
 import { $, $all, TAU, degToRad } from '../../app/utils'
 
 type RadialMenuOptions = {
-  innerRadius?: string
+  innerRadiusPercent?: number
   gap?: string
   labelsPosFactor?: number
   position?: Vec2
@@ -19,28 +19,25 @@ export default class Menu {
   private _wrapper: HTMLElement
 
   slices: NodeListOf<HTMLElement>
-  innerRadius: string
+  innerRadiusPercent: number
   gap: string
-  labelsPosFactor: number
 
   constructor(
     public id: string,
     {
-      innerRadius = '15%',
+      innerRadiusPercent = 40,
       gap = '-0.1rem',
-      labelsPosFactor = 1.5,
       position = { x: 0, y: 0 },
     }: RadialMenuOptions = {},
   ) {
-    this.innerRadius = innerRadius
+    this.innerRadiusPercent = innerRadiusPercent
     this.gap = gap
-    this.labelsPosFactor = labelsPosFactor
     this._position = position
 
     console.info(`Creating radial menu ${id},\n
-      innerRadius: ${this.innerRadius},\n
+      innerRadiusPercent: ${this.innerRadiusPercent},\n
       gap: ${this.gap},\n
-      labelsPosFactor: ${this.labelsPosFactor}`)
+      `)
 
     this.slices = $all(`#${id} .radial-menu-item`)
 
@@ -70,11 +67,12 @@ export default class Menu {
     this.slices.forEach((el, i, arr) => {
       const angleDeg = this._centralAngle * i - 90
       const labelAngleRad = degToRad(angleDeg - this._centralAngle / 2)
+      const labelsFactor = (this._radius / 2) + (this._radius * this.innerRadiusPercent / 100) / 2
       const labelPosition = {
         x:
-          Math.cos(labelAngleRad) * (this._radius / this.labelsPosFactor) + this._radius,
+          Math.cos(labelAngleRad) * labelsFactor + this._radius,
         y:
-         -Math.sin(labelAngleRad) * (this._radius / this.labelsPosFactor) + this._radius,
+         -Math.sin(labelAngleRad) * labelsFactor + this._radius,
       }
       const shapeEl = $('.radial-menu-item-shape', el) as HTMLElement
       const bgEl = $('.radial-menu-item-bg', el) as HTMLElement
@@ -96,11 +94,13 @@ export default class Menu {
       labelEl.style.setProperty('--x', labelPosition.x + 'px')
       labelEl.style.setProperty('--y', labelPosition.y + 'px')
 
-      shapeEl.style.setProperty('--size', this._radius * 1.3 + 'px')
+      // 1.3 is just an arbitrary scaling factor for fixing the case for n slices = 3
+      const shapeSize = this._radius * 1.3
+      shapeEl.style.setProperty('--size', shapeSize + 'px')
       shapeEl.style.setProperty('--rotate', angleDeg + 'deg')
       shapeEl.style.setProperty('--skew', this._skew + 'deg')
       shapeEl.style.setProperty('--gap', this.gap)
-      shapeEl.style.setProperty('--inner-radius', this.innerRadius)
+      shapeEl.style.setProperty('--inner-radius', ( this._radius * this.innerRadiusPercent /100 ) + "px")
     })
   }
 
