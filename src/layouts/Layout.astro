@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.astro'
 import Footer from '../components/Footer.astro'
 import Contacts from '../components/Contacts.astro'
 import RadialMenu from '../components/RadialMenu/Menu.astro'
+import MenuSlice from '../components/RadialMenu/MenuSlice.astro'
 
 interface Props {
   title: string
@@ -31,7 +32,8 @@ const { title, rowsMax, withContacts } = Astro.props
     @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,200..900&family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
   </style>
   <body id="app" class="relative flex max-h-screen flex-col font-body">
-    <canvas id="webgl" class="fixed top-0 bg-red-500 w-full h-full z-0" />
+    <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-red-500"
+    ></canvas>
     <Navbar />
     <main
       class:list={[
@@ -39,17 +41,44 @@ const { title, rowsMax, withContacts } = Astro.props
         rowsMax && 'auto-rows-max',
       ]}
     >
-      <RadialMenu />
+      <RadialMenu id="main-menu">
+        <MenuSlice>
+          <a href="/">HOME</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/projects">PROJECTS</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/about">ABOUT</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/blog">BLOG</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/contact">CONTACT</a>
+        </MenuSlice>
+        <MenuSlice>
+          <a href="/resume">RESUME</a>
+        </MenuSlice>
+      </RadialMenu>
       <slot />
     </main>
-      {
-        withContacts && (
-          <div class="z-10 col-span-12 col-start-1 mt-8 grid w-full flex-1 grid-cols-12 min-h-[100vh]">
-            <Contacts />
-          </div>
-        )
-      }
+    {
+      withContacts && (
+        <div class="z-10 col-span-12 col-start-1 mt-8 grid min-h-[100vh] w-full flex-1 grid-cols-12">
+          <Contacts />
+        </div>
+      )
+    }
     <Footer />
   </body>
-  <script>import '../app';</script>
+  <script>
+    import '../app'
+    import Menu from '../components/RadialMenu/Menu'
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const menu = new Menu('main-menu')
+    })
+
+  </script>
 </html>
