@@ -1,23 +1,27 @@
 ---
 type Props = {
-   id: string
-    size: string
+  id: string
+  size: string
 }
 
 const { id, size } = Astro.props
 ---
+
 <div
   id={id}
-  class='fixed h-[var(--size)] w-[var(--size)] left-[var(--pos-x)] top-[var(--pos-y)] translate-x-[-50%] translate-y-[-50%] rounded-full overflow-hidden'
+  class='fixed h-[var(--size)] w-[var(--size)] left-[var(--pos-x)] top-[var(--pos-y)] translate-x-[-50%] translate-y-[-50%] rounded-full overflow-visible'
   style=`--size: ${size};`
 >
   <ul class="radial-menu relative h-full w-full">
-    <slot/>
+    <slot />
   </ul>
 </div>
 
+
 <style is:global>
-  .radial-menu{
+  .radial-menu {
+  overflow: hidden;
+  border-radius: 100%;
   }
   .radial-menu-item-label {
     pointer-events: none;
@@ -34,6 +38,10 @@ const { id, size } = Astro.props
   .radial-menu-item:hover .radial-menu-item-bg {
     background: radial-gradient(transparent var(--inner-radius), white var(--inner-radius));
   }
+  .radial-menu-item:hover > .radial-menu-item-label{
+    color: black;
+    background-color: red;
+  }
   .radial-menu-item-shape {
     width: var(--size);
     height: var(--size);
@@ -46,6 +54,23 @@ const { id, size } = Astro.props
     transform-origin: 100% 100%;
     transform: rotate(var(--rotate)) skew(var(--skew)) translate(var(--gap), var(--gap));
     cursor: pointer;
+    overflow: hidden;
+
+  }
+  .radial-menu-item-shape::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(20px);
+    mask: radial-gradient(transparent 30%, white 30%);
+    -webkit-mask: radial-gradient(transparent 30%, white 30%);
+    border-radius: 100%;
     overflow: hidden;
   }
 
@@ -64,5 +89,6 @@ const { id, size } = Astro.props
       transparent var(--inner-radius),
       var(--bg-radial-02) var(--inner-radius)
     );
+
   }
 </style>
