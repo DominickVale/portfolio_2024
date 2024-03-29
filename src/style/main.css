@@ -12,6 +12,8 @@
   --primary-lightest: #d3afaa;
   --lines: rgba(255, 255, 255, 0.2);
   --bg-dark: #110F10;
+  --bg-radial-02: rgba(17,16,16, 0.3);
+  --blur-radial: 1px;
   --copy: #d3c4c4;
 }
 

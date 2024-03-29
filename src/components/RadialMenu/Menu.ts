@@ -26,7 +26,7 @@ export default class Menu {
     public id: string,
     {
       innerRadiusPercent = 40,
-      gap = '-0.1rem',
+      gap = '0.1rem',
       position = { x: 0, y: 0 },
     }: RadialMenuOptions = {},
   ) {
@@ -99,7 +99,7 @@ export default class Menu {
       shapeEl.style.setProperty('--size', shapeSize + 'px')
       shapeEl.style.setProperty('--rotate', angleDeg + 'deg')
       shapeEl.style.setProperty('--skew', this._skew + 'deg')
-      shapeEl.style.setProperty('--gap', this.gap)
+      shapeEl.style.setProperty('--gap', `calc(-1 * ${ this.gap })`)
       shapeEl.style.setProperty('--inner-radius', ( this._radius * this.innerRadiusPercent /100 ) + "px")
     })
   }

@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro'
 import Contacts from '../components/Contacts.astro'
 import RadialMenu from '../components/RadialMenu/Menu.astro'
 import MenuSlice from '../components/RadialMenu/MenuSlice.astro'
+import { ContactIcon, LabIcon, HomeIcon, ProjectsIcon, SettingsIcon, AboutIcon, RssIcon} from '../components/icons'
 
 interface Props {
   title: string
@@ -41,89 +42,30 @@ const { title, rowsMax, withContacts } = Astro.props
         rowsMax && 'auto-rows-max',
       ]}
     >
-      <RadialMenu id="main-menu-3" size="20vw">
-        <MenuSlice>
-          <a href="/">o</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/projects">o</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/about">o</a>
-        </MenuSlice>
-      </RadialMenu>
-      <RadialMenu id="main-menu-4" size="20vw">
-        <MenuSlice>
-          <a href="/">o</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/projects">o</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/about">o</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/about">o</a>
-        </MenuSlice>
-      </RadialMenu>
-      <RadialMenu id="main-menu-5" size="20vw">
-        <MenuSlice>
-          <a href="/">HOME</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/projects">PROJECTS</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/about">ABOUT</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/blog">BLOG</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/contact">CONTACT</a>
-        </MenuSlice>
-      </RadialMenu>
       <RadialMenu id="main-menu-6" size="20vw">
         <MenuSlice>
+          <HomeIcon/>
           <a href="/">HOME</a>
         </MenuSlice>
         <MenuSlice>
-          <a href="/projects">PROJECTS</a>
+          <ProjectsIcon/>
+          <a href="/works">WORKS</a>
         </MenuSlice>
         <MenuSlice>
+          <AboutIcon/>
           <a href="/about">ABOUT</a>
         </MenuSlice>
         <MenuSlice>
+          <RssIcon/>
           <a href="/blog">BLOG</a>
         </MenuSlice>
         <MenuSlice>
+          <ContactIcon />
           <a href="/contact">CONTACT</a>
         </MenuSlice>
         <MenuSlice>
-          <a href="/contact">CONTACT2</a>
-        </MenuSlice>
-      </RadialMenu>
-      <RadialMenu id="main-menu-7" size="20vw">
-        <MenuSlice>
-          <a href="/">HOME</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/projects">PROJECTS</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/about">ABOUT</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/blog">BLOG</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/contact">CONTACT</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/contact">CONTACT2</a>
-        </MenuSlice>
-        <MenuSlice>
-          <a href="/blog">BLOG2</a>
+          <SettingsIcon />
+          <a href="/contact">SETTINGS</a>
         </MenuSlice>
       </RadialMenu>
       <slot />
@@ -141,11 +83,7 @@ const { title, rowsMax, withContacts } = Astro.props
     import '../app'
     import Menu from '../components/RadialMenu/Menu'
     window.addEventListener('DOMContentLoaded', () => {
-      const menu3 = new Menu('main-menu-3', { position: { x: 200, y: 300 } })
-      const menu4 = new Menu('main-menu-4', { position: { x: 550, y: 300 } })
-      const menu5 = new Menu('main-menu-5', { position: { x: 900, y: 300 } })
-      const menu6 = new Menu('main-menu-6', { position: { x: 1250, y: 300 } })
-      const menu7 = new Menu('main-menu-7', { position: { x: 1600, y: 300 } })
+      const menu6 = new Menu('main-menu-6', { gap: "3px", position: { x: 800, y: 300 } })
     })
   </script>
 </html>

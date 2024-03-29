@@ -17,16 +17,22 @@ const { id, size } = Astro.props
 </div>
 
 <style is:global>
+  .radial-menu{
+  }
   .radial-menu-item-label {
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     top: var(--y);
     left: var(--x);
     transform: translate(-50%, -50%);
-    color: red;
     z-index: 100;
   }
   .radial-menu-item:hover .radial-menu-item-bg {
-    background: radial-gradient(transparent var(--inner-radius), red var(--inner-radius));
+    background: radial-gradient(transparent var(--inner-radius), white var(--inner-radius));
   }
   .radial-menu-item-shape {
     width: var(--size);
@@ -43,6 +49,10 @@ const { id, size } = Astro.props
     overflow: hidden;
   }
 
+  .radial-menu .icon {
+    pointer-events: none;
+  }
+
   .radial-menu-item-bg {
     display: block;
     width: 200%;
@@ -50,10 +60,9 @@ const { id, size } = Astro.props
     transform-origin: 50% 50%;
     border-radius: 50%;
     transform: skew(calc(var(--skew) * -1)) rotate(calc(var(--rotate) * -1));
-    color: black;
     background: radial-gradient(
       transparent var(--inner-radius),
-      rgba(109, 109, 109, 0.925) var(--inner-radius)
+      var(--bg-radial-02) var(--inner-radius)
     );
   }
 </style>
