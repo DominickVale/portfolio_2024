@@ -66,13 +66,13 @@ export default class Menu {
     this._wrapper.style.setProperty('--pos-y', this._position.y + "px")
     this.slices.forEach((el, i, arr) => {
       const angleDeg = this._centralAngle * i - 90
-      const labelAngleRad = degToRad(angleDeg - this._centralAngle / 2)
+      const labelAngleRad = degToRad(angleDeg - this._skew - ( this._centralAngle * 2 ))
       const labelsFactor = (this._radius / 2) + (this._radius * this.innerRadiusPercent / 100) / 2
       const labelPosition = {
         x:
           Math.cos(labelAngleRad) * labelsFactor + this._radius,
         y:
-         -Math.sin(labelAngleRad) * labelsFactor + this._radius,
+         Math.sin(labelAngleRad) * labelsFactor + this._radius,
       }
       const shapeEl = $('.radial-menu-item-shape', el) as HTMLElement
       const bgEl = $('.radial-menu-item-bg', el) as HTMLElement
