@@ -1,4 +1,5 @@
 ---
+import { BrandIcon } from '../icons'
 type Props = {
   id: string
   size: string
@@ -10,7 +11,9 @@ const { id, size } = Astro.props
 <div id={id} class="radial-menu-wrapper" style=`--size: ${size};`>
   <ul class="radial-menu">
     <slot />
-    <div class="radial-menu-thumb"></div>
+    <div class="radial-menu-thumb">
+      <BrandIcon />
+    </div>
     <svg class="radial-menu-shape" width="100%" height="100%">
       <defs class="pointer-events-none"
         ><mask width="110%" height="110%"> </mask></defs
@@ -81,5 +84,20 @@ const { id, size } = Astro.props
     & path:hover {
       fill: white;
     }
+  }
+  .radial-menu-thumb {
+    --x: 50%;
+    --y: 50%;
+    position: absolute;
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: var(--x);
+    top: var(--y);
+    transform: translate(-50%, -50%);
   }
 </style>

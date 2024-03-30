@@ -21,6 +21,9 @@ export default class Menu {
   private _shape: HTMLElement
   private _wrapper: HTMLElement
   private _bg: HTMLElement
+  private _thumb: HTMLElement
+
+  private _thumbPos: Vec2
 
   items: NodeListOf<HTMLElement>
   innerRadiusPercent: number
@@ -48,6 +51,8 @@ export default class Menu {
       )
     this.items = $all(`.radial-menu-item`, this._wrapper)
     this._bg = $('.radial-menu-bg', this._wrapper)
+    this._thumb = $('.radial-menu-thumb', this._wrapper)
+    window.addEventListener('mousemove', this.handleThumb.bind(this))
 
     this._size = this._wrapper.style.getPropertyValue('--size')
     this._shape = $(`.radial-menu-shape`, this._wrapper)
@@ -58,6 +63,11 @@ export default class Menu {
   recalculateBounds() {
     if (!this._wrapper) throw new Error(`No root element for menu ${this.id}`)
     const menuBounds = this._shape.getBoundingClientRect()
+    const thumbBounds = this._thumb.getBoundingClientRect()
+    this._thumbPos = {
+      x: thumbBounds.right + window.pageXOffset,
+      y: thumbBounds.top + window.pageYOffset
+    }
 
     this._wrapper.style.setProperty('--pos-x', this._position.x + "px")
     this._wrapper.style.setProperty('--pos-y', this._position.y + "px")
@@ -91,7 +101,10 @@ export default class Menu {
       menuItemEl.style.setProperty('--x', menuItemPos.x + 'px')
       menuItemEl.style.setProperty('--y', menuItemPos.y + 'px')
       menuItemEl.setAttribute('data-i', i.toString())
-      const slice = document.createElementNS(SVGNS, "path");
+
+
+      const existingSlice = $(`[data-i="${i}"]`, this._shape)
+      const slice = existingSlice || document.createElementNS(SVGNS, "path");
       slice.setAttribute('fill', bgColor)
       slice.setAttribute('data-i', i.toString())
 
@@ -117,6 +130,7 @@ export default class Menu {
       slice.setAttribute('d', pathData)
       slice.style.cursor = 'pointer'
       slice.addEventListener('mouseenter', this.onSliceMouseEnter.bind(this))
+      slice.addEventListener('mouseup', this.onSliceClick.bind(this))
       slice.addEventListener('mouseleave', this.onSliceMouseLeave.bind(this))
 
       this._shape.appendChild(slice)
@@ -131,29 +145,20 @@ export default class Menu {
     mask.setAttribute('id', maskId)
     mask.setAttribute("viewBox", `0 0 ${this._radius * 2} ${this._radius * 2}`);
 
-    const gapPath = document.createElementNS(SVGNS, "path");
+    const existingGapPath = $(`path`, mask)
+    const gapPath = existingGapPath || document.createElementNS(SVGNS, "path");
     gapPath.setAttribute("fill", "white");
     gapPath.setAttribute("d", maskPath);
     mask.appendChild(gapPath);
     defs.appendChild(mask);
     this._shape.appendChild(defs);
     this._bg.style.setProperty('--mask', `url(#${maskId})`)
-  }
-
-  destroy(){
-    const paths = $all('path', this._shape);
-    paths.forEach((path) => {
-      path.removeEventListener('mouseenter', this.onSliceMouseEnter.bind(this))
-      path.removeEventListener('mouseleave', this.onSliceMouseLeave.bind(this))
-      path.remove()
-    });
-  }
+  } 
 
   set size(size: string) {
     this._wrapper.style.setProperty('--size', size)
     this._size = size
     this.recalculateBounds()
-    this.destroy()
     this.create()
   }
 
@@ -162,8 +167,10 @@ export default class Menu {
     this.recalculateBounds()
   }
 
+  onSliceClick(ev: MouseEvent) {
+    console.log("CLICK! Add sound here")
+  }
   onSliceMouseEnter(ev: MouseEvent) {
-    console.log(this.items)
     const slice = ev.currentTarget as SVGElement;
     const i = slice.getAttribute('data-i')
     const item = this.items[i]
@@ -174,5 +181,15 @@ export default class Menu {
     const i = slice.getAttribute('data-i')
     const item = this.items[i]
     item.setAttribute('data-hover', 'false')
+  }
+
+  handleThumb(ev: MouseEvent) {
+    const x = ev.clientX
+    const y = ev.clientY
+//wip
+    const newX = x
+    const newY = y
+    this._thumb.style.setProperty('--x', newX + 'px')
+    this._thumb.style.setProperty('--y', newY + 'px')
   }
 }

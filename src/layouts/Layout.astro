@@ -43,7 +43,7 @@ const { title, rowsMax, withContacts } = Astro.props
       ]}
     >
       <RadialMenu id="main-menu-6" size="15vw">
-        <MenuSlice>
+        <MenuSlice id="rmenu-home">
           <HomeIcon/>
           <a href="/">HOME</a>
         </MenuSlice>
@@ -84,6 +84,13 @@ const { title, rowsMax, withContacts } = Astro.props
     import Menu from '../components/RadialMenu/Menu'
     window.addEventListener('DOMContentLoaded', () => {
       const menu6 = new Menu('main-menu-6', { position: { x: 800, y: 300 } })
+      setTimeout(() => {
+        menu6.size = '20vw'
+      }, 2000)
+    })
+    document.querySelector('#rmenu-home').addEventListener('click', () => {
+      
+      console.log("CLICK")
     })
   </script>
 </html>
