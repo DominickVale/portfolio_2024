@@ -42,7 +42,7 @@ const { title, rowsMax, withContacts } = Astro.props
         rowsMax && 'auto-rows-max',
       ]}
     >
-      <RadialMenu id="main-menu-6" size="20vw">
+      <RadialMenu id="main-menu-6" size="15vw">
         <MenuSlice>
           <HomeIcon/>
           <a href="/">HOME</a>
@@ -83,7 +83,7 @@ const { title, rowsMax, withContacts } = Astro.props
     import '../app'
     import Menu from '../components/RadialMenu/Menu'
     window.addEventListener('DOMContentLoaded', () => {
-      const menu6 = new Menu('main-menu-6', { gap: "3px", position: { x: 800, y: 300 } })
+      const menu6 = new Menu('main-menu-6', { position: { x: 800, y: 300 } })
     })
   </script>
 </html>

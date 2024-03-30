@@ -9,86 +9,29 @@ const { id, size } = Astro.props
 
 <div
   id={id}
-  class='fixed h-[var(--size)] w-[var(--size)] left-[var(--pos-x)] top-[var(--pos-y)] translate-x-[-50%] translate-y-[-50%] rounded-full overflow-visible'
+  class="fixed left-[var(--pos-x)] top-[var(--pos-y)] h-[var(--size)] w-[var(--size)] translate-x-[-50%] translate-y-[-50%] overflow-visible rounded-full"
   style=`--size: ${size};`
 >
   <ul class="radial-menu relative h-full w-full">
     <slot />
+    <svg
+      class="radial-menu-shape absolute left-0 top-0 h-full w-full"
+      width="100%"
+      height="100%"
+    >
+      <defs><mask width="100%" height="100%"> </mask></defs>
+    </svg>
+    <div
+      class="radial-menu-bg absolute left-0 top-0 h-full w-full rounded-full backdrop-blur-sm"
+    >
+    </div>
   </ul>
 </div>
 
-
 <style is:global>
-  .radial-menu {
-  overflow: hidden;
-  border-radius: 100%;
-  }
-  .radial-menu-item-label {
-    pointer-events: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: var(--y);
-    left: var(--x);
-    transform: translate(-50%, -50%);
-    z-index: 100;
-  }
-  .radial-menu-item:hover .radial-menu-item-bg {
-    background: radial-gradient(transparent var(--inner-radius), white var(--inner-radius));
-  }
-  .radial-menu-item:hover > .radial-menu-item-label{
-    color: black;
-    background-color: red;
-  }
-  .radial-menu-item-shape {
-    width: var(--size);
-    height: var(--size);
-
-    position: absolute;
-    transform-origin: 100% 100% 0;
-    bottom: 50%;
-    right: 50%;
-
-    transform-origin: 100% 100%;
-    transform: rotate(var(--rotate)) skew(var(--skew)) translate(var(--gap), var(--gap));
-    cursor: pointer;
-    overflow: hidden;
-
-  }
-  .radial-menu-item-shape::after{
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(20px);
-    mask: radial-gradient(transparent 30%, white 30%);
-    -webkit-mask: radial-gradient(transparent 30%, white 30%);
-    border-radius: 100%;
-    overflow: hidden;
-  }
-
-  .radial-menu .icon {
-    pointer-events: none;
-  }
-
-  .radial-menu-item-bg {
-    display: block;
-    width: 200%;
-    height: 200%;
-    transform-origin: 50% 50%;
-    border-radius: 50%;
-    transform: skew(calc(var(--skew) * -1)) rotate(calc(var(--rotate) * -1));
-    background: radial-gradient(
-      transparent var(--inner-radius),
-      var(--bg-radial-02) var(--inner-radius)
-    );
-
+  .radial-menu-bg {
+    mask: var(--mask);
+    -webkit-mask: var(--mask);
+    z-index: -1;
   }
 </style>
