@@ -1,3 +1,5 @@
+import type { Vec2 } from "./types";
+
 export const TAU = Math.PI * 2;
 
 export const $ = (selector: string, parentElement: HTMLElement = document.body): HTMLElement | null =>
@@ -13,3 +15,10 @@ export function degToRad(degrees: number) {
 export function radToDeg(rad: number) {
   return rad / (Math.PI / 180);
 }
+
+export function mag(vec: Vec2){
+  return Math.sqrt( (vec.x ** 2) + (vec.y ** 2) )
+}
+
+export const clamp = (n: number, min: number, max: number) =>
+  Math.min(Math.max(n, min), max)

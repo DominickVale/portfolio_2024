@@ -1,5 +1,5 @@
 import type { Vec2 } from '../../app/types'
-import { $, $all, TAU, degToRad } from '../../app/utils'
+import { $, $all, TAU, clamp, degToRad, mag } from '../../app/utils'
 
 type RadialMenuOptions = {
   innerRadiusPercent?: number
@@ -10,7 +10,6 @@ type RadialMenuOptions = {
 
 const SVGNS = "http://www.w3.org/2000/svg";
 const bgColor = 'var(--bg-radial-02)'
-const hoverColor =  'white'
 
 export default class Menu {
   private _radius: number
@@ -22,12 +21,13 @@ export default class Menu {
   private _wrapper: HTMLElement
   private _bg: HTMLElement
   private _thumb: HTMLElement
-
-  private _thumbPos: Vec2
+  private _wrapperBounds: DOMRect
+  private _thumbBounds: DOMRect
 
   items: NodeListOf<HTMLElement>
   innerRadiusPercent: number
   gap: number
+  innerRadius: number
 
   constructor(
     public id: string,
@@ -63,16 +63,14 @@ export default class Menu {
   recalculateBounds() {
     if (!this._wrapper) throw new Error(`No root element for menu ${this.id}`)
     const menuBounds = this._shape.getBoundingClientRect()
-    const thumbBounds = this._thumb.getBoundingClientRect()
-    this._thumbPos = {
-      x: thumbBounds.right + window.pageXOffset,
-      y: thumbBounds.top + window.pageYOffset
-    }
+    this._wrapperBounds = this._wrapper.getBoundingClientRect()
+    this._thumbBounds = this._thumb.getBoundingClientRect()
 
     this._wrapper.style.setProperty('--pos-x', this._position.x + "px")
     this._wrapper.style.setProperty('--pos-y', this._position.y + "px")
 
     this._radius = menuBounds.width / 2
+    this.innerRadius = this._radius * this.innerRadiusPercent / 100
     this._centralAngle = 360 / this.items.length
   }
 
@@ -84,7 +82,7 @@ export default class Menu {
     const maskPathData: string[] = []
 
     this._shape.setAttribute('viewBox', `0 0 ${this._radius * 2} ${this._radius * 2}`)
-    this.items.forEach((aaa, i) => {
+    this.items.forEach((_, i) => {
       const startAngle = ( i * sliceAngle) + TAU / 4
       const endAngle = startAngle + sliceAngle
 
@@ -183,13 +181,26 @@ export default class Menu {
     item.setAttribute('data-hover', 'false')
   }
 
+  /*
+    * @TODO: bigger thumb, progress as user moves mouse towards direction, select nearest slice to thumb
+    */
   handleThumb(ev: MouseEvent) {
-    const x = ev.clientX
-    const y = ev.clientY
-//wip
-    const newX = x
-    const newY = y
-    this._thumb.style.setProperty('--x', newX + 'px')
-    this._thumb.style.setProperty('--y', newY + 'px')
+    const x = ev.clientX;
+    const y = ev.clientY;
+
+    const rel = {
+      x: x - this._position.x,
+      y: y - this._position.y,
+    };
+
+    const distance = Math.sqrt(rel.x ** 2 + rel.y ** 2);
+
+    const clampedDistance = clamp(distance, 0, this.innerRadius - (this._thumbBounds.width / 2))
+
+    const newX = (rel.x / distance) * clampedDistance;
+    const newY = (rel.y / distance) * clampedDistance;
+
+    this._thumb.style.setProperty('--x', this._radius + newX + 'px');
+    this._thumb.style.setProperty('--y', this._radius + newY + 'px');
   }
 }
