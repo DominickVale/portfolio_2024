@@ -7,31 +7,79 @@ type Props = {
 const { id, size } = Astro.props
 ---
 
-<div
-  id={id}
-  class="fixed left-[var(--pos-x)] top-[var(--pos-y)] h-[var(--size)] w-[var(--size)] translate-x-[-50%] translate-y-[-50%] overflow-visible rounded-full"
-  style=`--size: ${size};`
->
-  <ul class="radial-menu relative h-full w-full">
+<div id={id} class="radial-menu-wrapper" style=`--size: ${size};`>
+  <ul class="radial-menu">
     <slot />
-    <svg
-      class="radial-menu-shape absolute left-0 top-0 h-full w-full"
-      width="100%"
-      height="100%"
-    >
-      <defs><mask width="100%" height="100%"> </mask></defs>
+    <div class="radial-menu-thumb"></div>
+    <svg class="radial-menu-shape" width="100%" height="100%">
+      <defs class="pointer-events-none"
+        ><mask width="110%" height="110%"> </mask></defs
+      >
     </svg>
-    <div
-      class="radial-menu-bg absolute left-0 top-0 h-full w-full rounded-full backdrop-blur-sm"
-    >
-    </div>
+    <div class="radial-menu-bg"></div>
   </ul>
 </div>
 
 <style is:global>
+  .radial-menu-wrapper {
+    position: fixed;
+    left: var(--pos-x);
+    top: var(--pos-y);
+    height: var(--size);
+    width: var(--size);
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+  .radial-menu {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
   .radial-menu-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    backdrop-filter: blur(var(--blur-radial));
+
     mask: var(--mask);
     -webkit-mask: var(--mask);
     z-index: -1;
+  }
+  .radial-menu-item {
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    position: absolute;
+    top: var(--y);
+    left: var(--x);
+    transform: translate(-50%, -50%);
+    &[data-hover='true'] {
+      path {
+        @apply fill-background-dark;
+      }
+      @apply text-background-dark;
+    }
+  }
+  .radial-menu-item-label {
+    @apply text-xs;
+    @apply gap-1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .radial-menu-shape {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    & path:hover {
+      fill: white;
+    }
   }
 </style>

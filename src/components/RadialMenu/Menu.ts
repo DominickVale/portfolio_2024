@@ -15,7 +15,6 @@ const hoverColor =  'white'
 export default class Menu {
   private _radius: number
   private _centralAngle: number
-  private _skew: number
   private _size: string
   private _position: Vec2
 
@@ -23,7 +22,7 @@ export default class Menu {
   private _wrapper: HTMLElement
   private _bg: HTMLElement
 
-  slices: NodeListOf<HTMLElement>
+  items: NodeListOf<HTMLElement>
   innerRadiusPercent: number
   gap: number
 
@@ -39,101 +38,91 @@ export default class Menu {
     this.gap = gap
     this._position = position
 
-    console.info(`Creating radial menu ${id},\n
-      innerRadiusPercent: ${this.innerRadiusPercent},\n
-      gap: ${this.gap},\n
-      `)
-
-    this.slices = $all(`#${id} .radial-menu-item`)
+    console.info(`Creating radial menu ${id}`, this)
 
     this._wrapper = $(`#${id}`)
-    this._bg = $('.radial-menu-bg', this._wrapper)
+
     if (!this._wrapper)
       throw new Error(
         `Radial menu with ID "${id}" not found! \n Did you include <RadialMenu id="${id}">?`,
       )
+    this.items = $all(`.radial-menu-item`, this._wrapper)
+    this._bg = $('.radial-menu-bg', this._wrapper)
+
     this._size = this._wrapper.style.getPropertyValue('--size')
     this._shape = $(`.radial-menu-shape`, this._wrapper)
-    this.calculateSize()
+    this.recalculateBounds()
     this.create()
   }
 
-  calculateSize() {
+  recalculateBounds() {
     if (!this._wrapper) throw new Error(`No root element for menu ${this.id}`)
     const menuBounds = this._shape.getBoundingClientRect()
 
-    this._radius = menuBounds.width / 2
-    this._centralAngle = 360 / this.slices.length
-    this._skew = 90 - this._centralAngle
-  }
-
-  create() {
-    const menuCenter = this._radius
     this._wrapper.style.setProperty('--pos-x', this._position.x + "px")
     this._wrapper.style.setProperty('--pos-y', this._position.y + "px")
 
-    this._shape.setAttribute('width', '100%')
-    this._shape.setAttribute('height', '100%')
-    this._shape.setAttribute('viewBox', `0 0 ${this._radius * 2} ${this._radius * 2}`)
+    this._radius = menuBounds.width / 2
+    this._centralAngle = 360 / this.items.length
+  }
 
+  create() {
+    const innerRadius = this._radius * this.innerRadiusPercent / 100
+    const center = this._radius
     const gapRad = degToRad(this.gap / 10)
-    const sliceAngle = ( TAU / this.slices.length )
-
-    const INNER_RADIUS = this._radius * this.innerRadiusPercent / 100
-
+    const sliceAngle = degToRad(this._centralAngle)
     const maskPathData: string[] = []
-    this.slices.forEach((_, i) => {
-      const startAngle = ( i * sliceAngle) + TAU / 4
-      const endAngle = ( startAngle + sliceAngle )
 
-      const labelAngleRad = startAngle + sliceAngle / 2
-      const labelsFactor = (this._radius / 2) + (this._radius * this.innerRadiusPercent / 100) / 2
-      const labelPosition = {
+    this._shape.setAttribute('viewBox', `0 0 ${this._radius * 2} ${this._radius * 2}`)
+    this.items.forEach((aaa, i) => {
+      const startAngle = ( i * sliceAngle) + TAU / 4
+      const endAngle = startAngle + sliceAngle
+
+      const menuItemAngleRad = startAngle + sliceAngle / 2
+      const menuItemPosFactor = (this._radius / 2) + (this._radius * this.innerRadiusPercent / 100) / 2
+      const menuItemPos = {
         x:
-          Math.cos(labelAngleRad) * labelsFactor + this._radius,
+          Math.cos(menuItemAngleRad) * menuItemPosFactor + this._radius,
         y:
-         Math.sin(labelAngleRad) * labelsFactor + this._radius,
+         Math.sin(menuItemAngleRad) * menuItemPosFactor + this._radius,
       }
 
-      const sliceButton = this._wrapper.querySelectorAll('.radial-menu-item')[i] as HTMLElement
-      sliceButton.style.setProperty('--x', labelPosition.x + 'px')
-      sliceButton.style.setProperty('--y', labelPosition.y + 'px')
+      const menuItemEl = $all('.radial-menu-item', this._wrapper)[i] as HTMLElement
+      menuItemEl.style.setProperty('--x', menuItemPos.x + 'px')
+      menuItemEl.style.setProperty('--y', menuItemPos.y + 'px')
+      menuItemEl.setAttribute('data-i', i.toString())
       const slice = document.createElementNS(SVGNS, "path");
       slice.setAttribute('fill', bgColor)
+      slice.setAttribute('data-i', i.toString())
 
-      const radiusesRatio = this._radius / INNER_RADIUS
+      const radiusesRatio = this._radius / innerRadius
       const innerGapRad = degToRad(( this.gap / 10 ) * radiusesRatio )
-      const outerStartX = menuCenter + (this._radius * Math.cos(startAngle + gapRad))
-      const outerStartY = menuCenter + (this._radius * Math.sin(startAngle + gapRad))
-      const outerEndX = menuCenter + (this._radius * Math.cos(endAngle - gapRad))
-      const outerEndY = menuCenter + (this._radius * Math.sin(endAngle - gapRad))
+      const outerStartX = center + (this._radius * Math.cos(startAngle + gapRad))
+      const outerStartY = center + (this._radius * Math.sin(startAngle + gapRad))
+      const outerEndX = center + (this._radius * Math.cos(endAngle - gapRad))
+      const outerEndY = center + (this._radius * Math.sin(endAngle - gapRad))
 
-      const innerStartX = menuCenter + (INNER_RADIUS * Math.cos(startAngle + innerGapRad))
-      const innerStartY = menuCenter + (INNER_RADIUS * Math.sin(startAngle + innerGapRad))
-      const innerEndX = menuCenter + (INNER_RADIUS * Math.cos(endAngle - innerGapRad))
-      const innerEndY = menuCenter + (INNER_RADIUS * Math.sin(endAngle - innerGapRad))
+      const innerStartX = center + (innerRadius * Math.cos(startAngle + innerGapRad))
+      const innerStartY = center + (innerRadius * Math.sin(startAngle + innerGapRad))
+      const innerEndX = center + (innerRadius * Math.cos(endAngle - innerGapRad))
+      const innerEndY = center + (innerRadius * Math.sin(endAngle - innerGapRad))
 
       const pathData = `M ${outerStartX } ${outerStartY}
                       A ${this._radius} ${this._radius} 0 0 1 ${outerEndX} ${outerEndY}
                       L ${innerEndX} ${innerEndY}
-                      A ${INNER_RADIUS} ${INNER_RADIUS} 0 0 0 ${innerStartX} ${innerStartY}
+                      A ${innerRadius} ${innerRadius} 0 0 0 ${innerStartX} ${innerStartY}
                       Z`
 
       maskPathData.push(pathData)
       slice.setAttribute('d', pathData)
       slice.style.cursor = 'pointer'
-      slice.addEventListener('mouseenter', () =>
-        slice.setAttribute('fill', hoverColor),
-      )
-      slice.addEventListener('mouseleave', () =>
-        slice.setAttribute('fill', bgColor),
-      )
+      slice.addEventListener('mouseenter', this.onSliceMouseEnter.bind(this))
+      slice.addEventListener('mouseleave', this.onSliceMouseLeave.bind(this))
 
       this._shape.appendChild(slice)
     })
 
     // MASK
-    //
     const maskPath = maskPathData.join(" ")
 
     const defs = $('defs', this._shape)
@@ -151,17 +140,39 @@ export default class Menu {
     this._bg.style.setProperty('--mask', `url(#${maskId})`)
   }
 
+  destroy(){
+    const paths = $all('path', this._shape);
+    paths.forEach((path) => {
+      path.removeEventListener('mouseenter', this.onSliceMouseEnter.bind(this))
+      path.removeEventListener('mouseleave', this.onSliceMouseLeave.bind(this))
+      path.remove()
+    });
+  }
+
   set size(size: string) {
     this._wrapper.style.setProperty('--size', size)
     this._size = size
-    console.log(`Recreating with size: ${this._size}...`)
-    this.calculateSize()
+    this.recalculateBounds()
+    this.destroy()
     this.create()
   }
 
   set position(pos: Vec2) {
     this._position = pos
-    this.calculateSize()
-    this.create()
+    this.recalculateBounds()
+  }
+
+  onSliceMouseEnter(ev: MouseEvent) {
+    console.log(this.items)
+    const slice = ev.currentTarget as SVGElement;
+    const i = slice.getAttribute('data-i')
+    const item = this.items[i]
+    item.setAttribute('data-hover', 'true')
+  }
+  onSliceMouseLeave(ev: MouseEvent) {
+    const slice = ev.currentTarget as SVGElement;
+    const i = slice.getAttribute('data-i')
+    const item = this.items[i]
+    item.setAttribute('data-hover', 'false')
   }
 }
