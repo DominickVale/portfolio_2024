@@ -15,15 +15,30 @@ const { id, size } = Astro.props
       <BrandIcon />
     </div>
     <svg class="radial-menu-shape" width="100%" height="100%">
-      <defs class="pointer-events-none"
-        ><mask width="110%" height="110%"> </mask></defs
+      <defs class="po-30nter-events-none"
+        ><mask width="110%" height="110%"> </mask>
+      </defs
       >
     </svg>
     <div class="radial-menu-bg"></div>
+    <div class="radial-menu-progress"></div>
   </ul>
 </div>
 
 <style is:global>
+  .radial-menu-progress{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    background: radial-gradient(red% white%);
+
+    /* mask: var(--mask); */
+    /* -webkit-mask: var(--mask); */
+    z-index: 10;
+  }
   .radial-menu-wrapper {
     position: fixed;
     left: var(--pos-x);
@@ -62,7 +77,7 @@ const { id, size } = Astro.props
     top: var(--y);
     left: var(--x);
     transform: translate(-50%, -50%);
-    &[data-hover='true'] {
+    &[data-highlighted='true'] {
       path {
         @apply fill-background-dark;
       }
@@ -83,6 +98,9 @@ const { id, size } = Astro.props
     height: 100%;
     & path:hover {
       fill: white;
+    }
+    & path[data-highlighted='true'] {
+      @apply fill-white;
     }
   }
   .radial-menu-thumb {
