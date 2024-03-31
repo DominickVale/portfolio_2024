@@ -15,29 +15,23 @@ const { id, size } = Astro.props
       <BrandIcon />
     </div>
     <svg class="radial-menu-shape" width="100%" height="100%">
-      <defs class="po-30nter-events-none"
+      <defs class="pointer-events-none"
         ><mask width="110%" height="110%"> </mask>
       </defs
       >
     </svg>
-    <div class="radial-menu-bg"></div>
-    <div class="radial-menu-progress"></div>
   </ul>
+  <div class="radial-menu-bgs">
+  </div>
 </div>
 
 <style is:global>
-  .radial-menu-progress{
+  .radial-menu-bgs{
     position: absolute;
-    left: 0;
     top: 0;
-    width: 100%;
+    left: 0;
     height: 100%;
-    border-radius: 100%;
-    background: radial-gradient(red% white%);
-
-    /* mask: var(--mask); */
-    /* -webkit-mask: var(--mask); */
-    z-index: 10;
+    width: 100%;
   }
   .radial-menu-wrapper {
     position: fixed;
@@ -53,7 +47,8 @@ const { id, size } = Astro.props
     width: 100%;
     height: 100%;
   }
-  .radial-menu-bg {
+  .radial-menu-item-bg {
+    --progress: 0;
     position: absolute;
     left: 0;
     top: 0;
@@ -61,10 +56,14 @@ const { id, size } = Astro.props
     height: 100%;
     border-radius: 100%;
     backdrop-filter: blur(var(--blur-radial));
+    background: var(--bg-radial-02);
 
     mask: var(--mask);
     -webkit-mask: var(--mask);
     z-index: -1;
+    &[data-highlighted='true'] {
+      background: radial-gradient(white var(--progress), rgba(255,255,255, 0.95) var(--progress));
+    }
   }
   .radial-menu-item {
     pointer-events: none;
@@ -98,9 +97,6 @@ const { id, size } = Astro.props
     height: 100%;
     & path:hover {
       fill: white;
-    }
-    & path[data-highlighted='true'] {
-      @apply fill-white;
     }
   }
   .radial-menu-thumb {

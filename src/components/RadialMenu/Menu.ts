@@ -19,7 +19,7 @@ export default class Menu {
 
   private _shape: HTMLElement
   private _wrapper: HTMLElement
-  private _bg: HTMLElement
+  private _bgs: HTMLElement[]
   private _thumb: HTMLElement
   private _wrapperBounds: DOMRect
   private _thumbBounds: DOMRect
@@ -40,6 +40,7 @@ export default class Menu {
     this.innerRadiusPercent = innerRadiusPercent
     this.gap = gap
     this._position = position
+    this._bgs = []
 
     console.info(`Creating radial menu ${id}`, this)
 
@@ -50,7 +51,6 @@ export default class Menu {
         `Radial menu with ID "${id}" not found! \n Did you include <RadialMenu id="${id}">?`,
       )
     this.items = $all(`.radial-menu-item`, this._wrapper)
-    this._bg = $('.radial-menu-bg', this._wrapper)
     this._thumb = $('.radial-menu-thumb', this._wrapper)
     window.addEventListener('mousemove', this.handleThumb.bind(this))
 
@@ -97,9 +97,12 @@ export default class Menu {
         y: Math.sin(menuItemAngleRad) * menuItemPosFactor + this._radius,
       }
 
-      const menuItemEl = $all('.radial-menu-item', this._wrapper)[
-        i
-      ] as HTMLElement
+      const menuItemEl = $all('.radial-menu-item', this._wrapper)[ i ] as HTMLElement
+      const existingBg = $(`[data-i="${i}"]`, this._shape)
+      const menuItemBg = existingBg || document.createElement('div')
+      menuItemBg.setAttribute('id', `radial-menu-bg-${this.id}-${i}`)
+      menuItemBg.setAttribute('class', 'radial-menu-item-bg')
+
       menuItemEl.style.setProperty('--x', menuItemPos.x + 'px')
       menuItemEl.style.setProperty('--y', menuItemPos.y + 'px')
       menuItemEl.setAttribute('data-i', i.toString())
@@ -108,7 +111,8 @@ export default class Menu {
 
       const existingSlice = $(`[data-i="${i}"]`, this._shape)
       const slice = existingSlice || document.createElementNS(SVGNS, 'path')
-      slice.setAttribute('fill', bgColor)
+      slice.setAttribute('id', `radial-menu-slice-${i}`)
+      slice.setAttribute('fill', 'transparent')
       slice.setAttribute('data-i', i.toString())
 
       const radiusesRatio = this._radius / innerRadius
@@ -139,25 +143,29 @@ export default class Menu {
       slice.addEventListener('mouseleave', this.onSliceMouseLeave.bind(this))
 
       this._shape.appendChild(slice)
+
+      const maskId = `radial-menu-mask-${this.id}-${i}`;
+       // MASK
+      const defs = $('defs', this._shape) || document.createElementNS(SVGNS, 'defs');
+      //@ts-ignore
+      const mask = $(`${maskId}`, defs) || document.createElementNS(SVGNS, 'mask');
+
+      mask.setAttribute('id', maskId);
+      mask.setAttribute('viewBox', `0 0 ${this._radius * 2} ${this._radius * 2}`);
+
+      const gapPath = document.createElementNS(SVGNS, 'path');
+      gapPath.setAttribute('fill', 'white');
+      gapPath.setAttribute('d', pathData);
+
+      mask.appendChild(gapPath);
+      defs.appendChild(mask);
+      this._shape.appendChild(defs);
+
+      menuItemBg.style.setProperty('--mask', `url(#${maskId})`)
+      // menuItemBg.style.setProperty('--mask', `url(#${maskId})`)
+      $('.radial-menu-bgs', this._wrapper).appendChild(menuItemBg)
+      this._bgs.push(menuItemBg)
     })
-
-    // MASK
-    const maskPath = maskPathData.join(' ')
-
-    const defs = $('defs', this._shape)
-    const mask = $('mask', defs)
-    const maskId = `radial-menu-mask-${this.id}`
-    mask.setAttribute('id', maskId)
-    mask.setAttribute('viewBox', `0 0 ${this._radius * 2} ${this._radius * 2}`)
-
-    const existingGapPath = $(`path`, mask)
-    const gapPath = existingGapPath || document.createElementNS(SVGNS, 'path')
-    gapPath.setAttribute('fill', 'white')
-    gapPath.setAttribute('d', maskPath)
-    mask.appendChild(gapPath)
-    defs.appendChild(mask)
-    this._shape.appendChild(defs)
-    this._bg.style.setProperty('--mask', `url(#${maskId})`)
   }
 
   set size(size: string) {
@@ -189,7 +197,7 @@ export default class Menu {
   }
 
   /*
-   * @TODO: bigger thumb, progress as user moves mouse towards direction 
+   * @TODO: bigger thumb, callback on progress 120%
    */
   handleThumb(ev: MouseEvent) {
     const x = ev.clientX
@@ -206,6 +214,8 @@ export default class Menu {
     const clampedDistance = clamp(distance, 0, innerRadiusBound)
     const newX = (this._radius + (rel.x / distance) * clampedDistance) || this._radius
     const newY = (this._radius + (rel.y / distance) * clampedDistance) || this._radius
+
+    const progress = distance / ( this._radius + this.innerRadius ) * 100
 
     let closest = {
       id: -1,
@@ -228,13 +238,17 @@ export default class Menu {
         }
         item.setAttribute('data-highlighted', 'false')
         this._shape.children[i].setAttribute('data-highlighted', 'false')
+        this._bgs[i].setAttribute('data-highlighted', 'false')
       })
       this.items[closest.id].setAttribute('data-highlighted', 'true')
       this._shape.children[closest.id].setAttribute('data-highlighted', 'true')
+      this._bgs[closest.id].setAttribute('data-highlighted', 'true')
+      this._bgs[closest.id].style.setProperty('--progress', progress + '%')
     } else {
       this.items.forEach((item, i) => {
         item.setAttribute('data-highlighted', 'false')
         this._shape.children[i].setAttribute('data-highlighted', 'false')
+        this._bgs[i].setAttribute('data-highlighted', 'false')
       })
     }
 
