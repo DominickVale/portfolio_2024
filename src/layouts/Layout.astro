@@ -3,16 +3,17 @@ import '../style/main.css'
 import Navbar from '../components/Navbar.astro'
 import Footer from '../components/Footer.astro'
 import Contacts from '../components/Contacts.astro'
-import RadialMenu from '../components/RadialMenu/Menu.astro'
-import { ContactIcon, LabIcon, HomeIcon, WorksIcon, SettingsIcon, AboutIcon, BlogIcon} from '../components/icons'
+import RadialMenu from '../components/RadialMenu.astro'
+import { ContactIcon, LabIcon, HomeIcon, WorksIcon, SettingsIcon, AboutIcon, BlogIcon, CopyIcon, ContextMenuIcon, DebugIcon, AudioIcon} from '../components/icons'
+import type { HTMLAttributes } from 'astro/types'
 
-interface Props {
+interface Props extends HTMLAttributes<'div'> {
   title: string
   rowsMax?: boolean
   withContacts?: boolean
 }
 
-const { title, rowsMax, withContacts } = Astro.props
+const { title, rowsMax, withContacts, ...props } = Astro.props
 
 // @TODO: add custom conntent for AI web crawlers
 ---
@@ -31,7 +32,7 @@ const { title, rowsMax, withContacts } = Astro.props
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,200..900&family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
   </style>
-  <body id="app" class="relative flex max-h-screen flex-col font-body">
+  <body id="app" class="relative flex max-h-screen flex-col font-body" {...props}>
     <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-red-500"
     ></canvas>
     <Navbar />
@@ -41,7 +42,6 @@ const { title, rowsMax, withContacts } = Astro.props
         rowsMax && 'auto-rows-max',
       ]}
     >
-      <RadialMenu id="main-menu-6" size="15vw" />
       <slot />
     </main>
     {
@@ -60,55 +60,17 @@ const { title, rowsMax, withContacts } = Astro.props
       <ContactIcon />
       <LabIcon />
       <SettingsIcon />
+      <CopyIcon/>
+      <ContextMenuIcon/>
+      <DebugIcon/>
+      <AudioIcon/>
     </div>
+      <RadialMenu id="text" size="20vw" />
+      <RadialMenu id="default" size="20vw" />
+      <RadialMenu id="default-blog" size="20vw" />
+      <RadialMenu id="settings" size="15vw" />
   </body>
   <script>
     import '../app'
-    import Menu from '../components/RadialMenu/Menu'
-    window.addEventListener('DOMContentLoaded', () => {
-
-      const cb = () => console.log("CLICK")
-      const menuItems = [
-        {
-          iconId: 'home',
-          label: "HOME",
-          callback: cb
-        },
-        {
-          iconId: 'works',
-          label: "WORKS",
-          callback: cb
-        },
-        {
-          iconId: 'about',
-          label: "ABOUT",
-          callback: cb
-        },
-        {
-          iconId: 'blog',
-          label: "BLOG",
-          callback: cb
-        },
-        {
-          iconId: 'contact',
-          label: "CONTACT",
-          callback: cb
-        },
-        {
-          iconId: 'settings',
-          label: "SETTINGS",
-          callback: cb
-        },
-      ]
-
-      const menu6 = new Menu('main-menu-6', menuItems, { position: { x: 800, y: 300 } })
-      setTimeout(() => {
-        // menu6.size = '20vw'
-      }, 2000)
-    })
-    document.querySelector('#rmenu-home').addEventListener('click', () => {
-      
-      console.log("CLICK")
-    })
   </script>
 </html>

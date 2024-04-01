@@ -1,6 +1,6 @@
-import { ICON_IDS } from '../../app/constants'
-import type { Vec2 } from '../../app/types'
-import { $, $all, TAU, clamp, degToRad, mag } from '../../app/utils'
+import { ICON_IDS } from './constants'
+import type { Vec2 } from './types'
+import { $, $all, TAU, clamp, degToRad, mag } from './utils'
 
 type RadialMenuOptions = {
   innerRadiusPercent?: number
@@ -11,15 +11,16 @@ type RadialMenuOptions = {
 
 export type RadialMenuItem = {
   id?: string
-  iconId: [keyof typeof ICON_IDS]
+  iconId: typeof ICON_IDS[number]
   label: string
-  callback: () => void
+  position?: number
+  callback: (event: MouseEvent, target: HTMLElement, originalTarget: HTMLElement) => void
 }
 
 const SVGNS = 'http://www.w3.org/2000/svg'
 const bgColor = 'var(--bg-radial-02)'
 
-export default class Menu {
+export default class RadialMenu {
   private _radius: number
   private _centralAngle: number
   private _size: string
@@ -32,12 +33,14 @@ export default class Menu {
   private _thumb: HTMLElement
   private _wrapperBounds: DOMRect
   private _thumbBounds: DOMRect
+  private _lastActiveSliceId: number
 
   itemsEl: HTMLElement[]
   innerRadiusPercent: number
   gap: number
   innerRadius: number
   shown: boolean
+  currTarget: HTMLElement | null
 
   constructor(
     public id: string,
@@ -48,8 +51,7 @@ export default class Menu {
       position = { x: 0, y: 0 },
     }: RadialMenuOptions = {},
   ) {
-    //@TODO: CHANGE to FALSE
-    this.shown = true
+    this.shown = false
     this.innerRadiusPercent = innerRadiusPercent
     this.gap = gap
     this._position = position
@@ -58,14 +60,14 @@ export default class Menu {
     console.info(`Creating radial menu ${id}`, this)
 
     this._wrapper = $(`#${id}`)
-    this._menuElContainer = $(`.radial-menu`, this._wrapper)
-
     if (!this._wrapper)
       throw new Error(
         `Radial menu with ID "${id}" not found! \n Did you include <RadialMenu id="${id}">?`,
       )
-    this._thumb = $('.radial-menu-thumb', this._wrapper)
+    this._menuElContainer = $(`.radial-menu`, this._wrapper)
+    this._thumb = $(`#radial-menu-thumb-${this.id}`, this._wrapper)
     window.addEventListener('mousemove', this.handleThumb.bind(this))
+    window.addEventListener('keyup', this.handleKeyboard.bind(this))
 
     this._size = this._wrapper.style.getPropertyValue('--size')
     this._shape = $(`.radial-menu-shape`, this._wrapper)
@@ -89,7 +91,8 @@ export default class Menu {
   }
 
   populateItems() {
-    this.itemsEl = this.items.map(( item, i ) => {
+    const orderedItems = this.items.sort((a, b) => a.position - b.position)
+    this.itemsEl = orderedItems.map(( item, i ) => {
       const existingItem = $(`.radial-menu-item[data-i="${item.id}"]`, this._wrapper)
       if(!existingItem){
         const menuEl = document.createElement('li')
@@ -211,6 +214,31 @@ export default class Menu {
     })
   }
 
+  destroy(){
+    this.itemsEl.forEach(el => el.remove())
+    this._bgs.forEach(bg => bg.remove())
+    Array.from( this._shape.children ).forEach(child => child.remove())
+  }
+
+  open(x: number, y:number, target: HTMLElement) {
+    this.position = { x, y }
+    this.shown = true
+    this._wrapper.classList.remove('radial-menu-hidden')
+    this.currTarget = target
+  }
+
+  close() {
+    this.currTarget = null
+    this.shown = false
+    this._wrapper.classList.add('radial-menu-hidden')
+    const i = this._lastActiveSliceId
+    this.itemsEl[i].setAttribute('data-highlighted', 'false')
+    this._shape.children[i].setAttribute('data-highlighted', 'false')
+    this._bgs[i].setAttribute('data-highlighted', 'false')
+    this._thumb.style.setProperty('--x', '50%')
+    this._thumb.style.setProperty('--y', '50%')
+  }
+
   set size(size: string) {
     this._wrapper.style.setProperty('--size', size)
     this._size = size
@@ -223,12 +251,16 @@ export default class Menu {
     this.recalculateBounds()
   }
 
-  onSliceActivate(id, progress: number){
-    this.items[id].callback.call(this)
+  onSliceActivate(id, target:HTMLElement, ev: Event){
+    this.items[id].callback.call(this, ev, target, this.currTarget)
   }
 
   onSliceClick(ev: MouseEvent) {
     console.log('CLICK! Add sound here')
+    const slice = ev.currentTarget as SVGElement
+    const i = slice.getAttribute('data-i')
+    this.onSliceActivate(i, ev.target as HTMLElement, ev)
+    this.close()
   }
   onSliceMouseEnter(ev: MouseEvent) {
     const slice = ev.currentTarget as SVGElement
@@ -243,10 +275,19 @@ export default class Menu {
     item.setAttribute('data-hover', 'false')
   }
 
+  handleKeyboard(ev: KeyboardEvent) {
+    if(!this.shown) return
+
+    if (ev.key === 'Escape') {
+      this.close()
+    }
+  }
+
   /*
    * @TODO: bigger thumb, callback on progress 120%
    */
   handleThumb(ev: MouseEvent) {
+    if(!this.shown) return
     const x = ev.clientX
     const y = ev.clientY
 
@@ -291,9 +332,11 @@ export default class Menu {
       this._shape.children[closest.id].setAttribute('data-highlighted', 'true')
       this._bgs[closest.id].setAttribute('data-highlighted', 'true')
       this._bgs[closest.id].style.setProperty('--progress', progress + '%')
-      if(progress > 100 && this.shown){
-        this.onSliceActivate(closest.id, progress)
-        this.shown = false
+      this._lastActiveSliceId = closest.id
+      if(progress> 72 && this.shown){
+        this.onSliceActivate(closest.id, ev.target as HTMLElement, ev)
+        this.close()
+        return
       }
     } else {
       this.itemsEl.forEach((item, i) => {

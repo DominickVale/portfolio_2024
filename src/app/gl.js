@@ -17,14 +17,15 @@ const WIDTH = 200
  * add animations on page transition
  * figure out how to reset to initial positions after page transitions
  * (maybe move to ogl)
+ * add a reset lorenz button
  */
 export default class GL {
   constructor(debug) {
     this.debug = debug
-    const app = document.getElementById('app')
+    this._appEl = document.getElementById('app')
     // get primary color from css global variables
-    this.primaryColor = getComputedStyle(app).getPropertyValue('--primary')
-    this.bgColor = getComputedStyle(app).getPropertyValue('--bg-dark')
+    this.primaryColor = getComputedStyle(this._appEl).getPropertyValue('--primary')
+    this.bgColor = getComputedStyle(this._appEl).getPropertyValue('--bg-dark')
     this.oldColor = this.primaryColor
     this.params = {
       sigma: 10,
@@ -61,8 +62,14 @@ export default class GL {
     this.renderer.outputEncoding = THREE.sRGBEncoding
 
     if (debug) {
+      this.startDebug()
+    }
+    this.init()
+  }
+
+  startDebug(){
       this.stats = new Stats()
-      app.appendChild(this.stats.dom)
+      this._appEl.appendChild(this.stats.dom)
 
       this.gui = new GUI()
       this.gui.add(this.params, 'sigma', -8, 100)
@@ -77,12 +84,23 @@ export default class GL {
       this.gui.add(this.params, 'positionY', -50, 50)
       this.gui.add(this.params, 'positionZ', -50, 50)
 
-      this.controls = new OrbitControls(this.camera, app)
+      this.controls = new OrbitControls(this.camera, this._appEl)
       this.controls.enableDamping = true
       this.controls.dampingFactor = 0.05
       this.controls.enabled = false
 
       this.gui.add(this.controls, 'enabled').name('Orbit controls')
+  }
+
+  stopDebug(){
+    if (this.stats) {
+      this.stats.dom.remove()
+    }
+    if (this.gui) {
+      this.gui.destroy()
+    }
+    if (this.controls) {
+      this.controls.dispose()
     }
   }
 

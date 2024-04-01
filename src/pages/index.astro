@@ -3,16 +3,18 @@ import Layout from '../layouts/Layout.astro'
 import Btn from '../components/Btn.astro'
 import StatusItem from '../components/StatusItem.astro'
 import NextPageBtn from '../components/NextPageBtn.astro'
+import RadialMenu from '../components/RadialMenu.astro'
 ---
 
-<Layout title="Dominick Vale - ⓒ 2024">
+<Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default">
+    
   <section
     class="col-span-10 col-start-2 row-span-2 row-start-2 flex flex-col content-start justify-end text-xs taller:pt-[17vh]"
   >
     <div class="mt-4 flex justify-between sm:text-left">
       <div class="">
         <h2 class="text-primary">> whoami</h2>
-        <p class="text-stone-300 sm:max-w-64 mb-3">
+        <p class="text-stone-300 sm:max-w-64 mb-3" data-menu-trigger="text">
           I’m just the quiet, value-centered guy that gets the work done. My
           interests range from front-end web development all the way down to
           reverse engineering, to mountain biking. Sounds interesting?
@@ -58,4 +60,5 @@ import NextPageBtn from '../components/NextPageBtn.astro'
       <NextPageBtn>WORKS</NextPageBtn>
     </div>
   </section>
+    <RadialMenu id="read-more-menu" size="15vw" />
 </Layout>

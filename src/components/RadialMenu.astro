@@ -1,5 +1,5 @@
 ---
-import { BrandIcon } from '../icons'
+import { BrandIcon } from './icons'
 type Props = {
   id: string
   size: string
@@ -8,9 +8,9 @@ type Props = {
 const { id, size } = Astro.props
 ---
 
-<div id={id} class="radial-menu-wrapper" style=`--size: ${size};`>
+<div id={id} class="radial-menu-wrapper radial-menu-hidden" style=`--size: ${size};`>
   <ul class="radial-menu">
-    <div class="radial-menu-thumb">
+    <div id={`radial-menu-thumb-${id}`} class="radial-menu-thumb">
       <BrandIcon />
     </div>
     <svg class="radial-menu-shape" width="100%" height="100%">
@@ -47,6 +47,10 @@ const { id, size } = Astro.props
     width: 100%;
     height: 100%;
   }
+  .radial-menu-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
   .radial-menu-item-bg {
     --progress: 0;
     position: absolute;
@@ -62,7 +66,7 @@ const { id, size } = Astro.props
     -webkit-mask: var(--mask);
     z-index: -1;
     &[data-highlighted='true'] {
-      background: radial-gradient(white var(--progress), rgba(255,255,255, 0.95) var(--progress));
+      background: radial-gradient(white var(--progress), rgba(255,255,255, 0.90) var(--progress));
     }
   }
   .radial-menu-item {
@@ -74,6 +78,7 @@ const { id, size } = Astro.props
     align-items: center;
     z-index: 10;
     position: absolute;
+    text-align: center;
     top: var(--y);
     left: var(--x);
     transform: translate(-50%, -50%);

@@ -6,4 +6,9 @@ export const ICON_IDS = [
   'settings',
   'brand',
   'lab',
-]
+  'copy',
+  'contact',
+  'context-menu',
+  'debug',
+  'audio'
+] as const

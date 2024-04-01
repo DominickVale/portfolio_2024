@@ -6,4 +6,8 @@ export { default as SettingsIcon } from './Settings.astro'
 export { default as AboutIcon } from './About.astro'
 export { default as BlogIcon } from './Blog.astro'
 export { default as BrandIcon } from './Brand.astro'
+export { default as CopyIcon } from './Copy.astro'
+export { default as ContextMenuIcon } from './ContextMenu.astro'
+export { default as DebugIcon } from './Debug.astro'
+export { default as AudioIcon } from './Audio.astro'
 
