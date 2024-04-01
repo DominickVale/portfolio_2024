@@ -1,3 +1,4 @@
+import { ICON_IDS } from '../../app/constants'
 import type { Vec2 } from '../../app/types'
 import { $, $all, TAU, clamp, degToRad, mag } from '../../app/utils'
 
@@ -6,6 +7,13 @@ type RadialMenuOptions = {
   gap?: number
   labelsPosFactor?: number
   position?: Vec2
+}
+
+export type RadialMenuItem = {
+  id?: string
+  iconId: [keyof typeof ICON_IDS]
+  label: string
+  callback: () => void
 }
 
 const SVGNS = 'http://www.w3.org/2000/svg'
@@ -19,24 +27,29 @@ export default class Menu {
 
   private _shape: HTMLElement
   private _wrapper: HTMLElement
+  private _menuElContainer: HTMLElement
   private _bgs: HTMLElement[]
   private _thumb: HTMLElement
   private _wrapperBounds: DOMRect
   private _thumbBounds: DOMRect
 
-  items: NodeListOf<HTMLElement>
+  itemsEl: HTMLElement[]
   innerRadiusPercent: number
   gap: number
   innerRadius: number
+  shown: boolean
 
   constructor(
     public id: string,
+    public items: RadialMenuItem[],
     {
       innerRadiusPercent = 35,
       gap = 8,
       position = { x: 0, y: 0 },
     }: RadialMenuOptions = {},
   ) {
+    //@TODO: CHANGE to FALSE
+    this.shown = true
     this.innerRadiusPercent = innerRadiusPercent
     this.gap = gap
     this._position = position
@@ -45,17 +58,18 @@ export default class Menu {
     console.info(`Creating radial menu ${id}`, this)
 
     this._wrapper = $(`#${id}`)
+    this._menuElContainer = $(`.radial-menu`, this._wrapper)
 
     if (!this._wrapper)
       throw new Error(
         `Radial menu with ID "${id}" not found! \n Did you include <RadialMenu id="${id}">?`,
       )
-    this.items = $all(`.radial-menu-item`, this._wrapper)
     this._thumb = $('.radial-menu-thumb', this._wrapper)
     window.addEventListener('mousemove', this.handleThumb.bind(this))
 
     this._size = this._wrapper.style.getPropertyValue('--size')
     this._shape = $(`.radial-menu-shape`, this._wrapper)
+    this.populateItems()
     this.recalculateBounds()
     this.create()
   }
@@ -71,7 +85,37 @@ export default class Menu {
 
     this._radius = menuBounds.width / 2
     this.innerRadius = (this._radius * this.innerRadiusPercent) / 100
-    this._centralAngle = 360 / this.items.length
+    this._centralAngle = 360 / this.itemsEl.length
+  }
+
+  populateItems() {
+    this.itemsEl = this.items.map(( item, i ) => {
+      const existingItem = $(`.radial-menu-item[data-i="${item.id}"]`, this._wrapper)
+      if(!existingItem){
+        const menuEl = document.createElement('li')
+        menuEl.setAttribute('class', 'radial-menu-item')
+        menuEl.setAttribute('data-i', i.toString())
+        menuEl.setAttribute('id', item.id)
+
+
+        const iid =   `#_icon_${item.iconId}`
+        const iq = $(iid)
+        if(!iq) throw new Error(`Icon with ID "${item.iconId}" not found!\nAvailable icons: ` + JSON.stringify(ICON_IDS))
+        const icon = iq.cloneNode(true)
+
+        const span = document.createElement('span');
+        span.classList.add('radial-menu-item-label');
+        span.innerHTML = item.label
+
+        // Append the elements
+        menuEl.appendChild(icon);
+        menuEl.appendChild(span);
+        menuEl.addEventListener('click', item.callback.bind(this))
+        this._menuElContainer.appendChild(menuEl);
+        return menuEl as HTMLElement
+      }
+      return existingItem as HTMLElement
+    })
   }
 
   create() {
@@ -85,7 +129,7 @@ export default class Menu {
       'viewBox',
       `0 0 ${this._radius * 2} ${this._radius * 2}`,
     )
-    this.items.forEach((_, i) => {
+    this.itemsEl.forEach((_, i) => {
       const startAngle = i * sliceAngle + TAU / 4
       const endAngle = startAngle + sliceAngle
 
@@ -97,7 +141,7 @@ export default class Menu {
         y: Math.sin(menuItemAngleRad) * menuItemPosFactor + this._radius,
       }
 
-      const menuItemEl = $all('.radial-menu-item', this._wrapper)[ i ] as HTMLElement
+      const menuItemEl = this.itemsEl[ i ] as HTMLElement
       const existingBg = $(`[data-i="${i}"]`, this._shape)
       const menuItemBg = existingBg || document.createElement('div')
       menuItemBg.setAttribute('id', `radial-menu-bg-${this.id}-${i}`)
@@ -105,7 +149,6 @@ export default class Menu {
 
       menuItemEl.style.setProperty('--x', menuItemPos.x + 'px')
       menuItemEl.style.setProperty('--y', menuItemPos.y + 'px')
-      menuItemEl.setAttribute('data-i', i.toString())
       menuItemEl.setAttribute('data-x', menuItemPos.x.toString())
       menuItemEl.setAttribute('data-y', menuItemPos.y.toString())
 
@@ -180,19 +223,23 @@ export default class Menu {
     this.recalculateBounds()
   }
 
+  onSliceActivate(id, progress: number){
+    this.items[id].callback.call(this)
+  }
+
   onSliceClick(ev: MouseEvent) {
     console.log('CLICK! Add sound here')
   }
   onSliceMouseEnter(ev: MouseEvent) {
     const slice = ev.currentTarget as SVGElement
     const i = slice.getAttribute('data-i')
-    const item = this.items[i]
+    const item = this.itemsEl[i]
     item.setAttribute('data-hover', 'true')
   }
   onSliceMouseLeave(ev: MouseEvent) {
     const slice = ev.currentTarget as SVGElement
     const i = slice.getAttribute('data-i')
-    const item = this.items[i]
+    const item = this.itemsEl[i]
     item.setAttribute('data-hover', 'false')
   }
 
@@ -222,7 +269,7 @@ export default class Menu {
       distance: Infinity,
     }
     if (clampedDistance >= innerRadiusBound) {
-      this.items.forEach((item, i) => {
+      this.itemsEl.forEach((item, i) => {
         const itemPos = {
           x: Number(item.getAttribute('data-x')),
           y: Number(item.getAttribute('data-y')),
@@ -240,12 +287,16 @@ export default class Menu {
         this._shape.children[i].setAttribute('data-highlighted', 'false')
         this._bgs[i].setAttribute('data-highlighted', 'false')
       })
-      this.items[closest.id].setAttribute('data-highlighted', 'true')
+      this.itemsEl[closest.id].setAttribute('data-highlighted', 'true')
       this._shape.children[closest.id].setAttribute('data-highlighted', 'true')
       this._bgs[closest.id].setAttribute('data-highlighted', 'true')
       this._bgs[closest.id].style.setProperty('--progress', progress + '%')
+      if(progress > 100 && this.shown){
+        this.onSliceActivate(closest.id, progress)
+        this.shown = false
+      }
     } else {
-      this.items.forEach((item, i) => {
+      this.itemsEl.forEach((item, i) => {
         item.setAttribute('data-highlighted', 'false')
         this._shape.children[i].setAttribute('data-highlighted', 'false')
         this._bgs[i].setAttribute('data-highlighted', 'false')

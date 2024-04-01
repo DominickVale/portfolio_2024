@@ -4,8 +4,7 @@ import Navbar from '../components/Navbar.astro'
 import Footer from '../components/Footer.astro'
 import Contacts from '../components/Contacts.astro'
 import RadialMenu from '../components/RadialMenu/Menu.astro'
-import MenuSlice from '../components/RadialMenu/MenuSlice.astro'
-import { ContactIcon, LabIcon, HomeIcon, ProjectsIcon, SettingsIcon, AboutIcon, RssIcon} from '../components/icons'
+import { ContactIcon, LabIcon, HomeIcon, WorksIcon, SettingsIcon, AboutIcon, BlogIcon} from '../components/icons'
 
 interface Props {
   title: string
@@ -42,32 +41,7 @@ const { title, rowsMax, withContacts } = Astro.props
         rowsMax && 'auto-rows-max',
       ]}
     >
-      <RadialMenu id="main-menu-6" size="15vw">
-        <MenuSlice id="rmenu-home">
-          <HomeIcon/>
-          <a href="/">HOME</a>
-        </MenuSlice>
-        <MenuSlice>
-          <ProjectsIcon/>
-          <a href="/works">WORKS</a>
-        </MenuSlice>
-        <MenuSlice>
-          <AboutIcon/>
-          <a href="/about">ABOUT</a>
-        </MenuSlice>
-        <MenuSlice>
-          <RssIcon/>
-          <a href="/blog">BLOG</a>
-        </MenuSlice>
-        <MenuSlice>
-          <ContactIcon />
-          <a href="/contact">CONTACT</a>
-        </MenuSlice>
-        <MenuSlice>
-          <SettingsIcon />
-          <a href="/contact">SETTINGS</a>
-        </MenuSlice>
-      </RadialMenu>
+      <RadialMenu id="main-menu-6" size="15vw" />
       <slot />
     </main>
     {
@@ -78,12 +52,56 @@ const { title, rowsMax, withContacts } = Astro.props
       )
     }
     <Footer />
+    <div id="_icons" class="hidden">
+      <HomeIcon />
+      <WorksIcon />
+      <AboutIcon />
+      <BlogIcon />
+      <ContactIcon />
+      <LabIcon />
+      <SettingsIcon />
+    </div>
   </body>
   <script>
     import '../app'
     import Menu from '../components/RadialMenu/Menu'
     window.addEventListener('DOMContentLoaded', () => {
-      const menu6 = new Menu('main-menu-6', { position: { x: 800, y: 300 } })
+
+      const cb = () => console.log("CLICK")
+      const menuItems = [
+        {
+          iconId: 'home',
+          label: "HOME",
+          callback: cb
+        },
+        {
+          iconId: 'works',
+          label: "WORKS",
+          callback: cb
+        },
+        {
+          iconId: 'about',
+          label: "ABOUT",
+          callback: cb
+        },
+        {
+          iconId: 'blog',
+          label: "BLOG",
+          callback: cb
+        },
+        {
+          iconId: 'contact',
+          label: "CONTACT",
+          callback: cb
+        },
+        {
+          iconId: 'settings',
+          label: "SETTINGS",
+          callback: cb
+        },
+      ]
+
+      const menu6 = new Menu('main-menu-6', menuItems, { position: { x: 800, y: 300 } })
       setTimeout(() => {
         // menu6.size = '20vw'
       }, 2000)
