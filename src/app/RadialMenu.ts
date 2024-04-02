@@ -7,6 +7,7 @@ type RadialMenuOptions = {
   gap?: number
   labelsPosFactor?: number
   position?: Vec2
+  isMobile?: boolean
 }
 
 export type RadialMenuItem = {
@@ -18,12 +19,10 @@ export type RadialMenuItem = {
 }
 
 const SVGNS = 'http://www.w3.org/2000/svg'
-const bgColor = 'var(--bg-radial-02)'
 
 export default class RadialMenu {
   private _radius: number
   private _centralAngle: number
-  private _size: string
   private _position: Vec2
 
   private _shape: HTMLElement
@@ -39,7 +38,9 @@ export default class RadialMenu {
   innerRadiusPercent: number
   gap: number
   innerRadius: number
+  innerRadiusBound: number
   shown: boolean
+  isMobile: boolean
   currTarget: HTMLElement | null
 
   constructor(
@@ -49,9 +50,11 @@ export default class RadialMenu {
       innerRadiusPercent = 35,
       gap = 8,
       position = { x: 0, y: 0 },
+      isMobile = false
     }: RadialMenuOptions = {},
   ) {
     this.shown = false
+    this.isMobile = isMobile
     this.innerRadiusPercent = innerRadiusPercent
     this.gap = gap
     this._position = position
@@ -66,11 +69,13 @@ export default class RadialMenu {
       )
     this._menuElContainer = $(`.radial-menu`, this._wrapper)
     this._thumb = $(`#radial-menu-thumb-${this.id}`, this._wrapper)
-    window.addEventListener('mousemove', this.handleThumb.bind(this))
+    window.addEventListener('mousemove', this.handleMouseMove.bind(this))
     window.addEventListener('keyup', this.handleKeyboard.bind(this))
+    window.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: true, })
+    window.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true, })
+    this._thumb.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true });
     this._wrapper.addEventListener('click', this.handleClickInside.bind(this))
 
-    this._size = this._wrapper.style.getPropertyValue('--size')
     this._shape = $(`.radial-menu-shape`, this._wrapper)
     this.populateItems()
     this.recalculateBounds()
@@ -81,14 +86,22 @@ export default class RadialMenu {
     if (!this._wrapper) throw new Error(`No root element for menu ${this.id}`)
     const menuBounds = this._shape.getBoundingClientRect()
     this._wrapperBounds = this._wrapper.getBoundingClientRect()
+    if(this.isMobile){
+      this._position ={
+        x: this._wrapperBounds.x + this._wrapperBounds.width / 2,
+        y: this._wrapperBounds.y + this._wrapperBounds.height / 2,
+      }
+    }
     this._thumbBounds = this._thumb.getBoundingClientRect()
+
 
     this._wrapper.style.setProperty('--pos-x', this._position.x + 'px')
     this._wrapper.style.setProperty('--pos-y', this._position.y + 'px')
 
     this._radius = menuBounds.width / 2
     this.innerRadius = (this._radius * this.innerRadiusPercent) / 100
-    this._centralAngle = 360 / this.itemsEl.length
+    this._centralAngle = ( this.isMobile ? 180 : 360 ) / this.itemsEl.length
+    this.innerRadiusBound = this.innerRadius - this._thumbBounds.width / 2
   }
 
   populateItems() {
@@ -101,9 +114,7 @@ export default class RadialMenu {
         menuEl.setAttribute('data-i', i.toString())
         menuEl.setAttribute('id', item.id)
 
-
-        const iid =   `#_icon_${item.iconId}`
-        const iq = $(iid)
+        const iq = $( `#_icon_${item.iconId}`)
         if(!iq) throw new Error(`Icon with ID "${item.iconId}" not found!\nAvailable icons: ` + JSON.stringify(ICON_IDS))
         const icon = iq.cloneNode(true)
 
@@ -111,7 +122,6 @@ export default class RadialMenu {
         span.classList.add('radial-menu-item-label');
         span.innerHTML = item.label
 
-        // Append the elements
         menuEl.appendChild(icon);
         menuEl.appendChild(span);
         menuEl.addEventListener('click', item.callback.bind(this))
@@ -134,7 +144,7 @@ export default class RadialMenu {
       `0 0 ${this._radius * 2} ${this._radius * 2}`,
     )
     this.itemsEl.forEach((_, i) => {
-      const startAngle = i * sliceAngle + TAU / 4
+      const startAngle = i * sliceAngle + (this.isMobile ? Math.PI : TAU / 4)
       const endAngle = startAngle + sliceAngle
 
       const menuItemAngleRad = startAngle + sliceAngle / 2
@@ -147,7 +157,7 @@ export default class RadialMenu {
 
       const menuItemEl = this.itemsEl[ i ] as HTMLElement
       const existingBg = $(`[data-i="${i}"]`, this._shape)
-      const menuItemBg = existingBg || document.createElement('div')
+      const menuItemBg = existingBg ?? document.createElement('div')
       menuItemBg.setAttribute('id', `radial-menu-bg-${this.id}-${i}`)
       menuItemBg.setAttribute('class', 'radial-menu-item-bg')
 
@@ -157,7 +167,7 @@ export default class RadialMenu {
       menuItemEl.setAttribute('data-y', menuItemPos.y.toString())
 
       const existingSlice = $(`[data-i="${i}"]`, this._shape)
-      const slice = existingSlice || document.createElementNS(SVGNS, 'path')
+      const slice = existingSlice ?? document.createElementNS(SVGNS, 'path')
       slice.setAttribute('id', `radial-menu-slice-${i}`)
       slice.setAttribute('fill', 'transparent')
       slice.setAttribute('data-i', i.toString())
@@ -188,14 +198,15 @@ export default class RadialMenu {
       slice.addEventListener('mouseenter', this.onSliceMouseEnter.bind(this))
       slice.addEventListener('mouseup', this.onSliceClick.bind(this))
       slice.addEventListener('mouseleave', this.onSliceMouseLeave.bind(this))
+      slice.addEventListener('touchstart', this.onSliceClick.bind(this))
 
       this._shape.appendChild(slice)
 
       const maskId = `radial-menu-mask-${this.id}-${i}`;
        // MASK
-      const defs = $('defs', this._shape) || document.createElementNS(SVGNS, 'defs');
+      const defs = $('defs', this._shape) ?? document.createElementNS(SVGNS, 'defs');
       //@ts-ignore
-      const mask = $(`${maskId}`, defs) || document.createElementNS(SVGNS, 'mask');
+      const mask = $(`${maskId}`, defs) ?? document.createElementNS(SVGNS, 'mask');
 
       mask.setAttribute('id', maskId);
       mask.setAttribute('viewBox', `0 0 ${this._radius * 2} ${this._radius * 2}`);
@@ -229,20 +240,20 @@ export default class RadialMenu {
   }
 
   close() {
-    this.currTarget = null
-    this.shown = false
-    this._wrapper.classList.add('radial-menu-hidden')
-    const i = this._lastActiveSliceId
-    this.itemsEl[i].setAttribute('data-highlighted', 'false')
-    this._shape.children[i].setAttribute('data-highlighted', 'false')
-    this._bgs[i].setAttribute('data-highlighted', 'false')
-    this._thumb.style.setProperty('--x', '50%')
-    this._thumb.style.setProperty('--y', '50%')
+    this.currTarget = null;
+    this.shown = false;
+    this._wrapper.classList.add('radial-menu-hidden');
+    this._thumb.style.setProperty('--x', '50%');
+    this._thumb.style.setProperty('--y', '50%');
+    const i = this._lastActiveSliceId;
+    if(!i) return;
+    this.itemsEl[i].setAttribute('data-highlighted', 'false');
+    this._shape.children[i].setAttribute('data-highlighted', 'false');
+    this._bgs[i].setAttribute('data-highlighted', 'false');
   }
 
   set size(size: string) {
     this._wrapper.style.setProperty('--size', size)
-    this._size = size
     this.recalculateBounds()
     this.create()
   }
@@ -252,15 +263,15 @@ export default class RadialMenu {
     this.recalculateBounds()
   }
 
-  onSliceActivate(id, target:HTMLElement, ev: Event){
-    this.items[id].callback.call(this, ev, target, this.currTarget)
+  onSliceActivate(id: number, target:HTMLElement, ev: Event){
+    this.items[id]?.callback?.call(this, ev, target, this.currTarget)
   }
 
   onSliceClick(ev: MouseEvent) {
     console.log('CLICK! Add sound here')
     const slice = ev.currentTarget as SVGElement
     const i = slice.getAttribute('data-i')
-    this.onSliceActivate(i, ev.target as HTMLElement, ev)
+    this.onSliceActivate(Number(i), ev.target as HTMLElement, ev)
     this.close()
   }
   onSliceMouseEnter(ev: MouseEvent) {
@@ -297,13 +308,33 @@ export default class RadialMenu {
     }
   }
 
-  /*
-   * @TODO: bigger thumb, callback on progress 120%
-   */
-  handleThumb(ev: MouseEvent) {
-    if(!this.shown) return
+  handleMouseMove(ev: MouseEvent) {
     const x = ev.clientX
     const y = ev.clientY
+    this.handleThumb({x,y}, ev)
+  }
+
+  handleTouchStart(ev: TouchEvent) {
+    this._thumb.classList.add('pressed')
+    this.open(this._position.x, this._position.y, this.currTarget)
+  }
+
+  handleTouchMove(ev: TouchEvent) {
+    ev.stopPropagation()
+    const touch = ev.targetTouches[0]
+    const x = touch.clientX
+    const y = touch.clientY
+    this.handleThumb({x,y}, ev)
+  }
+
+  handleTouchEnd(ev: TouchEvent) {
+    this.close()
+    this._thumb.classList.remove('pressed')
+  }
+
+  handleThumb(pos: Vec2, ev: TouchEvent | MouseEvent) {
+    if(!this.shown) return
+    const { x, y } = pos
 
     const rel = {
       x: x - this._position.x,
@@ -311,9 +342,8 @@ export default class RadialMenu {
     }
 
     const distance = Math.sqrt(rel.x ** 2 + rel.y ** 2)
-    const innerRadiusBound = this.innerRadius - this._thumbBounds.width / 2
 
-    const clampedDistance = clamp(distance, 0, innerRadiusBound)
+    const clampedDistance = clamp(distance, 0, this.innerRadiusBound)
     const newX = (this._radius + (rel.x / distance) * clampedDistance) || this._radius
     const newY = (this._radius + (rel.y / distance) * clampedDistance) || this._radius
 
@@ -323,7 +353,8 @@ export default class RadialMenu {
       id: -1,
       distance: Infinity,
     }
-    if (clampedDistance >= innerRadiusBound) {
+    if (clampedDistance >= this.innerRadiusBound) {
+      //@TODO: find a more performant approach
       this.itemsEl.forEach((item, i) => {
         const itemPos = {
           x: Number(item.getAttribute('data-x')),

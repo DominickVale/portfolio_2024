@@ -13,6 +13,15 @@ export default class Cursor {
 
   init() {
     window.addEventListener('mousemove', this.onMouseMove.bind(this))
+    window.addEventListener('touchmove', this.onTouchMove.bind(this))
+  }
+
+  onTouchMove(e: TouchEvent) {
+    const pos = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+    }
+    this.pos = pos
   }
 
   onMouseMove(e: MouseEvent) {

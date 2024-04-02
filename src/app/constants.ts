@@ -12,3 +12,5 @@ export const ICON_IDS = [
   'debug',
   'audio'
 ] as const
+
+export const SVGNS = 'http://www.w3.org/2000/svg'

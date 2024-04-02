@@ -1,5 +1,6 @@
 import type Cursor from './Cursor'
-import RadialMenu, { type RadialMenuItem } from './RadialMenu'
+import type { RadialMenuItem } from './RadialMenu'
+import RadialMenu from './RadialMenu'
 import { $all, getCurrentPage } from './utils'
 
 export default class Menus {
@@ -24,11 +25,15 @@ export default class Menus {
       const menuId = el.getAttribute('data-menu-trigger')
       const menu = this.menus.find((m) => m.id === menuId)
       if (!menu) throw new Error(`Radial menu with ID "${menuId}" not found!`)
-      el.addEventListener('contextmenu', (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        menu.open(e.clientX, e.clientY, e.target as HTMLElement)
-      })
+      if (menu.isMobile) {
+        return null
+      } else {
+        el.addEventListener('contextmenu', (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          menu.open(e.clientX, e.clientY, e.target as HTMLElement)
+        })
+      }
     })
   }
 
@@ -46,14 +51,14 @@ export default class Menus {
       callback: navigateTo('/'),
     }
 
-    const aboutSlice: RadialMenuItem= {
+    const aboutSlice: RadialMenuItem = {
       iconId: 'about',
       label: 'ABOUT',
       position: 2,
       callback: navigateTo('/about'),
     }
 
-    const worksSlice: RadialMenuItem= {
+    const worksSlice: RadialMenuItem = {
       iconId: 'works',
       label: 'WORKS',
       position: 5,
@@ -77,7 +82,7 @@ export default class Menus {
       position: 4,
       callback: navigateTo('/lab'),
     }
-    const settingsSlice: RadialMenuItem= {
+    const settingsSlice: RadialMenuItem = {
       iconId: 'settings',
       label: 'SETTINGS',
       position: 7,
@@ -98,7 +103,7 @@ export default class Menus {
           //contextMenu.open(this.cursor.pos.x, this.cursor.pos.y, slice)
         }
         setTimeout(fn.bind(this), 250)
-      }
+      },
     }
 
     let defaultMenuItems: RadialMenuItem[] = [
@@ -109,7 +114,21 @@ export default class Menus {
       blogSlice,
       contactSlice,
       settingsSlice,
-      contextSlice
+      contextSlice,
+    ]
+    let defaultMenuItemsMobile: RadialMenuItem[] = [
+      {
+        ...homeSlice,
+        position: 1,
+      },
+      aboutSlice,
+      { ...blogSlice, position: 3 },
+      labSlice,
+      worksSlice,
+      {
+        ...contactSlice,
+        position: 6,
+      },
     ]
 
     const settingsItems: RadialMenuItem[] = [
@@ -139,12 +158,24 @@ export default class Menus {
         },
       },
       settingsSlice,
-      contextSlice
+      contextSlice,
     ]
 
     const defaultMenu = new RadialMenu('default', defaultMenuItems)
     const defaultBlogMenu = new RadialMenu('default-blog', defaultMenuItems)
     const textMenu = new RadialMenu('text', textMenuItems)
-    return [defaultMenu, textMenu, settingsMenu, defaultBlogMenu]
+    const defaultMenuMobile = new RadialMenu(
+      'default-mobile',
+      defaultMenuItemsMobile,
+      { isMobile: true },
+    )
+    // const defaultBlogMenuMobile = new RadialMenuMobile('default-blog-mobile', defaultMenuItems)
+    return [
+      defaultMenu,
+      textMenu,
+      settingsMenu,
+      defaultBlogMenu,
+      defaultMenuMobile,
+    ] //defaultBlogMenuMobile]
   }
 }

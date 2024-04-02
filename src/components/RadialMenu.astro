@@ -3,29 +3,36 @@ import { BrandIcon } from './icons'
 type Props = {
   id: string
   size: string
+  mobile?: boolean
 }
 
-const { id, size } = Astro.props
+const { id, size, mobile } = Astro.props
+const classMobile = "mobile md:hidden"
 ---
 
-<div id={id} class="radial-menu-wrapper radial-menu-hidden" style=`--size: ${size};`>
+<div
+  id={id}
+  class={`radial-menu-wrapper radial-menu-hidden ${mobile && classMobile}`}
+  style=`--size: ${size};`
+>
   <ul class="radial-menu">
-    <div id={`radial-menu-thumb-${id}`} class="radial-menu-thumb">
+    <div
+      id={`radial-menu-thumb-${id}`}
+      class={`radial-menu-thumb ${mobile && 'mobile'}`}
+    >
       <BrandIcon />
     </div>
     <svg class="radial-menu-shape" width="100%" height="100%">
       <defs class="pointer-events-none"
         ><mask width="110%" height="110%"> </mask>
-      </defs
-      >
+      </defs>
     </svg>
   </ul>
-  <div class="radial-menu-bgs">
-  </div>
+  <div class="radial-menu-bgs"></div>
 </div>
 
 <style is:global>
-  .radial-menu-bgs{
+  .radial-menu-bgs {
     position: absolute;
     top: 0;
     left: 0;
@@ -47,9 +54,23 @@ const { id, size } = Astro.props
     width: 100%;
     height: 100%;
   }
-  .radial-menu-hidden {
+  .radial-menu-wrapper.mobile {
+    bottom: 10vh;
+    left: 50%;
+    top: auto;
+    transform: translate(-50%, 50%);
+  }
+  .radial-menu-hidden:not(.mobile) {
     opacity: 0;
     pointer-events: none;
+  }
+  .radial-menu-hidden.mobile {
+      pointer-events: none;
+    .radial-menu-bgs,
+    .radial-menu-item,
+    .radial-menu-shape {
+      opacity: 0;
+    }
   }
   .radial-menu-item-bg {
     --progress: 0;
@@ -66,7 +87,10 @@ const { id, size } = Astro.props
     -webkit-mask: var(--mask);
     z-index: -1;
     &[data-highlighted='true'] {
-      background: radial-gradient(white var(--progress), rgba(255,255,255, 0.90) var(--progress));
+      background: radial-gradient(
+        white var(--progress),
+        rgba(255, 255, 255, 0.9) var(--progress)
+      );
     }
   }
   .radial-menu-item {
@@ -100,6 +124,7 @@ const { id, size } = Astro.props
   .radial-menu-thumb {
     --x: 50%;
     --y: 50%;
+    pointer-events: all;
     position: absolute;
     height: 2.5rem;
     width: 2.5rem;
@@ -111,5 +136,20 @@ const { id, size } = Astro.props
     left: var(--x);
     top: var(--y);
     transform: translate(-50%, -50%);
+    z-index: 10;
+    touch-action: none;
+  }
+  .radial-menu-thumb.mobile {
+    transform: translate(-50%, -50%) scale(1.5);
+    @apply bg-background-dark;
+    svg path {
+      @apply fill-white;
+    }
+    &.pressed {
+      @apply bg-white;
+      svg path{
+        @apply fill-background-dark;
+      }
+    }
   }
 </style>
