@@ -68,6 +68,7 @@ export default class RadialMenu {
     this._thumb = $(`#radial-menu-thumb-${this.id}`, this._wrapper)
     window.addEventListener('mousemove', this.handleThumb.bind(this))
     window.addEventListener('keyup', this.handleKeyboard.bind(this))
+    this._wrapper.addEventListener('click', this.handleClickInside.bind(this))
 
     this._size = this._wrapper.style.getPropertyValue('--size')
     this._shape = $(`.radial-menu-shape`, this._wrapper)
@@ -279,6 +280,19 @@ export default class RadialMenu {
     if(!this.shown) return
 
     if (ev.key === 'Escape') {
+      this.close()
+    }
+  }
+
+  handleClickInside(ev: MouseEvent) {
+    const x = ev.clientX
+    const y = ev.clientY
+    const rel = {
+      x: x - this._position.x,
+      y: y - this._position.y,
+    }
+    const distance = Math.sqrt(rel.x ** 2 + rel.y ** 2)
+    if (distance < this.innerRadius) {
       this.close()
     }
   }
