@@ -33,6 +33,7 @@ export default class RadialMenu {
   private _wrapperBounds: DOMRect
   private _thumbBounds: DOMRect
   private _lastActiveSliceId: number
+  private _isDragging: boolean
 
   itemsEl: HTMLElement[]
   innerRadiusPercent: number
@@ -74,6 +75,7 @@ export default class RadialMenu {
     window.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: true, })
     window.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true, })
     this._thumb.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true });
+    this._thumb.addEventListener('mousedown', this.handleMouseDown.bind(this))
     this._wrapper.addEventListener('click', this.handleClickInside.bind(this))
 
     this._shape = $(`.radial-menu-shape`, this._wrapper)
@@ -205,8 +207,7 @@ export default class RadialMenu {
       const maskId = `radial-menu-mask-${this.id}-${i}`;
        // MASK
       const defs = $('defs', this._shape) ?? document.createElementNS(SVGNS, 'defs');
-      //@ts-ignore
-      const mask = $(`${maskId}`, defs) ?? document.createElementNS(SVGNS, 'mask');
+      const mask = $(`${maskId}`, defs  as HTMLElement) ?? document.createElementNS(SVGNS, 'mask');
 
       mask.setAttribute('id', maskId);
       mask.setAttribute('viewBox', `0 0 ${this._radius * 2} ${this._radius * 2}`);
@@ -226,10 +227,38 @@ export default class RadialMenu {
     })
   }
 
-  destroy(){
-    this.itemsEl.forEach(el => el.remove())
+  destroy() {
+    window.removeEventListener('mousemove', this.handleMouseMove)
+    window.removeEventListener('keyup', this.handleKeyboard)
+    window.removeEventListener('touchmove', this.handleTouchMove)
+    window.removeEventListener('touchend', this.handleTouchEnd)
+    this._thumb.removeEventListener('touchstart', this.handleTouchStart)
+    this._thumb.removeEventListener('mousedown', this.handleMouseDown)
+    this._wrapper.removeEventListener('click', this.handleClickInside)
+
+    this.itemsEl.forEach(el => {
+      const itemIndex = Number(el.dataset.i)
+      const itemCallback = this.items[itemIndex].callback
+
+      const callbackWrapper = (event: MouseEvent) => {
+        itemCallback(event, el, this.currTarget)
+      }
+
+      el.removeEventListener('click', callbackWrapper)
+      el.remove()
+    })
+
     this._bgs.forEach(bg => bg.remove())
-    Array.from( this._shape.children ).forEach(child => child.remove())
+
+    Array.from(this._shape.children).forEach(child => {
+      if (child.tagName === 'path') {
+        child.removeEventListener('mouseenter', this.onSliceMouseEnter)
+        child.removeEventListener('mouseup', this.onSliceClick)
+        child.removeEventListener('mouseleave', this.onSliceMouseLeave)
+        child.removeEventListener('touchstart', this.onSliceClick)
+      }
+      child.remove()
+    })
   }
 
   open(x: number, y:number, target: HTMLElement) {
@@ -241,6 +270,7 @@ export default class RadialMenu {
 
   close() {
     this.currTarget = null;
+    this._isDragging = false
     this.shown = false;
     this._wrapper.classList.add('radial-menu-hidden');
     this._thumb.style.setProperty('--x', '50%');
@@ -268,6 +298,12 @@ export default class RadialMenu {
   }
 
   onSliceClick(ev: MouseEvent) {
+    if(this._isDragging) {
+      ev.preventDefault()
+      this._thumb.classList.remove('pressed')
+      this.close()
+      return
+    }
     console.log('CLICK! Add sound here')
     const slice = ev.currentTarget as SVGElement
     const i = slice.getAttribute('data-i')
@@ -314,7 +350,16 @@ export default class RadialMenu {
     this.handleThumb({x,y}, ev)
   }
 
+  handleMouseDown(ev: MouseEvent) {
+    ev.preventDefault()
+    this._isDragging = true
+    this._thumb.classList.add('pressed')
+    this.open(this._position.x, this._position.y, this.currTarget)
+  }
+
   handleTouchStart(ev: TouchEvent) {
+    const el = ev.currentTarget as HTMLElement
+    if(!el.getAttribute('data-menu-trigger') && el !== this._thumb) return
     this._thumb.classList.add('pressed')
     this.open(this._position.x, this._position.y, this.currTarget)
   }

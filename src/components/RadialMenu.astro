@@ -12,7 +12,7 @@ const classMobile = "mobile md:hidden"
 
 <div
   id={id}
-  class={`radial-menu-wrapper radial-menu-hidden ${mobile && classMobile}`}
+  class={`radial-menu-wrapper radial-menu-hidden ${mobile ? classMobile : " "}`}
   style=`--size: ${size};`
 >
   <ul class="radial-menu">
@@ -130,6 +130,7 @@ const classMobile = "mobile md:hidden"
     width: 2.5rem;
     border-radius: 100%;
     background-color: white;
+    border: 1px solid rgba(255, 255, 255, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -138,6 +139,7 @@ const classMobile = "mobile md:hidden"
     transform: translate(-50%, -50%);
     z-index: 10;
     touch-action: none;
+    svg { pointer-events: none; }
   }
   .radial-menu-thumb.mobile {
     transform: translate(-50%, -50%) scale(1.5);

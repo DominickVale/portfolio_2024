@@ -1,40 +1,57 @@
 import type Cursor from './Cursor'
 import type { RadialMenuItem } from './RadialMenu'
 import RadialMenu from './RadialMenu'
-import { $all, getCurrentPage } from './utils'
+import { $all, debounce, getCurrentPage } from './utils'
 
 export default class Menus {
   menus: RadialMenu[]
+  triggers: { el: HTMLElement, cb: (e: MouseEvent) => void }[]
+
   constructor(
     public cursor: Cursor,
     public onToggleDebug?: () => void,
   ) {
     this.init()
     this.addListeners()
+    window.addEventListener('resize', this.handleResize.bind(this))
   }
 
   init() {
     this.menus = [...this.getMenus()]
   }
+
   destroy() {
+    console.log("Destroying menus")
     this.menus.forEach((m) => m.destroy())
+    this.triggers.forEach((t) => {
+      t.el?.removeEventListener('contextmenu', t.cb)
+    })
+    this.menus = []
+  }
+
+  createContextMenuCb = (menu: RadialMenu) => (e: MouseEvent) => {
+    if((e.target as HTMLElement).id.includes('radial-menu-thumb')) return
+    e.preventDefault()
+    e.stopPropagation()
+    menu.open(e.clientX, e.clientY, e.target as HTMLElement)
   }
 
   addListeners() {
-    const triggers = [...$all('[data-menu-trigger]', document)].map((el) => {
+    const triggerEls = $all('[data-menu-trigger]', document)
+    this.triggers = Array.from(triggerEls).map((el) => {
       const menuId = el.getAttribute('data-menu-trigger')
       const menu = this.menus.find((m) => m.id === menuId)
       if (!menu) throw new Error(`Radial menu with ID "${menuId}" not found!`)
       if (menu.isMobile) {
         return null
       } else {
-        el.addEventListener('contextmenu', (e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          menu.open(e.clientX, e.clientY, e.target as HTMLElement)
-        })
+        const callback = this.createContextMenuCb(menu)
+        el.addEventListener('contextmenu', callback)
+        return {
+          el, cb: callback
+        }
       }
-    })
+    }).filter(Boolean)
   }
 
   getMenus() {
@@ -42,7 +59,6 @@ export default class Menus {
     const navigateTo = (url) => () => {
       window.location.href = url
     }
-    console.log(getCurrentPage())
 
     const homeSlice: RadialMenuItem = {
       iconId: 'home',
@@ -153,7 +169,6 @@ export default class Menus {
         label: 'COPY TEXT',
         callback: (ev, slice, origTarget) => {
           //@TODO: Add success message on cursor
-          console.log(window.getSelection())
           navigator.clipboard.writeText(origTarget.innerText)
         },
       },
@@ -178,4 +193,20 @@ export default class Menus {
       defaultMenuMobile,
     ] //defaultBlogMenuMobile]
   }
+
+  handleResize() {
+    this.debounceResize()
+  }
+
+  debounceResize = debounce(() => {
+    const isMobile = window.innerWidth <= 768
+    this.destroy()
+    this.menus = [...this.getMenus().filter(menu => {
+      const isMenuMobile = menu.isMobile
+      if(isMobile && isMenuMobile) return true
+      if(!isMobile && !isMenuMobile) return true
+      return false
+    })]
+    this.addListeners()
+  }, 1000)
 }
