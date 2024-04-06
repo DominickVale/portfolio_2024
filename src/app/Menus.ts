@@ -5,12 +5,14 @@ import { $all, debounce, getCurrentPage } from './utils'
 
 export default class Menus {
   menus: RadialMenu[]
+  isMobile: boolean
   triggers: { el: HTMLElement, cb: (e: MouseEvent) => void }[]
 
   constructor(
     public cursor: Cursor,
     public onToggleDebug?: () => void,
   ) {
+    this.isMobile = window.innerWidth < 768
     this.init()
     this.addListeners()
     window.addEventListener('resize', this.handleResize.bind(this))
@@ -41,7 +43,10 @@ export default class Menus {
     this.triggers = Array.from(triggerEls).map((el) => {
       const menuId = el.getAttribute('data-menu-trigger')
       const menu = this.menus.find((m) => m.id === menuId)
-      if (!menu) throw new Error(`Radial menu with ID "${menuId}" not found!`)
+      if (!menu){
+        console.info('Skipping menu', menuId)
+        return
+      }
       if (menu.isMobile) {
         return null
       } else {
@@ -176,22 +181,28 @@ export default class Menus {
       contextSlice,
     ]
 
-    const defaultMenu = new RadialMenu('default', defaultMenuItems)
-    const defaultBlogMenu = new RadialMenu('default-blog', defaultMenuItems)
     const textMenu = new RadialMenu('text', textMenuItems)
-    const defaultMenuMobile = new RadialMenu(
-      'default-mobile',
-      defaultMenuItemsMobile,
-      { isMobile: true },
-    )
-    // const defaultBlogMenuMobile = new RadialMenuMobile('default-blog-mobile', defaultMenuItems)
-    return [
-      defaultMenu,
-      textMenu,
-      settingsMenu,
-      defaultBlogMenu,
-      defaultMenuMobile,
-    ] //defaultBlogMenuMobile]
+    if(this.isMobile){
+      const defaultMenuMobile = new RadialMenu(
+        'default-mobile',
+        defaultMenuItemsMobile,
+        { isMobile: true },
+      )
+      return [
+        textMenu,
+        settingsMenu,
+        defaultMenuMobile
+      ]
+    } else {
+      const defaultMenu = new RadialMenu('default', defaultMenuItems)
+      const defaultBlogMenu = new RadialMenu('default-blog', defaultMenuItems)
+      return [
+        defaultMenu,
+        textMenu,
+        settingsMenu,
+        defaultBlogMenu,
+      ]
+    }
   }
 
   handleResize() {
@@ -199,13 +210,11 @@ export default class Menus {
   }
 
   debounceResize = debounce(() => {
-    const isMobile = window.innerWidth <= 768
+    this.isMobile = window.innerWidth <= 768
     this.destroy()
     this.menus = [...this.getMenus().filter(menu => {
       const isMenuMobile = menu.isMobile
-      if(isMobile && isMenuMobile) return true
-      if(!isMobile && !isMenuMobile) return true
-      return false
+      return this.isMobile ? isMenuMobile : !isMenuMobile
     })]
     this.addListeners()
   }, 1000)

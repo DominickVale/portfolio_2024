@@ -19,7 +19,7 @@ const { title, rowsMax, withContacts, ...props } = Astro.props
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="overscroll-none">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Portfolio 2024" />
@@ -32,7 +32,7 @@ const { title, rowsMax, withContacts, ...props } = Astro.props
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,200..900&family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
   </style>
-  <body id="app" class="relative flex max-h-screen flex-col font-body" {...props}>
+  <body id="app" class="relative flex max-h-screen flex-col font-body overscroll-none" {...props}>
     <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-red-500"
     ></canvas>
     <Navbar />
@@ -65,7 +65,7 @@ const { title, rowsMax, withContacts, ...props } = Astro.props
       <DebugIcon/>
       <AudioIcon/>
     </div>
-    <RadialMenu id="text" size="calc(10rem + 10vw)" />
+    <RadialMenu id="text" size="calc(10rem + min(30vw, 10vh))" />
     <RadialMenu id="default" size="calc(10rem + 10vw)" />
     <RadialMenu id="default-blog" size="calc(10rem + 10vw)" />
     <RadialMenu id="default-mobile" size="calc(10rem + 50vw)" mobile/>

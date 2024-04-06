@@ -53,6 +53,7 @@ const classMobile = "mobile md:hidden"
     position: relative;
     width: 100%;
     height: 100%;
+    touch-action: none;
   }
   .radial-menu-wrapper.mobile {
     bottom: 10vh;
@@ -63,9 +64,12 @@ const classMobile = "mobile md:hidden"
   .radial-menu-hidden:not(.mobile) {
     opacity: 0;
     pointer-events: none;
-  }
-  .radial-menu-hidden.mobile {
+    .radial-menu-thumb{
       pointer-events: none;
+    }
+  }
+  .radial-menu-hidden{
+    pointer-events: none;
     .radial-menu-bgs,
     .radial-menu-item,
     .radial-menu-shape {
@@ -139,6 +143,7 @@ const classMobile = "mobile md:hidden"
     transform: translate(-50%, -50%);
     z-index: 10;
     touch-action: none;
+    user-select: none;
     svg { pointer-events: none; }
   }
   .radial-menu-thumb.mobile {

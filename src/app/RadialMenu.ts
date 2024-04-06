@@ -33,7 +33,6 @@ export default class RadialMenu {
   private _wrapperBounds: DOMRect
   private _thumbBounds: DOMRect
   private _lastActiveSliceId: number
-  private _isDragging: boolean
 
   itemsEl: HTMLElement[]
   innerRadiusPercent: number
@@ -265,16 +264,18 @@ export default class RadialMenu {
     this.position = { x, y }
     this.shown = true
     this._wrapper.classList.remove('radial-menu-hidden')
+    this._thumb.classList.add('pressed')
     this.currTarget = target
   }
 
   close() {
+    console.log("Closed")
     this.currTarget = null;
-    this._isDragging = false
     this.shown = false;
     this._wrapper.classList.add('radial-menu-hidden');
     this._thumb.style.setProperty('--x', '50%');
     this._thumb.style.setProperty('--y', '50%');
+    this._thumb.classList.remove('pressed')
     const i = this._lastActiveSliceId;
     if(!i) return;
     this.itemsEl[i].setAttribute('data-highlighted', 'false');
@@ -298,12 +299,6 @@ export default class RadialMenu {
   }
 
   onSliceClick(ev: MouseEvent) {
-    if(this._isDragging) {
-      ev.preventDefault()
-      this._thumb.classList.remove('pressed')
-      this.close()
-      return
-    }
     console.log('CLICK! Add sound here')
     const slice = ev.currentTarget as SVGElement
     const i = slice.getAttribute('data-i')
@@ -332,6 +327,7 @@ export default class RadialMenu {
   }
 
   handleClickInside(ev: MouseEvent) {
+    if(this.isMobile) return
     const x = ev.clientX
     const y = ev.clientY
     const rel = {
@@ -352,8 +348,10 @@ export default class RadialMenu {
 
   handleMouseDown(ev: MouseEvent) {
     ev.preventDefault()
-    this._isDragging = true
-    this._thumb.classList.add('pressed')
+    if(this.shown) {
+      this.close()
+      return
+    }
     this.open(this._position.x, this._position.y, this.currTarget)
   }
 
