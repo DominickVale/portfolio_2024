@@ -1,0 +1,53 @@
+---
+import Btn from '../../components/Btn.astro'
+import FakeLogs from '../../components/FakeLogs.astro'
+import Image from '../../components/Image.astro'
+import Layout from '../../layouts/Layout.astro'
+---
+
+<Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default" class="about">
+  <div class="col-span-2 col-start-2 row-start-2 hidden items-end lg:flex">
+    <Image />
+  </div>
+  <div
+    class="col-span-2 col-start-10 row-span-2 row-start-1 hidden items-end lg:flex"
+  >
+    <Image cover class="h-2/3" />
+  </div>
+  <div
+    class="col-span-10 col-start-2 row-start-1 mt-12 flex flex-col md:col-span-6 md:col-start-2 md:row-start-1 md:mt-0"
+  >
+    <FakeLogs />
+  </div>
+
+  <div
+    class="col-span-10 col-start-2 row-span-3 row-start-1 mb-32 flex h-full flex-col items-center justify-center pb-[10vh] md:pb-0"
+  >
+    <h2
+      class="mb-12 text-center text-base font-black tracking-button text-white"
+    >
+      I'M DOMINICK.<br />PLEASURE TO MEET YOU
+    </h2>
+    <p class="intro-paragraph">
+      Lorem ipsum dolor sit amet consectetur. Interdum rutrum fermentum ultrices
+      dictum nisi etiam morbi tincidunt. Massa risus at sapien tristique leo
+      egestas posuere vestibulum.
+    </p>
+    <p class="intro-paragraph">
+      Fermentum ut nulla curabitur odio nisl malesuada fermentum. Amet eget diam
+      elementum tellus nisi quisque nisl suspendisse at. Mi facilisi ridiculus
+      ultrices elit enim posuere ut ultricies et. Aenean mollis pharetra dui leo
+      morbi urna. Tempus adipiscing ligula nisi amet libero nulla ipsum velit.
+      Nunc eget pellentesque at sem.
+    </p>
+    <p class="mt-4 intro-paragraph">
+      Available for any kind of front-end development job, web or not.
+    </p>
+    <div
+      class="mt-[8vh] flex w-full flex-col items-center justify-center gap-6 sm:w-[28rem] sm:flex-row sm:justify-between md:w-[32rem]"
+    >
+      <Btn href="/about" class="h-[4.5rem] w-52" frame>OK</Btn>
+      <Btn href="/about/whatido" class="h-[4.5rem] w-52" frame>WHAT CAN YOU DO?</Btn>
+    </div>
+  </div>
+</Layout>

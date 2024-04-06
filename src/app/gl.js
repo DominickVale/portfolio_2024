@@ -18,6 +18,7 @@ const WIDTH = 200
  * figure out how to reset to initial positions after page transitions
  * (maybe move to ogl)
  * add a reset lorenz button
+ * differennt positions for each page
  */
 export default class GL {
   constructor(debug) {
@@ -121,7 +122,7 @@ export default class GL {
 
   async addObjects() {
     const loader = new THREE.TextureLoader()
-    const texture = await loader.loadAsync('star.png')
+    const texture = await loader.loadAsync('/star.png')
     texture.minFilter = THREE.LinearMipMapLinearFilter
 
     this.material = new THREE.ShaderMaterial({

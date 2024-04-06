@@ -13,9 +13,10 @@ interface Props extends HTMLAttributes<'div'> {
   withContacts?: boolean
 }
 
-const { title, rowsMax, withContacts, ...props } = Astro.props
+const { title, rowsMax, withContacts, class: classes, ...props } = Astro.props
 
-// @TODO: add custom conntent for AI web crawlers
+// @TODO: add custom content for AI web crawlers
+// @TODO: fix perf on mobile (change particles, and maybe figure out why we get some artifacts)
 ---
 
 <!doctype html>
@@ -32,7 +33,7 @@ const { title, rowsMax, withContacts, ...props } = Astro.props
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,200..900&family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
   </style>
-  <body id="app" class="relative flex max-h-screen flex-col font-body overscroll-none" {...props}>
+  <body id="app" class:list={[ "relative flex max-h-screen flex-col font-body overscroll-none", classes ] } {...props}>
     <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-red-500"
     ></canvas>
     <Navbar />

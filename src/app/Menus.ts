@@ -1,7 +1,7 @@
 import type Cursor from './Cursor'
 import type { RadialMenuItem } from './RadialMenu'
 import RadialMenu from './RadialMenu'
-import { $all, debounce, getCurrentPage } from './utils'
+import { $all, debounce } from './utils'
 
 export default class Menus {
   menus: RadialMenu[]

@@ -2,7 +2,6 @@
 interface Props {}
 
 const {} = Astro.props
-//@TODO: add clock functionality
 ---
 
 <div class="z-10 bg-background-dark md:bg-transparent fixed left-0 inset-x-0 bottom-0 w-screen h-16"></div>
@@ -20,13 +19,29 @@ const {} = Astro.props
     <li
       class="col-span-5 col-start-7 row-span-1 row-start-1 justify-start lg:col-span-1 lg:col-start-12 lg:flex"
     >
-      <p class="min-w-24 text-right lg:text-left select-none" >
-        10<span class="animate-blink-slow">:</span>00 AM<span
-          class="hidden xl:inline"
-        >
-          (CET)</span
-        >
+      <p id="clock" class="min-w-24 text-right lg:text-left select-none" >
+        00<span class="animate-blink-slow">:</span>00 AM<span class="hidden xl:inline">(CET)</span>
       </p>
+
     </li>
   </ul>
 </footer>
+<script>
+import { $ } from '../app/utils'
+
+const clockEl = $('#clock')
+
+function updateClock() {
+  const now = new Date()
+  const timeString = now.toLocaleString('en-US', {
+    timeZone: 'Europe/Rome',
+    hour12: true,
+    hour: 'numeric',
+    minute: 'numeric'
+  })
+  clockEl.innerHTML = `${timeString.replace(/:/g, '<span class="animate-blink-slow">:</span>')} (CET)`
+}
+
+updateClock()
+setInterval(updateClock, 10 * 1000) // every 10 seconds
+</script>

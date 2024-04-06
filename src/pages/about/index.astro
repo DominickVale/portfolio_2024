@@ -1,0 +1,30 @@
+---
+import Btn from '../../components/Btn.astro'
+import Layout from '../../layouts/Layout.astro'
+---
+
+<Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default" class="about">
+  <div
+    class="col-span-10 col-start-2 flex h-full flex-col items-center justify-center pb-[10vh] md:pb-0"
+  >
+    <h2
+      class="mb-12 text-center text-base font-black tracking-button text-white"
+    >
+      HELLO THERE.<br />I'M SO GLAD THAT YOU MADE IT HERE.
+    </h2>
+    <p class="intro-paragraph">
+      Funny to know that the entire history of events in our universe led to
+      this exact moment. You reading this was a ~14 billions years coming.
+    </p>
+    <p class="intro-paragraph">
+      Oh, right — sorry, you wanted to know about me. What are you interested
+      in, specifically?
+    </p>
+    <div
+      class="mt-[8vh] flex w-full flex-col items-center justify-center gap-6 sm:w-[28rem] sm:flex-row sm:justify-between md:w-[32rem]"
+    >
+      <Btn href="/about/whoami" class="h-[4.5rem] w-52" frame>YOUR PERSONALITY.</Btn>
+      <Btn href="/about/whatido" class="h-[4.5rem] w-52" frame>YOUR SKILLS.</Btn>
+    </div>
+  </div>
+</Layout>

@@ -146,3 +146,9 @@ body {
   text-shadow: -1px -1px 0 var(--color), 1px -1px 0 var(--color), -1px 1px 0 var(--color),
     1px 1px 0 var(--color);
 }
+
+
+.intro-paragraph {
+  @apply max-w-sm text-center text-xs text-white opacity-80;
+  text-wrap: pretty;
+}
