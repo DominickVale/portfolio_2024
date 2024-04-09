@@ -4,9 +4,10 @@ import type { HTMLAttributes } from 'astro/types'
 
 interface Props extends HTMLAttributes<'img'>{
   cover?: boolean
+  contain?: boolean
 }
 
-const { class: classes, cover, ...props} = Astro.props
+const { class: classes, cover, contain, ...props} = Astro.props
 ---
 
 <div class:list={[ "fui-frame mr-auto", classes ] }>
@@ -14,7 +15,7 @@ const { class: classes, cover, ...props} = Astro.props
     class="vertical-text--left absolute bottom-4 left-[-0.25rem] text-xxs leading-[100%] opacity-40"
     >IMG_003.jpg</small
   >
-  <img class:list={[  "w-full", cover && "h-full object-cover" ] } src="/ecorp.png" alt="" {...props} />
+  <img class:list={[  "w-full", cover && "h-full object-cover", contain && "h-full object-contain" ] } src="/ecorp.png" alt="" {...props} />
   <!-- <small class="text-xxs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
   <div class="absolute right-0 top-0 flex h-full w-3">
     <small

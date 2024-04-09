@@ -47,8 +47,11 @@ export default {
         xs: '420px',
         tall: { raw: '((min-height: 500px) and (min-width: 640px))' },
         taller: { raw: '((min-height: 650px) and (min-width: 640px))' },
+        "laptop-h": { raw: '((min-height: 720px) and (min-width: 1024px))' },
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/container-queries'),
+  ],
 }
