@@ -138,8 +138,10 @@ const mockData = [
       text.style.fontSize = fontSize + "px"
       let textHeight = innerText.offsetHeight
       let textWidth = innerText.offsetWidth
-      if(textHeight > containerBounds.height || textWidth >  containerBounds.width ) {
-        for (let i = 0; textHeight > containerBounds.height || textWidth > containerBounds.width; i++) {
+      const offset = containerBounds.width - (window.innerWidth * 0.05)
+
+      if(textHeight > containerBounds.height || textWidth >  offset ) {
+        for (let i = 0; textHeight > containerBounds.height || textWidth > offset; i++) {
           fontSize--;
           text.style.fontSize = fontSize + "px";
           textHeight = innerText.offsetHeight
