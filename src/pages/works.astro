@@ -9,6 +9,29 @@ interface Props {}
 
 const {} = Astro.props
 const projectsList = ['ambientify', 'vidra', 'e-corp ctf', 'portfolio v1']
+const projectList = [
+  {
+    name: 'ambientify',
+    linkWebsite: 'https://play.google.com/store/apps/details?id=com.dominickv.ambientify&hl=en_US',
+    linkCase: '/works/ambientify'
+  },
+  {
+    name: 'vidra',
+    linkWebsite: 'https://web.archive.org/web/20210727234808/https://www.vidra.com/',
+    linkCase: '/works/vidra'
+  },
+  {
+    name: 'e-corp ctf',
+    linkWebsite: 'https://ecorp.ctf.intigriti.io',
+    linkCase: '/works/e-corp-ctf'
+  },
+  {
+    name: 'portfolio v1',
+    linkWebsite: 'https://domenicovale.netlify.app',
+    linkCase: '/works/portfolio-v1'
+  }
+]
+
 const mockData = [
   { label: 'ROLE:', value: 'EVERYTHING' },
   { label: 'CLIENT:', value: 'N/A' },
@@ -55,29 +78,27 @@ const mockData = [
   </div>
 
   <section
+    id="works-list"
     class="col-span-4 col-start-8 row-start-1 hidden flex-col gap-[10vh] pt-[10vh] xl:flex"
   >
-    <!-- TODO: add js impl w/ dynamic height -->
-    <div class="relative">
-      <div id="highlighted-corner" class="fui-corners h-[13vh]">
-        <div class="absolute bottom-[-2.7rem] right-0 flex w-3/4 gap-3">
-          <Btn class="w-full pt-6 pl-2 pb-3 justify-start" frame>READ CASE</Btn>
-          <Btn class="w-full pt-6 pl-2 pb-3 justify-start" frame>VISIT WEBSITE</Btn>
-        </div>
-        <small
-          class="absolute left-5 top-[-1rem] text-xxs font-normal tracking-widest opacity-40"
-          >PROJ_ID: 001</small
-        >
-      </div>
-    </div>
     {
       projectsList.map((name, i) => (
         <h2
-          class="project-title w-full font-display text-6xl font-bold uppercase text-primary-lightest"
+          class="project-title h-[10vh] w-full font-display text-6xl font-bold uppercase text-primary-lightest relative"
           style={`--i: ${i}`}
           data-active={i === 0}
         >
-          <a href={`/works/${name}`}>{name}</a>
+          <a class="block w-max" href={`/works/${name}`}>{name}</a>
+          <div class="fui-corners highlighted-corner h-[12vh] font-mono hidden">
+            <div class="absolute bottom-[-2.7rem] right-0 flex w-3/4 gap-3">
+              <Btn class="w-full pt-6 pl-2 pb-3 justify-start" frame>READ CASE</Btn>
+              <Btn class="w-full pt-6 pl-2 pb-3 justify-start" frame>VISIT WEBSITE</Btn>
+            </div>
+            <small
+              class="absolute left-5 top-[-1rem] text-xxs font-normal tracking-widest opacity-40"
+              >PROJ_ID: 001</small
+            >
+          </div>
         </h2>
       ))
     }
@@ -109,9 +130,9 @@ const mockData = [
     color: white;
     font-size: theme('fontSize.7xl'); /* will be calc dynamically in js */
   }
-  #highlighted-corner {
+  .highlighted-corner{
+    width: 110%;
     left: -5%;
-    width: 105%;
   }
 </style>
 
@@ -126,33 +147,40 @@ const mockData = [
   document.addEventListener('DOMContentLoaded', () => {
     let currIdx = 0
     let projects: HTMLElement[] = []
-    const highlightedCorner = $('#highlighted-corner')
-    const highlightedCornerBounds = highlightedCorner.getBoundingClientRect()
-    const initialHighlightCornerTop = highlightedCorner.getBoundingClientRect().top
-    const originalCornerSize = highlightedCornerBounds
 
     const recalculateActiveFontSize = (text: HTMLElement) => {
-      const innerText = text.querySelector("a")
-      const containerBounds = originalCornerSize
+      const innerText = $("a", text)
+      const worksListContainer = $("#works-list")
+      const worksListBounds = worksListContainer.getBoundingClientRect()
+      const containerBounds = text.getBoundingClientRect()
       let fontSize = containerBounds.height
       text.style.fontSize = fontSize + "px"
       let textHeight = innerText.offsetHeight
       let textWidth = innerText.offsetWidth
-      const offset = containerBounds.width - (window.innerWidth * 0.05)
 
-      if(textHeight > containerBounds.height || textWidth >  offset ) {
-        for (let i = 0; textHeight > containerBounds.height || textWidth > offset; i++) {
+      if(textHeight > containerBounds.height || textWidth > worksListBounds.width) {
+        for (let i = 0; textHeight > containerBounds.height || textWidth > worksListBounds.width; i++) {
           fontSize--;
+          if(fontSize < 20) {
+            console.log("Reached limit, break")
+            break
+          }
           text.style.fontSize = fontSize + "px";
           textHeight = innerText.offsetHeight
           textWidth = innerText.offsetWidth
+          // debugger
         }
       }
-      return fontSize
+      const offset = window.innerWidth * 0.003
+      const newFontSize = Math.max(fontSize - offset, 40)
+      text.style.fontSize = newFontSize + "px";
+      return newFontSize
     }
 
     function recalculateOthers(){
       projects.forEach((p, i) => {
+        const highlightCorner = $(".highlighted-corner", p)
+        highlightCorner.classList.add("hidden")
         p.setAttribute('data-active', 'false')
         const opacity =  (1 - Math.abs(i - currIdx) / projectsList.length) * 0.5
         const fontSize = projectsList[i].fontSize / Math.max(2, Math.abs(i - currIdx) + 1/projects.length )
@@ -165,16 +193,11 @@ const mockData = [
 
     function recalculateActive() {
       const activeProject = projects[currIdx]
-
+      const highlightCorner = $(".highlighted-corner", activeProject)
+      highlightCorner.classList.remove("hidden")
       activeProject?.setAttribute('data-active', 'true')
       recalculateActiveFontSize(activeProject)
       activeProject.style.display = "block"
-    }
-
-    function recalculateHighlightedCorner() {
-      const activeProject = projects[currIdx]
-      const top = activeProject.offsetTop + window.pageYOffset - initialHighlightCornerTop
-      highlightedCorner.style.top = `calc(${top}px - 0.5rem)`
     }
 
     function handleActiveProject(e) {
@@ -187,7 +210,6 @@ const mockData = [
       }
       recalculateOthers()
       recalculateActive()
-      recalculateHighlightedCorner()
     }
     const debouncedFn = debounce(handleActiveProject, 100)
 
@@ -197,10 +219,8 @@ const mockData = [
       projectsList[i].fontSize = recalculateActiveFontSize(p)
     })
 
-    console.log(projectsList)
     recalculateOthers()
     recalculateActive()
-    recalculateHighlightedCorner()
     window.addEventListener('wheel', debouncedFn.bind(this))
     window.addEventListener('resize', debouncedFn.bind(this))
   })
