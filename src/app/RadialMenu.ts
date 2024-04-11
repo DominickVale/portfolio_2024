@@ -60,7 +60,7 @@ export default class RadialMenu {
     this._position = position
     this._bgs = []
 
-    console.info(`Creating radial menu ${id}`, this)
+    // console.info(`Creating radial menu ${id}`, this)
 
     this._wrapper = $(`#${id}`)
     if (!this._wrapper)

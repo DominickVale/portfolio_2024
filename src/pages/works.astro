@@ -12,24 +12,26 @@ const projectsList = ['ambientify', 'vidra', 'e-corp ctf', 'portfolio v1']
 const projectList = [
   {
     name: 'ambientify',
-    linkWebsite: 'https://play.google.com/store/apps/details?id=com.dominickv.ambientify&hl=en_US',
-    linkCase: '/works/ambientify'
+    linkWebsite:
+      'https://play.google.com/store/apps/details?id=com.dominickv.ambientify&hl=en_US',
+    linkCase: '/works/ambientify',
   },
   {
     name: 'vidra',
-    linkWebsite: 'https://web.archive.org/web/20210727234808/https://www.vidra.com/',
-    linkCase: '/works/vidra'
+    linkWebsite:
+      'https://web.archive.org/web/20210727234808/https://www.vidra.com/',
+    linkCase: '/works/vidra',
   },
   {
     name: 'e-corp ctf',
     linkWebsite: 'https://ecorp.ctf.intigriti.io',
-    linkCase: '/works/e-corp-ctf'
+    linkCase: '/works/e-corp-ctf',
   },
   {
     name: 'portfolio v1',
     linkWebsite: 'https://domenicovale.netlify.app',
-    linkCase: '/works/portfolio-v1'
-  }
+    linkCase: '/works/portfolio-v1',
+  },
 ]
 
 const mockData = [
@@ -46,23 +48,25 @@ const mockData = [
 <Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default">
   <h1 class="sr-only">WORKS</h1>
   <div
-    class="mb-18 col-span-10 col-start-2 row-start-1 mt-12 flex flex-col justify-center xl:col-span-4 xl:col-start-2 xl:row-start-1 xl:mt-0 laptop-h:justify-start"
+    class="mb-18 col-span-10 col-start-2 row-start-1 mt-12 flex flex-col justify-center lg:col-span-4 lg:col-start-2 lg:row-start-1 lg:mt-0 laptop-h:justify-start"
   >
     <FakeLogs />
-    <div class="xl:ml-4 xl:mt-[3vh]">
+    <div class="lg:ml-4 lg:mt-[3vh]">
       <div class="relative flex flex-col justify-center">
-        <Image
-          contain
-          class="relative my-auto flex items-center justify-center overflow-hidden 2xl:h-[45vh] 2xl:min-h-80"
-        />
+        <div class="image-wrapper" id="works-image">
+          <Image
+            contain
+            class="2lg:h-[45vh] 2lg:min-h-80 relative my-auto flex items-center justify-center overflow-hidden"
+          />
+        </div>
         <!-- <div class="absolute bottom-[-5vh] left-1/2 h-[4vh] w-[1px] bg-lines"></div> -->
-        <div class="mt-6 hidden max-w-[90%] xl:block 2xl:max-w-[30rem]">
+        <div class="2lg:max-w-[30rem] mt-6 hidden max-w-[90%] lg:block">
           <table class="text-xs">
             <WorkDetails />
           </table>
         </div>
 
-        <div class="mt-4 w-full xl:hidden">
+        <div class="mt-4 w-full lg:hidden">
           <WorkDetails small />
         </div>
       </div>
@@ -73,43 +77,55 @@ const mockData = [
     <!-- </div> -->
   </div>
 
-  <div class="ml-8 col-span-1 col-start-12 mb-14 hidden h-full items-center sm:flex">
+  <div
+    class="col-span-1 col-start-12 mb-14 ml-8 hidden h-full items-center sm:flex"
+  >
     <NextPageBtn>BLOG</NextPageBtn>
   </div>
 
   <section
     id="works-list"
-    class="col-span-4 col-start-8 row-start-1 hidden flex-col gap-[6vh] pt-[10vh] xl:flex"
+    class="col-span-4 col-start-8 row-start-1 hidden flex-col gap-[6vh] pt-[10vh] lg:flex"
   >
     {
       projectsList.map((name, i) => (
         <h2
-          class="project-title h-[10vh] w-full font-display font-bold uppercase text-primary-lightest relative"
+          class="project-title relative flex h-[10vh] w-full items-center font-display font-bold uppercase text-primary-lightest"
           style={`--i: ${i}`}
           data-active={i === 0}
         >
-          <a class="block w-max leading-[100%]" href={`/works/${name}`}>{name}</a>
-          <div class="fui-corners highlighted-corner h-[12vh] font-mono hidden">
-            <div class="absolute bottom-[-2.7rem] right-0 flex w-3/4 gap-3">
-              <Btn class="w-full pt-6 pl-2 pb-3 justify-start" frame>READ CASE</Btn>
-              <Btn class="w-full pt-6 pl-2 pb-3 justify-start" frame>VISIT WEBSITE</Btn>
+          <a class="block w-max leading-[100%]" href={`/works/${name}`}>
+            {name}
+          </a>
+          <div class="fui-corners highlighted-corner hidden h-full font-mono">
+            <div class="line-container">
+              <div class="line" />
+              <div class="circle" />
+              <div class="dynamic-line" />
             </div>
-            <small
-              class="absolute left-5 top-[-1rem] text-xxs font-normal tracking-widest opacity-40"
-              >PROJ_ID: 001</small
-            >
+            <div class="absolute bottom-[-2.7rem] right-0 flex w-3/4 gap-3">
+              <Btn class="w-full justify-start pb-3 pl-2 pt-6" frame>
+                READ CASE
+              </Btn>
+              <Btn class="w-full justify-start pb-3 pl-2 pt-6" frame>
+                VISIT WEBSITE
+              </Btn>
+            </div>
+            <small class="absolute left-8 top-[-1rem] text-xxs font-normal tracking-widest opacity-40">
+              PROJ_ID: 001
+            </small>
           </div>
         </h2>
       ))
     }
   </section>
   <section
-    class="col-span-10 col-start-2 row-start-2 flex flex-col text-center xl:hidden"
+    class="col-span-10 col-start-2 row-start-2 flex flex-col text-center lg:hidden"
   >
     {
       projectsList.map((name, i) => (
         <h2
-          class="project-title-mobile w-full font-display text-2xl font-bold uppercase text-primary-lightest"
+          class="project-title-mobile text-2lg w-full font-display font-bold uppercase text-primary-lightest"
           style={`--i: ${i}`}
           data-active={i === 0}
         >
@@ -121,84 +137,151 @@ const mockData = [
 </Layout>
 
 <style>
-  /* use data-active for active element */
   .project-title:not([data-active='true']) {
     transform-origin: bottom left;
   }
-  .project-title{
-    transition: all 0.1s ease-out;
+  .project-title {
     font-size: 10vh;
   }
   .project-title[data-active='true'] {
-    /* margin-bottom: 5vh; */
+    margin-bottom: 5vh;
     color: white;
   }
-  .highlighted-corner{
+  .highlighted-corner {
     width: 110%;
     left: -5%;
-    top: -15%;
+  }
+  .line-container {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateX(-100%);
+  }
+
+  .line {
+    width: 5vw;
+    height: 1px;
+    opacity: 0.2;
+    background-color: white;
+  }
+
+  .circle {
+    position: absolute;
+    left: 0;
+    top: -1px;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 0.8;
+    transform: translateX(-50%);
+  }
+
+  .dynamic-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10vw;
+    height: 1px;
+    background-color: white;
+    opacity: 0.2;
+    transform-origin: left;
+    transform: translateX(-100%);
   }
 </style>
 
 <script>
   import { $, $all, debounce } from '../app/utils'
+  import { radToDeg } from 'three/src/math/MathUtils.js'
 
   document.addEventListener('DOMContentLoaded', () => {
     let currIdx = 3
-    const projects: Record<string, {element: HTMLElement, fontSize: number}> = {}
+    const projects: Record<string, { element: HTMLElement; fontSize: number }> =
+      {}
 
-    function recalculateBaseFontSizes(){
+    function recalculateBaseFontSizes() {
       $all('.project-title').forEach((p, i) => {
         const innerText = $('a', p)
         const maxWidth = p.clientWidth
+        const maxHeight = p.clientHeight
         let newFontSize = p.clientHeight
         let textWidth = innerText.offsetWidth
-        for (let j = 0; textWidth > maxWidth; j++) {
-            newFontSize--;
-            console.log("New font size: ", newFontSize, textWidth, maxWidth)
-            if(newFontSize < 5) {
-              console.log("Reached limit, break")
-              break
-            }
-            p.style.fontSize = newFontSize + "px";
-            textWidth = innerText.offsetWidth
+        let textHeight = innerText.offsetHeight
+        const offset = window.innerWidth * 0.003
+        for (
+          let j = 0;
+          textWidth > maxWidth - offset || textHeight > maxHeight - offset;
+          j++
+        ) {
+          newFontSize--
+          if (newFontSize < 5) {
+            console.log('Reached limit, break')
+            break
           }
+          p.style.fontSize = newFontSize + 'px'
+          textWidth = innerText.offsetWidth
+          textHeight = innerText.offsetHeight
+        }
         projects[i] = {
           element: p,
-          fontSize: newFontSize
+          fontSize: newFontSize,
         }
       })
     }
     recalculateBaseFontSizes()
-    console.log(projects)
     const pIds = Object.keys(projects)
 
-
-    function recalculateOthers(){
+    function recalculateOthers() {
       pIds.forEach((id, i) => {
         const p = projects[id]
-        const highlightCorner = $(".highlighted-corner", p.element)
-        highlightCorner.classList.add("hidden")
+        const highlightCorner = $('.highlighted-corner', p.element)
+        highlightCorner.classList.add('hidden')
         p.element.setAttribute('data-active', 'false')
-        const opacity =  (1 - Math.abs(i - currIdx) / pIds.length) * 0.5
-        const fontSize = projects[i].fontSize / Math.max(1, Math.abs(i - currIdx) + 1 / pIds.length )
+        const opacity = (1 - Math.abs(i - currIdx) / pIds.length) * 0.5
+        const fontSize =
+          projects[i].fontSize /
+          Math.max(1, Math.abs(i - currIdx) + 1 / pIds.length)
         const blur = Math.pow(Math.abs(i - currIdx), 1.25)
         p.element.style.opacity = String(i === currIdx ? 1 : opacity)
-        p.element.style.fontSize = fontSize + "px";
+        p.element.style.fontSize = fontSize + 'px'
         p.element.style.filter = `blur(${blur}px)`
       })
     }
 
-    function recalculateActive(){
+    function recalculateActive() {
       const activeProject = projects[currIdx]
-      const highlightCorner = $(".highlighted-corner", activeProject.element)
-      highlightCorner.classList.remove("hidden")
+      const highlightCorner = $('.highlighted-corner', activeProject.element)
+      highlightCorner.classList.remove('hidden')
       activeProject.element.setAttribute('data-active', 'true')
-      activeProject.element.style.fontSize = projects[currIdx].fontSize + "px"
+      activeProject.element.style.fontSize = projects[currIdx].fontSize + 'px'
+
+      const p = activeProject.element
+      const line = $('.dynamic-line', p)
+      const horizontalLine = $('.line', p)
+      const horizontalLineWidth = horizontalLine.clientWidth
+      const element1 = p
+      const element2 = $('#works-image .fui-corners')
+
+      const element1Rect = element1.getBoundingClientRect()
+      const element2Rect = element2.getBoundingClientRect()
+
+      const x1 = element1Rect.left - horizontalLineWidth * 1.3
+      const y1 = element1Rect.top + element1Rect.height / 2
+      const x2 = element2Rect.left + element2Rect.width
+      const y2 = element2Rect.top + element2Rect.height / 2
+
+      const dx = x2 - x1
+      const dy = y2 - y1
+
+      const angle = radToDeg(Math.atan2(dy, dx))
+      line.style.transform = `rotate(${angle}deg)`
+
+      const distance = Math.sqrt(dx * dx + dy * dy)
+      line.style.width = `${distance}px`
     }
 
     function handleActiveProject(e) {
-      if(typeof e.deltaY !== 'undefined' ){
+      if (typeof e.deltaY !== 'undefined') {
         const direction = e.deltaY > 0 ? 'down' : 'up'
         if (direction === 'down') {
           currIdx = (currIdx + 1) % pIds.length
@@ -211,10 +294,10 @@ const mockData = [
       recalculateActive()
     }
 
-    function handleResize(){
+    function handleResize() {
       $all('.project-title').forEach((p, i) => {
         let newFontSize = p.clientHeight
-        p.style.fontSize = newFontSize + "px";
+        p.style.fontSize = newFontSize + 'px'
       })
       recalculateBaseFontSizes()
       recalculateOthers()
@@ -222,10 +305,11 @@ const mockData = [
     }
 
     const debouncedHandleActiveFn = debounce(handleActiveProject, 100)
-    const debouncedHandleResizeFn = debounce(handleResize, 500)
+    const debouncedHandleResizeFn = debounce(handleResize, 100)
 
     recalculateOthers()
     recalculateActive()
+
     window.addEventListener('wheel', debouncedHandleActiveFn.bind(this))
     window.addEventListener('resize', debouncedHandleResizeFn.bind(this))
   })
