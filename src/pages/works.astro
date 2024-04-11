@@ -5,44 +5,10 @@ import Btn from '../components/Btn.astro'
 import WorkDetails from '../components/WorkDetails.astro'
 import Image from '../components/Image.astro'
 import FakeLogs from '../components/FakeLogs.astro'
+import { PROJECTS_LIST } from '../app/constants'
 interface Props {}
 
 const {} = Astro.props
-const projectsList = ['ambientify', 'vidra', 'e-corp ctf', 'portfolio v1']
-const projectList = [
-  {
-    name: 'ambientify',
-    linkWebsite:
-      'https://play.google.com/store/apps/details?id=com.dominickv.ambientify&hl=en_US',
-    linkCase: '/works/ambientify',
-  },
-  {
-    name: 'vidra',
-    linkWebsite:
-      'https://web.archive.org/web/20210727234808/https://www.vidra.com/',
-    linkCase: '/works/vidra',
-  },
-  {
-    name: 'e-corp ctf',
-    linkWebsite: 'https://ecorp.ctf.intigriti.io',
-    linkCase: '/works/e-corp-ctf',
-  },
-  {
-    name: 'portfolio v1',
-    linkWebsite: 'https://domenicovale.netlify.app',
-    linkCase: '/works/portfolio-v1',
-  },
-]
-
-const mockData = [
-  { label: 'ROLE:', value: 'EVERYTHING' },
-  { label: 'CLIENT:', value: 'N/A' },
-  { label: 'YEAR:', value: '2020—ONGOING' },
-  {
-    label: 'TECH:',
-    value: 'REACT-NATIVE, FIREBASE, ANDROID NDK, JSI, C++, REVENUECAT, KOTLIN',
-  },
-]
 ---
 
 <Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default">
@@ -88,14 +54,14 @@ const mockData = [
     class="col-span-4 col-start-8 row-start-1 hidden flex-col gap-[6vh] pt-[10vh] lg:flex"
   >
     {
-      projectsList.map((name, i) => (
+      Object.values(PROJECTS_LIST).map((project, i) => (
         <h2
           class="project-title relative flex h-[10vh] w-full items-center font-display font-bold uppercase text-primary-lightest"
           style={`--i: ${i}`}
           data-active={i === 0}
         >
-          <a class="block w-max leading-[100%]" href={`/works/${name}`}>
-            {name}
+          <a class="block w-max leading-[100%]" href={`/works/${project.name}`}>
+            {project.name}
           </a>
           <div class="fui-corners highlighted-corner hidden h-full font-mono">
             <div class="line-container">
@@ -112,7 +78,7 @@ const mockData = [
               </Btn>
             </div>
             <small class="absolute left-8 top-[-1rem] text-xxs font-normal tracking-widest opacity-40">
-              PROJ_ID: 001
+              PROJ_ID: 00{i}
             </small>
           </div>
         </h2>
@@ -123,13 +89,15 @@ const mockData = [
     class="col-span-10 col-start-2 row-start-2 flex flex-col text-center lg:hidden"
   >
     {
-      projectsList.map((name, i) => (
+      Object.values(PROJECTS_LIST).map((project, i) => (
         <h2
-          class="project-title-mobile text-2lg w-full font-display font-bold uppercase text-primary-lightest"
+          class="project-title-mobile h-[5vh] w-full font-display text-2xl font-bold uppercase text-primary-lightest"
           style={`--i: ${i}`}
           data-active={i === 0}
         >
-          <a href={`/works/${name}`}>{name}</a>
+          <a href={`/works/${project.name}`}>{project.name}</a>
+
+          <div class="fui-corners highlighted-corner hidden h-full font-mono" />
         </h2>
       ))
     }
@@ -145,6 +113,9 @@ const mockData = [
   }
   .project-title[data-active='true'] {
     margin-bottom: 5vh;
+    color: white;
+  }
+  .project-title-mobile[data-active='true'] {
     color: white;
   }
   .highlighted-corner {
@@ -192,44 +163,49 @@ const mockData = [
 
 <script>
   import { $, $all, debounce } from '../app/utils'
+  import { PROJECTS_LIST } from '../app/constants'
   import { radToDeg } from 'three/src/math/MathUtils.js'
 
   document.addEventListener('DOMContentLoaded', () => {
     let currIdx = 3
+    let isDesktop = window.innerWidth > 1024
     const projects: Record<string, { element: HTMLElement; fontSize: number }> =
       {}
 
     function recalculateBaseFontSizes() {
-      $all('.project-title').forEach((p, i) => {
-        const innerText = $('a', p)
-        const maxWidth = p.clientWidth
-        const maxHeight = p.clientHeight
-        let newFontSize = p.clientHeight
-        let textWidth = innerText.offsetWidth
-        let textHeight = innerText.offsetHeight
-        const offset = window.innerWidth * 0.003
-        for (
-          let j = 0;
-          textWidth > maxWidth - offset || textHeight > maxHeight - offset;
-          j++
-        ) {
-          newFontSize--
-          if (newFontSize < 5) {
-            console.log('Reached limit, break')
-            break
+      $all(isDesktop ? '.project-title' : '.project-title-mobile').forEach(
+        (p, i) => {
+          const innerText = $('a', p)
+          const maxWidth = p.clientWidth
+          const maxHeight = p.clientHeight
+          let newFontSize = p.clientHeight
+          let textWidth = innerText.offsetWidth
+          let textHeight = innerText.offsetHeight
+          const offset = window.innerWidth * 0.003
+          for (
+            let j = 0;
+            textWidth > maxWidth - offset || textHeight > maxHeight - offset;
+            j++
+          ) {
+            newFontSize--
+            if (newFontSize < 5) {
+              console.log('Reached limit, break')
+              break
+            }
+            p.style.fontSize = newFontSize + 'px'
+            textWidth = innerText.offsetWidth
+            textHeight = innerText.offsetHeight
           }
-          p.style.fontSize = newFontSize + 'px'
-          textWidth = innerText.offsetWidth
-          textHeight = innerText.offsetHeight
-        }
-        projects[i] = {
-          element: p,
-          fontSize: newFontSize,
-        }
-      })
+          projects[i] = {
+            element: p,
+            fontSize: newFontSize,
+          }
+        },
+      )
     }
     recalculateBaseFontSizes()
     const pIds = Object.keys(projects)
+    if (!isDesktop) console.log(projects)
 
     function recalculateOthers() {
       pIds.forEach((id, i) => {
@@ -255,29 +231,31 @@ const mockData = [
       activeProject.element.setAttribute('data-active', 'true')
       activeProject.element.style.fontSize = projects[currIdx].fontSize + 'px'
 
-      const p = activeProject.element
-      const line = $('.dynamic-line', p)
-      const horizontalLine = $('.line', p)
-      const horizontalLineWidth = horizontalLine.clientWidth
-      const element1 = p
-      const element2 = $('#works-image .fui-corners')
+      if (isDesktop) {
+        const p = activeProject.element
+        const line = $('.dynamic-line', p)
+        const horizontalLine = $('.line', p)
+        const horizontalLineWidth = horizontalLine.clientWidth
+        const element1 = p
+        const element2 = $('#works-image .fui-corners')
 
-      const element1Rect = element1.getBoundingClientRect()
-      const element2Rect = element2.getBoundingClientRect()
+        const element1Rect = element1.getBoundingClientRect()
+        const element2Rect = element2.getBoundingClientRect()
 
-      const x1 = element1Rect.left - horizontalLineWidth * 1.3
-      const y1 = element1Rect.top + element1Rect.height / 2
-      const x2 = element2Rect.left + element2Rect.width
-      const y2 = element2Rect.top + element2Rect.height / 2
+        const x1 = element1Rect.left - horizontalLineWidth * 1.3
+        const y1 = element1Rect.top + element1Rect.height / 2
+        const x2 = element2Rect.left + element2Rect.width
+        const y2 = element2Rect.top + element2Rect.height / 2
 
-      const dx = x2 - x1
-      const dy = y2 - y1
+        const dx = x2 - x1
+        const dy = y2 - y1
 
-      const angle = radToDeg(Math.atan2(dy, dx))
-      line.style.transform = `rotate(${angle}deg)`
+        const angle = radToDeg(Math.atan2(dy, dx))
+        line.style.transform = `rotate(${angle}deg)`
 
-      const distance = Math.sqrt(dx * dx + dy * dy)
-      line.style.width = `${distance}px`
+        const distance = Math.sqrt(dx * dx + dy * dy)
+        line.style.width = `${distance}px`
+      }
     }
 
     function handleActiveProject(e) {
@@ -290,11 +268,30 @@ const mockData = [
           currIdx = currIdx < 0 ? pIds.length - 1 : currIdx
         }
       }
+      const activeProject = PROJECTS_LIST[currIdx]
+      const roleEls = $all('.work-details-role')
+      roleEls.forEach(r => {
+        r.innerHTML = activeProject.data.role
+      })
+      const clientEls = $all('.work-details-client')
+      clientEls.forEach(r => {
+        r.innerHTML = activeProject.data.client
+      })
+      const yearEls = $all('.work-details-year')
+      yearEls.forEach(r => {
+        r.innerHTML = activeProject.data.year
+      })
+      const techEls = $all('.work-details-tech')
+      techEls.forEach(r => {
+        r.innerHTML = activeProject.data.tech
+      })
       recalculateOthers()
       recalculateActive()
     }
 
     function handleResize() {
+      isDesktop = window.innerWidth > 1024
+
       $all('.project-title').forEach((p, i) => {
         let newFontSize = p.clientHeight
         p.style.fontSize = newFontSize + 'px'
