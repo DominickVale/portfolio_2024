@@ -79,16 +79,16 @@ const mockData = [
 
   <section
     id="works-list"
-    class="col-span-4 col-start-8 row-start-1 hidden flex-col gap-[10vh] pt-[10vh] xl:flex"
+    class="col-span-4 col-start-8 row-start-1 hidden flex-col gap-[6vh] pt-[10vh] xl:flex"
   >
     {
       projectsList.map((name, i) => (
         <h2
-          class="project-title h-[10vh] w-full font-display text-6xl font-bold uppercase text-primary-lightest relative"
+          class="project-title h-[10vh] w-full font-display font-bold uppercase text-primary-lightest relative"
           style={`--i: ${i}`}
           data-active={i === 0}
         >
-          <a class="block w-max" href={`/works/${name}`}>{name}</a>
+          <a class="block w-max leading-[100%]" href={`/works/${name}`}>{name}</a>
           <div class="fui-corners highlighted-corner h-[12vh] font-mono hidden">
             <div class="absolute bottom-[-2.7rem] right-0 flex w-3/4 gap-3">
               <Btn class="w-full pt-6 pl-2 pb-3 justify-start" frame>READ CASE</Btn>
@@ -125,103 +125,108 @@ const mockData = [
   .project-title:not([data-active='true']) {
     transform-origin: bottom left;
   }
+  .project-title{
+    transition: all 0.1s ease-out;
+    font-size: 10vh;
+  }
   .project-title[data-active='true'] {
-    margin-bottom: 5vh;
+    /* margin-bottom: 5vh; */
     color: white;
-    font-size: theme('fontSize.7xl'); /* will be calc dynamically in js */
   }
   .highlighted-corner{
     width: 110%;
     left: -5%;
+    top: -15%;
   }
 </style>
 
 <script>
   import { $, $all, debounce } from '../app/utils'
-  const projectsList = ['ambientify', 'vidra', 'e-corp ctf', 'portfolio v1'].map((p, i) => ({
-    name: p,
-    id: i,
-    fontSize: 0
-  }))
 
   document.addEventListener('DOMContentLoaded', () => {
-    let currIdx = 0
-    let projects: HTMLElement[] = []
+    let currIdx = 3
+    const projects: Record<string, {element: HTMLElement, fontSize: number}> = {}
 
-    const recalculateActiveFontSize = (text: HTMLElement) => {
-      const innerText = $("a", text)
-      const worksListContainer = $("#works-list")
-      const worksListBounds = worksListContainer.getBoundingClientRect()
-      const containerBounds = text.getBoundingClientRect()
-      let fontSize = containerBounds.height
-      text.style.fontSize = fontSize + "px"
-      let textHeight = innerText.offsetHeight
-      let textWidth = innerText.offsetWidth
-
-      if(textHeight > containerBounds.height || textWidth > worksListBounds.width) {
-        for (let i = 0; textHeight > containerBounds.height || textWidth > worksListBounds.width; i++) {
-          fontSize--;
-          if(fontSize < 20) {
-            console.log("Reached limit, break")
-            break
+    function recalculateBaseFontSizes(){
+      $all('.project-title').forEach((p, i) => {
+        const innerText = $('a', p)
+        const maxWidth = p.clientWidth
+        let newFontSize = p.clientHeight
+        let textWidth = innerText.offsetWidth
+        for (let j = 0; textWidth > maxWidth; j++) {
+            newFontSize--;
+            console.log("New font size: ", newFontSize, textWidth, maxWidth)
+            if(newFontSize < 5) {
+              console.log("Reached limit, break")
+              break
+            }
+            p.style.fontSize = newFontSize + "px";
+            textWidth = innerText.offsetWidth
           }
-          text.style.fontSize = fontSize + "px";
-          textHeight = innerText.offsetHeight
-          textWidth = innerText.offsetWidth
-          // debugger
+        projects[i] = {
+          element: p,
+          fontSize: newFontSize
         }
-      }
-      const offset = window.innerWidth * 0.003
-      const newFontSize = Math.max(fontSize - offset, 40)
-      text.style.fontSize = newFontSize + "px";
-      return newFontSize
+      })
     }
+    recalculateBaseFontSizes()
+    console.log(projects)
+    const pIds = Object.keys(projects)
+
 
     function recalculateOthers(){
-      projects.forEach((p, i) => {
-        const highlightCorner = $(".highlighted-corner", p)
+      pIds.forEach((id, i) => {
+        const p = projects[id]
+        const highlightCorner = $(".highlighted-corner", p.element)
         highlightCorner.classList.add("hidden")
-        p.setAttribute('data-active', 'false')
-        const opacity =  (1 - Math.abs(i - currIdx) / projectsList.length) * 0.5
-        const fontSize = projectsList[i].fontSize / Math.max(2, Math.abs(i - currIdx) + 1/projects.length )
+        p.element.setAttribute('data-active', 'false')
+        const opacity =  (1 - Math.abs(i - currIdx) / pIds.length) * 0.5
+        const fontSize = projects[i].fontSize / Math.max(1, Math.abs(i - currIdx) + 1 / pIds.length )
         const blur = Math.pow(Math.abs(i - currIdx), 1.25)
-        p.style.opacity = String(i === currIdx ? 1 : opacity)
-        p.style.fontSize = fontSize + "px";
-        p.style.filter = `blur(${blur}px)`
+        p.element.style.opacity = String(i === currIdx ? 1 : opacity)
+        p.element.style.fontSize = fontSize + "px";
+        p.element.style.filter = `blur(${blur}px)`
       })
     }
 
-    function recalculateActive() {
+    function recalculateActive(){
       const activeProject = projects[currIdx]
-      const highlightCorner = $(".highlighted-corner", activeProject)
+      const highlightCorner = $(".highlighted-corner", activeProject.element)
       highlightCorner.classList.remove("hidden")
-      activeProject?.setAttribute('data-active', 'true')
-      recalculateActiveFontSize(activeProject)
-      activeProject.style.display = "block"
+      activeProject.element.setAttribute('data-active', 'true')
+      activeProject.element.style.fontSize = projects[currIdx].fontSize + "px"
     }
 
     function handleActiveProject(e) {
-      const direction = e.deltaY > 0 ? 'down' : 'up'
-      if (direction === 'down') {
-        currIdx = (currIdx + 1) % projectsList.length
-      } else {
-        currIdx = currIdx - 1
-        currIdx = currIdx < 0 ? projectsList.length - 1 : currIdx
+      if(typeof e.deltaY !== 'undefined' ){
+        const direction = e.deltaY > 0 ? 'down' : 'up'
+        if (direction === 'down') {
+          currIdx = (currIdx + 1) % pIds.length
+        } else {
+          currIdx = currIdx - 1
+          currIdx = currIdx < 0 ? pIds.length - 1 : currIdx
+        }
       }
       recalculateOthers()
       recalculateActive()
     }
-    const debouncedFn = debounce(handleActiveProject, 100)
 
-    projects = Array.from($all('.project-title'))
+    function handleResize(){
+      $all('.project-title').forEach((p, i) => {
+        let newFontSize = p.clientHeight
+        p.style.fontSize = newFontSize + "px";
+      })
+      recalculateBaseFontSizes()
+      recalculateOthers()
+      recalculateActive()
+    }
 
-    projects.forEach((p, i) => {
-      projectsList[i].fontSize = recalculateActiveFontSize(p)
-    })
+    const debouncedHandleActiveFn = debounce(handleActiveProject, 100)
+    const debouncedHandleResizeFn = debounce(handleResize, 500)
 
     recalculateOthers()
     recalculateActive()
-    window.addEventListener('wheel', debouncedFn.bind(this))
-    window.addEventListener('resize', debouncedFn.bind(this))
+    window.addEventListener('wheel', debouncedHandleActiveFn.bind(this))
+    window.addEventListener('resize', debouncedHandleResizeFn.bind(this))
   })
 </script>
