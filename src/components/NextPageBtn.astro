@@ -1,14 +1,15 @@
 ---
+import type { ComponentProps } from 'astro/types'
 import Btn from '../components/Btn.astro'
 
-interface Props {}
+interface Props extends ComponentProps<typeof Btn> {}
 
-const { } = Astro.props
+const props = Astro.props
 ---
 
 <div class="items-center">
-  <Btn href="works"
-    ><p><slot/></p>
+  <Btn href="works" {...props}>
+    <p><slot/></p>
     <svg
       width="30"
       height="10"

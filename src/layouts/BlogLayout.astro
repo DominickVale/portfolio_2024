@@ -25,7 +25,7 @@ const {
 } = frontmatter
 ---
 
-<BaseLayout title="Blog page" rowsMax withContacts data-menu-trigger="default-blog">
+<BaseLayout title="Blog page" rowsMax withContacts data-menu-trigger="default-blog" blurred>
   <section
     class="col-span-12 col-start-1 row-start-1 flex items-center justify-center gap-3 opacity-70 sm:hidden lg:col-span-4 lg:col-start-2 lg:mt-[8vh] lg:justify-start lg:self-start"
   >
@@ -85,7 +85,7 @@ const {
     >
       <p>LAST UPDATE: <date>{lastUpdated}</date></p>
       <div class="h-1 w-1 rounded-full bg-white opacity-70"></div>
-      <p>TTR: {ttr}</p>
+      <p>TTR: {ttr} MINUTES</p>
     </span>
 
     <BlogParagraph>

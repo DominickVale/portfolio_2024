@@ -37,3 +37,44 @@ export function debounce<T extends Function>(cb: T, wait = 20) {
   }
   return <T>(<any>callable)
 }
+
+export function fitTextToContainer(el: HTMLElement, container: HTMLElement, offset?: number) {
+  const maxWidth = container.clientWidth
+  const maxHeight = container.clientHeight
+  let newFontSize = container.clientHeight
+  let textWidth = el.offsetWidth
+  let textHeight = el.offsetHeight
+  for ( let j = 0; textWidth > maxWidth - offset || textHeight > maxHeight - offset; j++) {
+    newFontSize--
+    if (newFontSize < 5) {
+      console.log('Reached limit, break')
+      break
+    }
+    container.style.fontSize = newFontSize + 'px'
+    textWidth = el.offsetWidth
+    textHeight = el.offsetHeight
+  }
+  return newFontSize
+}
+
+export function fitTextToContainerScr(el: HTMLElement, container: HTMLElement, offset = 0) {
+  let fontSizeChanged = false
+  let scrollHeight = container.scrollHeight
+  let newFontSize = container.clientHeight
+  let textHeight = el.offsetHeight
+  for ( let j = 0; scrollHeight > textHeight; j++) {
+    fontSizeChanged = true
+    newFontSize--
+    if (newFontSize < 5) {
+      console.log('Reached limit, break')
+      break
+    }
+    container.style.fontSize = newFontSize + 'px'
+    textHeight = el.offsetHeight
+    scrollHeight = container.scrollHeight
+  }
+  if(fontSizeChanged) {
+    container.style.fontSize = newFontSize + offset + 'px'
+    return newFontSize
+  }
+}

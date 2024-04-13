@@ -44,9 +44,9 @@ const {} = Astro.props
   </div>
 
   <div
-    class="col-span-1 col-start-12 mb-14 ml-8 hidden h-full items-center sm:flex"
+    class="col-span-1 col-start-12 mb-14 ml-2 hidden h-full items-center sm:flex"
   >
-    <NextPageBtn>BLOG</NextPageBtn>
+    <NextPageBtn href="/blog">BLOG</NextPageBtn>
   </div>
 
   <section
@@ -56,7 +56,7 @@ const {} = Astro.props
     {
       Object.values(PROJECTS_LIST).map((project, i) => (
         <h2
-          class="project-title relative flex h-[10vh] w-full items-center font-display font-bold uppercase text-primary-lightest"
+          class="project-title relative flex ml-[-12%] h-[10vh] w-full items-center font-display font-bold uppercase text-primary-lightest"
           style={`--i: ${i}`}
           data-active={i === 0}
         >
@@ -119,7 +119,7 @@ const {} = Astro.props
     color: white;
   }
   .highlighted-corner {
-    width: 110%;
+    width: 108%;
     left: -5%;
   }
   .line-container {
@@ -162,7 +162,7 @@ const {} = Astro.props
 </style>
 
 <script>
-  import { $, $all, debounce } from '../app/utils'
+  import { $, $all, debounce, fitTextToContainer } from '../app/utils'
   import { PROJECTS_LIST } from '../app/constants'
   import { radToDeg } from 'three/src/math/MathUtils.js'
 
@@ -176,26 +176,7 @@ const {} = Astro.props
       $all(isDesktop ? '.project-title' : '.project-title-mobile').forEach(
         (p, i) => {
           const innerText = $('a', p)
-          const maxWidth = p.clientWidth
-          const maxHeight = p.clientHeight
-          let newFontSize = p.clientHeight
-          let textWidth = innerText.offsetWidth
-          let textHeight = innerText.offsetHeight
-          const offset = window.innerWidth * 0.003
-          for (
-            let j = 0;
-            textWidth > maxWidth - offset || textHeight > maxHeight - offset;
-            j++
-          ) {
-            newFontSize--
-            if (newFontSize < 5) {
-              console.log('Reached limit, break')
-              break
-            }
-            p.style.fontSize = newFontSize + 'px'
-            textWidth = innerText.offsetWidth
-            textHeight = innerText.offsetHeight
-          }
+          const newFontSize = fitTextToContainer(innerText, p, window.innerWidth * 0.003)
           projects[i] = {
             element: p,
             fontSize: newFontSize,

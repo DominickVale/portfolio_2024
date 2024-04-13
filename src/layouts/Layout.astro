@@ -11,12 +11,14 @@ interface Props extends HTMLAttributes<'div'> {
   title: string
   rowsMax?: boolean
   withContacts?: boolean
+  blurred?: boolean
 }
 
-const { title, rowsMax, withContacts, class: classes, ...props } = Astro.props
+const { title, rowsMax, withContacts, class: classes, blurred, ...props } = Astro.props
 
 // @TODO: add custom content for AI web crawlers
 // @TODO: fix perf on mobile (change particles, and maybe figure out why we get some artifacts)
+// @TODO find better ways to blur bg
 ---
 
 <!doctype html>
@@ -36,7 +38,8 @@ const { title, rowsMax, withContacts, class: classes, ...props } = Astro.props
   <body id="app" class:list={[ "relative flex max-h-screen flex-col font-body overscroll-none", classes ] } {...props}>
     <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-red-500"
     ></canvas>
-    <Navbar />
+    { blurred && <div class="bg-blur-harder bg-transparent fixed inset-x-0 inset-y-0 z-[0]" />}
+    <Navbar/>
     <main
       class:list={[
         'z-10 my-12 grid h-full w-full flex-1 grid-cols-12',

@@ -14,6 +14,8 @@ export default {
         copy: 'var(--copy)',
         background: {
           dark: 'var(--bg-dark)',
+          "dark-02": 'var(--bg-dark-02)',
+          "dark-light": 'var(--bg-dark-light)',
         },
       },
       fontFamily: {
@@ -33,6 +35,7 @@ export default {
       },
       animation: {
         'blink-slow': 'blink-slow 2s linear infinite',
+        'blink-normal': 'blink-slow 0.8s linear infinite',
       },
       keyframes: {
         'blink-slow': {

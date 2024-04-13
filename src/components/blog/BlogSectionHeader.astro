@@ -1,5 +1,16 @@
 <h2
-  class="row-start-1 col-start-7 col-span-4 mb-3 font-mono text-base sm:text-lg xl:text-xl font-black tracking-button uppercase"
+  class="blog-section-header relative row-start-1 col-start-7 col-span-4 mb-3 font-mono text-base sm:text-lg xl:text-xl font-black tracking-button uppercase"
 >
   <slot />
 </h2>
+<style>
+.blog-section-header::before{
+  content: '';
+  position: absolute;
+  left: -1rem;
+  top: 0.8rem;
+  background-color: theme('colors.primary');
+  height: theme('height.1');
+  width: theme('height.1');
+}
+</style>

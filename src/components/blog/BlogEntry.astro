@@ -1,25 +1,29 @@
 ---
 import Marquee from '../Marquee.astro'
+
 const { title, tags, description, readTime, date, class: classes } = Astro.props
 ---
 
 <article
   class:list={[
-    'bg-blur relative flex h-[16rem] w-full flex-col justify-center overflow-hidden p-6 sm:px-10 sm:w-[19rem] tall:h-[19rem] tall:w-[20rem]',
+    'bg-blur relative flex h-[16rem] w-full flex-col justify-center overflow-hidden p-6 sm:w-[19rem] sm:px-10 tall:h-[19rem] tall:w-[20rem]',
     classes,
   ]}
 >
-  <Marquee tags={tags}/>
+  <div class="gradient-overlay absolute left-0 top-0 h-full w-full"></div>
+  <Marquee tags={tags} />
   <span class="mb-3">
     <small
-      class="read-time relative ml-3 text-xxs uppercase text-[rgba(255,255,255,0.77)]"
+      class="read-time relative ml-3 text-xxs sm:text-xs uppercase text-[rgba(255,255,255,0.77)]"
       >{readTime}</small
     >
-    <h3 class="font-display text-2xl font-black">{title}</h3>
+    <h3 class="article-title font-display text-2xl h-16 font-black">{title}</h3>
   </span>
   <span>
-    <date class="relative text-xxs uppercase text-[rgba(255,255,255,0.77)]">{date}</date>
-    <p class="h-0 overflow-hidden text-xs tall:h-auto">{description}</p>
+    <date class="relative text-xxs sm:text-xs uppercase text-[rgba(255,255,255,0.77)]"
+      >{date}</date
+    >
+    <p class="line-clamp-3 tall:line-clamp-none overflow-hidden text-xs sm:mt-1">{description}</p>
   </span>
 </article>
 
@@ -35,5 +39,15 @@ const { title, tags, description, readTime, date, class: classes } = Astro.props
       height: theme('height.1');
       width: theme('height.1');
     }
+  }
+
+  .gradient-overlay {
+    transition: all 0.25s ease-out;
+    background: radial-gradient(
+      20rem circle at var(--x) var(--y),
+      rgba(255, 15, 0, 0.4),
+      transparent
+    );
+    z-index: -1;
   }
 </style>

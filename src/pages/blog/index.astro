@@ -8,20 +8,26 @@ const lastUpdated = new Date().toLocaleDateString('en-GB')
 const allPosts = await getCollection('blog')
 ---
 
-<Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default">
+<Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default" blurred>
   <section class="relative col-span-10 col-start-2">
-    <div class="flex h-max flex-col sm:flex-row">
+    <div class="relative my-8 flex h-max flex-col sm:my-0 sm:flex-row">
       <h1
-        class="mt-[2vh] font-display text-[15vw] font-black leading-[100%] md:text-[calc(5vw+6.2vh)] tall:mt-[6vh] taller:mt-[10vh]"
+        class="mt-[2vh] font-display text-[15vw] font-black leading-[100%] md:text-8xl lg:text-[calc(5vw+6.2vh)] tall:mt-[6vh] taller:mt-[10vh]"
       >
         BLOG
       </h1>
+      <div
+        class="bg bg-blur cut-corner absolute bottom-[-5.5vh] left-[-59%] z-[-1] hidden h-1/2 w-[55rem] sm:block md:w-[60rem] lg:w-[70rem] xl:w-full"
+      >
+      </div>
       <div class="ml-1 mr-auto mt-2 gap-[7%] self-end sm:mb-6 sm:ml-4 lg:ml-6">
         <ul>
-          <StatusItem class="text-xxs md:text-xs"
+          <StatusItem filled class="text-xxs md:text-xs"
             >UPDATED:&nbsp;<date>{lastUpdated}</date></StatusItem
           >
-          <StatusItem class="text-xxs md:text-xs">PROJ. CASES: 3</StatusItem>
+          <StatusItem filled class="text-xxs md:text-xs"
+            >PROJ. CASES: 3</StatusItem
+          >
         </ul>
       </div>
     </div>
@@ -33,14 +39,75 @@ const allPosts = await getCollection('blog')
   </section>
 
   <section
-    class="max-w-screen no-scrollbar col-span-10 col-start-2 row-start-2 flex min-h-28 flex-col items-center pb-24 sm:col-span-12 sm:col-start-1 sm:flex-row sm:items-start sm:overflow-y-hidden sm:overflow-x-scroll sm:pb-0 sm:pl-32"
+    class="posts-container max-w-screen no-scrollbar col-span-10 col-start-2 row-start-2 flex max-h-[70vh] min-h-28 flex-col items-center overflow-y-scroll pb-24 sm:col-span-12 sm:col-start-1 sm:max-h-none sm:flex-row sm:items-start sm:overflow-y-hidden sm:overflow-x-scroll sm:pb-0 sm:pl-32"
   >
     {
-      allPosts.map((post) => (
-        <a class="my-[4vh] sm:mx-[2vw] sm:my-0 xl:mx-[3rem]" href={`/blog/${post.slug}`}>
-          <BlogEntry {...post.data} />
+      allPosts.map((post, i) => (
+        <a
+          class="my-[4vh] sm:mx-[2vw] sm:my-0 xl:mx-[3rem]"
+          href={`/blog/${post.slug}`}
+        >
+          <BlogEntry id={i} {...post.data} />
         </a>
       ))
     }
   </section>
 </Layout>
+
+<style>
+  .cut-corner {
+    clip-path: polygon(100% 0, 100% 45%, 96% 100%, 0 100%, 0 0);
+  }
+  .posts-container::before {
+    @apply sm:hidden;
+    @apply bottom-12;
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 10%;
+    background: linear-gradient(
+      0deg,
+      rgba(17, 16, 16, 1) 0%,
+      rgba(17, 16, 16, 0.1) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+  @screen sm {
+    .posts-container {
+      mask-image: unset;
+    }
+  }
+</style>
+
+<script>
+  import { $all, $, fitTextToContainerScr} from '../../app/utils'
+  document.addEventListener('DOMContentLoaded', () => {
+    const articles = $all('article')
+
+    function handleMouseMove(event) {
+      const gradientOverlay = $('.gradient-overlay', event.currentTarget)
+      const rect = event.currentTarget.getBoundingClientRect()
+      const x = event.clientX - rect.left
+      const y = event.clientY - rect.top
+
+      gradientOverlay.style.opacity = "1"
+      gradientOverlay.style.setProperty('--x', `${x}px`)
+      gradientOverlay.style.setProperty('--y', `${y}px`)
+    }
+
+    function handleMouseLeave(event) {
+      const gradientOverlay = $('.gradient-overlay', event.target)
+      gradientOverlay.style.opacity = "0"
+    }
+
+    articles.forEach((article) => {
+      const articleTitleEl = $('.article-title', article)
+      const fontSizeChanged = fitTextToContainerScr(articleTitleEl, articleTitleEl, 2)
+      if(fontSizeChanged) articleTitleEl.style.lineHeight = "unset"
+      article.addEventListener('mousemove', handleMouseMove.bind(this))
+      article.addEventListener('mouseleave', handleMouseLeave.bind(this))
+    })
+  })
+</script>

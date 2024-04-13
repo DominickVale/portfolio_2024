@@ -12,7 +12,9 @@
   --primary-lightest: #d3afaa;
   --lines: rgba(255, 255, 255, 0.2);
   --bg-dark: #110F10;
-  --bg-radial-02: rgba(17,16,16, 0.5);
+  --bg-dark-light: rgba(36, 34, 34, 0.28);
+  --bg-dark-02: rgba(17,16,16, 0.2);
+  --bg-dark-05: rgba(17,16,16, 0.5);
   --blur-radial: 2px;
   --copy: #d3c4c4;
 }
@@ -121,8 +123,12 @@ body {
 
 @layer components {
   .bg-blur {
-    background-color: theme('colors.background.dark');
-    backdrop-filter: blur(16px);
+    background-color: var(--bg-dark-light);
+    backdrop-filter: blur(2px);
+  }
+  .bg-blur-harder {
+    background-color: var(--bg-dark-05);
+    backdrop-filter: blur(12px);
   }
 }
 
@@ -136,4 +142,25 @@ body {
 .intro-paragraph {
   @apply max-w-sm text-center text-xs text-white opacity-80;
   text-wrap: pretty;
+}
+
+
+/* BLOG PAGE */
+
+article{
+  .marquee, .marquee-tag, .marquee-dot {
+    transition: all .05s ease-in;
+  }
+}
+
+article:hover {
+  .marquee {
+    background-color: white;
+  }
+  .marquee-tag {
+    color: var(--bg-dark);
+  }
+  .marquee-dot {
+    background-color: var(--bg-dark);
+  }
 }

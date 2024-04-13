@@ -1,11 +1,12 @@
 ---
-const { highlight, class: classes } = Astro.props
+const { highlight, filled, class: classes } = Astro.props
 ---
 
 <li
   class:list={[
     'status-item relative pl-3 text-xs font-normal text-inactive',
     { highlight },
+    { filled },
     classes
   ]}
   data-menu-trigger="text"
@@ -21,6 +22,9 @@ const { highlight, class: classes } = Astro.props
         background-color: white;
         border-color: white;
       }
+    }
+    &.filled::before {
+      background-color: grey;
     }
     &::before {
       content: '';
