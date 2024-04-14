@@ -30,6 +30,9 @@ html {
 }
 body {
   min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

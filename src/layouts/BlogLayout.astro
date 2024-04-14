@@ -1,4 +1,5 @@
 ---
+//@TODO: Replace blured prop with threejs blur on canvas
 import type { Frontmatter } from '../content/config'
 import BaseLayout from './Layout.astro'
 import Btn from '../components/Btn.astro'
@@ -27,8 +28,9 @@ const {
 
 <BaseLayout title="Blog page" rowsMax withContacts data-menu-trigger="default-blog" blurred>
   <section
-    class="col-span-12 col-start-1 row-start-1 flex items-center justify-center gap-3 opacity-70 sm:hidden lg:col-span-4 lg:col-start-2 lg:mt-[8vh] lg:justify-start lg:self-start"
+    class="h-max md:mt-6 flex items-end lg:items-center mb-8 justify-center lg:justify-start col-span-12 col-start-1 row-start-1 opacity-70 lg:col-span-4 lg:col-start-2 lg:self-start sm:h-[calc(3rem+2vh)] lg:h-[15vh] lg:mt-6 lg:mb-[-9vh]"
   >
+    <Btn class="w-max font-normal flex items-center justify-center lg:justify-start  gap-3 " href="/blog">
     <svg
       width="7"
       height="8"
@@ -40,30 +42,13 @@ const {
         d="M2.52091 3.99987L6.26185 0.258921L3.74403 0.258921L0.75843 3.24452L1.51378 3.99987L0.758429 4.75521L3.74416 7.74095L6.26198 7.74095L2.52091 3.99987Z"
         fill="#D9D9D9"></path>
     </svg>
-    <Btn class="font-normal" href="/blog">BACK TO WORKS</Btn>
+    BACK TO WORKS</Btn>
   </section>
   <section
-    class="col-span-10 col-start-2 row-start-2 mb-[5vh] mt-[5vh] sm:mb-0 sm:mt-[10vh] md:col-span-8 md:col-start-3 lg:hidden"
-  >
-    <div class="relative">
-      <Image class="mb-3" />
-      <Marquee tags={project.tech} class="top-4 left-4 right-4 bg-white text-background-dark min-w-0" />
-    </div>
-    <div class="relative justify-between gap-3 flex flex-col sm:flex-row">
-      <WorkDetails small />
-      <div
-        class="hidden sm:flex fui-frame bg-striped flex-[0.8] items-center justify-center opacity-90"
-      >
-        <OpenProjBtn link={project.link} />
-        <div class="fui-corners"></div>
-      </div>
-    </div>
-  </section>
-  <section
-    class="relative col-span-10 col-start-2 row-start-3 md:col-span-8 md:col-start-3 lg:col-span-4 lg:col-start-2 lg:row-start-2"
+    class="relative col-span-10 col-start-2 row-start-2 md:col-span-8 md:col-start-3 lg:col-span-4 lg:col-start-2"
   >
     <div class="flex h-max flex-col sm:flex-row lg:mt-8">
-      <span class="relative mt-[5vh] tall:mt-[6vh] taller:mt-[10vh]">
+      <span class="relative mt-8 md:mt-[2vh] lg:mt-[6vh]">
         <span class="absolute left-1 top-[-1rem] text-xxs opacity-50"
           >CASE_N: 001</span
         >
@@ -79,6 +64,25 @@ const {
     >
       {subtitle}
     </h2>
+
+
+    <section
+      class="mb-16 mt-[5vh] sm:mt-[0vh] lg:hidden"
+    >
+      <div class="relative">
+        <Image class="mb-3" />
+        <Marquee tags={project.tech} class="top-4 left-4 right-4 bg-white text-background-dark min-w-0" />
+      </div>
+      <div class="relative justify-between gap-3 flex flex-col sm:flex-row">
+        <WorkDetails small />
+        <div
+          class="hidden sm:flex fui-frame bg-striped flex-[0.8] items-center justify-center opacity-90"
+        >
+          <OpenProjBtn link={project.link} />
+          <div class="fui-corners"></div>
+        </div>
+      </div>
+    </section>
 
     <span
       class="mb-2 mt-6 flex items-center gap-3 text-xxs opacity-50 md:text-xs"

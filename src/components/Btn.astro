@@ -1,19 +1,4 @@
 ---
-// import type { HTMLAttributes, Polymorphic } from 'astro/types'
-
-// type Ap = {
-//   href: string
-// } & Polymorphic<{as: "a"}>
-
-// type Bp = {
-//   href: undefined
-// } & Polymorphic<{as: "button"}>
-
-// type Props = {
-//   class?: string
-//   small?: boolean
-// } & ( Ap | Bp)
-
 const { small, class: classes, frame, ...rest } = Astro.props
 
 const Component = Astro.props.href ? 'a' : 'button'
