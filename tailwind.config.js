@@ -16,6 +16,7 @@ export default {
           dark: 'var(--bg-dark)',
           "dark-02": 'var(--bg-dark-02)',
           "dark-light": 'var(--bg-dark-light)',
+          "dark-lightest": 'var(--bg-dark-lightest)',
         },
       },
       fontFamily: {
@@ -32,6 +33,7 @@ export default {
       },
       letterSpacing: {
         button: '0.2rem',
+        label: '0.1rem'
       },
       animation: {
         'blink-slow': 'blink-slow 2s linear infinite',

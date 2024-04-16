@@ -12,7 +12,9 @@ import Marquee from '../components/Marquee.astro'
 type Props = {
   frontmatter: Frontmatter
 }
-const { frontmatter } = Astro.props
+const { frontmatter, ...rest } = Astro.props
+
+console.log(frontmatter, rest)
 const {
   title,
   tags,
@@ -26,62 +28,74 @@ const {
 } = frontmatter
 ---
 
-<BaseLayout title="Blog page" rowsMax withContacts data-menu-trigger="default-blog" blurred>
-  <section
-    class="h-max md:mt-6 flex items-end lg:items-center mb-8 justify-center lg:justify-start col-span-12 col-start-1 row-start-1 opacity-70 lg:col-span-4 lg:col-start-2 lg:self-start sm:h-[calc(3rem+2vh)] lg:h-[15vh] lg:mt-6 lg:mb-[-9vh]"
+<BaseLayout
+  title="Blog page"
+  rowsMax
+  withContacts
+  data-menu-trigger="default-blog"
+  blurred
+>
+  <div
+    class="col-span-12 col-start-1 row-start-1 hidden h-[10vh] w-full lg:block"
   >
-    <Btn class="w-max font-normal flex items-center justify-center lg:justify-start  gap-3 " href="/blog">
-    <svg
-      width="7"
-      height="8"
-      viewBox="0 0 7 8"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M2.52091 3.99987L6.26185 0.258921L3.74403 0.258921L0.75843 3.24452L1.51378 3.99987L0.758429 4.75521L3.74416 7.74095L6.26198 7.74095L2.52091 3.99987Z"
-        fill="#D9D9D9"></path>
-    </svg>
-    BACK TO WORKS</Btn>
-  </section>
+  </div>
   <section
     class="relative col-span-10 col-start-2 row-start-2 md:col-span-8 md:col-start-3 lg:col-span-4 lg:col-start-2"
   >
-    <div class="flex h-max flex-col sm:flex-row lg:mt-8">
+    <Btn
+      class="mt-8 flex w-max items-center justify-center gap-3 p-2 font-normal sm:mb-8 sm:mt-12 lg:mt-0 lg:justify-start"
+      href={project ? '/works' : '/blog'}
+    >
+      <svg
+        width="7"
+        height="8"
+        viewBox="0 0 7 8"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M2.52091 3.99987L6.26185 0.258921L3.74403 0.258921L0.75843 3.24452L1.51378 3.99987L0.758429 4.75521L3.74416 7.74095L6.26198 7.74095L2.52091 3.99987Z"
+          fill="#D9D9D9"></path>
+      </svg>
+      BACK TO {project ? 'WORKS' : 'BLOG'}</Btn
+    >
+    <div class="flex h-max flex-col sm:flex-row">
       <span class="relative mt-8 md:mt-[2vh] lg:mt-[6vh]">
         <span class="absolute left-1 top-[-1rem] text-xxs opacity-50"
           >CASE_N: 001</span
         >
         <h1
-          class="font-display text-[9.2vw] font-black leading-[100%] md:text-[3.7vw]"
+          class="h-20 font-display text-[9.2vw] font-black leading-[100%] md:text-[3.7vw] lg:h-[9.2vw]"
         >
           {title}
         </h1>
       </span>
     </div>
     <h2
-      class="mb-[6vh] ml-3 mt-4 hidden whitespace-nowrap font-mono text-xs font-black tracking-button opacity-60 sm:block sm:text-lg tall:text-base"
+      class="mb-[6vh] ml-3 mt-3 whitespace-nowrap font-mono text-xs font-black tracking-button opacity-60 sm:block sm:text-lg tall:text-base"
     >
       {subtitle}
     </h2>
 
-
-    <section
-      class="mb-16 mt-[5vh] sm:mt-[0vh] lg:hidden"
-    >
+    <section class="mb-16 mt-[5vh] sm:mt-[0vh] lg:hidden">
       <div class="relative">
         <Image class="mb-3" />
-        <Marquee tags={project.tech} class="top-4 left-4 right-4 bg-white text-background-dark min-w-0" />
+        <Marquee
+          tags={project?.tech || tags}
+          class="left-4 right-4 top-4 min-w-0 bg-white text-background-dark"
+        />
       </div>
-      <div class="relative justify-between gap-3 flex flex-col sm:flex-row">
-        <WorkDetails small />
-        <div
-          class="hidden sm:flex fui-frame bg-striped flex-[0.8] items-center justify-center opacity-90"
-        >
-          <OpenProjBtn link={project.link} />
-          <div class="fui-corners"></div>
-        </div>
-      </div>
+      {
+        project && (
+          <div class="relative flex flex-col justify-between gap-3 sm:flex-row">
+            <WorkDetails small />
+            <OpenProjBtn
+              class="fui-frame bg-striped hidden flex-[0.8] sm:flex"
+              link={project.linkWebsite}
+            />
+          </div>
+        )
+      }
     </section>
 
     <span
@@ -97,35 +111,50 @@ const {
     </BlogParagraph>
   </section>
   <section
-    class="col-span-10 col-start-1 row-start-3 hidden flex-col items-center self-start lg:col-span-4 lg:col-start-8 lg:row-start-2 lg:mt-20 lg:flex"
+    class="col-span-10 col-start-1 row-start-3 hidden flex-col items-center self-start lg:col-span-4 lg:col-start-8 lg:row-start-2 lg:mt-[8vh] lg:flex"
   >
     <Image />
-    <div class="h-6 w-[1px] bg-lines"></div>
-    <div class="relative flex min-h-12 w-full flex-col xl:flex-row">
-      <div class="fui-frame flex-1">
-        <table class="text-xs">
-          <tbody class="">
-            <tr class="grid grid-cols-[3rem_1fr] gap-1">
-              <th class="pl-0 pr-3 text-left text-primary-darker">ROLE:</th>
-              <td class="text-left">{project.role}</td>
-              <th class="pl-0 pr-3 text-left text-primary-darker">CLIENT:</th>
-              <td class="text-left">{project.client}</td>
-              <th class="pl-0 pr-3 text-left text-primary-darker">YEAR:</th>
-              <td class="text-left">{project.year}</td>
-              <th class="pl-0 pr-3 text-left text-primary-darker">TECH:</th>
-              <td class="min-w-32 text-left"> {project.tech.join(', ')}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="fui-corners"></div>
-      </div>
-      <div
-        class="fui-frame bg-striped flex flex-1 items-center justify-center opacity-90"
-      >
-        <OpenProjBtn link={project.link} />
-        <div class="fui-corners"></div>
-      </div>
-    </div>
+    {
+      project && (
+        <>
+          <div class="h-6 w-[1px] bg-lines" />
+          <div class="relative flex min-h-12 w-full flex-col xl:flex-row">
+            <div class="fui-frame flex-1">
+              <table class="text-xs">
+                <tbody class="">
+                  <tr class="grid grid-cols-[3rem_1fr] gap-1">
+                    <th class="pl-0 pr-3 text-left text-primary-darker">
+                      ROLE:
+                    </th>
+                    <td class="text-left">{project.role}</td>
+                    <th class="pl-0 pr-3 text-left text-primary-darker">
+                      CLIENT:
+                    </th>
+                    <td class="text-left">{project.client}</td>
+                    <th class="pl-0 pr-3 text-left text-primary-darker">
+                      YEAR:
+                    </th>
+                    <td class="text-left">{project.year}</td>
+                    <th class="pl-0 pr-3 text-left text-primary-darker">
+                      TECH:
+                    </th>
+                    <td class="min-w-32 text-left">
+                      {' '}
+                      {project.tech.join(', ')}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="fui-corners" />
+            </div>
+            <OpenProjBtn
+              class="fui-frame bg-striped flex flex-1 "
+              link={project.linkWebsite}
+            />
+          </div>
+        </>
+      )
+    }
   </section>
   <div
     class="col-span-10 col-start-2 row-start-4 grid auto-rows-max grid-cols-10 md:col-span-8 md:col-start-3 lg:col-span-10 lg:col-start-2"
@@ -133,3 +162,26 @@ const {
     <slot />
   </div>
 </BaseLayout>
+
+<script>
+  import { $, fitTextToContainerScr, debounce } from '../app/utils'
+  document.addEventListener('DOMContentLoaded', () => {
+    const titleEl = $('h1')
+    const titleElChars = titleEl.innerHTML.split('')
+    function handleResize() {
+      if (titleElChars.length > 24) {
+        console.log('title too long')
+        const fontSizeChanged = fitTextToContainerScr(titleEl, titleEl)
+        if (fontSizeChanged) {
+          titleEl.style.lineHeight = 'unset'
+        }
+      }
+      console.log("Setting height to auto")
+      titleEl.style.height = 'auto'
+    }
+    handleResize()
+
+    const debouncedHandleResizeFn = debounce(handleResize, 100)
+    document.addEventListener('resize', debouncedHandleResizeFn)
+  })
+</script>

@@ -1,4 +1,5 @@
 ---
+//@TODO: implement animation + infinite 
 import type { HTMLAttributes } from 'astro/types'
 
 type Props = {
@@ -17,8 +18,8 @@ const { tags, class: classes } = Astro.props
   {
     tags.map((t) => (
       <>
-        <span class="marquee-tag relative ml-1">{t}</span>
         <div class="marquee-dot h-[0.2rem] w-[0.2rem] rounded-full bg-white opacity-70" />
+        <span class="marquee-tag relative ml-1">{t}</span>
       </>
     ))
   }

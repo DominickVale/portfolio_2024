@@ -5,23 +5,64 @@ import type { HTMLAttributes } from 'astro/types'
 interface Props extends HTMLAttributes<'img'>{
   cover?: boolean
   contain?: boolean
+  variant?: "blog" | "default"
 }
 
-const { class: classes, cover, contain, ...props} = Astro.props
+const { class: classes, cover, contain, variant, alt, ...props} = Astro.props
+
+const imageVariant = variant || "default"
 ---
 
-<div class:list={[ "fui-frame mr-auto", classes ] }>
-  <small
-    class="vertical-text--left absolute bottom-4 left-[-0.25rem] text-xxs leading-[100%] opacity-40"
-    >IMG_003.jpg</small
-  >
-  <img class:list={[  "w-full", cover && "h-full object-cover", contain && "h-full object-contain" ] } src="/ecorp.png" alt="" {...props} />
-  <!-- <small class="text-xxs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
-  <div class="absolute right-0 top-0 flex h-full w-3">
+{imageVariant === "default" ? (
+  <div class:list={[ "fui-frame mr-auto uppercase", classes ] }>
     <small
-      class="vertical-text--right mt-11 w-[1.6rem] text-xxs leading-[100%] opacity-40"
-      >IMAGE_NAME-2492929.jpg</small
+      class="vertical-text--left absolute bottom-4 left-[-0.25rem] text-xxs leading-[100%] opacity-40"
+      >IMG_003.jpg</small
     >
+    <img class:list={[  "w-full", cover && "h-full object-cover", contain && "h-full object-contain" ] } src="/ecorp.png" alt="" {...props} />
+    <!-- <small class="text-xxs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
+    <div class="absolute right-0 top-0 flex h-full w-3">
+      <small
+        class="vertical-text--right mt-11 w-[1.6rem] text-xxs leading-[100%] opacity-40"
+        >IMAGE_NAME-2492929.jpg</small
+      >
+    </div>
+    <div class="fui-corners"></div>
   </div>
-  <div class="fui-corners"></div>
-</div>
+) : (
+  <div class:list={[ "w-full uppercase", classes ] }>
+    <div class="absolute left-[-1rem] top-[-2rem] bg-striped w-5/6 h-20" />
+    <div class="relative flex-col w-full h-full flex justify-center items-center p-6 pb-3">
+      <svg class="absolute left-[calc(-1rem-1px)] top-0" width="19" height="100%" viewBox="0 0 19 376" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18.5 0C18.5 0 18.5 13.6813 18.5 36.5L1 53C1 106.208 1 191 1 191L18.5 209C18.5 238.604 18.5 349.857 18.5 376" stroke="#484848"/>
+      </svg>
+
+      <small
+        class="vertical-text--left absolute top-[45%] left-0 text-xxs leading-[100%] opacity-40 z-20 tracking-label"
+        >IMG_003.jpg</small
+      >
+      <img class:list={[  "w-full", cover && "h-full object-cover", contain && "h-full object-contain" ] } src="/ecorp.png" alt={alt} {...props} />
+        <span class="relative ml-3 image-caption self-start mt-4 text-xs text-copy opacity-80">{alt}</span>
+      <div class="fui-corners !border-l-0"></div>
+    </div>
+  </div>
+)}
+
+<style>
+.image-caption::before{
+  content: '';
+  position: absolute;
+  left: -0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: theme('colors.primary');
+  height: theme('height.1');
+  width: theme('height.1');
+}
+.fui-frame-left{
+  background-image: url('/fui-frame-left.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 1rem 0.5rem;
+  padding-left: 2rem;
+}</style>

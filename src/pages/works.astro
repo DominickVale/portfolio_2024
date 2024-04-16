@@ -63,17 +63,17 @@ const {} = Astro.props
           <a class="block w-max leading-[100%]" href={`/works/${project.name}`}>
             {project.name}
           </a>
-          <div class="fui-corners highlighted-corner hidden h-full font-mono">
+          <div class="fui-corners highlighted-corner hidden h-full font-mono z-[100]">
             <div class="line-container">
               <div class="line" />
               <div class="circle" />
               <div class="dynamic-line" />
             </div>
             <div class="absolute bottom-[-2.7rem] right-0 flex w-3/4 gap-3">
-              <Btn class="w-full justify-start pb-3 pl-2 pt-6" frame>
+              <Btn href={project.linkCase} class="w-full justify-start pb-3 pl-2 pt-6" frame>
                 READ CASE
               </Btn>
-              <Btn class="w-full justify-start pb-3 pl-2 pt-6" frame>
+              <Btn href={project.linkWebsite} class="w-full justify-start pb-3 pl-2 pt-6" frame>
                 VISIT WEBSITE
               </Btn>
             </div>

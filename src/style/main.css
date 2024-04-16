@@ -13,6 +13,7 @@
   --lines: rgba(255, 255, 255, 0.2);
   --bg-dark: #110F10;
   --bg-dark-light: rgba(36, 34, 34, 0.28);
+  --bg-dark-lightest: rgba(66, 64, 64, 0.28);
   --bg-dark-02: rgba(17,16,16, 0.2);
   --bg-dark-05: rgba(17,16,16, 0.5);
   --blur-radial: 2px;
@@ -117,10 +118,10 @@ body {
 .bg-striped {
   background: repeating-linear-gradient(
     45deg,
-    theme('colors.background.dark'),
-    theme('colors.background.dark') 10px,
-    rgba(0, 0, 0, 0.5) 13px,
-    rgba(0, 0, 0, 0.5) 20px
+    theme('colors.background.dark-lightest'),
+    theme('colors.background.dark-lightest') 10px,
+    rgba(0, 0, 0, 0) 13px,
+    rgba(0, 0, 0, 0) 20px
   );
 }
 

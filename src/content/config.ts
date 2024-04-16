@@ -20,6 +20,8 @@ const postsCollection = defineCollection({
         company: z.string(),
         year: z.string(),
         tech: z.array(z.string()),
+        linkCase: z.string(),
+        linkWebsite: z.string(),
       }),
     ),
   }),
