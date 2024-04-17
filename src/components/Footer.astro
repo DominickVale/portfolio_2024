@@ -70,7 +70,7 @@ const {} = Astro.props
       hour: 'numeric',
       minute: 'numeric',
     })
-    clockEl.innerHTML = `${timeString.replace(/:/g, '<span class="animate-blink-slow">:</span>')} (CET)`
+    clockEl.innerHTML = `${timeString.replace(/:/g, '<span class="animate-blink-slow">:</span>')} <span class="hidden xl:inline">(CET)</span>`
   }
 
   updateClock()

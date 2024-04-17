@@ -14,7 +14,6 @@ type Props = {
 }
 const { frontmatter, ...rest } = Astro.props
 
-console.log(frontmatter, rest)
 const {
   title,
   tags,
@@ -72,7 +71,7 @@ const {
       </span>
     </div>
     <h2
-      class="mb-[6vh] ml-3 mt-3 whitespace-nowrap font-mono text-xs font-black tracking-button opacity-60 sm:block sm:text-lg tall:text-base"
+      class="mb-[6vh] ml-3 mt-3 whitespace-nowrap font-mono text-xs font-black tracking-button opacity-60 sm:block sm:text-lg"
     >
       {subtitle}
     </h2>
@@ -170,13 +169,11 @@ const {
     const titleElChars = titleEl.innerHTML.split('')
     function handleResize() {
       if (titleElChars.length > 24) {
-        console.log('title too long')
         const fontSizeChanged = fitTextToContainerScr(titleEl, titleEl)
         if (fontSizeChanged) {
           titleEl.style.lineHeight = 'unset'
         }
       }
-      console.log("Setting height to auto")
       titleEl.style.height = 'auto'
     }
     handleResize()

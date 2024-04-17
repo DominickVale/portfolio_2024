@@ -44,7 +44,6 @@ export function fitTextToContainer(el: HTMLElement, container: HTMLElement, offs
   let newFontSize = container.clientHeight
   let textWidth = el.offsetWidth
   let textHeight = el.offsetHeight
-  console.log(textWidth, maxWidth, textHeight, maxHeight)
   for ( let j = 0; textWidth > maxWidth - offset || textHeight > maxHeight - offset; j++) {
     newFontSize--
     if (newFontSize < 5) {
@@ -63,7 +62,6 @@ export function fitTextToContainerScr(el: HTMLElement, container: HTMLElement, o
   let scrollHeight = container.scrollHeight
   let newFontSize = container.clientHeight
   let textHeight = el.offsetHeight
-  console.log(scrollHeight, textHeight)
   for ( let j = 0; scrollHeight > textHeight; j++) {
     fontSizeChanged = true
     newFontSize--
@@ -75,7 +73,6 @@ export function fitTextToContainerScr(el: HTMLElement, container: HTMLElement, o
     textHeight = el.offsetHeight
     scrollHeight = container.scrollHeight
   }
-  console.log(scrollHeight, textHeight)
   if(fontSizeChanged) {
     container.style.fontSize = newFontSize + offset + 'px'
     return newFontSize

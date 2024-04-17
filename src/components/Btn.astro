@@ -6,7 +6,7 @@ const Component = Astro.props.href ? 'a' : 'button'
 
 <Component
   class:list={[
-    'relative text-xs font-black tracking-button text-white',
+    'btn relative text-xs font-black tracking-button text-white',
     frame && 'frame h-7 w-32 flex items-center font-bold backdrop-blur-[1px]',
     classes,
   ]}
@@ -15,3 +15,12 @@ const Component = Astro.props.href ? 'a' : 'button'
   <slot />
   {frame && <div class="fui-corners pointer-events-none" />}
 </Component>
+
+<style>
+.btn--enabled{
+  opacity: 1;
+}
+.btn--disabled{
+  opacity: 0.6;
+}
+</style>
