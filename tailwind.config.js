@@ -1,7 +1,23 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
+      fontFamily: {
+        sans: ['Roboto'],
+        serif: ['Inconsolata'],
+        display: ['Orbitron'],
+        body: ['Inconsolata'],
+        mono: ['Inconsolata', 'Roboto Mono'],
+        copy: ['Roboto', 'Arial'],
+      },
+      screens: {
+        xs: '420px',
+        ...defaultTheme.screens,
+        tall: { raw: '((min-height: 500px) and (min-width: 640px))' },
+        taller: { raw: '((min-height: 650px) and (min-width: 640px))' },
+        "laptop-h": { raw: '((min-height: 720px) and (min-width: 1024px))' },
+      },
     extend: {
       colors: {
         primary: 'var(--primary)',
@@ -14,18 +30,10 @@ export default {
         copy: 'var(--copy)',
         background: {
           dark: 'var(--bg-dark)',
-          "dark-02": 'var(--bg-dark-02)',
-          "dark-light": 'var(--bg-dark-light)',
-          "dark-lightest": 'var(--bg-dark-lightest)',
+          'dark-02': 'var(--bg-dark-02)',
+          'dark-light': 'var(--bg-dark-light)',
+          'dark-lightest': 'var(--bg-dark-lightest)',
         },
-      },
-      fontFamily: {
-        sans: ['Roboto'],
-        serif: ['Inconsolata'],
-        display: ['Orbitron'],
-        body: ['Inconsolata'],
-        mono: ['Inconsolata', 'Roboto Mono'],
-        copy: ['Roboto', 'Arial']
       },
       fontSize: {
         display: 'clamp(0px, 8.2vw, 132px)',
@@ -33,7 +41,7 @@ export default {
       },
       letterSpacing: {
         button: '0.2rem',
-        label: '0.1rem'
+        label: '0.1rem',
       },
       animation: {
         'blink-slow': 'blink-slow 2s linear infinite',
@@ -48,15 +56,7 @@ export default {
           '100%': { opacity: '0' },
         },
       },
-      screens: {
-        xs: '420px',
-        tall: { raw: '((min-height: 500px) and (min-width: 640px))' },
-        taller: { raw: '((min-height: 650px) and (min-width: 640px))' },
-        "laptop-h": { raw: '((min-height: 720px) and (min-width: 1024px))' },
-      },
     },
   },
-  plugins: [
-    require('@tailwindcss/container-queries'),
-  ],
+  plugins: [require('@tailwindcss/container-queries')],
 }
