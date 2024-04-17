@@ -21,6 +21,8 @@ export const mag = (vec: Vec2) => Math.sqrt(vec.x ** 2 + vec.y ** 2)
 export const clamp = (n: number, min: number, max: number) =>
   Math.min(Math.max(n, min), max)
 
+export const lerp = (a: number, b: number, t: number): number => ( a + (b - a) * t );
+
 export function getCurrentPage() {
   if (window.location.pathname === '/') return 'home'
   else {
@@ -77,4 +79,14 @@ export function fitTextToContainerScr(el: HTMLElement, container: HTMLElement, o
     container.style.fontSize = newFontSize + offset + 'px'
     return newFontSize
   }
+}
+
+export function showCursorMessage(message: string, isError: string){
+  const event = new CustomEvent('show-cursor-message', {
+    detail: {
+      message,
+      isError
+    }
+  })
+  window.dispatchEvent(event)
 }

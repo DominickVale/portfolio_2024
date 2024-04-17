@@ -41,6 +41,12 @@ body {
   display: none;
 }
 
+.no-cursor{
+  & *, & > a{
+    cursor: none !important;
+  }
+}
+
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */

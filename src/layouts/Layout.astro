@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.astro'
 import Footer from '../components/Footer.astro'
 import Contacts from '../components/Contacts.astro'
 import RadialMenu from '../components/RadialMenu.astro'
+import Cursor from '../components/Cursor.astro'
 import { ContactIcon, LabIcon, HomeIcon, WorksIcon, SettingsIcon, AboutIcon, BlogIcon, CopyIcon, ContextMenuIcon, DebugIcon, AudioIcon} from '../components/icons'
 import type { HTMLAttributes } from 'astro/types'
 
@@ -46,6 +47,7 @@ const { title, rowsMax, withContacts, class: classes, blurred, ...props } = Astr
       ]}
     >
       <slot />
+      <Cursor/>
     </main>
     {
       withContacts && (
