@@ -6,6 +6,7 @@ type MessageShowEvent = CustomEvent<{ message: string, isError?: boolean }>
 export default class Cursor {
   pos: Vec2
   el: HTMLElement
+  textEl: HTMLSpanElement
   ringEl: HTMLElement
   lastPos: Vec2
 
@@ -18,6 +19,7 @@ export default class Cursor {
     this.lastPos = this.pos
     this.el = $('#cursor')
     this.ringEl = $('#cursor-ring')
+    this.textEl = $('#cursor-text')
   }
 
   init() {
@@ -45,11 +47,16 @@ export default class Cursor {
   }
 
   onShowMessage(e: MessageShowEvent){
-    console.log("show: ", e.detail.message)
+    const { message, isError } = e.detail
+    this.textEl.textContent = message
+    if(isError) this.textEl.classList.add('error')
+    else this.textEl.classList.remove('error')
+    setTimeout(() => this.textEl.textContent = '', 2000)
   }
 
   render(e: MouseEvent){
     this.el.style.transform = `translate(${this.pos.x}px, ${this.pos.y}px)`
+    this.textEl.style.transform = `translate(${this.pos.x + 12}px, ${this.pos.y + 8}px)`
     this.lastPos.x = lerp(this.lastPos.x, this.pos.x, this.speed)
     this.lastPos.y = lerp(this.lastPos.y, this.pos.y, this.speed)
     this.ringEl.style.transform = `translate(${this.lastPos.x}px, ${this.lastPos.y}px)`

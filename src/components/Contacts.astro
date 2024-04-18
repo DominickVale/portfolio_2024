@@ -13,6 +13,7 @@ import Btn from './Btn.astro'
       required
       uppercase
       minlength={3}
+      pattern="^[a-zA-Z ]{2,30}$"
       name="name"
       placeholder="FULL NAME"
       frame
@@ -21,6 +22,7 @@ import Btn from './Btn.astro'
     <Textbox
       required
       minlength={30}
+      maxlength={3000}
       name="message"
       area
       placeholder="MESSAGE"
@@ -182,7 +184,7 @@ import Btn from './Btn.astro'
   >
     REACH OUT
     <span
-      class="absolute hidden sm:block bottom-[1vw] right-[-1vw] h-auto w-auto lg:bottom-4 lg:right-1 lg:h-auto lg:w-auto font-mono text-xs font-normal"
+      class="absolute bottom-[1vw] right-[-1vw] hidden h-auto w-auto font-mono text-xs font-normal sm:block lg:bottom-4 lg:right-1 lg:h-auto lg:w-auto"
       >:)</span
     >
   </h1>
@@ -199,9 +201,10 @@ import Btn from './Btn.astro'
 </style>
 
 <script>
-  import { $, $all } from '../app/utils'
+  import { $, $all, showCursorMessage, translateValidity } from '../app/utils'
 
   document.addEventListener('DOMContentLoaded', () => {
+    let sendingEmail = false
     const form = $('form') as HTMLFormElement
     if (!form) return
     const textboxes = $all('.textbox') as NodeListOf<HTMLInputElement>
@@ -220,17 +223,20 @@ import Btn from './Btn.astro'
       if (!textbox.value) {
         wrapper.classList.remove('textbox-wrapper-valid')
         wrapper.classList.remove('textbox-wrapper-invalid')
-        return;
+        return
       }
       if (!isValid) {
         wrapper.classList.remove('textbox-wrapper-valid')
         wrapper.classList.add('textbox-wrapper-invalid')
 
-        // @TODO: implement
-        const errorEvent = new CustomEvent('cursor-error', {
-          detail: textbox.validationMessage,
-        })
-        textbox.dispatchEvent(errorEvent)
+        let currErrorKey = ''
+        for (const k in textbox.validity) {
+          console.log(k, textbox.validity[k])
+          if (textbox.validity[k]) {
+            currErrorKey = k
+          }
+        }
+        showCursorMessage(translateValidity(currErrorKey, textbox.name), true)
       }
 
       updateButtonOpacity()
@@ -265,6 +271,7 @@ import Btn from './Btn.astro'
 
     function handleFormSubmit(event: SubmitEvent) {
       event.preventDefault()
+      if (sendingEmail) return
 
       const name = (form.elements.namedItem('name') as HTMLInputElement).value
       const email = (form.elements.namedItem('email') as HTMLInputElement).value
@@ -272,12 +279,26 @@ import Btn from './Btn.astro'
         .value
       const body = `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
 
+      sendingEmail = true
+      textboxes.forEach((textbox) => {
+        const wrapper = textbox.parentNode as HTMLElement
+        textbox.value = ''
+        wrapper.classList.remove('textbox-wrapper-valid')
+        wrapper.classList.remove('textbox-wrapper-invalid')
+      })
+      button.classList.remove('btn--enabled')
+      button.classList.add('btn--disabled')
       sendEmail(body)
     }
 
     //@TODO: either use backend or cheap email service
+    // also add additional message element (cursor doesn't show on mobile)
     function sendEmail(body) {
       console.log(body)
+      showCursorMessage('Sent!')
+      setTimeout(() => {
+        sendingEmail = false
+      }, 3000)
     }
   })
 </script>

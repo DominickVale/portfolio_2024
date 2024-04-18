@@ -19,6 +19,7 @@ const WIDTH = 200
  * (maybe move to ogl)
  * add a reset lorenz button
  * differennt positions for each page
+ * (maybe) add some interactions with mouse wheel?
  */
 export default class GL {
   constructor(debug) {

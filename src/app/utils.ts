@@ -81,7 +81,7 @@ export function fitTextToContainerScr(el: HTMLElement, container: HTMLElement, o
   }
 }
 
-export function showCursorMessage(message: string, isError: string){
+export function showCursorMessage(message: string, isError?: boolean){
   const event = new CustomEvent('show-cursor-message', {
     detail: {
       message,
@@ -89,4 +89,23 @@ export function showCursorMessage(message: string, isError: string){
     }
   })
   window.dispatchEvent(event)
+}
+
+export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
+
+export function translateValidity(errCode: string, inputName: string){
+  switch(errCode){
+    case 'badInput': return `Invalid ${inputName}`
+    case 'customError': return `Invalid ${inputName}`
+    case 'patternMismatch': return `Invalid characters in ${inputName}`
+    case 'rangeOverflow': return `Value is too high`
+    case 'rangeUnderflow': return `Value is too low`
+    case 'stepMismatch': return `Invalid step`
+    case 'tooLong': return `Too many characters!`
+    case 'tooShort': return `${capitalize( inputName )} is too short`
+    case 'typeMismatch': return `Not a valid ${inputName}`
+    case 'valid': return `Valid`
+    case 'valueMissing': return `The ${inputName} is required`
+  }
+
 }

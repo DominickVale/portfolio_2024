@@ -19,6 +19,12 @@
   --blur-radial: 2px;
   --copy: #d3c4c4;
 }
+::selection{
+  /* color: var(--primary); */
+  /* background-color: var(--bg-dark-light); */
+  color: var(--bg-dark);
+  background-color: var(--primary);
+}
 
 html,
 body {

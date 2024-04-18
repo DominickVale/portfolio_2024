@@ -3,12 +3,14 @@ import StatusItem from '../../components/StatusItem.astro'
 import Layout from '../../layouts/Layout.astro'
 import BlogEntry from '../../components/blog/BlogEntry.astro'
 import { getCollection } from 'astro:content'
+import NextPageBtn from '../../components/NextPageBtn.astro'
 
 const lastUpdated = new Date().toLocaleDateString('en-GB')
 const allPosts = await getCollection('blog')
 ---
 
 <Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default">
+
   <section class="relative col-span-10 col-start-2">
     <div class="relative my-8 flex h-max flex-col sm:my-0 sm:flex-row">
       <h1
@@ -52,6 +54,13 @@ const allPosts = await getCollection('blog')
       ))
     }
   </section>
+
+  <div
+    class="col-span-1 col-start-12 mb-14 ml-2 hidden h-full items-center sm:flex"
+  >
+    <NextPageBtn href="/contact">???</NextPageBtn>
+  </div>
+
 </Layout>
 
 <style>

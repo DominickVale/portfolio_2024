@@ -1,22 +1,47 @@
 <div id="cursor-wrapper">
-<svg id="cursor-ring" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle opacity="0.5" cx="12" cy="12" r="11.5" stroke="white"/>
-</svg>
-  <svg id="cursor" width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="4" cy="4" r="4" fill="#FF3D00"/>
+  <svg
+    id="cursor-ring"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle opacity="0.5" cx="12" cy="12" r="11.5" stroke="white"></circle>
   </svg>
+  <svg
+    id="cursor"
+    width="8"
+    height="8"
+    viewBox="0 0 8 8"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle cx="4" cy="4" r="4" fill="#FF3D00"></circle>
+  </svg>
+  <span id="cursor-text" class="font-mono text-xs opacity-80"></span>
 </div>
 
 <style>
-#cursor, #cursor-ring {
-  pointer-events: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  transform-origin: center;
-  translate: -50% -50%;
-}
-#cursor-ring {
+  #cursor,
+  #cursor-ring,
+  #cursor-text {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform-origin: center;
+    translate: -50% -50%;
+  }
+  #cursor-text {
+    translate: 0% 0%;
+  }
+  #cursor-text.error {
+    @apply text-error;
+    @apply font-black;
+    opacity: 1;
+  }
+  #cursor-ring {
     mix-blend-mode: difference;
   }
 </style>
