@@ -277,7 +277,7 @@ export default class RadialMenu {
     this._thumb.style.setProperty('--y', '50%');
     this._thumb.classList.remove('pressed')
     const i = this._lastActiveSliceId;
-    if(!i) return;
+    if(typeof i !== 'number') return;
     this.itemsEl[i].setAttribute('data-highlighted', 'false');
     this._shape.children[i].setAttribute('data-highlighted', 'false');
     this._bgs[i].setAttribute('data-highlighted', 'false');
