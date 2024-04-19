@@ -1,7 +1,7 @@
 import type Cursor from './Cursor'
 import type { RadialMenuItem } from './RadialMenu'
 import RadialMenu from './RadialMenu'
-import { $all, debounce } from './utils'
+import { $all, debounce, showCursorMessage } from './utils'
 
 export default class Menus {
   menus: RadialMenu[]
@@ -173,8 +173,8 @@ export default class Menus {
         iconId: 'copy',
         label: 'COPY TEXT',
         callback: (ev, slice, origTarget) => {
-          //@TODO: Add success message on cursor
           navigator.clipboard.writeText(origTarget.innerText)
+          showCursorMessage({ message: 'Copied to clipboard!' })
         },
       },
       settingsSlice,

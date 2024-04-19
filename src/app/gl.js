@@ -9,7 +9,7 @@ import vertexShader from './shaders/vertex.glsl'
 import fragmentShader from './shaders/fragment.glsl'
 
 const WIDTH = 200
-
+//@TODO: fix perf on mobile (change particles, and maybe figure out why we get some artifacts)
 /*@TODO: refactor, move to separate class
  * add some mouse interactions (rotate on mouse move)
  * add animations, let users export their lorenz attractor via some button

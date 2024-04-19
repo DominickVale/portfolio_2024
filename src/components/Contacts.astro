@@ -236,7 +236,7 @@ import Btn from './Btn.astro'
             currErrorKey = k
           }
         }
-        showCursorMessage(translateValidity(currErrorKey, textbox.name), true)
+        showCursorMessage({ message: translateValidity(currErrorKey, textbox.name), isError: true })
       }
 
       updateButtonOpacity()
@@ -295,7 +295,7 @@ import Btn from './Btn.astro'
     // also add additional message element (cursor doesn't show on mobile)
     function sendEmail(body) {
       console.log(body)
-      showCursorMessage('Sent!')
+      showCursorMessage({message: 'Sent!'})
       setTimeout(() => {
         sendingEmail = false
       }, 3000)

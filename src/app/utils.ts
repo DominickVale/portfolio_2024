@@ -1,3 +1,4 @@
+import type { MessageShowEvent } from './Cursor'
 import type { Vec2 } from './types'
 
 export const TAU = Math.PI * 2
@@ -81,12 +82,9 @@ export function fitTextToContainerScr(el: HTMLElement, container: HTMLElement, o
   }
 }
 
-export function showCursorMessage(message: string, isError?: boolean){
+export function showCursorMessage(opts: MessageShowEvent){
   const event = new CustomEvent('show-cursor-message', {
-    detail: {
-      message,
-      isError
-    }
+    detail: opts
   })
   window.dispatchEvent(event)
 }

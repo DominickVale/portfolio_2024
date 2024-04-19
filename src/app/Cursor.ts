@@ -1,7 +1,7 @@
 import type { Vec2 } from './types'
 import { $, lerp } from './utils'
 
-type MessageShowEvent = CustomEvent<{ message: string, isError?: boolean }>
+export type MessageShowEvent = { message: string, isError?: boolean, timeout?: number }
 
 export default class Cursor {
   pos: Vec2
@@ -46,12 +46,15 @@ export default class Cursor {
     this.pos = pos
   }
 
-  onShowMessage(e: MessageShowEvent){
-    const { message, isError } = e.detail
+  onShowMessage(e: CustomEvent<MessageShowEvent>){
+    const { message, isError, timeout } = e.detail
     this.textEl.textContent = message
     if(isError) this.textEl.classList.add('error')
     else this.textEl.classList.remove('error')
-    setTimeout(() => this.textEl.textContent = '', 2000)
+
+    if(typeof timeout === 'number' && timeout > 0) {
+      setTimeout(() => this.textEl.textContent = '', timeout)
+    }
   }
 
   render(e: MouseEvent){
