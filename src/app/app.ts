@@ -10,8 +10,8 @@ export default class App {
   cursor: Cursor
 
   constructor(public debug = false) {
-    this.gl = new GL(this.debug)
     this.cursor = new Cursor()
+    this.gl = new GL(this.cursor, this.debug)
     this.menus = new Menus(this.cursor, this.onToggleDebug.bind(this))
     this.initCursorMessages()
   }

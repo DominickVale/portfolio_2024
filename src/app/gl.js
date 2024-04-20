@@ -2,16 +2,16 @@ import * as THREE from 'three'
 import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
+import { isMobile } from './utils'
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
 
 import positionSimulation from './shaders/positionSimulation.glsl'
 import vertexShader from './shaders/vertex.glsl'
 import fragmentShader from './shaders/fragment.glsl'
+import fragmentShaderMobile from './shaders/fragmentMobile.glsl'
 
-const WIDTH = 200
 //@TODO: fix perf on mobile (change particles, and maybe figure out why we get some artifacts)
 /*@TODO: refactor, move to separate class
- * add some mouse interactions (rotate on mouse move)
  * add animations, let users export their lorenz attractor via some button
  * (maybe add entire custom section to settings?)
  * add animations on page transition
@@ -22,12 +22,14 @@ const WIDTH = 200
  * (maybe) add some interactions with mouse wheel?
  */
 export default class GL {
-  constructor(debug) {
-    this.debug = debug
+  constructor(cursor, debugEnabled) {
+    this.debugEnabled = debugEnabled
+    this.cursor = cursor
     this._appEl = document.getElementById('app')
     // get primary color from css global variables
     this.primaryColor = getComputedStyle(this._appEl).getPropertyValue('--primary')
     this.bgColor = getComputedStyle(this._appEl).getPropertyValue('--bg-dark')
+    this.isMobile = isMobile()
     this.oldColor = this.primaryColor
     this.params = {
       sigma: 10,
@@ -36,11 +38,12 @@ export default class GL {
       speed: 5,
       color: this.primaryColor,
       rotationX: 0,
-      rotationY: 0,
+      rotationY: 0.0753,
       rotationZ: -Math.PI / 5,
-      positionX: 0.68,
-      positionY: 4.5,
-      positionZ: 0,
+      positionX: this.isMobile ? -2 : -1.6,
+      positionY: this.isMobile ? 25 : 4.5,
+      positionZ: this.isMobile ? -65 : 0,
+      particlesBufWidth: this.isMobile ? 100 : 250
     }
 
     this.clock = new THREE.Clock()
@@ -49,7 +52,7 @@ export default class GL {
     this.height = window.innerHeight
     this.scene = new THREE.Scene()
     this.camera = new THREE.PerspectiveCamera(
-      75,
+      60,
       this.width / this.height,
       0.001,
       1000,
@@ -63,7 +66,7 @@ export default class GL {
     this.renderer.setSize(this.width, this.height)
     this.renderer.outputEncoding = THREE.sRGBEncoding
 
-    if (debug) {
+    if (debugEnabled) {
       this.startDebug()
     }
     this.init()
@@ -119,6 +122,18 @@ export default class GL {
       'resize',
       this.resize.bind(this),
     )
+    window.addEventListener('mousemove', this.onMouseMove.bind(this))
+  }
+
+  onMouseMove(){
+    if(this.isMobile) return;
+    const { pos } = this.cursor
+
+    //@TODO: use gsap for this
+    this.camera.rotation.x = -( pos.y - this.width / 2 )/50000
+    this.camera.rotation.y = -( pos.x - this.width / 2 )/50000
+    this.camera.rotation.z = ( pos.y - this.width / 2 )/50000
+    this.camera.updateProjectionMatrix()
   }
 
   async addObjects() {
@@ -133,22 +148,22 @@ export default class GL {
       uniforms: {
         uTime: { value: 0.0 },
         uColor: { value: new THREE.Color(this.params.color) },
-        uSize: { value: 50 * this.renderer.getPixelRatio() },
+        uSize: { value: ( this.isMobile ? 70 : 60 ) * this.renderer.getPixelRatio() },
         uPositionTexture: { value: null },
         alphaMap: { value: texture },
       },
       vertexShader,
-      fragmentShader,
+      fragmentShader: this.isMobile ? fragmentShaderMobile : fragmentShader,
       transparent: true,
       depthWrite: false,
     })
     this.geometry = new THREE.BufferGeometry()
 
-    const positions = new Float32Array(WIDTH * WIDTH * 3)
-    const refs = new Float32Array(WIDTH * WIDTH * 2)
-    for (let i = 0; i < WIDTH * WIDTH; i++) {
-      let xx = (i % WIDTH) / WIDTH
-      let yy = ~~(i / WIDTH) / WIDTH
+    const positions = new Float32Array(this.params.particlesBufWidth * this.params.particlesBufWidth * 3)
+    const refs = new Float32Array(this.params.particlesBufWidth * this.params.particlesBufWidth * 2)
+    for (let i = 0; i < this.params.particlesBufWidth * this.params.particlesBufWidth; i++) {
+      let xx = (i % this.params.particlesBufWidth) / this.params.particlesBufWidth
+      let yy = ~~(i / this.params.particlesBufWidth) / this.params.particlesBufWidth
       // no need to set these in this case
       positions.set([0, 0, 0], i * 3)
       refs.set([xx, yy], i * 2)
@@ -174,7 +189,7 @@ export default class GL {
   // GPGPU STUFF
 
   initGPGPU() {
-    const gpu = new GPUComputationRenderer(WIDTH, WIDTH, this.renderer)
+    const gpu = new GPUComputationRenderer(this.params.particlesBufWidth, this.params.particlesBufWidth, this.renderer)
     const dtPosition = gpu.createTexture()
     this.initPositions(dtPosition)
     this.positionVariable = gpu.addVariable(
@@ -182,7 +197,7 @@ export default class GL {
       positionSimulation,
       dtPosition,
     )
-    this.positionVariable.material.uniforms['time'] = { value: 0.0 }
+    this.positionVariable.material.uniforms['uTime'] = { value: 0.0 }
     this.positionVariable.material.uniforms['uSigma'] = {
       value: this.params.sigma,
     }
@@ -212,7 +227,7 @@ export default class GL {
 
     for (let i = 0; i < arr.length; i += 4) {
       //lorenz attractor, euler's method
-      let dt = 0.01 // * Math.random()
+      let dt = 0.01// * Math.random()
       let dx = a * (y - x) * dt
       let dy = (x * (b - z) - y) * dt
       let dz = (x * y - c * z) * dt
@@ -272,7 +287,7 @@ export default class GL {
       this.camera.updateProjectionMatrix()
     }
     this.renderer.render(this.scene, this.camera)
-    if(this.debug){
+    if(this.debugEnabled){
       this.stats.update()
     }
     requestAnimationFrame(this.render.bind(this))

@@ -8,7 +8,7 @@ const {} = Astro.props
 
 <nav class="z-20 mt-6 sm:mt-12 text-xs fixed left-0 w-full text-inactive">
   <ul class="grid grid-cols-12" >
-    <li class="col-start-1 col-span-1 text-right mr-2"><a class="active" href="/" aria-current="page">HOME</a></li>
+    <li class="col-start-2 sm:col-start-1 col-span-1 text-right sm:mr-2"><a class="active" href="/" aria-current="page">HOME</a></li>
     <div class="absolute left-0 right-0 flex justify-center pointer-events-none">
       <div class="hidden sm:flex gap-6 sm:gap-10 pointer-events-auto">
         <li class="w-6"><a href="/works">WORKS</a></li>
@@ -16,7 +16,7 @@ const {} = Astro.props
         <li class="w-6"><a href="/lab">LAB</a></li>
       </div>
     </div>
-    <li class="col-start-12 col-span-1 flex justify-start ml-2"><a href="/contact" class="mix-blend-difference">CONTACT</a></li>
+    <li class="col-start-10 justify-end col-span-2 sm:col-start-12 sm:col-span-1 flex sm:justify-start sm:ml-2"><a href="/contact" class="mix-blend-difference">CONTACT</a></li>
   </ul>
 </nav>
 

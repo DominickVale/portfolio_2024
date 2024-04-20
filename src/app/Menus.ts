@@ -1,7 +1,7 @@
 import type Cursor from './Cursor'
 import type { RadialMenuItem } from './RadialMenu'
 import RadialMenu from './RadialMenu'
-import { $all, debounce, showCursorMessage } from './utils'
+import { $all, debounce, isMobile, showCursorMessage } from './utils'
 
 export default class Menus {
   menus: RadialMenu[]
@@ -12,7 +12,7 @@ export default class Menus {
     public cursor: Cursor,
     public onToggleDebug?: () => void,
   ) {
-    this.isMobile = window.innerWidth < 768
+    this.isMobile = isMobile()
     this.init()
     this.addListeners()
     window.addEventListener('resize', this.handleResize.bind(this))
@@ -210,7 +210,7 @@ export default class Menus {
   }
 
   debounceResize = debounce(() => {
-    this.isMobile = window.innerWidth <= 768
+    this.isMobile = isMobile()
     this.destroy()
     this.menus = [...this.getMenus().filter(menu => {
       const isMenuMobile = menu.isMobile

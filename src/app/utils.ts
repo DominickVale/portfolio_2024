@@ -105,5 +105,7 @@ export function translateValidity(errCode: string, inputName: string){
     case 'valid': return `Valid`
     case 'valueMissing': return `The ${inputName} is required`
   }
-
 }
+
+export const isMobile = () => window.innerWidth < 768
+

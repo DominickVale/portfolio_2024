@@ -1,5 +1,5 @@
 // euler integration method
-precision mediump float;
+precision highp float;
 
 uniform sampler2D uPositionTexture;
 uniform float uSigma;

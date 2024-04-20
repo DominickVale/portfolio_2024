@@ -1,5 +1,5 @@
 import type { Vec2 } from './types'
-import { $, lerp } from './utils'
+import { $, isMobile, lerp } from './utils'
 
 export type MessageShowEvent = { message: string, isError?: boolean, timeout?: number }
 
@@ -9,8 +9,10 @@ export default class Cursor {
   textEl: HTMLSpanElement
   ringEl: HTMLElement
   lastPos: Vec2
+  isMobile: boolean
 
   constructor(public speed = 0.25) {
+    this.isMobile = isMobile()
     this.init()
     this.pos = {
       x: 0,
@@ -27,7 +29,9 @@ export default class Cursor {
     window.addEventListener('touchmove', this.onTouchMove.bind(this))
     window.addEventListener('show-cursor-message', this.onShowMessage.bind(this))
     document.body.classList.add('no-cursor')
-    requestAnimationFrame(this.render.bind(this))
+    if(!this.isMobile){
+      requestAnimationFrame(this.render.bind(this))
+    }
   }
 
   onTouchMove(e: TouchEvent) {
