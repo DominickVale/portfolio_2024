@@ -48,8 +48,11 @@ body {
 }
 
 .no-cursor{
-  & *, & > a{
+  & *:not, & > a{
     cursor: none !important;
+  }
+  & .lil-gui{
+    cursor: unset !important;
   }
 }
 

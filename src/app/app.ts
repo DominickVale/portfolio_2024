@@ -1,17 +1,17 @@
 import Cursor from './Cursor'
 import Menus from './Menus'
-import GL from './gl'
-import { $all, showCursorMessage } from './utils'
+import Experience from './gl/Experience'
+import { $, $all, showCursorMessage } from './utils'
 
 
 export default class App {
-  gl: GL
+  experience: Experience
   menus: Menus
   cursor: Cursor
 
   constructor(public debug = false) {
     this.cursor = new Cursor()
-    this.gl = new GL(this.cursor, this.debug)
+    this.experience = new Experience($('#webgl'))
     this.menus = new Menus(this.cursor, this.onToggleDebug.bind(this))
     this.initCursorMessages()
   }
@@ -32,10 +32,10 @@ export default class App {
   onToggleDebug() {
    if(this.debug) {
       this.debug = false
-      this.gl.stopDebug()
+      this.experience.debug.stop()
     } else {
       this.debug = true
-      this.gl.startDebug()
+      this.experience.debug.start()
     }
 
   }
