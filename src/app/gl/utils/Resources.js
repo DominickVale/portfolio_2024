@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import EventEmitter from './EventEmitter.js'
+import Emitter from 'tiny-emitter'
 
-export default class Resources extends EventEmitter
+export default class Resources extends Emitter
 {
     constructor(sources)
     {
@@ -72,7 +72,7 @@ export default class Resources extends EventEmitter
 
         if(this.loaded === this.toLoad)
         {
-            this.trigger('ready')
+            this.emit('ready')
         }
     }
 }
