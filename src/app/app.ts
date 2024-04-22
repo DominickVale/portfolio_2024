@@ -1,5 +1,6 @@
 import Cursor from './Cursor'
 import Menus from './Menus'
+import TextScramble from './animations/TextScramble'
 import Experience from './gl/Experience'
 import { $, $all, showCursorMessage } from './utils'
 
@@ -8,11 +9,13 @@ export default class App {
   experience: Experience
   menus: Menus
   cursor: Cursor
+  scramble: TextScramble
 
   constructor(public debug = false) {
     this.cursor = new Cursor()
     this.experience = new Experience($('#webgl'))
     this.menus = new Menus(this.cursor, this.onToggleDebug.bind(this))
+    this.scramble = new TextScramble()
     this.initCursorMessages()
   }
 

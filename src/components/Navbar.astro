@@ -1,37 +1,58 @@
 ---
-import Btn from '../components/Btn.astro'
 interface Props {}
 
 const {} = Astro.props
-
 ---
 
-<nav class="z-20 mt-6 sm:mt-12 text-xs fixed left-0 w-full text-inactive">
-  <ul class="grid grid-cols-12" >
-    <li class="col-start-2 sm:col-start-1 col-span-1 text-right sm:mr-2"><a class="active" href="/" aria-current="page">HOME</a></li>
-    <div class="absolute left-0 right-0 flex justify-center pointer-events-none">
-      <div class="hidden sm:flex gap-6 sm:gap-10 pointer-events-auto">
-        <li class="w-6"><a href="/works">WORKS</a></li>
-        <li class="w-6"><a href="/blog">BLOG</a></li>
-        <li class="w-6"><a href="/lab">LAB</a></li>
+<nav class="fixed left-0 z-20 mt-6 w-full text-xs text-inactive sm:mt-12">
+  <ul class="grid grid-cols-12">
+    <li class="col-span-1 col-start-2 text-right sm:col-start-1 sm:mr-2">
+      <a class="active" href="/" aria-current="page" data-text-scramble="HOME">HOME</a>
+    </li>
+    <div
+      class="pointer-events-none absolute left-0 right-0 flex justify-center"
+    >
+      <div class="pointer-events-auto hidden gap-6 sm:flex sm:gap-10">
+        <li class="w-6"><a href="/works" data-text-scramble="WORKS">WORKS</a></li>
+        <li class="w-6"><a href="/blog" data-text-scramble="BLOG">BLOG</a></li>
+        <li class="w-6"><a href="/lab" data-text-scramble="LAB">LAB</a></li>
       </div>
     </div>
-    <li class="col-start-10 justify-end col-span-2 sm:col-start-12 sm:col-span-1 flex sm:justify-start sm:ml-2"><a href="/contact" class="mix-blend-difference">CONTACT</a></li>
+    <li
+      class="col-span-2 col-start-10 flex justify-end sm:col-span-1 sm:col-start-12 sm:ml-2 sm:justify-start"
+    >
+      <a href="/contact" class="mix-blend-difference" data-text-scramble="CONTACT">CONTACT</a>
+    </li>
   </ul>
 </nav>
 
 <style>
-nav li > a.active {
-  position: relative;
-  &::before{
-    content: '';
-    position: absolute;
-    left: -50%;
-    top: 33%;
-    background-color: theme('colors.primary');
-    height: theme("height.1");
-    width: theme("height.1");
+  nav li > a.active {
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      left: -50%;
+      top: 33%;
+      background-color: theme('colors.primary');
+      height: theme('height.1');
+      width: theme('height.1');
+      @apply animate-fui-flash;
+    }
+    @apply text-white;
   }
-  @apply text-white;
-}
 </style>
+
+<script>
+import { $all } from '../app/utils'
+  const navLinks = Array.from($all('nav li a')) as HTMLAnchorElement[]
+  const currentUrl = window.location.href
+
+  navLinks.forEach((link) => {
+    if (link.href === currentUrl) {
+      link.classList.add('active')
+    } else {
+      link.classList.remove('active')
+    }
+  })
+</script>
