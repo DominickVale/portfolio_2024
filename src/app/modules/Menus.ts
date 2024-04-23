@@ -1,7 +1,6 @@
-import type Cursor from './Cursor'
 import type { RadialMenuItem } from './RadialMenu'
 import RadialMenu from './RadialMenu'
-import { $all, debounce, isMobile, showCursorMessage } from './utils'
+import { $all, debounce, isMobile, showCursorMessage } from '../utils'
 
 export default class Menus {
   menus: RadialMenu[]
@@ -9,7 +8,6 @@ export default class Menus {
   triggers: { el: HTMLElement, cb: (e: MouseEvent) => void }[]
 
   constructor(
-    public cursor: Cursor,
     public onToggleDebug?: () => void,
   ) {
     this.isMobile = isMobile()
@@ -109,7 +107,7 @@ export default class Menus {
       position: 7,
       callback: (e, slice, origTarget) => {
         const fn = () => {
-          settingsMenu.open(this.cursor.pos.x, this.cursor.pos.y, slice)
+          settingsMenu.open(window.app.cursor.pos.x, window.app.cursor.pos.y, slice)
         }
         setTimeout(fn.bind(this), 250)
       },

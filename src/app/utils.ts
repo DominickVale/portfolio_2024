@@ -1,4 +1,4 @@
-import type { MessageShowEvent } from './Cursor'
+import type { MessageShowEvent } from './modules/Cursor'
 import type { Vec2 } from './types'
 
 export const TAU = Math.PI * 2
@@ -23,6 +23,8 @@ export const clamp = (n: number, min: number, max: number) =>
   Math.min(Math.max(n, min), max)
 
 export const lerp = (a: number, b: number, t: number): number => ( a + (b - a) * t );
+
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export function getCurrentPage() {
   if (window.location.pathname === '/') return 'home'

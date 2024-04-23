@@ -9,6 +9,7 @@
   --inactive: #a7a7a7;
   --success: #96d800;
   --primary-darker: rgba(255, 46, 0, 0.78);
+  --primary-lighter:  color-mix(in srgb,var(--primary),#fff 10%);
   --primary-lightest: #d3afaa;
   --lines: rgba(255, 255, 255, 0.2);
   --bg-dark: #110F10;
@@ -47,14 +48,14 @@ body {
   display: none;
 }
 
-.no-cursor * {
-  cursor: none !important;
-}
+/* .no-cursor * { */
+/*   cursor: none !important; */
+/* } */
 
-.no-cursor .lil-gui, 
-.no-cursor .lil-gui * {
-  cursor: auto !important;
-}
+/* .no-cursor .lil-gui,  */
+/* .no-cursor .lil-gui * { */
+/*   cursor: auto !important; */
+/* } */
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {

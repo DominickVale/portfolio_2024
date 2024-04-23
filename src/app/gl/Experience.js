@@ -7,7 +7,6 @@ import Time from './utils/Time.js'
 import Camera from './Camera.js'
 import Renderer from './Renderer.js'
 import World from './World/World.js'
-import Cursor from '../Cursor'
 
 import { isMobile } from '../utils'
 import sources from './sources.js'
@@ -59,7 +58,6 @@ export default class Experience {
 
     // Setup
     this.debug = new Debug()
-    this.cursor = new Cursor()
     this.sizes = new Sizes()
     this.time = new Time()
     this.clock = new THREE.Clock()
@@ -87,7 +85,7 @@ export default class Experience {
 
   onMouseMove(){
     if(this.isMobile) return;
-    const { pos } = this.cursor
+    const { pos } = window.app.cursor
 
     //@TODO: use gsap for this
     this.camera.instance.rotation.x = -( pos.y - this.sizes.width / 2 )/50000

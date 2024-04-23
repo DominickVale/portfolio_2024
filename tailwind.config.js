@@ -21,6 +21,7 @@ export default {
     extend: {
       colors: {
         primary: 'var(--primary)',
+        'primary-lighter': 'var(--primary-lighter)',
         'primary-lightest': 'var(--primary-lightest)',
         inactive: 'var(--inactive)',
         success: 'var(--success)',

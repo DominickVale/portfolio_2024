@@ -6,7 +6,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
 ---
 
 <Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default">
-  <section class="col-start-1 col-span-12 mt-6 flex justify-center sm:hidden">
+  <section class="col-span-12 col-start-1 mt-6 flex justify-center sm:hidden">
     <NextPageBtn>WORKS</NextPageBtn>
   </section>
   <section
@@ -23,10 +23,22 @@ import NextPageBtn from '../components/NextPageBtn.astro'
           interests range from front-end web development all the way down to
           reverse engineering, to mountain biking. Sounds interesting?
         </p>
-        <Btn href="/about" class="mb-14 mr-auto mt-2">READ MORE</Btn>
+        <Btn
+          href="/about"
+          class="mb-14 mr-auto mt-1 p-1"
+          data-cursor-delay="1000"
+          data-cursor-message="You should probably check this out"
+          data-cursor-timeout="0"
+          data-cursor-interval="30">READ MORE</Btn
+        >
       </div>
       <div class="mb-14 hidden sm:flex">
-        <NextPageBtn>WORKS</NextPageBtn>
+        <NextPageBtn
+         data-cursor-delay="1000"
+          data-cursor-message="Let's go, in 'n out.<br/>2 minutes adventure."
+          data-cursor-timeout="0"
+          data-cursor-interval="20"
+        >WORKS</NextPageBtn>
       </div>
     </div>
   </section>
@@ -35,7 +47,10 @@ import NextPageBtn from '../components/NextPageBtn.astro'
   >
     <h1
       class="ml-[-0.05em] mt-12 text-nowrap font-display text-[9.2vw] leading-[100%]"
-      data-cursor-message="My actual name is DOMENICO"
+      data-cursor-delay="1000"
+      data-cursor-message="My actual name is Domenico"
+      data-cursor-timeout="2500"
+      data-cursor-interval="20"
     >
       DOMINICK VALE
     </h1>

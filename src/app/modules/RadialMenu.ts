@@ -1,6 +1,6 @@
-import { ICON_IDS } from './constants'
-import type { Vec2 } from './types'
-import { $, $all, TAU, clamp, degToRad, mag } from './utils'
+import { ICON_IDS } from '../constants'
+import type { Vec2 } from '../types'
+import { $, $all, TAU, clamp, degToRad, mag } from '../utils'
 
 type RadialMenuOptions = {
   innerRadiusPercent?: number
