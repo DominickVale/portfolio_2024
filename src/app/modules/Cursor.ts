@@ -5,8 +5,10 @@ import Typewriter from './animations/Typewriter'
 export type MessageShowEvent = {
   message: string
   isError?: boolean
+  isSuccess?: boolean
   timeout?: number
   interval?: number
+  iterations?: number
   delay?: number
 }
 
@@ -45,10 +47,11 @@ export default class Cursor {
       const timeout = Number(el.getAttribute('data-cursor-timeout'))
       const delay = Number(el.getAttribute('data-cursor-delay')) || 0
       const interval = Number(el.getAttribute('data-cursor-interval'))
+      const iterations = Number(el.getAttribute('data-cursor-iterations'))
 
       el.addEventListener('mouseover', (e) => {
         const delayID = setTimeout(() => {
-          showCursorMessage({ message, timeout, interval })
+          showCursorMessage({ message, timeout, interval, iterations })
         }, delay)
         el.setAttribute('data-cursor-delay-id', delayID.toString())
       })
@@ -88,11 +91,12 @@ export default class Cursor {
   }
 
   onShowMessage(e: CustomEvent<MessageShowEvent>) {
-    const { message, isError, timeout, interval, delay } = e.detail
-    if(message.length > 1) Typewriter.typewrite(this.textEl, message, undefined, interval)
+    const { message, isError, isSuccess, timeout, interval, iterations, delay } = e.detail
+    if(message.length > 1) Typewriter.typewrite(this.textEl, message, iterations, interval)
       else this.textEl.textContent = message
     if (isError) this.textEl.classList.add('error')
-    else this.textEl.classList.remove('error')
+    else if (isSuccess) this.textEl.classList.add('success')
+    else this.textEl.classList.remove('error', 'success')
 
     if (typeof timeout === 'number' && timeout > 0) {
       setTimeout(() => {

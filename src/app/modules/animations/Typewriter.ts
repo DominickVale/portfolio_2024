@@ -43,7 +43,7 @@ export default class Typewriter {
       for (let j = 0; j < iter; j++) {
         if (!Typewriter.running[id]) { break }
         let tmpTxt = currentText.map((l, idx) => {
-          if (idx > currentText.length - 3 ) {
+          if (idx > text.length - ( text.length / 3 ) ? idx > currentText.length - 2 : idx > currentText.length - 4 ) {
             return `<span class="text-stone-200">${CHARS[Math.floor(Math.random() * CHARS.length)]}</span>`
           } else {
             return l
