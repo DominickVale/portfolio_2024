@@ -6,13 +6,11 @@ export default class TextScramble {
   static #elsIntervals: Record<string, any> = {}
 
   constructor() {
-    console.log('TextAnimations')
     this.#init()
   }
 
   #init() {
     const els = Array.from($all('[data-text-scramble]')) as HTMLElement[]
-    console.log(els)
     els.forEach((el, i) => {
       el.addEventListener('mouseover', () => TextScramble.scramble(el))
     })

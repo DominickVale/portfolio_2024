@@ -4,6 +4,7 @@ import TextScramble from './modules/animations/TextScramble'
 import Experience from './gl/Experience'
 import { $, $all, showCursorMessage } from './utils'
 import Typewriter from './modules/animations/Typewriter'
+import Animations from './modules/animations'
 
 
 export default class App {
@@ -19,6 +20,7 @@ export default class App {
     this.menus = new Menus(this.onToggleDebug.bind(this))
     this.scrambles = new TextScramble()
     this.typewriter = new Typewriter()
+    Animations.init()
   }
 
   onToggleDebug() {

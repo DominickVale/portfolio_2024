@@ -1,6 +1,7 @@
 # TODOs
 - check @TODOS.
 - Animations ( don't forget the fake-code animations)
+- Reduced animations for prefer-reduced-motion
 
 ## 🧞 Commands
 All commands are run from the root of the project, from a terminal:

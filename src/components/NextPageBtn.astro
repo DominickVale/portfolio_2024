@@ -7,31 +7,76 @@ interface Props extends ComponentProps<typeof Btn> {}
 const props = Astro.props
 ---
 
-<div class="items-center">
+<div class="next-page-btn items-center">
   <Btn href="works" {...props}>
-    <p><slot/></p>
-    <svg
-      width="30"
-      height="10"
-      viewBox="0 0 30 10"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g opacity="0.2">
+    <div class="pointer-events-none mb-1 mr-4 flex items-center justify-center gap-2">
+      <svg
+        class="opacity-30"
+        width="7"
+        height="8"
+        viewBox="0 0 7 8"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <path
-          d="M7.48202 4.99987L3.74108 1.25892L6.2589 1.25892L9.2445 4.24452L8.48915 4.99987L9.2445 5.75521L6.25877 8.74095L3.74095 8.74095L7.48202 4.99987Z"
-          fill="#D9D9D9"></path>
-      </g>
-      <g opacity="0.5">
-        <path
-          d="M17.482 4.99987L13.7411 1.25892L16.2589 1.25892L19.2445 4.24452L18.4892 4.99987L19.2445 5.75521L16.2588 8.74095L13.7409 8.74095L17.482 4.99987Z"
-          fill="#D9D9D9"></path>
-      </g>
-      <g opacity="0.8">
-        <path
-          d="M27.482 4.99987L23.7411 1.25892L26.2589 1.25892L29.2445 4.24452L28.4892 4.99987L29.2445 5.75521L26.2588 8.74095L23.7409 8.74095L27.482 4.99987Z"
+          d="M4.48202 3.99987L0.741077 0.258921L3.2589 0.258921L6.2445 3.24452L5.48915 3.99987L6.2445 4.75521L3.25877 7.74095L0.740947 7.74095L4.48202 3.99987Z"
           fill="white"></path>
-      </g>
-    </svg>
+      </svg>
+      <svg
+        class="opacity-30"
+        width="7"
+        height="8"
+        viewBox="0 0 7 8"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M4.48202 3.99987L0.741077 0.258921L3.2589 0.258921L6.2445 3.24452L5.48915 3.99987L6.2445 4.75521L3.25877 7.74095L0.740947 7.74095L4.48202 3.99987Z"
+          fill="white"></path>
+      </svg>
+      <svg
+        class="opacity-30"
+        width="7"
+        height="8"
+        viewBox="0 0 7 8"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M4.48202 3.99987L0.741077 0.258921L3.2589 0.258921L6.2445 3.24452L5.48915 3.99987L6.2445 4.75521L3.25877 7.74095L0.740947 7.74095L4.48202 3.99987Z"
+          fill="white"></path>
+      </svg>
+    </div>
+    <p class="pointer-events-none"><slot /></p>
   </Btn>
 </div>
+
+<style>
+  .next-page-btn.animating {
+    p {
+      @apply animate-fui-flash;
+    }
+    --duration: 3s;
+    --delay: calc(var(--duration) / 12);
+    svg:nth-child(1) {
+      animation: wave var(--duration) ease-in-out infinite;
+    }
+    svg:nth-child(2) {
+      animation: wave var(--duration) ease-in-out infinite var(--delay);
+    }
+    svg:nth-child(3) {
+      animation: wave var(--duration) ease-in-out infinite
+        calc(var(--delay) * 2);
+    }
+  }
+  @keyframes wave {
+    20% {
+      opacity: 1;
+    }
+
+    40%,
+    100% {
+      opacity: 0.3;
+    }
+  }
+</style>

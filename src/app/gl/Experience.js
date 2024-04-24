@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import gsap from 'gsap'
 
 import Debug from './utils/Debug.js'
 import Sizes from './utils/Sizes.js'
@@ -67,6 +68,9 @@ export default class Experience {
     this.renderer = new Renderer()
     this.world = new World()
 
+    this.camXto = gsap.quickTo(this.camera.instance.rotation, "x", { duration: 2, ease: "power3" })
+    this.camYto = gsap.quickTo(this.camera.instance.rotation, "y", { duration: 2, ease: "power3" })
+
     if (debugEnabled) {
       this.debug.start()
     }
@@ -87,10 +91,8 @@ export default class Experience {
     if(this.isMobile) return;
     const { pos } = window.app.cursor
 
-    //@TODO: use gsap for this
-    this.camera.instance.rotation.x = -( pos.y - this.sizes.width / 2 )/50000
-    this.camera.instance.rotation.y = -( pos.x - this.sizes.width / 2 )/50000
-    this.camera.instance.rotation.z = ( pos.y - this.sizes.width / 2 )/50000
+    this.camXto(-( pos.y - this.sizes.width / 2 )/50000)
+    this.camYto(-( pos.x - this.sizes.width / 2 )/50000)
     this.camera.instance.updateProjectionMatrix()
   }
 

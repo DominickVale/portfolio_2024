@@ -47,7 +47,7 @@ export default {
       animation: {
         'blink-slow': 'blink-slow 2s linear infinite',
         'blink-normal': 'blink-slow 0.8s linear infinite',
-        'fui-flash': 'fui-flash 0.8s ease-in',
+        'fui-flash': 'fui-flash 0.3s ease-in 3',
       },
       keyframes: {
         'blink-slow': {

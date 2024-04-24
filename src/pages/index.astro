@@ -29,16 +29,15 @@ import NextPageBtn from '../components/NextPageBtn.astro'
           data-cursor-delay="1000"
           data-cursor-message="You should probably check this out"
           data-cursor-timeout="0"
-          data-cursor-interval="30">READ MORE</Btn
-        >
+          data-cursor-interval="30">READ MORE</Btn>
       </div>
       <div class="mb-14 hidden sm:flex">
         <NextPageBtn
-         data-cursor-delay="1000"
+          class="p-2"
+          data-cursor-delay="1000"
           data-cursor-message="Let's go, in 'n out.<br/>2 minutes adventure."
           data-cursor-timeout="0"
-          data-cursor-interval="20"
-        >WORKS</NextPageBtn>
+          data-cursor-interval="35">WORKS</NextPageBtn>
       </div>
     </div>
   </section>
@@ -47,10 +46,11 @@ import NextPageBtn from '../components/NextPageBtn.astro'
   >
     <h1
       class="ml-[-0.05em] mt-12 text-nowrap font-display text-[9.2vw] leading-[100%]"
-      data-cursor-delay="1000"
+      data-cursor-delay="2000"
       data-cursor-message="My actual name is Domenico"
-      data-cursor-timeout="2500"
-      data-cursor-interval="20"
+      data-cursor-iterations="3"
+      data-cursor-timeout="0"
+      data-cursor-interval="40"
     >
       DOMINICK VALE
     </h1>
@@ -68,7 +68,14 @@ import NextPageBtn from '../components/NextPageBtn.astro'
       </ul>
       <ul>
         <StatusItem highlight
-          >STATUS: <span class="text-success">AVAILABLE</span></StatusItem
+          >STATUS: <span
+            class="text-success"
+            data-cursor-delay="1000"
+            data-cursor-message="(full-time or not)"
+            data-cursor-timeout="2500"
+            data-cursor-type="success"
+            data-cursor-interval="20">AVAILABLE</span
+          ></StatusItem
         >
       </ul>
       <ul class="ml-[32%] hidden md:block">

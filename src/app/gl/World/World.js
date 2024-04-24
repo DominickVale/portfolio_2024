@@ -11,7 +11,6 @@ export default class World {
     this.resources.on('ready', () => {
       this.attractor = new LorenzAttractor(this.resources.items.star)
       this.scene.add(this.attractor.points)
-      console.log("Ready, added lorenz: ", this.attractor)
     })
   }
 

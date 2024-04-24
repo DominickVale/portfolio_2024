@@ -48,23 +48,30 @@ export default class Cursor {
       const delay = Number(el.getAttribute('data-cursor-delay')) || 0
       const interval = Number(el.getAttribute('data-cursor-interval'))
       const iterations = Number(el.getAttribute('data-cursor-iterations'))
+      const type = el.getAttribute('data-cursor-type')
 
-      el.addEventListener('mouseover', (e) => {
+      el.addEventListener('mouseenter', (e) => {
         const delayID = setTimeout(() => {
-          showCursorMessage({ message, timeout, interval, iterations })
+          showCursorMessage({
+            message,
+            timeout,
+            interval,
+            iterations,
+            isSuccess: type === 'success',
+            isError: type === 'error',
+          })
         }, delay)
         el.setAttribute('data-cursor-delay-id', delayID.toString())
       })
 
       el.addEventListener('mouseout', () => {
         const delayID = el.getAttribute('data-cursor-delay-id')
+        if (timeout <= 0) {
+          showCursorMessage({ message: '' })
+        }
         if (delayID) {
           clearTimeout(Number(delayID))
-          el.removeAttribute('data-cursor-delay-id')
-        }
-        if (timeout <= 0) {
-        console.log(timeout, "showing empty")
-          showCursorMessage({ message: '' })
+          Typewriter.stop(this.textEl)
         }
       })
     })
@@ -91,9 +98,18 @@ export default class Cursor {
   }
 
   onShowMessage(e: CustomEvent<MessageShowEvent>) {
-    const { message, isError, isSuccess, timeout, interval, iterations, delay } = e.detail
-    if(message.length > 1) Typewriter.typewrite(this.textEl, message, iterations, interval)
-      else this.textEl.textContent = message
+    const {
+      message,
+      isError,
+      isSuccess,
+      timeout,
+      interval,
+      iterations,
+      delay,
+    } = e.detail
+    if (message.length > 1)
+      Typewriter.typewrite(this.textEl, message, iterations, interval)
+    else this.textEl.textContent = message
     if (isError) this.textEl.classList.add('error')
     else if (isSuccess) this.textEl.classList.add('success')
     else this.textEl.classList.remove('error', 'success')
