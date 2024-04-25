@@ -1,6 +1,7 @@
 import { ICON_IDS } from '../constants'
 import type { Vec2 } from '../types'
 import { $, $all, TAU, clamp, degToRad, mag } from '../utils'
+import TextScramble from './animations/TextScramble'
 
 type RadialMenuOptions = {
   innerRadiusPercent?: number
@@ -122,6 +123,7 @@ export default class RadialMenu {
         const span = document.createElement('span');
         span.classList.add('radial-menu-item-label');
         span.innerHTML = item.label
+        span.setAttribute('data-text-scramble', item.label)
 
         menuEl.appendChild(icon);
         menuEl.appendChild(span);
@@ -310,6 +312,8 @@ export default class RadialMenu {
     const i = slice.getAttribute('data-i')
     const item = this.itemsEl[i]
     item.setAttribute('data-hover', 'true')
+    const label = $('.radial-menu-item-label', item)
+    TextScramble.scramble(label)
   }
   onSliceMouseLeave(ev: MouseEvent) {
     const slice = ev.currentTarget as SVGElement

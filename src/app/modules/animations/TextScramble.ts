@@ -12,16 +12,14 @@ export default class TextScramble {
   #init() {
     const els = Array.from($all('[data-text-scramble]')) as HTMLElement[]
     els.forEach((el, i) => {
+      el.setAttribute('data-text-scramble', el.innerText)
       el.addEventListener('mouseover', () => TextScramble.scramble(el))
     })
   }
 
   public static scramble(el: HTMLElement, speed: number = 45) {
-    const text = el.innerText
-    if (!text) return
-
-    const originalText = el.getAttribute('data-text-scramble') || text
-    let iteration = 0
+    const originalText = el.getAttribute('data-text-scramble')
+    if (!originalText) return
 
     const id =
       el.getAttribute('data-text-scramble-id') || Math.random().toString()
@@ -30,12 +28,17 @@ export default class TextScramble {
     if (TextScramble.#elsIntervals[id]) {
       clearInterval(TextScramble.#elsIntervals[id])
       delete TextScramble.#elsIntervals[id]
+      el.removeAttribute('data-text-scramble-id')
+      el.innerText = originalText
+      return
     }
+
+    let iteration = 0
 
     TextScramble.#elsIntervals[id] = setInterval(() => {
       el.innerText = originalText
         .split('')
-        .map((letter, index) => {
+        .map((_, index) => {
           if (index < iteration) {
             return originalText[index]
           }
@@ -43,9 +46,11 @@ export default class TextScramble {
         })
         .join('')
 
-      if (iteration >= originalText.length) {
+      if (iteration >= originalText.length || !TextScramble.#elsIntervals[id]) {
         clearInterval(TextScramble.#elsIntervals[id])
         delete TextScramble.#elsIntervals[id]
+        el.removeAttribute('data-text-scramble-id')
+        el.innerText = originalText
       }
 
       iteration += 1 / 2
