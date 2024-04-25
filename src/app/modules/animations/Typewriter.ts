@@ -24,6 +24,11 @@ export default class Typewriter {
     iterations?: number,
     interval = 30,
   ) {
+    if(el.getAttribute('data-typewriter-scramble-id')) {
+      Typewriter.stop(el)
+      await delay(100) // i don't like this one bit, but it'll do for now
+    }
+
     const text = message || el.getAttribute('data-typewriter-scramble') || ''
     const id = Math.random().toString()
     el.setAttribute('data-typewriter-scramble-id', id)
