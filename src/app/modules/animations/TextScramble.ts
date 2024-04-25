@@ -39,7 +39,8 @@ export default class TextScramble {
       el.innerText = originalText
         .split('')
         .map((_, index) => {
-          if (index < iteration) {
+          const ignoreRegex = /\s|\n/ // ignore spaces and newlines
+          if (index < iteration || ignoreRegex.test(originalText[index])) {
             return originalText[index]
           }
           return CHARS[Math.floor(Math.random() * 39)]
