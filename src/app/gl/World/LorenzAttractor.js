@@ -79,7 +79,7 @@ export default class LorenzAttractor {
     const dtPosition = gpu.createTexture()
     this.initPositions(dtPosition)
     this.positionVariable = gpu.addVariable(
-      'tPosition',
+      'uPositionTexture',
       positionSimulation,
       dtPosition,
     )

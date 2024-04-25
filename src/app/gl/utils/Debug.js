@@ -4,7 +4,9 @@ import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
 import Experience from '../Experience'
 
 export default class Debug {
-  constructor() { }
+  constructor() {
+    this.shouldSaveImage = false
+  }
   start() {
     this.experience = new Experience()
     this.params = this.experience.params
@@ -23,8 +25,12 @@ export default class Debug {
     this.gui.add(this.params, 'positionX', -50, 50)
     this.gui.add(this.params, 'positionY', -50, 50)
     this.gui.add(this.params, 'positionZ', -50, 50)
+    this.gui.add({ saveImage: () => this.shouldSaveImage = true }, 'saveImage').name('Save as Image');
 
-    this.controls = new OrbitControls(this.experience.camera.instance, this.experience.appEl)
+    this.controls = new OrbitControls(
+      this.experience.camera.instance,
+      this.experience.appEl,
+    )
     this.controls.enableDamping = true
     this.controls.dampingFactor = 0.05
     this.controls.enabled = false
@@ -45,6 +51,8 @@ export default class Debug {
   }
 
   update() {
+    if(this.stats){
       this.stats.update()
+    }
   }
 }
