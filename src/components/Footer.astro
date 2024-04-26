@@ -41,8 +41,7 @@ const {} = Astro.props
               fill="#D9D9D9"></path>
             <path
               id="right-mouse-btn-icon"
-              d="M10 6.56854H5.38462V0.386719H6.92308C8.62239 0.386719 10 1.77059 10 3.47763V6.56854Z"
-              fill="#FF3D00"></path>
+              d="M10 6.56854H5.38462V0.386719H6.92308C8.62239 0.386719 10 1.77059 10 3.47763V6.56854Z"></path>
           </g>
         </svg>
         <p>QUICK MENU</p>
@@ -63,7 +62,8 @@ const {} = Astro.props
 .quick-menu-icon{
   
   #right-mouse-btn-icon{
-    @apply animate-pulse
+    @apply fill-primary;
+    @apply animate-pulse;
   }
 }
 </style>

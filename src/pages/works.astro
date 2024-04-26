@@ -165,6 +165,7 @@ const {} = Astro.props
   import { $, $all, debounce, fitTextToContainer } from '../app/utils'
   import { PROJECTS_LIST } from '../app/constants'
   import { radToDeg } from 'three/src/math/MathUtils.js'
+import Typewriter from '../app/modules/animations/Typewriter'
 
   document.addEventListener('DOMContentLoaded', () => {
     let currIdx = 3
@@ -238,6 +239,26 @@ const {} = Astro.props
       }
     }
 
+    function updateProjectDetails(currIdx: number){
+      const activeProject = PROJECTS_LIST[currIdx]
+      const roleEls = $all('.work-details-role')
+      roleEls.forEach(r => {
+        Typewriter.typewrite(r, activeProject.data.role)
+      })
+      const clientEls = $all('.work-details-client')
+      clientEls.forEach(r => {
+        Typewriter.typewrite(r, activeProject.data.client)
+        })
+      const yearEls = $all('.work-details-year')
+      yearEls.forEach(r => {
+        Typewriter.typewrite(r, activeProject.data.year)
+      })
+      const techEls = $all('.work-details-tech')
+      techEls.forEach(r => {
+        Typewriter.typewrite(r, activeProject.data.tech)
+      })
+    }
+
     function handleActiveProject(e) {
       if (typeof e.deltaY !== 'undefined') {
         const direction = e.deltaY > 0 ? 'down' : 'up'
@@ -248,23 +269,7 @@ const {} = Astro.props
           currIdx = currIdx < 0 ? pIds.length - 1 : currIdx
         }
       }
-      const activeProject = PROJECTS_LIST[currIdx]
-      const roleEls = $all('.work-details-role')
-      roleEls.forEach(r => {
-        r.innerHTML = activeProject.data.role
-      })
-      const clientEls = $all('.work-details-client')
-      clientEls.forEach(r => {
-        r.innerHTML = activeProject.data.client
-      })
-      const yearEls = $all('.work-details-year')
-      yearEls.forEach(r => {
-        r.innerHTML = activeProject.data.year
-      })
-      const techEls = $all('.work-details-tech')
-      techEls.forEach(r => {
-        r.innerHTML = activeProject.data.tech
-      })
+      updateProjectDetails(currIdx)
       recalculateOthers()
       recalculateActive()
     }
@@ -284,6 +289,7 @@ const {} = Astro.props
     const debouncedHandleActiveFn = debounce(handleActiveProject, 100)
     const debouncedHandleResizeFn = debounce(handleResize, 100)
 
+    updateProjectDetails(currIdx)
     recalculateOthers()
     recalculateActive()
 

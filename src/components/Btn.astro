@@ -6,8 +6,8 @@ const Component = Astro.props.href ? 'a' : 'button'
 
 <Component
   class:list={[
-    'btn relative text-xs font-black tracking-button text-white',
-    frame && 'frame h-7 w-32 flex items-center font-bold backdrop-blur-[1px]',
+    'btn relative text-xs font-black tracking-button  active:animate-fui-flash',
+    frame && 'frame h-7 w-32 flex items-center font-bold backdrop-blur-[1px] ',
     classes,
   ]}
   {...rest}

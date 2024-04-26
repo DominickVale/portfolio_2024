@@ -26,18 +26,20 @@ import NextPageBtn from '../components/NextPageBtn.astro'
         <Btn
           href="/about"
           class="mb-14 mr-auto mt-1 p-1"
-          data-cursor-delay="1000"
+          data-cursor-delay="2000"
           data-cursor-message="You should probably check this out"
           data-cursor-timeout="0"
-          data-cursor-interval="30">READ MORE</Btn>
+          data-cursor-interval="30"
+          data-text-scramble="READ MORE"
+          >READ MORE</Btn>
       </div>
       <div class="mb-14 hidden sm:flex">
         <NextPageBtn
-          class="p-2"
-          data-cursor-delay="1000"
+          class="text-inactive hover:text-white p-2"
+          data-cursor-delay="2000"
           data-cursor-message="Let's go, in 'n out.<br/>2 minutes adventure."
           data-cursor-timeout="0"
-          data-cursor-interval="35">WORKS</NextPageBtn>
+          data-cursor-interval="35">NEXT</NextPageBtn>
       </div>
     </div>
   </section>
@@ -70,7 +72,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
         <StatusItem highlight
           >STATUS: <span
             class="text-success"
-            data-cursor-delay="1000"
+            data-cursor-delay="2000"
             data-cursor-message="(full-time or not)"
             data-cursor-timeout="2500"
             data-cursor-type="success"

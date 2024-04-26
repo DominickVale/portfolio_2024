@@ -37,6 +37,7 @@ export default class Typewriter {
 
     let currentText = []
     const iter = iterations || 1
+    const speed = interval + (interval / text.length) * 20
 
     for (let i = 0; i < text.length; i++) {
       const originalLetter = text[i]
@@ -56,8 +57,8 @@ export default class Typewriter {
 
         el.innerHTML = tmpTxt.join('')
 
-        const newInterval = interval * Math.pow(i, 1.2) / text.length
-        await delay(newInterval)
+        const newSpeed = speed * Math.pow(i, 1.2) / text.length
+        await delay(newSpeed)
       }
       currentText.push(originalLetter)
       el.innerHTML = currentText.join('')

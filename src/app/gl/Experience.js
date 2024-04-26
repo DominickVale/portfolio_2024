@@ -15,8 +15,7 @@ import sources from './sources.js'
 let instance = null
 
 /*@TODO:
- * add animations, let users export their lorenz attractor via some button
- * (maybe add entire custom section to settings?)
+ * add animations
  * add animations on page transition
  * figure out how to reset to initial positions after page transitions
  * add a reset lorenz button
