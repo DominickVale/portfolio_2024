@@ -163,6 +163,7 @@ const {
 </BaseLayout>
 
 <script>
+  import gsap from 'gsap'
   import { $, fitTextToContainerScr, debounce } from '../app/utils'
   document.addEventListener('DOMContentLoaded', () => {
     const titleEl = $('h1')
@@ -180,5 +181,16 @@ const {
 
     const debouncedHandleResizeFn = debounce(handleResize, 100)
     document.addEventListener('resize', debouncedHandleResizeFn)
+
+    gsap.to("#bg-blur", {
+      scrollTrigger: {
+        trigger: '#contacts',
+        start: 'top center',
+        end: 'bottom bottom',
+        scrub: 0.5,
+        markers: true,
+      },
+      opacity: 0,
+    })
   })
 </script>

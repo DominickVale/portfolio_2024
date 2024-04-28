@@ -37,7 +37,7 @@ const { title, rowsMax, withContacts, class: classes, blurred, ...props } = Astr
   <body id="app" class:list={[ "relative flex max-h-screen flex-col font-body overscroll-none", classes ] } {...props}>
     <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-red-500"
     ></canvas>
-    { blurred && <div class="bg-blur-harder bg-transparent fixed inset-x-0 inset-y-0 z-[0]" />}
+    { blurred && <div id="bg-blur" class="bg-blur-harder bg-transparent fixed inset-x-0 inset-y-0 z-[0]" />}
     <Navbar/>
     <main
       class:list={[
@@ -50,7 +50,7 @@ const { title, rowsMax, withContacts, class: classes, blurred, ...props } = Astr
     </main>
     {
       withContacts && (
-        <div class="z-10 col-span-12 col-start-1 mt-8 grid min-h-[100vh] w-full flex-1 grid-cols-12">
+        <div id="contacts" class="z-10 col-span-12 col-start-1 mt-8 grid min-h-[100vh] w-full flex-1 grid-cols-12">
           <Contacts />
         </div>
       )

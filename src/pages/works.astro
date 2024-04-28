@@ -11,7 +11,7 @@ interface Props {}
 const {} = Astro.props
 ---
 
-<Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default">
+<Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default" blurred>
   <h1 class="sr-only">WORKS</h1>
   <div
     class="mb-18 col-span-10 col-start-2 row-start-1 mt-12 flex flex-col justify-center lg:col-span-4 lg:col-start-2 lg:row-start-1 lg:mt-0 laptop-h:justify-start"
@@ -286,8 +286,8 @@ import Typewriter from '../app/modules/animations/Typewriter'
       recalculateActive()
     }
 
-    const debouncedHandleActiveFn = debounce(handleActiveProject, 100)
-    const debouncedHandleResizeFn = debounce(handleResize, 100)
+    const debouncedHandleActiveFn = debounce(handleActiveProject, 200)
+    const debouncedHandleResizeFn = debounce(handleResize, 200)
 
     updateProjectDetails(currIdx)
     recalculateOthers()

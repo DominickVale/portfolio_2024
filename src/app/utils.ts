@@ -34,13 +34,15 @@ export function getCurrentPage() {
   }
 }
 
+//debounce with leading call
 export function debounce<T extends Function>(cb: T, wait = 20) {
-  let h = 0
-  let callable = (...args: any) => {
-    clearTimeout(h)
-    h = setTimeout(() => cb(...args), wait)
-  }
-  return <T>(<any>callable)
+  let timer = 0;
+  return function debouncedFn(...args: any) {
+    if (Date.now() - timer > wait) {
+      cb(...args);
+    }
+    timer = Date.now();
+  };
 }
 
 export function fitTextToContainer(el: HTMLElement, container: HTMLElement, offset?: number) {

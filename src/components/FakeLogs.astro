@@ -1,5 +1,5 @@
 <pre
-  class="ml-4 mt-[8vh] hidden text-xxs uppercase opacity-50 xl:block pointer-events-none">
+  class="min-h-[7.2rem] fake-logs pointer-events-none ml-4 mt-[8vh] hidden text-xxs uppercase opacity-50 xl:block">
     {
       `
 {
@@ -13,9 +13,31 @@
 </pre>
 
 <style>
-@media screen and (max-height: 640px) {
-  pre{
-    display: none;;
+  @media screen and (max-height: 640px) {
+    pre {
+      display: none;
+    }
   }
-}
 </style>
+
+<script>
+  import Typewriter from '../app/modules/animations/Typewriter'
+  import { $all } from '../app/utils'
+
+  const fakeLogs = $all('.fake-logs')
+  fakeLogs.forEach((el) => {
+    Typewriter.typewrite(
+      el,
+      `
+{
+    // loading proj_id: 001
+    // done.
+    // rendering data
+    // . . .
+    // add obj(“img_003.jpg”)
+    // done.
+}
+`,
+    )
+  })
+</script>
