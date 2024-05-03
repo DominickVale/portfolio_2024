@@ -35,7 +35,7 @@ export default class Debug {
     // postfx.add(this.params, 'bloomThreshold', 0, 1, 0.001)
     // postfx.add(this.params, 'bloomStrength', 0, 10, 0.001)
     // postfx.add(this.params, 'bloomRadius', 0, 1, 0.001)
-    postfx.add(this.params, 'rgbShiftPass', -0.01, 0.01, 0.0001).onChange(this.updateRGBShift.bind(this))
+    postfx.add(this.params, 'chromaticAberration', -0.01, 0.01, 0.0001).onChange(this.updateChromaticAberration.bind(this))
     const positioning = this.gui.addFolder('Positioning')
     positioning.add(this.params, 'rotationX', -Math.PI, Math.PI)
     positioning.add(this.params, 'rotationY', -Math.PI, Math.PI)
@@ -77,8 +77,9 @@ export default class Debug {
     }
   }
 
-  updateRGBShift(value){
-    this.experience.renderer.rgbShiftPass.uniforms.amount.value = value
+  updateChromaticAberration(value){
+    // this.experience.renderer.chromaticAberrationPass.uniforms.amount.value = value
+    this.experience.renderer.chromaticAberrationEffect.offset = new THREE.Vector2(value, value)
   }
   updateBgColor(value){
     this.experience.renderer.fullScreenBg.material.uniforms.uColor.value = new THREE.Color(value);

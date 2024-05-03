@@ -57,7 +57,7 @@ export default class Experience {
       primaryColor: this.primaryColor,
       lorenzColor: this.primaryColor,
       blending: THREE.AdditiveBlending,
-      rgbShiftPass: 0
+      chromaticAberration: 0
     }
 
     // Setup
@@ -107,7 +107,6 @@ export default class Experience {
   update() {
     this.camera.update()
     if(this.world.isReady){
-      this.world.update()
       this.renderer.render()
       this.canvas.style.opacity = 1
     }

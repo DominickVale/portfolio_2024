@@ -8,16 +8,15 @@ export default class World {
     this.resources = this.experience.resources
     this.isReady = false
     this.attractor = new LorenzAttractor()
-    // this.scene.add(this.attractor.points)
+    this.scene.add(this.attractor.points)
 
-    // Wait for resources
     this.resources.on('ready', () => {
       // this.attractor.setTexture(this.resources.items.star)
       this.isReady = true
     })
   }
 
-  update() {
-    // if(this.attractor) this.attractor.update()
+  update(renderer, delta) {
+    this.attractor.update(renderer, delta)
   }
 }

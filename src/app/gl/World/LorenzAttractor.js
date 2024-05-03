@@ -7,6 +7,7 @@ import simFragment from '../shaders/simulation.frag'
 import simVert from '../shaders/simulation.vert'
 
 export default class LorenzAttractor {
+  #lorenzGeometry
   constructor() {
     this.firstRender = true
     this.experience = new Experience()
@@ -26,7 +27,7 @@ export default class LorenzAttractor {
     this.bufferCamera = new THREE.OrthographicCamera( -1, 1, 1, -1);
 
     const initialTexture = this.createInitialTexture();
-    this.lorenzGeometry = new THREE.BufferGeometry()
+    this.#lorenzGeometry = new THREE.BufferGeometry()
 
     const settings = {
       wrapS: THREE.RepeatWrapping,
@@ -52,11 +53,11 @@ export default class LorenzAttractor {
       refs.set([xx, yy], i * 2)
     }
 
-    this.lorenzGeometry.setAttribute(
+    this.#lorenzGeometry.setAttribute(
       'position',
       new THREE.BufferAttribute(positions, 3),
     )
-    this.lorenzGeometry.setAttribute('reference', new THREE.BufferAttribute(refs, 2))
+    this.#lorenzGeometry.setAttribute('reference', new THREE.BufferAttribute(refs, 2))
 
     //Screen Material
     this.renderMaterial = new THREE.ShaderMaterial({
@@ -79,14 +80,13 @@ export default class LorenzAttractor {
       fragmentShader: renderFrag,
     });
 
-    this.lorenz = new THREE.Points(this.lorenzGeometry, this.renderMaterial)
-    this.lorenz.rotation.x = this.params.rotationX
-    this.lorenz.rotation.y = this.params.rotationY
-    this.lorenz.rotation.z = this.params.rotationZ
-    this.lorenz.position.x = this.params.positionX
-    this.lorenz.position.y = this.params.positionY
-    this.lorenz.position.z = this.params.positionZ
-    this.scene.add(this.lorenz)
+    this.points = new THREE.Points(this.#lorenzGeometry, this.renderMaterial)
+    this.points.rotation.x = this.params.rotationX
+    this.points.rotation.y = this.params.rotationY
+    this.points.rotation.z = this.params.rotationZ
+    this.points.position.x = this.params.positionX
+    this.points.position.y = this.params.positionY
+    this.points.position.z = this.params.positionZ
 
     // Simulation Material
     this.bufferMaterial = new THREE.ShaderMaterial({
@@ -118,15 +118,15 @@ export default class LorenzAttractor {
     const [read, write] = this.pool.reverse()
     renderer.setRenderTarget(write)
     renderer.render(this.bufferScene, this.bufferCamera);
-    this.lorenz.material.uniforms.uTexture.value = read.texture;
+    this.points.material.uniforms.uTexture.value = read.texture;
     this.bufferMaterial.uniforms.uTexture.value = write.texture
 
-    this.lorenz.rotation.x = this.params.rotationX
-    this.lorenz.rotation.y = this.params.rotationY
-    this.lorenz.rotation.z = this.params.rotationZ
-    this.lorenz.position.x = this.params.positionX
-    this.lorenz.position.y = this.params.positionY
-    this.lorenz.position.z = this.params.positionZ
+    this.points.rotation.x = this.params.rotationX
+    this.points.rotation.y = this.params.rotationY
+    this.points.rotation.z = this.params.rotationZ
+    this.points.position.x = this.params.positionX
+    this.points.position.y = this.params.positionY
+    this.points.position.z = this.params.positionZ
 
     this.bufferMaterial.uniforms.uSigma.value = this.params.sigma;
     this.bufferMaterial.uniforms.uRho.value = this.params.rho;
