@@ -2,6 +2,7 @@
 - check @TODOS.
 - Animations ( don't forget the fake-code animations)
 - Reduced animations for prefer-reduced-motion
+- Optimize imports (no import * from ...)
 
 ## 🧞 Commands
 All commands are run from the root of the project, from a terminal:
