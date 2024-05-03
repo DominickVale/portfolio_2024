@@ -30,6 +30,12 @@ export default class Debug {
     colors.addColor(this.params, 'primaryColor')
     colors.addColor(this.params, 'bgColor').onChange ( this.updateBgColor.bind(this) )
     colors.add( this.params, 'blending', BLEND_TYPES ).onChange( this.updateBlending.bind(this) );
+    const postfx = this.gui.addFolder('Post-processing')
+    // postfx.add(this.params, 'bloom', 0, 1, 0.001)
+    // postfx.add(this.params, 'bloomThreshold', 0, 1, 0.001)
+    // postfx.add(this.params, 'bloomStrength', 0, 10, 0.001)
+    // postfx.add(this.params, 'bloomRadius', 0, 1, 0.001)
+    postfx.add(this.params, 'rgbShiftPass', -0.01, 0.01, 0.0001).onChange(this.updateRGBShift.bind(this))
     const positioning = this.gui.addFolder('Positioning')
     positioning.add(this.params, 'rotationX', -Math.PI, Math.PI)
     positioning.add(this.params, 'rotationY', -Math.PI, Math.PI)
@@ -71,6 +77,9 @@ export default class Debug {
     }
   }
 
+  updateRGBShift(value){
+    this.experience.renderer.rgbShiftPass.uniforms.amount.value = value
+  }
   updateBgColor(value){
     this.experience.renderer.fullScreenBg.material.uniforms.uColor.value = new THREE.Color(value);
   }

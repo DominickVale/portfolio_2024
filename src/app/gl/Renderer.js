@@ -42,9 +42,9 @@ export default class Renderer {
     const outputPass = new OutputPass();
 
     this.composer.addPass( renderPass );
-    const rgbShiftPass = new ShaderPass(RGBShiftShader)
-    rgbShiftPass.uniforms['amount'].value = 0
-    this.composer.addPass(rgbShiftPass)
+    this.rgbShiftPass = new ShaderPass(RGBShiftShader)
+    this.rgbShiftPass.uniforms['amount'].value = 0
+    this.composer.addPass(this.rgbShiftPass)
     this.composer.addPass( outputPass );
     this.createBackground()
     this.onResize()

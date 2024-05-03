@@ -56,7 +56,8 @@ export default class Experience {
       bgColor: this.bgColor,
       primaryColor: this.primaryColor,
       lorenzColor: this.primaryColor,
-      blending: THREE.AdditiveBlending
+      blending: THREE.AdditiveBlending,
+      rgbShiftPass: 0
     }
 
     // Setup
