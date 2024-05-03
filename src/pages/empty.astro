@@ -1,0 +1,50 @@
+---
+import '../style/main.css'
+import Cursor from '../components/Cursor.astro'
+import { ContactIcon, LabIcon, HomeIcon, WorksIcon, SettingsIcon, AboutIcon, BlogIcon, CopyIcon, ContextMenuIcon, DebugIcon, AudioIcon} from '../components/icons'
+import RadialMenu from '../components/RadialMenu.astro'
+---
+<html lang="en" class="overscroll-none">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Portfolio 2024" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>WIP PORTFOLIO</title>
+  </head>
+  <!-- fonts -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,200..900&family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+  </style>
+
+  <body id="app" class:list={[ "relative flex max-h-screen flex-col font-body overscroll-none"]} data-menu-trigger="default">
+    <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-background-dark opacity-0 transition-opacity duration-1000 ease-in-out"
+    ></canvas>
+  </body>
+
+    <div id="_icons" class="hidden">
+      <HomeIcon />
+      <WorksIcon />
+      <AboutIcon />
+      <BlogIcon />
+      <ContactIcon />
+      <LabIcon />
+      <SettingsIcon />
+      <CopyIcon/>
+      <ContextMenuIcon/>
+      <DebugIcon/>
+      <AudioIcon/>
+    </div>
+    <RadialMenu id="text" size="calc(10rem + min(30vw, 10vh))" />
+    <RadialMenu id="default" size="calc(10rem + 10vw)" />
+    <RadialMenu id="default-blog" size="calc(10rem + 10vw)" />
+    <RadialMenu id="default-mobile" size="calc(10rem + 50vw)" mobile/>
+    <!-- <RadialMenu id="default-blog-mobile" size="calc(10rem + 50vw)" mobile/> -->
+    <RadialMenu id="settings" size="calc(10rem + 5vw)" />
+
+    <Cursor/>
+  <script>
+    import '../app'
+  </script>
+</html>
