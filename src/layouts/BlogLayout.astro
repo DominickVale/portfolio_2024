@@ -164,8 +164,14 @@ const {
 
 <script>
   import gsap from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
   import { $, fitTextToContainerScr, debounce } from '../app/utils'
+  import Lenis from 'lenis'
+
+  gsap.registerPlugin(ScrollTrigger)
+
   document.addEventListener('DOMContentLoaded', () => {
+    // Dynamic font size
     const titleEl = $('h1')
     const titleElChars = titleEl.innerHTML.split('')
     function handleResize() {
@@ -178,17 +184,25 @@ const {
       titleEl.style.height = 'auto'
     }
     handleResize()
-
     const debouncedHandleResizeFn = debounce(handleResize, 100)
     document.addEventListener('resize', debouncedHandleResizeFn)
 
+    //Scroll
+    const lenis = new Lenis({ duration: 2, smoothWheel: true})
+
+    lenis.on('scroll', ScrollTrigger.update)
+    gsap.ticker.add((time)=>{
+      lenis.raf(time * 1000)
+    })
+    gsap.ticker.lagSmoothing(0)
+
+    // Scroll anims
     gsap.to("#bg-blur", {
       scrollTrigger: {
         trigger: '#contacts',
         start: 'top center',
         end: 'bottom bottom',
         scrub: 0.5,
-        markers: true,
       },
       opacity: 0,
     })

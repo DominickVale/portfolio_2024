@@ -26,20 +26,21 @@ import NextPageBtn from '../components/NextPageBtn.astro'
         <Btn
           href="/about"
           class="mb-14 mr-auto mt-1 p-1"
-          data-cursor-delay="2000"
+          data-cursor-delay="1000"
           data-cursor-message="You should probably check this out"
           data-cursor-timeout="0"
           data-cursor-interval="30"
-          data-text-scramble="READ MORE"
-          >READ MORE</Btn>
+          data-text-scramble="READ MORE">READ MORE</Btn
+        >
       </div>
       <div class="mb-14 hidden sm:flex">
         <NextPageBtn
-          class="text-inactive hover:text-white p-2"
-          data-cursor-delay="2000"
+          class="p-2 text-inactive hover:text-white"
+          data-cursor-delay="1000"
           data-cursor-message="Let's go, in 'n out.<br/>2 minutes adventure."
           data-cursor-timeout="0"
-          data-cursor-interval="35">NEXT</NextPageBtn>
+          data-cursor-interval="35">NEXT</NextPageBtn
+        >
       </div>
     </div>
   </section>
@@ -53,6 +54,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
       data-cursor-iterations="3"
       data-cursor-timeout="0"
       data-cursor-interval="40"
+      data-aberration
     >
       DOMINICK VALE
     </h1>
@@ -83,10 +85,79 @@ import NextPageBtn from '../components/NextPageBtn.astro'
       <ul class="ml-[32%] hidden md:block">
         <div class="flex flex-col"></div>
         <StatusItem highlight>AWARDS:</StatusItem>
-        <p class="font-mono text-xs font-normal text-inactive">
+        <p
+          class="font-mono text-xs font-normal text-inactive"
+          data-cursor-delay="2000"
+          data-cursor-message="My mother says i'm<br/>really good with computers."
+          data-cursor-timeout="0"
+          data-cursor-interval="40"
+        >
           COMING SOON :)
         </p>
       </ul>
     </div>
   </section>
 </Layout>
+
+<style>
+h1{
+  transition: text-shadow 0.1s ease-out;
+}
+</style>
+
+<script>
+  import { $all } from '../app/utils'
+  const els = $all("[data-aberration]")
+
+  let mouseX = 0
+  let mouseY = 0
+  let prevMouseX = 0
+  let prevMouseY = 0
+  let mouseVelocityX = 0
+  let mouseVelocityY = 0
+
+  const primaryColorWeight = 1.8
+
+  function calculateMouseVelocity() {
+    const dx = mouseX - prevMouseX
+    const dy = mouseY - prevMouseY
+    const velocity = Math.sqrt(dx * dx + dy * dy)
+
+    prevMouseX = mouseX
+    prevMouseY = mouseY
+
+    mouseVelocityX = dx
+    mouseVelocityY = dy
+
+    return velocity
+  }
+
+  function applyEffects() {
+    const velocity = calculateMouseVelocity()
+    const maxOffset = 1.5
+    const maxBlur = 0.8
+
+    const offset = Math.min(velocity / 8, maxOffset)
+    const blur = Math.min(velocity / 8, maxBlur)
+
+    for(const el of els) {
+      el.style.textShadow = `
+      ${(primaryColorWeight * offset * mouseVelocityX) / velocity}px ${(primaryColorWeight * offset * mouseVelocityY) / velocity}px 0 var(--primary),
+      ${(-offset * mouseVelocityX) / velocity}px ${(-offset * mouseVelocityY) / velocity}px 0 red,
+      ${(-offset * mouseVelocityY) / velocity}px ${(offset * mouseVelocityX) / velocity}px 0 green,
+      ${(offset * mouseVelocityY) / velocity}px ${(-offset * mouseVelocityX) / velocity}px 0 blue
+    `
+
+      el.style.filter = `blur(${blur}px)`
+    }
+
+    requestAnimationFrame(applyEffects)
+  }
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX
+    mouseY = e.clientY
+  })
+
+  applyEffects()
+</script>

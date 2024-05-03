@@ -4,24 +4,42 @@ interface Props {}
 const {} = Astro.props
 ---
 
-<nav class="fixed left-0 z-20 mt-6 w-full text-xs text-inactive sm:mt-12">
+<nav
+  id="navbar"
+  class="fixed left-0 z-20 mt-6 w-full text-xs text-inactive sm:mt-12"
+>
   <ul class="grid grid-cols-12">
     <li class="col-span-1 col-start-2 text-right sm:col-start-1 sm:mr-2">
-      <a class="active" href="/" aria-current="page" data-text-scramble="HOME">HOME</a>
+      <a
+        class="nav-link active"
+        href="/"
+        aria-current="page"
+        data-text-scramble="HOME">HOME</a
+      >
     </li>
     <div
       class="pointer-events-none absolute left-0 right-0 flex justify-center"
     >
       <div class="pointer-events-auto hidden gap-6 sm:flex sm:gap-10">
-        <li class="w-6"><a href="/works" data-text-scramble="WORKS">WORKS</a></li>
-        <li class="w-6"><a href="/blog" data-text-scramble="BLOG">BLOG</a></li>
-        <li class="w-6"><a href="/lab" data-text-scramble="LAB">LAB</a></li>
+        <li class="nav-link w-6">
+          <a href="/works" data-text-scramble="WORKS">WORKS</a>
+        </li>
+        <li class="nav-link w-6">
+          <a href="/blog" data-text-scramble="BLOG">BLOG</a>
+        </li>
+        <li class="nav-link w-6">
+          <a href="/lab" data-text-scramble="LAB">LAB</a>
+        </li>
       </div>
     </div>
     <li
       class="col-span-2 col-start-10 flex justify-end sm:col-span-1 sm:col-start-12 sm:ml-2 sm:justify-start"
     >
-      <a href="/contact" class="mix-blend-difference" data-text-scramble="CONTACT">CONTACT</a>
+      <a
+        href="/contact"
+        class="mix-blend-difference"
+        data-text-scramble="CONTACT">CONTACT</a
+      >
     </li>
   </ul>
 </nav>
@@ -41,21 +59,42 @@ const {} = Astro.props
     }
     @apply text-white;
   }
-  nav li > a:hover{
-  @apply text-white;
+  nav li > a:hover {
+    @apply text-white;
   }
 </style>
 
 <script>
-import { $all } from '../app/utils'
+  import { $, $all } from '../app/utils'
+  import gsap from 'gsap'
   const navLinks = Array.from($all('nav li a')) as HTMLAnchorElement[]
   const currentUrl = window.location.href
+
+  gsap.from(navLinks, {
+    opacity: 0,
+    duration: 0.08,
+    ease: 'elastic.in',
+    stagger: {
+      repeat: 10,
+      each: 0.12,
+    },
+  })
 
   navLinks.forEach((link) => {
     if (link.href === currentUrl) {
       link.classList.add('active')
     } else {
       link.classList.remove('active')
+    }
+  })
+  $('#navbar').addEventListener('mousedown', (e) => {
+    const clickedEl = e.target as HTMLElement
+    console.log("Mousedown", clickedEl)
+    if (clickedEl.parentElement.classList.contains('nav-link')) {
+      navLinks.forEach((link) => {
+        link.classList.remove('active')
+      })
+      clickedEl.classList.add('active')
     }
   })
 </script>
