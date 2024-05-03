@@ -5,12 +5,14 @@
 :root {
   --grid-x-gap: 1.2rem;
   --grid-y-gap: 0.5rem;
-  --primary: #ff3d00;
+  --primary: rgb(255,149,0);
+  --primary-02: color-mix(in srgb,rgba(255,149,0,0.2),#f40 20%);
+  /* --primary: #ff3d00; */
   --inactive: #a7a7a7;
   --success: #96d800;
-  --primary-darker: rgba(255, 46, 0, 0.78);
+  --primary-darker: color-mix(in srgb, var(--primary), #000 10%);
   --primary-lighter:  color-mix(in srgb,var(--primary),#fff 10%);
-  --primary-lightest: #d3afaa;
+  --primary-lightest: color-mix(in srgb,var(--primary),#fff 70%);
   --lines: rgba(255, 255, 255, 0.2);
   --bg-dark: #110F10;
   --bg-dark-light: rgba(36, 34, 34, 0.28);
@@ -21,8 +23,6 @@
   --copy: #d3c4c4;
 }
 ::selection{
-  /* color: var(--primary); */
-  /* background-color: var(--bg-dark-light); */
   color: var(--bg-dark);
   background-color: var(--primary);
 }
@@ -135,8 +135,8 @@ body {
 .bg-striped {
   background: repeating-linear-gradient(
     45deg,
-    theme('colors.background.dark-lightest'),
-    theme('colors.background.dark-lightest') 10px,
+    theme('colors.background.dark-02'),
+    theme('colors.background.dark-02') 10px,
     rgba(0, 0, 0, 0) 13px,
     rgba(0, 0, 0, 0) 20px
   );
@@ -144,7 +144,7 @@ body {
 
 @layer components {
   .bg-blur {
-    background-color: var(--bg-dark-light);
+    background-color: var(--bg-dark-05);
     backdrop-filter: blur(2px);
   }
   .bg-blur-harder {
@@ -184,4 +184,26 @@ article:hover {
   .marquee-dot {
     background-color: var(--bg-dark);
   }
+}
+
+
+/* LENIS RECOMMENDED */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }

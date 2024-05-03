@@ -40,13 +40,12 @@ export default class Experience {
     )
     this.bgColor = getComputedStyle(this.appEl).getPropertyValue('--bg-dark')
     this.isMobile = isMobile()
-    this.oldColor = this.primaryColor
     this.params = {
       sigma: 10,
       rho: 28,
       beta: 8 / 3,
       speed: 5,
-      color: this.primaryColor,
+      dt: 0.01,
       rotationX: 0,
       rotationY: 0.0753,
       rotationZ: -Math.PI / 5,
@@ -54,6 +53,10 @@ export default class Experience {
       positionY: this.isMobile ? 25 : 4.5,
       positionZ: this.isMobile ? -65 : 0,
       particlesBufWidth: this.isMobile ? 100 : 250,
+      bgColor: this.bgColor,
+      primaryColor: this.primaryColor,
+      lorenzColor: this.primaryColor,
+      blending: THREE.AdditiveBlending
     }
 
     // Setup
@@ -64,8 +67,8 @@ export default class Experience {
     this.resources = new Resources(sources)
     this.scene = new THREE.Scene()
     this.camera = new Camera()
-    this.renderer = new Renderer()
     this.world = new World()
+    this.renderer = new Renderer()
 
     this.camXto = gsap.quickTo(this.camera.instance.rotation, "x", { duration: 2, ease: "power3" })
     this.camYto = gsap.quickTo(this.camera.instance.rotation, "y", { duration: 2, ease: "power3" })
@@ -104,7 +107,8 @@ export default class Experience {
     this.camera.update()
     if(this.world.isReady){
       this.world.update()
-      this.renderer.update()
+      this.renderer.render()
+      this.canvas.style.opacity = 1
     }
   }
 

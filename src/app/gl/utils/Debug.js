@@ -1,31 +1,45 @@
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
+import * as THREE from 'three'
 import Experience from '../Experience'
 
+const BLEND_TYPES = { Additive: THREE.AdditiveBlending, Normal: THREE.NormalBlending, Subtractive: THREE.SubtractiveBlending };
 export default class Debug {
   constructor() {
     this.shouldSaveImage = false
+    this.enabled = false
+    this.showFBOTextures = false
   }
   start() {
+    this.enabled = true
     this.experience = new Experience()
     this.params = this.experience.params
     this.stats = new Stats()
     this.experience.appEl.appendChild(this.stats.dom)
 
     this.gui = new GUI()
-    this.gui.add(this.params, 'sigma', -8, 100)
-    this.gui.add(this.params, 'rho', -100, 100)
-    this.gui.add(this.params, 'beta', -6, 6)
-    this.gui.add(this.params, 'speed', 1, 100)
-    this.gui.addColor(this.experience.params, 'color')
-    this.gui.add(this.params, 'rotationX', -Math.PI, Math.PI)
-    this.gui.add(this.params, 'rotationY', -Math.PI, Math.PI)
-    this.gui.add(this.params, 'rotationZ', -Math.PI, Math.PI)
-    this.gui.add(this.params, 'positionX', -50, 50)
-    this.gui.add(this.params, 'positionY', -50, 50)
-    this.gui.add(this.params, 'positionZ', -50, 50)
-    this.gui.add({ saveImage: () => this.shouldSaveImage = true }, 'saveImage').name('Save as Image');
+    const lorenzParams = this.gui.addFolder('Lorenz parameters')
+    lorenzParams.add(this.params, 'sigma', -8, 100)
+    lorenzParams.add(this.params, 'rho', -100, 100)
+    lorenzParams.add(this.params, 'beta', -6, 6)
+    lorenzParams.add(this.params, 'speed', 1, 100)
+    lorenzParams.add(this.params, 'dt', 0.0001, 0.1, 0.00001)
+    const colors = this.gui.addFolder('Colors')
+    colors.addColor(this.params, 'lorenzColor').onChange(this.updateLorenzColor.bind(this));
+    colors.addColor(this.params, 'primaryColor')
+    colors.addColor(this.params, 'bgColor').onChange ( this.updateBgColor.bind(this) )
+    colors.add( this.params, 'blending', BLEND_TYPES ).onChange( this.updateBlending.bind(this) );
+    const positioning = this.gui.addFolder('Positioning')
+    positioning.add(this.params, 'rotationX', -Math.PI, Math.PI)
+    positioning.add(this.params, 'rotationY', -Math.PI, Math.PI)
+    positioning.add(this.params, 'rotationZ', -Math.PI, Math.PI)
+    positioning.add(this.params, 'positionX', -50, 50)
+    positioning.add(this.params, 'positionY', -50, 50)
+    positioning.add(this.params, 'positionZ', -50, 50)
+    const misc = this.gui.addFolder('Misc')
+    misc.add({ saveImage: () => this.shouldSaveImage = true }, 'saveImage').name('Save as Image');
+    misc.add(this, 'showFBOTextures', false).name('Show FBO Textures');
 
     this.controls = new OrbitControls(
       this.experience.camera.instance,
@@ -39,6 +53,7 @@ export default class Debug {
   }
 
   stop() {
+    this.enabled = false
     if (this.stats) {
       this.stats.dom.remove()
     }
@@ -54,5 +69,17 @@ export default class Debug {
     if(this.stats){
       this.stats.update()
     }
+  }
+
+  updateBgColor(value){
+    this.experience.renderer.fullScreenBg.material.uniforms.uColor.value = new THREE.Color(value);
+  }
+  updateLorenzColor(value){
+    console.log(this.experience.world)
+    this.experience.world.attractor.renderMaterial.uniforms.uColor.value = new THREE.Color(value)
+  }
+
+  updateBlending(value){
+    this.experience.world.attractor.renderMaterial.blending = value
   }
 }

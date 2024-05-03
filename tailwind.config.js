@@ -32,8 +32,7 @@ export default {
         background: {
           dark: 'var(--bg-dark)',
           'dark-02': 'var(--bg-dark-02)',
-          'dark-light': 'var(--bg-dark-light)',
-          'dark-lightest': 'var(--bg-dark-lightest)',
+          'dark-05': 'var(--bg-dark-05)',
         },
       },
       fontSize: {
