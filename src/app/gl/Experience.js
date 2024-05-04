@@ -61,15 +61,15 @@ export default class Experience {
     }
 
     // Setup
-    this.debug = new Debug()
+    this.debug = new Debug(this)
     this.sizes = new Sizes()
     this.time = new Time()
     this.clock = new THREE.Clock()
     this.resources = new Resources(sources)
     this.scene = new THREE.Scene()
-    this.camera = new Camera()
-    this.world = new World()
-    this.renderer = new Renderer()
+    this.camera = new Camera(this)
+    this.world = new World(this)
+    this.renderer = new Renderer(this)
 
     this.camXto = gsap.quickTo(this.camera.instance.rotation, "x", { duration: 2, ease: "power3" })
     this.camYto = gsap.quickTo(this.camera.instance.rotation, "y", { duration: 2, ease: "power3" })

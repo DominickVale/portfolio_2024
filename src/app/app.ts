@@ -20,7 +20,7 @@ export default class App {
     this.menus = new Menus(this.onToggleDebug.bind(this))
     this.scrambles = new TextScramble()
     this.typewriter = new Typewriter()
-    Animations.init()
+    Animations.init(this.cursor, this.experience)
   }
 
   onToggleDebug() {

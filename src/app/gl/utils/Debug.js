@@ -2,18 +2,17 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
 import * as THREE from 'three'
-import Experience from '../Experience'
 
 const BLEND_TYPES = { Additive: THREE.AdditiveBlending, Normal: THREE.NormalBlending, Subtractive: THREE.SubtractiveBlending };
 export default class Debug {
-  constructor() {
+  constructor(experience) {
+    this.experience = experience
     this.shouldSaveImage = false
     this.enabled = false
     this.showFBOTextures = false
   }
   start() {
     this.enabled = true
-    this.experience = new Experience()
     this.params = this.experience.params
     this.stats = new Stats()
     this.experience.appEl.appendChild(this.stats.dom)

@@ -1,5 +1,8 @@
 import gsap from 'gsap'
 import { $all } from '../../utils'
+import ChromaticAberrationAnim from './ChromaticAberration'
+import type Cursor from '../Cursor'
+import type Experience from '../../gl/Experience'
 
 type EvtListenersContainer<T extends HTMLElement> = Partial<
   Record<keyof HTMLElementEventMap, (ev: Event, el: T) => void>
@@ -41,7 +44,12 @@ function bindEvents(
 }
 
 export default {
-  init() {
+  init(cursor: Cursor, experience: Experience) {
+    const chromaticAberrAnim = new ChromaticAberrationAnim()
+    chromaticAberrAnim.init()
+
+    cursor.addAnimation(chromaticAberrAnim.update.bind(chromaticAberrAnim, cursor, experience))
+
     const nextPageBtns = Array.from($all('.next-page-btn')) as HTMLDivElement[]
     nextPageBtns.forEach((el) => {
       el.classList.add('opacity-0')

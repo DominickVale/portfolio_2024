@@ -19,6 +19,7 @@ export default class Cursor {
   ringEl: HTMLElement
   lastPos: Vec2
   isMobile: boolean
+  animations: Array<() => void>
 
   constructor(public speed = 0.25) {
     this.isMobile = isMobile()
@@ -31,6 +32,7 @@ export default class Cursor {
     this.el = $('#cursor')
     this.ringEl = $('#cursor-ring')
     this.textEl = $('#cursor-text')
+    this.animations = []
   }
 
   init() {
@@ -81,6 +83,10 @@ export default class Cursor {
     }
   }
 
+  addAnimation(fn: () => void) {
+    this.animations.push(fn)
+  }
+
   onTouchMove(e: TouchEvent) {
     const pos = {
       x: e.touches[0].clientX,
@@ -122,12 +128,17 @@ export default class Cursor {
     }
   }
 
+  //@TODO: split into another animationn
   render(e: MouseEvent) {
     this.el.style.transform = `translate(${this.pos.x}px, ${this.pos.y}px)`
     this.textEl.style.transform = `translate(${this.pos.x}px, ${this.pos.y + 30}px)`
     this.lastPos.x = lerp(this.lastPos.x, this.pos.x, this.speed)
     this.lastPos.y = lerp(this.lastPos.y, this.pos.y, this.speed)
     this.ringEl.style.transform = `translate(${this.lastPos.x}px, ${this.lastPos.y}px)`
+
+    for (const fn of this.animations) {
+      fn()
+    }
     requestAnimationFrame(this.render.bind(this))
   }
 }
