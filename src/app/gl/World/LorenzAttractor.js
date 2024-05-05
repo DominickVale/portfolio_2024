@@ -27,6 +27,7 @@ export default class LorenzAttractor {
     this.bufferCamera = new THREE.OrthographicCamera( -1, 1, 1, -1);
 
     const initialTexture = this.createInitialTexture();
+    const initialTexturePos = initialTexture.clone();
     this.#lorenzGeometry = new THREE.BufferGeometry()
 
     const settings = {
@@ -36,7 +37,8 @@ export default class LorenzAttractor {
       magFilter: THREE.NearestFilter,
       format: THREE.RGBAFormat,
       type:THREE.FloatType,
-      stencilBuffer: false
+      stencilBuffer: false,
+      toneMapping: THREE.NoToneMapping
     }
 
     this.renderBufferA = new THREE.WebGLRenderTarget(this.params.particlesBufWidth, this.params.particlesBufWidth, settings)
@@ -66,11 +68,13 @@ export default class LorenzAttractor {
       vertexColors: true,
       transparent: true,
       depthWrite: false,
+      dithering: true,
       uniforms: {
         uTexture: { value: null },
+        uInitialPositions: { value: initialTexturePos },
         uColor: { value: new THREE.Color(this.params.lorenzColor) },
         uSize: {
-          value: (this.experience.isMobile ? 70 : 60) * this.sizes.pixelRatio,
+          value: (this.experience.isMobile ? 70 : 120) * this.sizes.pixelRatio,
         },
       },
       defines: {
@@ -90,6 +94,7 @@ export default class LorenzAttractor {
 
     // Simulation Material
     this.bufferMaterial = new THREE.ShaderMaterial({
+      dithering: true,
       uniforms: {
         uTime: { value: 0.0 },
         uSigma: { value: this.params.sigma },
@@ -97,6 +102,7 @@ export default class LorenzAttractor {
         uBeta: { value: this.params.beta },
         uDt: { value: 0.0001 * Math.pow(this.params.speed, 2) },
         uTexture: { value: initialTexture },
+        uInitialPositions: { value: initialTexturePos }
       },
       vertexShader: simVert,
       fragmentShader: simFragment,
@@ -121,16 +127,6 @@ export default class LorenzAttractor {
     this.points.material.uniforms.uTexture.value = read.texture;
     this.bufferMaterial.uniforms.uTexture.value = write.texture
 
-    this.points.rotation.x = this.params.rotationX
-    this.points.rotation.y = this.params.rotationY
-    this.points.rotation.z = this.params.rotationZ
-    this.points.position.x = this.params.positionX
-    this.points.position.y = this.params.positionY
-    this.points.position.z = this.params.positionZ
-
-    this.bufferMaterial.uniforms.uSigma.value = this.params.sigma;
-    this.bufferMaterial.uniforms.uRho.value = this.params.rho;
-    this.bufferMaterial.uniforms.uBeta.value = this.params.beta;
     this.bufferMaterial.uniforms.uDt = {
       value: delta * 0.0001 * Math.pow(this.params.speed, 2),
     };

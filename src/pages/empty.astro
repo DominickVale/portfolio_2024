@@ -3,6 +3,7 @@ import '../style/main.css'
 import Cursor from '../components/Cursor.astro'
 import { ContactIcon, LabIcon, HomeIcon, WorksIcon, SettingsIcon, AboutIcon, BlogIcon, CopyIcon, ContextMenuIcon, DebugIcon, AudioIcon} from '../components/icons'
 import RadialMenu from '../components/RadialMenu.astro'
+import Preloader from '../components/Preloader.astro'
 ---
 <html lang="en" class="overscroll-none">
   <head>
@@ -21,6 +22,7 @@ import RadialMenu from '../components/RadialMenu.astro'
   <body id="app" class:list={[ "relative flex max-h-screen flex-col font-body overscroll-none"]} data-menu-trigger="default">
     <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-background-dark opacity-0 transition-opacity duration-1000 ease-in-out"
     ></canvas>
+    <Preloader />
   </body>
 
     <div id="_icons" class="hidden">

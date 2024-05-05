@@ -1,8 +1,10 @@
+import Experience from '../Experience.js'
 import LorenzAttractor from './LorenzAttractor.js'
+import * as THREE from 'three'
 
 export default class World {
-  constructor(experience) {
-    this.experience = experience
+  constructor() {
+    this.experience = new Experience()
     this.scene = this.experience.scene
     this.resources = this.experience.resources
     this.isReady = false

@@ -16,7 +16,7 @@ export default class App {
 
   constructor(public debug = false) {
     this.cursor = new Cursor()
-    this.experience = new Experience($('#webgl'))
+    this.experience = new Experience($('#webgl') as HTMLCanvasElement, this.cursor)
     this.menus = new Menus(this.onToggleDebug.bind(this))
     this.scrambles = new TextScramble()
     this.typewriter = new Typewriter()

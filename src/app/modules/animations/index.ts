@@ -45,10 +45,10 @@ function bindEvents(
 
 export default {
   init(cursor: Cursor, experience: Experience) {
-    const chromaticAberrAnim = new ChromaticAberrationAnim()
+    const chromaticAberrAnim = new ChromaticAberrationAnim(cursor, experience)
     chromaticAberrAnim.init()
 
-    cursor.addAnimation(chromaticAberrAnim.update.bind(chromaticAberrAnim, cursor, experience))
+    cursor.addAnimation(chromaticAberrAnim.update.bind(chromaticAberrAnim))
 
     const nextPageBtns = Array.from($all('.next-page-btn')) as HTMLDivElement[]
     nextPageBtns.forEach((el) => {

@@ -5,7 +5,8 @@
 :root {
   --grid-x-gap: 1.2rem;
   --grid-y-gap: 0.5rem;
-  --primary: rgb(255,149,0);
+  --primary: rgb(255,190,0);
+  --lorenz: rgb(255, 176, 102);
   --primary-02: color-mix(in srgb,rgba(255,149,0,0.2),#f40 20%);
   /* --primary: #ff3d00; */
   --inactive: #a7a7a7;
@@ -57,6 +58,16 @@ body {
 /*   cursor: auto !important; */
 /* } */
 
+.lil-gui {
+  --font-family: Inconsolata;
+  --font-family-mono: Inconsolata;
+  --font-size: 0.75rem;
+  --input-font-size: 0.658rem;
+  --number-color: var(--primary);
+  .controller button {
+    @apply uppercase;
+  }
+}
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */

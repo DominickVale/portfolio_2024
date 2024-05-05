@@ -11,6 +11,8 @@ import World from './World/World.js'
 
 import { isMobile } from '../utils'
 import sources from './sources.js'
+import { BlendFunction } from 'postprocessing'
+import { LORENZ_PRESETS } from '../constants'
 
 let instance = null
 
@@ -24,7 +26,7 @@ let instance = null
  * (maybe move to ogl)
  */
 export default class Experience {
-  constructor(_canvas, debugEnabled) {
+  constructor(_canvas, cursor) {
     // Singleton
     if (instance) return instance
     instance = this
@@ -38,8 +40,12 @@ export default class Experience {
     this.primaryColor = getComputedStyle(this.appEl).getPropertyValue(
       '--primary',
     )
+    this.lorenzColor = getComputedStyle(this.appEl).getPropertyValue(
+      '--lorenz'
+    )
     this.bgColor = getComputedStyle(this.appEl).getPropertyValue('--bg-dark')
     this.isMobile = isMobile()
+
     this.params = {
       sigma: 10,
       rho: 28,
@@ -51,13 +57,18 @@ export default class Experience {
       rotationZ: -Math.PI / 5,
       positionX: this.isMobile ? -2 : -1.6,
       positionY: this.isMobile ? 25 : 4.5,
-      positionZ: this.isMobile ? -65 : 0,
+      positionZ: this.isMobile ? -65 : -1.5,
       particlesBufWidth: this.isMobile ? 100 : 250,
       bgColor: this.bgColor,
       primaryColor: this.primaryColor,
-      lorenzColor: this.primaryColor,
+      lorenzColor: this.lorenzColor,
       blending: THREE.AdditiveBlending,
-      chromaticAberration: 0
+      chromaticAberration: 0,
+      bloomIntensity: 14,
+      bloomLuminanceThreshold: 0,
+      bloomLuminanceSmoothing: 0,
+      bloomRadius: 0.64,
+      bloomBlendFunction: BlendFunction.MULTIPLY
     }
 
     // Setup
@@ -70,13 +81,10 @@ export default class Experience {
     this.camera = new Camera(this)
     this.world = new World(this)
     this.renderer = new Renderer(this)
+    this.cursor = cursor
 
     this.camXto = gsap.quickTo(this.camera.instance.rotation, "x", { duration: 2, ease: "power3" })
     this.camYto = gsap.quickTo(this.camera.instance.rotation, "y", { duration: 2, ease: "power3" })
-
-    if (debugEnabled) {
-      this.debug.start()
-    }
 
     this.sizes.on('resize', () => {
       this.resize()

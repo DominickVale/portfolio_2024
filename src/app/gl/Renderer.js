@@ -3,7 +3,7 @@ import Experience from './Experience.js'
 
 import fullScreenVertex from './shaders/fullscreen.vert';
 import fullScreenFragment from './shaders/fullscreen.frag';
-import { ChromaticAberrationEffect, EffectComposer, EffectPass, RenderPass, ShaderPass } from 'postprocessing';
+import {ChromaticAberrationEffect, EffectComposer, EffectPass, RenderPass, SelectiveBloomEffect } from 'postprocessing';
 
 export default class Renderer {
   constructor() {
@@ -19,7 +19,7 @@ export default class Renderer {
   }
 
   init() {
-    window.addEventListener('resize', this.onResize.bind(this))
+    window.addEventListener('resize', this.resize.bind(this))
 
     //setup instance
     this.instance = new THREE.WebGLRenderer({
@@ -28,7 +28,7 @@ export default class Renderer {
       powerPreference: "high-performance",
       antialias: false,
       stencil: false,
-      depth: false
+      depth: false,
     })
     this.instance.outputColorSpace = THREE.SRGBColorSpace
     this.instance.setClearColor(0x000000, 0)
@@ -36,20 +36,28 @@ export default class Renderer {
     this.instance.setPixelRatio(this.sizes.pixelRatio)
     this.instance.outputEncoding = THREE.sRGBEncoding
 
-    this.composer = new EffectComposer(this.instance)
+    this.composer = new EffectComposer(this.instance, { frameBufferType: THREE.HalfFloatType})
     this.composer.setSize(this.sizes.width, this.sizes.height)
     const renderPass = new RenderPass(this.scene, this.camera.instance)
     this.composer.addPass(renderPass)
 
+    this.bloomEffect = new SelectiveBloomEffect(this.scene, this.camera.instance, {
+			blendFunction: this.params.bloomBlendFunction,
+			mipmapBlur: true,
+			luminanceThreshold: this.params.bloomLuminanceThreshold,
+			luminanceSmoothing: this.params.bloomLuminanceSmoothing,
+			intensity: this.params.bloomIntensity,
+      radius: this.params.bloomRadius,
+	});
     const chromaticAberrationEffect = new ChromaticAberrationEffect()
     this.chromaticAberrationEffect = chromaticAberrationEffect
     chromaticAberrationEffect.offset = new THREE.Vector2(0,0)
-    this.composer.addPass(new EffectPass(this.camera.instance, this.chromaticAberrationEffect))
+    this.composer.addPass(new EffectPass(this.camera.instance, this.chromaticAberrationEffect, this.bloomEffect))
     this.createBackground()
-    this.onResize()
+    this.resize()
   }
 
-  onResize() {
+  resize() {
     const width = window.innerWidth
     const height = window.innerHeight
 
@@ -65,6 +73,13 @@ render() {
   
     this.composer.render()
     // this.instance.render(this.scene, this.camera.instance);
+    if (this.debug) {
+      this.debug.update()
+      if (this.debug.shouldSaveImage) {
+        this.saveImage()
+        this.debug.shouldSaveImage = false
+      }
+    }
 }
 
   saveImage() {
