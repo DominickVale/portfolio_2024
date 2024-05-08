@@ -1,26 +1,28 @@
 ---
-const { small, class: classes, frame, ...rest } = Astro.props
+const { small, class: classes, innerClass, frame, bottom, ...rest } = Astro.props
 
 const Component = Astro.props.href ? 'a' : 'button'
 ---
 
-<Component
+<div
+  class="btn-wrapper relative"
   class:list={[
-    'btn relative text-xs font-black tracking-button  active:animate-fui-flash',
-    frame && 'frame h-7 w-32 flex items-center font-bold backdrop-blur-[1px] ',
+    'btn relative text-xs font-light tracking-button active:animate-fui-flash',
+    frame && 'frame h-8 w-32 font-bold backdrop-blur-[1px] ',
     classes,
   ]}
-  {...rest}
 >
-  <slot />
+  <Component class:list={["w-full h-full flex", bottom ? "justify-start items-end pl-3 pb-[0.225rem]" : "justify-center items-center", innerClass]} {...rest}>
+    <slot />
+  </Component>
   {frame && <div class="fui-corners pointer-events-none" />}
-</Component>
+</div>
 
 <style>
-.btn--enabled{
-  opacity: 1;
-}
-.btn--disabled{
-  opacity: 0.6;
-}
+  .btn--enabled {
+    opacity: 1;
+  }
+  .btn--disabled {
+    opacity: 0.6;
+  }
 </style>

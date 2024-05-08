@@ -4,7 +4,6 @@ import NextPageBtn from '../components/NextPageBtn.astro'
 import Btn from '../components/Btn.astro'
 import WorkDetails from '../components/WorkDetails.astro'
 import Image from '../components/Image.astro'
-import FakeLogs from '../components/FakeLogs.astro'
 import { PROJECTS_LIST } from '../app/constants'
 interface Props {}
 
@@ -16,17 +15,18 @@ const {} = Astro.props
   <div
     class="mb-18 col-span-10 col-start-2 row-start-1 mt-12 flex flex-col justify-center lg:col-span-4 lg:col-start-2 lg:row-start-1 lg:mt-0 laptop-h:justify-start"
   >
-    <FakeLogs />
-    <div class="lg:ml-4 lg:mt-[3vh]">
+    <div class="lg:ml-4 lg:mt-[20vh]">
       <div class="relative flex flex-col justify-center">
-        <div class="image-wrapper" id="works-image">
+        <div class="image-wrapper opacity-0" id="works-image">
           <Image
             contain
             class="2lg:h-[45vh] 2lg:min-h-80 relative my-auto flex items-center justify-center overflow-hidden"
           />
         </div>
         <!-- <div class="absolute bottom-[-5vh] left-1/2 h-[4vh] w-[1px] bg-lines"></div> -->
-        <div class="2lg:max-w-[30rem] mt-6 hidden max-w-[90%] lg:block">
+        <div
+          class="work-details 2lg:max-w-[30rem] mt-6 hidden max-w-[90%] opacity-0 lg:block"
+        >
           <table class="text-xs">
             <WorkDetails />
           </table>
@@ -56,24 +56,37 @@ const {} = Astro.props
     {
       Object.values(PROJECTS_LIST).map((project, i) => (
         <h2
-          class="project-title relative flex ml-[-12%] h-[10vh] w-full items-center font-display font-bold uppercase text-primary-lightest"
+          class="project-title relative ml-[-12%] flex h-[10vh] w-full items-center font-display font-bold uppercase text-primary-lightest"
           style={`--i: ${i}`}
-          data-active={i === 0}
         >
-          <a class="block w-max leading-[100%]" href={`/works/${project.name}`}>
+          <span
+            class="block w-max leading-[100%] opacity-0"
+          >
             {project.name}
           </a>
-          <div class="fui-corners highlighted-corner hidden h-full font-mono z-[100]">
+          <div class="fui-corners highlighted-corner z-[100] hidden h-full font-mono opacity-0">
             <div class="line-container">
               <div class="line" />
               <div class="circle" />
               <div class="dynamic-line" />
             </div>
             <div class="absolute bottom-[-2.7rem] right-0 flex w-3/4 gap-3">
-              <Btn href={project.linkCase} class="w-full justify-start pb-3 pl-2 pt-6" frame>
+              <Btn
+                href={project.linkCase}
+                class="w-full"
+                data-text-scramble="READ CASE"
+                bottom
+                frame
+              >
                 READ CASE
               </Btn>
-              <Btn href={project.linkWebsite} class="w-full justify-start pb-3 pl-2 pt-6" frame>
+              <Btn
+                href={project.linkWebsite}
+                class="w-full"
+                data-text-scramble="VISIT WEBSITE"
+                bottom
+                frame
+              >
                 VISIT WEBSITE
               </Btn>
             </div>
@@ -93,10 +106,8 @@ const {} = Astro.props
         <h2
           class="project-title-mobile h-[5vh] w-full font-display text-2xl font-bold uppercase text-primary-lightest"
           style={`--i: ${i}`}
-          data-active={i === 0}
         >
           <a href={`/works/${project.name}`}>{project.name}</a>
-
           <div class="fui-corners highlighted-corner hidden h-full font-mono" />
         </h2>
       ))
@@ -110,10 +121,12 @@ const {} = Astro.props
   }
   .project-title {
     font-size: 10vh;
+    pointer-events: none;
   }
   .project-title[data-active='true'] {
-    margin-bottom: 5vh;
+    /* margin-bottom: 5vh; */
     color: white;
+    pointer-events: auto;
   }
   .project-title-mobile[data-active='true'] {
     color: white;
@@ -165,7 +178,8 @@ const {} = Astro.props
   import { $, $all, debounce, fitTextToContainer } from '../app/utils'
   import { PROJECTS_LIST } from '../app/constants'
   import { radToDeg } from 'three/src/math/MathUtils.js'
-import Typewriter from '../app/modules/animations/Typewriter'
+  import Typewriter from '../app/modules/animations/Typewriter'
+  import gsap from 'gsap'
 
   document.addEventListener('DOMContentLoaded', () => {
     let currIdx = 3
@@ -176,8 +190,12 @@ import Typewriter from '../app/modules/animations/Typewriter'
     function recalculateBaseFontSizes() {
       $all(isDesktop ? '.project-title' : '.project-title-mobile').forEach(
         (p, i) => {
-          const innerText = $('a', p)
-          const newFontSize = fitTextToContainer(innerText, p, window.innerWidth * 0.003)
+          const innerText = $('span', p)
+          const newFontSize = fitTextToContainer(
+            innerText,
+            p,
+            window.innerWidth * 0.003,
+          )
           projects[i] = {
             element: p,
             fontSize: newFontSize,
@@ -191,17 +209,33 @@ import Typewriter from '../app/modules/animations/Typewriter'
     function recalculateOthers() {
       pIds.forEach((id, i) => {
         const p = projects[id]
-        const highlightCorner = $('.highlighted-corner', p.element)
-        highlightCorner.classList.add('hidden')
         p.element.setAttribute('data-active', 'false')
-        const opacity = (1 - Math.abs(i - currIdx) / pIds.length) * 0.5
-        const fontSize =
+        const newFontSize =
           projects[i].fontSize /
           Math.max(1, Math.abs(i - currIdx) + 1 / pIds.length)
-        const blur = Math.pow(Math.abs(i - currIdx), 1.25)
-        p.element.style.opacity = String(i === currIdx ? 1 : opacity)
-        p.element.style.fontSize = fontSize + 'px'
-        p.element.style.filter = `blur(${blur}px)`
+        const blur = Math.pow(Math.abs(i - currIdx), 2)
+        gsap.to(p.element, {
+          opacity: i === currIdx ? 1 : 0.5,
+          filter: `blur(${blur}px)`,
+          duration: 0.45,
+          ease: 'power4.out',
+        })
+        gsap.to(p.element.children[0], {
+          fontSize: newFontSize,
+          duration: 0.8,
+          ease: 'power4.out',
+        })
+        if(i !== currIdx) {
+          const highlightCorner = $('.highlighted-corner', p.element)
+          gsap.to(highlightCorner, {
+            opacity: 0,
+            duration: 0.03,
+            repeat: 3,
+            onComplete: () => {
+              highlightCorner.classList.add('hidden')
+            }
+          })
+        }
       })
     }
 
@@ -210,6 +244,7 @@ import Typewriter from '../app/modules/animations/Typewriter'
       const highlightCorner = $('.highlighted-corner', activeProject.element)
       highlightCorner.classList.remove('hidden')
       activeProject.element.setAttribute('data-active', 'true')
+      activeProject.element.setAttribute('data-', 'true')
       activeProject.element.style.fontSize = projects[currIdx].fontSize + 'px'
 
       if (isDesktop) {
@@ -239,24 +274,35 @@ import Typewriter from '../app/modules/animations/Typewriter'
       }
     }
 
-    function updateProjectDetails(currIdx: number){
+    function updateProjectDetails(currIdx: number) {
       const activeProject = PROJECTS_LIST[currIdx]
       const roleEls = $all('.work-details-role')
-      roleEls.forEach(r => {
+      roleEls.forEach((r) => {
         Typewriter.typewrite(r, activeProject.data.role)
       })
       const clientEls = $all('.work-details-client')
-      clientEls.forEach(r => {
+      clientEls.forEach((r) => {
         Typewriter.typewrite(r, activeProject.data.client)
-        })
+      })
       const yearEls = $all('.work-details-year')
-      yearEls.forEach(r => {
+      yearEls.forEach((r) => {
         Typewriter.typewrite(r, activeProject.data.year)
       })
       const techEls = $all('.work-details-tech')
-      techEls.forEach(r => {
+      techEls.forEach((r) => {
         Typewriter.typewrite(r, activeProject.data.tech)
       })
+    }
+
+    function fuiCornersAnimationActive() {
+      const fuiCornersTl = gsap.timeline({})
+      const base = '.project-title[data-active="true"] .fui-corners'
+      fuiCornersTl
+        .to( base, {
+          opacity: 1,
+          duration: 0.05,
+          repeat: 6,
+        })
     }
 
     function handleActiveProject(e) {
@@ -272,6 +318,7 @@ import Typewriter from '../app/modules/animations/Typewriter'
       updateProjectDetails(currIdx)
       recalculateOthers()
       recalculateActive()
+      fuiCornersAnimationActive()
     }
 
     function handleResize() {
@@ -289,11 +336,37 @@ import Typewriter from '../app/modules/animations/Typewriter'
     const debouncedHandleActiveFn = debounce(handleActiveProject, 200)
     const debouncedHandleResizeFn = debounce(handleResize, 200)
 
-    updateProjectDetails(currIdx)
     recalculateOthers()
     recalculateActive()
 
     window.addEventListener('wheel', debouncedHandleActiveFn.bind(this))
     window.addEventListener('resize', debouncedHandleResizeFn.bind(this))
+
+    const tl = gsap.timeline()
+    tl.to('.project-title span', {
+      opacity: 1,
+      duration: 0.05,
+      ease: 'linear',
+      delay: 0.8,
+      stagger: {
+        repeat: 20,
+        each: 0.1,
+        ease: 'expo.in',
+      },
+    })
+      .to('#works-image', {
+        opacity: 1,
+        duration: 0.35,
+        ease: 'power4.out',
+      })
+      .add(fuiCornersAnimationActive, "<50%")
+      .to('.work-details', {
+        opacity: 1,
+        duration: 0.35,
+        ease: 'power4.out',
+      })
+      .then(() => {
+        updateProjectDetails(currIdx)
+      })
   })
 </script>

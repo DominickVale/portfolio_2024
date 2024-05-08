@@ -3,12 +3,13 @@
     {
       `
 {
-    // loading proj_id: 001
-    // done.
-    // rendering data
+    const projects = await api.getProjects()
+    logger.info("DONE")
+    for (const p of projects) {
+      this.renderData(p)
+    }
     // . . .
-    // add obj(“img_003.jpg”)
-    // done.
+    logger.info("DONE").
 }      `}
 </pre>
 
@@ -38,6 +39,7 @@
     // done.
 }
 `,
+      2, 2
     )
   })
 </script>

@@ -88,6 +88,7 @@ render() {
     const link = document.createElement('a')
     link.download = window.location.hostname + '_lorenz_attractor.jpeg'
     link.href = canvas.toDataURL('image/jpeg')
+    alert("Please don't use this for commercial purposes or as part of an identity. Contact me if you reeeeally want to. Thank you.")
     link.click()
   }
 

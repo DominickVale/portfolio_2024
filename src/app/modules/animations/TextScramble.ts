@@ -1,6 +1,8 @@
 import { $, $all } from '../../utils'
 
-const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890!|'
+// const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890!|'
+// this is cooler
+const CHARS = 'ᚠᚢᚦᚨᚩᚬᚭᚯᚰᚱᚲᚳᚴᚵᚶᚷᚸᚹᚺᚻᚼᚽᚾᚿᛀᛁᛂᛃᛄᛅᛆᛇᛈᛉᛊᛋᛌᛍᛎᛏᛐᛑᛒᛓᛔᛕᛖᛗᛘᛙᛚᛛᛜᛝᛞᛟᛠᛡᛢᛣᛤᛥᛦ'
 
 export default class TextScramble {
   static #elsIntervals: Record<string, any> = {}
@@ -30,7 +32,6 @@ export default class TextScramble {
       delete TextScramble.#elsIntervals[id]
       el.removeAttribute('data-text-scramble-id')
       el.innerText = originalText
-      return
     }
 
     let iteration = 0

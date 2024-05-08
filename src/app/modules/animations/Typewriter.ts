@@ -1,7 +1,8 @@
 import { $, $all, delay } from '../../utils'
 
 // const CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890!|'
-const CHARS = '::abcdefghijklmnopqrstuv::::wxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890!|!<>-_\\/[]{}-=+*^?#________'
+// this is cooler
+const CHARS = 'ᚠᚢᚦᚨᚩᚬᚭᚯᚰᚱᚲᚳᚴᚵᚶᚷᚸᚹᚺᚻᚼᚽᚾᚿᛀᛁᛂᛃᛄᛅᛆᛇᛈᛉᛊᛋᛌᛍᛎᛏᛐᛑᛒᛓᛔᛕᛖᛗᛘᛙᛚᛛᛜᛝᛞᛟᛠᛡᛢᛣᛤᛥᛦ<>-_\\/[]{}-=+*^?#________'
 
 
 export default class Typewriter {
@@ -23,7 +24,9 @@ export default class Typewriter {
     message?: string,
     iterations?: number,
     interval = 30,
+    customCharsSet?: string
   ) {
+    const chars = customCharsSet || CHARS
     if(el.getAttribute('data-typewriter-scramble-id')) {
       Typewriter.stop(el)
       await delay(100) // i don't like this one bit, but it'll do for now
@@ -49,7 +52,7 @@ export default class Typewriter {
         }
         let tmpTxt = currentText.map((l, idx) => {
           if (idx > text.length - ( text.length / 3 ) ? idx > currentText.length - 2 : idx > currentText.length - 4 ) {
-            return `<span class="text-stone-200">${CHARS[Math.floor(Math.random() * CHARS.length)]}</span>`
+            return `<span class="text-primary-lightest">${chars[Math.floor(Math.random() * chars.length)]}</span>`
           } else {
             return l
           }

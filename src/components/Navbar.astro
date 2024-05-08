@@ -8,7 +8,7 @@ const {} = Astro.props
   id="navbar"
   class="fixed left-0 z-20 mt-6 w-full text-xs text-inactive sm:mt-12"
 >
-  <ul class="grid grid-cols-12">
+  <ul class="grid grid-cols-12 font-light">
     <li class="col-span-1 col-start-2 text-right sm:col-start-1 sm:mr-2">
       <a
         class="nav-link active"
@@ -47,6 +47,7 @@ const {} = Astro.props
 <style>
   nav li > a.active {
     position: relative;
+    @apply font-normal;
     &::before {
       content: '';
       position: absolute;

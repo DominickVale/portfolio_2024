@@ -10,7 +10,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
     <NextPageBtn>WORKS</NextPageBtn>
   </section>
   <section
-    class="col-span-10 col-start-2 row-span-2 row-start-2 flex flex-col content-start justify-end text-xs taller:pt-[17vh]"
+    class="col-span-10 col-start-2 row-span-4 row-start-2 flex flex-col content-start justify-end text-xs taller:pt-[17vh]"
   >
     <div class="mt-4 flex justify-between sm:text-left">
       <div class="">
@@ -25,7 +25,8 @@ import NextPageBtn from '../components/NextPageBtn.astro'
         </p>
         <Btn
           href="/about"
-          class="mb-14 mr-auto mt-1 p-1"
+          class="w-max mt-1 p-1"
+          innerClass="!block"
           data-cursor-delay="1000"
           data-cursor-message="You should probably check this out"
           data-cursor-timeout="0"
@@ -35,7 +36,6 @@ import NextPageBtn from '../components/NextPageBtn.astro'
       </div>
       <div class="mb-14 hidden sm:flex">
         <NextPageBtn
-          data-aberration="0.2"
           class="p-2 text-inactive hover:text-white"
           data-cursor-delay="1000"
           data-cursor-message="Let's go, in 'n out.<br/>2 minutes adventure."
@@ -44,12 +44,8 @@ import NextPageBtn from '../components/NextPageBtn.astro'
         >
       </div>
     </div>
-  </section>
-  <section
-    class="col-span-10 col-start-2 row-span-2 row-start-4 font-mono font-black"
-  >
     <h1
-      class="ml-[-0.05em] mt-12 text-nowrap font-display text-[9.2vw] leading-[100%]"
+      class="ml-[-0.05em] mt-14 text-nowrap font-display font-black text-[9.2vw] leading-[100%]"
       data-cursor-delay="2000"
       data-cursor-message="My actual name is Domenico"
       data-cursor-iterations="3"
@@ -61,7 +57,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
     </h1>
     <!-- <h1 class="sr-only">DOMINICK VALE</h1> -->
     <!-- <img class="mt-6" src={nameSvg.src} /> -->
-    <div class="mt-4 flex justify-between gap-[7%] text-sm lg:mt-6">
+    <div class="mt-4 flex justify-between gap-[7%] text-sm lg:mt-6 mb-[10vh]">
       <ul>
         <StatusItem class="text-nowrap" highlight
           >FRONT-END DEVELOPER</StatusItem
@@ -75,7 +71,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
         <StatusItem highlight
           >STATUS: <span
             class="text-success"
-            data-cursor-delay="2000"
+            data-cursor-delay="100"
             data-cursor-message="(full-time or not)"
             data-cursor-timeout="2500"
             data-cursor-type="success"

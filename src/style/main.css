@@ -13,7 +13,7 @@
   --success: #96d800;
   --primary-darker: color-mix(in srgb, var(--primary), #000 10%);
   --primary-lighter:  color-mix(in srgb,var(--primary),#fff 10%);
-  --primary-lightest: color-mix(in srgb,var(--primary),#fff 70%);
+  --primary-lightest: color-mix(in srgb,var(--primary),#fff 90%);
   --lines: rgba(255, 255, 255, 0.2);
   --bg-dark: #110F10;
   --bg-dark-light: rgba(36, 34, 34, 0.28);
@@ -130,6 +130,9 @@ body {
   background-size: var(--frame-bg-size) var(--frame-bg-size);
   border: var(--frame-bg-stroke-w) solid rgba(255, 255, 255, 0.2);
 }
+.fui-corners.animated{
+  animation: slight-flickering 0.3s infinite alternate;
+}
 
 .vertical-text--left {
   transform: rotate(-90deg);
@@ -160,7 +163,7 @@ body {
   }
   .bg-blur-harder {
     background-color: var(--bg-dark-05);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(6px);
   }
 }
 
@@ -217,4 +220,40 @@ html.lenis, html.lenis body {
 
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
+}
+
+@keyframes slight-flickering{
+  0% {
+    opacity: 0.85;
+  }
+10% {
+  opacity: 1;
+}
+20% {
+  opacity: 0.95;
+}
+30% {
+  opacity: 1;
+}
+40% {
+  opacity: 0.8;
+}
+50% {
+  opacity: 1;
+}
+60% {
+  opacity: 0.9;
+}
+70% {
+  opacity: 1;
+}
+80% {
+  opacity: 0.85;
+}
+90% {
+  opacity: 1;
+}
+100% {
+  opacity: 0.9;
+}
 }

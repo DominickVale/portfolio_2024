@@ -40,7 +40,8 @@ import Btn from './Btn.astro'
   class="col-span-10 col-start-2 row-start-1 mt-[15vh] flex items-center justify-center md:col-span-4 md:col-start-5 md:row-start-2 md:mb-6 md:mt-0"
 >
   <h2
-    class="mb-1 max-w-[90%] text-center text-[3vw] font-normal tracking-button text-white sm:text-[2vw] md:text-sm md:font-black xl:text-lg"
+    class="mb-1 bg-background-dark px-3 max-w-[90%] text-center text-[3vw] font-normal tracking-button text-white sm:text-[2vw] md:text-sm md:font-black xl:text-lg"
+    data-aberration="0.5"
   >
     DID I INTEREST YOU&nbsp;TODAY?
   </h2>
@@ -181,6 +182,7 @@ import Btn from './Btn.astro'
 >
   <h1
     class="relative w-max text-nowrap font-display text-[12vw] font-black leading-[100%] sm:text-[calc(7.5vw+3vh)] md:text-[12.05vw] xl:text-[max(9.2vw,9rem)] 2xl:text-[9.2vw]"
+    data-aberration="1.3"
   >
     REACH OUT
     <span
@@ -201,8 +203,7 @@ import Btn from './Btn.astro'
 </style>
 
 <script>
-  import { $, $all, showCursorMessage, translateValidity } from '../app/utils'
-
+  import { $, $all, showCursorMessage, translateValidity, capitalize } from '../app/utils'
   document.addEventListener('DOMContentLoaded', () => {
     let sendingEmail = false
     const form = $('form') as HTMLFormElement
@@ -236,7 +237,7 @@ import Btn from './Btn.astro'
             currErrorKey = k
           }
         }
-        showCursorMessage({ message: translateValidity(currErrorKey, textbox.name), isError: true, timeout: 2000, interval: 40 })
+        showCursorMessage({ message: translateValidity(currErrorKey, textbox.name).toUpperCase(), isError: true, timeout: 2000, interval: 10, iterations: 3 })
       }
 
       updateButtonOpacity()

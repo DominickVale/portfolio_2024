@@ -14,34 +14,32 @@ const { small } = Astro.props
           <th class="pl-0 pr-3 text-left tracking-widest text-primary-darker">
             ROLE:
           </th>
-          <td class="opacity-80 work-details-role">EVERYTHING</td>
+          <td class="opacity-80 work-details-role"></td>
         </tr>
         <tr class="flex flex-col justify-center">
           <th class="pl-0 text-left tracking-widest text-primary-darker">CLIENT:</th>
-          <td class="text-center opacity-80 work-details-client">N/A</td>
+          <td class="text-center opacity-80 work-details-client"></td>
         </tr>
         <tr class="flex flex-col">
           <th class="text-right tracking-widest text-primary-darker">YEAR:</th>
-          <td class="pr-1 text-right opacity-80 work-details-year">2020—ONGOING</td>
+          <td class="pr-1 text-right opacity-80 work-details-year"></td>
         </tr>
       </tbody>
     </table>
   ) : (
     <table class="flex-1 text-xs">
       <tbody class="grid min-w-[30vw] grid-cols-[1fr_2fr] items-start gap-4">
-        <tr class="grid grid-cols-[3rem_1fr] gap-1">
-          <th class="pl-0 pr-3 text-left text-primary-darker animate-fui-flash">ROLE:</th>
-          <td class="text-left work-details-role">EVERYTHING</td>
-          <th class="pl-0 pr-3 text-left text-primary-darker">CLIENT:</th>
-          <td class="text-left work-details-client">N/A</td>
+        <tr class="grid grid-cols-[3.5rem_1fr] gap-1">
+          <th class="pl-0 pr-3 text-left text-primary-darker animate-fui-flash tracking-widest">ROLE:</th>
+          <td class="text-left work-details-role"></td>
+          <th class="pl-0 pr-3 text-left text-primary-darker tracking-widest">CLIENT:</th>
+          <td class="text-left work-details-client"></td>
         </tr>
         <tr class="grid w-full grid-cols-[3rem_1fr] gap-1">
-          <th class="pl-0 pr-3 text-left text-primary-darker">YEAR:</th>
-          <td class="text-left work-details-year">2020—ONGOING</td>
-          <th class="pl-0 pr-3 text-left text-primary-darker min-h-16">TECH:</th>
-          <td class="min-w-32 text-left work-details-tech">
-            REACT-NATIVE, FIREBASE, ANDROID NDK, JSI, C++, REVENUECAT, KOTLIN
-          </td>
+          <th class="pl-0 pr-3 text-left text-primary-darker tracking-widest">YEAR:</th>
+          <td class="text-left work-details-year"></td>
+          <th class="pl-0 pr-3 text-left text-primary-darker min-h-16 tracking-widest">TECH:</th>
+          <td class="min-w-32 text-left work-details-tech"></td>
         </tr>
       </tbody>
     </table>
