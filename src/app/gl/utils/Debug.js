@@ -5,6 +5,7 @@ import * as THREE from 'three'
 import { BlendFunction } from 'postprocessing'
 import Experience from '../Experience'
 import { LORENZ_PRESETS } from '../../constants'
+import { TAU } from '../../utils'
 
 const BLEND_TYPES = { Additive: THREE.AdditiveBlending, Normal: THREE.NormalBlending, Subtractive: THREE.SubtractiveBlending }
 export default class Debug {
@@ -41,9 +42,9 @@ export default class Debug {
 
     postfx.add(this.params, 'chromaticAberration', -0.01, 0.01, 0.0001).onChange(this.updateChromaticAberration.bind(this))
     const positioning = this.gui.addFolder('Positioning')
-    positioning.add(this.params, 'rotationX', -Math.PI, Math.PI).onChange(this.updateRotation.bind(this))
-    positioning.add(this.params, 'rotationY', -Math.PI, Math.PI).onChange(this.updateRotation.bind(this))
-    positioning.add(this.params, 'rotationZ', -Math.PI, Math.PI).onChange(this.updateRotation.bind(this))
+    positioning.add(this.params, 'rotationX', -TAU, TAU).onChange(this.updateRotation.bind(this))
+    positioning.add(this.params, 'rotationY', -TAU, TAU).onChange(this.updateRotation.bind(this))
+    positioning.add(this.params, 'rotationZ', -TAU, TAU).onChange(this.updateRotation.bind(this))
     positioning.add(this.params, 'positionX', -50, 50).onChange(this.updatePosition.bind(this))
     positioning.add(this.params, 'positionY', -50, 50).onChange(this.updatePosition.bind(this))
     positioning.add(this.params, 'positionZ', -50, 50).onChange(this.updatePosition.bind(this))

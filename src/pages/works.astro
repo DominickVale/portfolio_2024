@@ -10,18 +10,19 @@ interface Props {}
 const {} = Astro.props
 ---
 
-<Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default" blurred>
+<Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default">
   <h1 class="sr-only">WORKS</h1>
   <div
     class="mb-18 col-span-10 col-start-2 row-start-1 mt-12 flex flex-col justify-center lg:col-span-4 lg:col-start-2 lg:row-start-1 lg:mt-0 laptop-h:justify-start"
   >
     <div class="lg:ml-4 lg:mt-[20vh]">
       <div class="relative flex flex-col justify-center">
-        <div class="image-wrapper opacity-0" id="works-image">
-          <Image
-            contain
-            class="2lg:h-[45vh] 2lg:min-h-80 relative my-auto flex items-center justify-center overflow-hidden"
-          />
+        <div class="fui-frame image-wrapper opacity-0 h-[45vh] relative" id="works-image">
+          <!-- <Image -->
+          <!--   contain -->
+          <!--   class="2lg:h-[45vh] 2lg:min-h-80 relative my-auto flex items-center justify-center overflow-hidden" -->
+          <!-- /> -->
+          <div class="fui-corners"></div>
         </div>
         <!-- <div class="absolute bottom-[-5vh] left-1/2 h-[4vh] w-[1px] bg-lines"></div> -->
         <div

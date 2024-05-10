@@ -3,7 +3,7 @@ import Experience from './Experience.js'
 
 import fullScreenVertex from './shaders/fullscreen.vert';
 import fullScreenFragment from './shaders/fullscreen.frag';
-import {ChromaticAberrationEffect, EffectComposer, EffectPass, RenderPass, SelectiveBloomEffect } from 'postprocessing';
+import {ChromaticAberrationEffect, DepthOfFieldEffect, EffectComposer, EffectPass, KawaseBlurPass, KernelSize, RenderPass, SelectiveBloomEffect } from 'postprocessing';
 
 export default class Renderer {
   constructor() {
@@ -52,7 +52,13 @@ export default class Renderer {
     const chromaticAberrationEffect = new ChromaticAberrationEffect()
     this.chromaticAberrationEffect = chromaticAberrationEffect
     chromaticAberrationEffect.offset = new THREE.Vector2(0,0)
-    this.composer.addPass(new EffectPass(this.camera.instance, this.chromaticAberrationEffect, this.bloomEffect))
+    const blurPass = new KawaseBlurPass({
+			height: 500,
+      kernelSize: KernelSize.VERY_LARGE
+		});
+    this.composer.addPass(new EffectPass(this.camera.instance, this.chromaticAberrationEffect))
+    this.composer.addPass(new EffectPass(this.camera.instance, this.bloomEffect))
+    this.composer.addPass(blurPass)
     this.createBackground()
     this.resize()
   }
@@ -80,6 +86,9 @@ render() {
         this.debug.shouldSaveImage = false
       }
     }
+
+    this.experience.world.afterRender(this.instance, delta)
+    this.composer.setSize(this.sizes.width, this.sizes.height)
 }
 
   saveImage() {
