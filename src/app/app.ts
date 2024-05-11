@@ -5,6 +5,10 @@ import Experience from './gl/Experience'
 import { $, $all, showCursorMessage } from './utils'
 import Typewriter from './modules/animations/Typewriter'
 import Animations from './modules/animations'
+import { Core as TaxiCore } from '@unseenco/taxi'
+import DefaultRenderer from './modules/renderers'
+import DefaultTransition from './modules/transitions'
+import WorksRenderer from './modules/renderers/WorksRenderer'
 
 
 export default class App {
@@ -13,6 +17,7 @@ export default class App {
   cursor: Cursor
   scrambles: TextScramble
   typewriter: Typewriter
+  taxi: TaxiCore
 
   constructor(public debug = false) {
     this.cursor = new Cursor()
@@ -20,6 +25,16 @@ export default class App {
     this.menus = new Menus(this.onToggleDebug.bind(this))
     this.scrambles = new TextScramble()
     this.typewriter = new Typewriter()
+    this.taxi = new TaxiCore({
+      reloadCssFilter: (element) => true,
+      transitions: {
+        default: DefaultTransition,
+      },
+      renderers: {
+        default: DefaultRenderer,
+        works: WorksRenderer
+      },
+    })
     Animations.init(this.cursor, this.experience)
   }
 

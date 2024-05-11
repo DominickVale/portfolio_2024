@@ -90,7 +90,6 @@ const {} = Astro.props
   })
   $('#navbar').addEventListener('mousedown', (e) => {
     const clickedEl = e.target as HTMLElement
-    console.log("Mousedown", clickedEl)
     if (clickedEl.parentElement.classList.contains('nav-link')) {
       navLinks.forEach((link) => {
         link.classList.remove('active')

@@ -1,0 +1,40 @@
+import Experience from './Experience'
+import LorenzAttractor from './Scenes/LorenzAttractor'
+import WorksImage from './Scenes/WorksImage'
+
+
+export default class World {
+  constructor() {
+    this.experience = new Experience()
+    this.scene = this.experience.scene
+    this.sizes = this.experience.sizes
+    this.resources = this.experience.resources
+    this.isReady = false
+    this.attractor = new LorenzAttractor()
+    this.worksImage = new WorksImage()
+    this.scene.add(this.attractor.points)
+    this.objects = []
+
+    this.resources.on('ready', () => {
+      // this.attractor.setTexture(this.resources.items.star)
+      this.isReady = true
+      this.resize()
+    })
+  }
+
+  resize(){
+    if(!this.isReady) return
+    this.attractor.resize()
+    this.worksImage.resize()
+  }
+
+  update(renderer, delta) {
+    if(!this.isReady) return
+    this.attractor.update(renderer, delta)
+  }
+
+  afterRender(renderer, delta, composer){
+    if(!this.isReady) return
+    this.worksImage.afterRender(renderer, delta, composer)
+  }
+}

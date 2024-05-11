@@ -52,13 +52,14 @@ export default class Renderer {
     const chromaticAberrationEffect = new ChromaticAberrationEffect()
     this.chromaticAberrationEffect = chromaticAberrationEffect
     chromaticAberrationEffect.offset = new THREE.Vector2(0,0)
-    const blurPass = new KawaseBlurPass({
+    this.blurPass = new KawaseBlurPass({
 			height: 500,
       kernelSize: KernelSize.VERY_LARGE
 		});
+    this.blurPass.enabled = false
+    this.composer.addPass(this.blurPass)
     this.composer.addPass(new EffectPass(this.camera.instance, this.chromaticAberrationEffect))
     this.composer.addPass(new EffectPass(this.camera.instance, this.bloomEffect))
-    this.composer.addPass(blurPass)
     this.createBackground()
     this.resize()
   }

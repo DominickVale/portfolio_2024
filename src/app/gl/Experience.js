@@ -1,16 +1,16 @@
 import * as THREE from 'three'
 import gsap from 'gsap'
 
-import Debug from './utils/Debug.js'
-import Sizes from './utils/Sizes.js'
-import Resources from './utils/Resources.js'
-import Time from './utils/Time.js'
-import Camera from './Camera.js'
-import Renderer from './Renderer.js'
-import World from './World/World.js'
+import Debug from './utils/Debug'
+import Sizes from './utils/Sizes'
+import Resources from './utils/Resources'
+import Time from './utils/Time'
+import Camera from './Camera'
+import Renderer from './Renderer'
+import World from './World'
 
 import { isMobile } from '../utils'
-import sources from './sources.js'
+import sources from './sources'
 import { BlendFunction } from 'postprocessing'
 import { LORENZ_PRESETS } from '../constants'
 
@@ -35,7 +35,7 @@ export default class Experience {
     window.experience = this
 
     this.canvas = _canvas
-    this.appEl = document.getElementById('app')
+    this.appEl = document.getElementById('root')
     // get primary color from css global variables
     this.primaryColor = getComputedStyle(this.appEl).getPropertyValue(
       '--primary',
@@ -79,8 +79,8 @@ export default class Experience {
     this.resources = new Resources(sources)
     this.scene = new THREE.Scene()
     this.camera = new Camera(this)
-    this.world = new World(this)
     this.renderer = new Renderer(this)
+    this.world = new World(this)
     this.cursor = cursor
 
     this.camXto = gsap.quickTo(this.camera.instance.rotation, "x", { duration: 2, ease: "power3" })
@@ -109,6 +109,7 @@ export default class Experience {
 
   resize() {
     this.camera.resize()
+    this.world.resize()
     this.renderer.resize()
   }
 

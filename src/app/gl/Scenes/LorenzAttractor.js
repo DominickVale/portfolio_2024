@@ -120,6 +120,11 @@ export default class LorenzAttractor {
     this.renderMaterial.uniforms.alphaMap.value = texture
   }
 
+  //@TODO: implement
+  resize(){
+
+  }
+
   update(renderer, delta) {
     const [read, write] = this.pool.reverse()
     renderer.setRenderTarget(write)
