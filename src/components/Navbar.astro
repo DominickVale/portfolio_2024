@@ -9,9 +9,8 @@ const {} = Astro.props
   class="fixed left-0 z-20 mt-6 w-full text-xs text-inactive sm:mt-12"
 >
   <ul class="grid grid-cols-12 font-light">
-    <li class="col-span-1 col-start-2 text-right sm:col-start-1 sm:mr-2">
+    <li class="nav-link active col-span-1 col-start-2 text-right sm:col-start-1 sm:mr-2">
       <a
-        class="nav-link active"
         href="/"
         aria-current="page"
         data-text-scramble="HOME">HOME</a
@@ -65,36 +64,3 @@ const {} = Astro.props
   }
 </style>
 
-<script>
-  import { $, $all } from '../app/utils'
-  import gsap from 'gsap'
-  const navLinks = Array.from($all('nav li a')) as HTMLAnchorElement[]
-  const currentUrl = window.location.href
-
-  gsap.from(navLinks, {
-    opacity: 0,
-    duration: 0.08,
-    ease: 'elastic.in',
-    stagger: {
-      repeat: 10,
-      each: 0.12,
-    },
-  })
-
-  navLinks.forEach((link) => {
-    if (link.href === currentUrl) {
-      link.classList.add('active')
-    } else {
-      link.classList.remove('active')
-    }
-  })
-  $('#navbar').addEventListener('mousedown', (e) => {
-    const clickedEl = e.target as HTMLElement
-    if (clickedEl.parentElement.classList.contains('nav-link')) {
-      navLinks.forEach((link) => {
-        link.classList.remove('active')
-      })
-      clickedEl.classList.add('active')
-    }
-  })
-</script>

@@ -8,15 +8,18 @@ export default class TextScramble {
   static #elsIntervals: Record<string, any> = {}
 
   constructor() {
-    this.#init()
+    TextScramble.init()
   }
 
-  #init() {
-    const els = Array.from($all('[data-text-scramble]')) as HTMLElement[]
-    els.forEach((el, i) => {
+  static init() {
+    $all('[data-text-scramble]').forEach((el, i) => {
       el.setAttribute('data-text-scramble', el.innerText)
       el.addEventListener('mouseover', () => TextScramble.scramble(el))
     })
+  }
+
+  public reload(){
+    TextScramble.init()
   }
 
   public static scramble(el: HTMLElement, speed: number = 45) {

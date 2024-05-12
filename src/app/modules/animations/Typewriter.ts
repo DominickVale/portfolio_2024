@@ -6,7 +6,7 @@ const CHARS = 'ᚠᚢᚦᚨᚩᚬᚭᚯᚰᚱᚲᚳᚴᚵᚶᚷᚸᚹᚺᚻᚼ�
 
 
 export default class Typewriter {
-  private static running: Record<string, any> = {}
+  static #running: Record<string, any> = {}
 
   constructor() {
     this.init()
@@ -27,16 +27,16 @@ export default class Typewriter {
     customCharsSet?: string
   ) {
     const chars = customCharsSet || CHARS
-    if(el.getAttribute('data-typewriter-scramble-id')) {
+    if(el.getAttribute('data-typewriter-id')) {
       Typewriter.stop(el)
       await delay(100) // i don't like this one bit, but it'll do for now
     }
 
-    const text = message || el.getAttribute('data-typewriter-scramble') || ''
+    const text = message || ''
     const id = Math.random().toString()
-    el.setAttribute('data-typewriter-scramble-id', id)
+    el.setAttribute('data-typewriter-id', id)
 
-    Typewriter.running[id] = true
+    Typewriter.#running[id] = true
 
     let currentText = []
     const iter = iterations || 1
@@ -45,9 +45,9 @@ export default class Typewriter {
     for (let i = 0; i < text.length; i++) {
       const originalLetter = text[i]
       for (let j = 0; j < iter; j++) {
-        if (!Typewriter.running[id]) {
+        if (!Typewriter.#running[id]) {
           el.innerHTML = ""
-          el.removeAttribute('data-typewriter-scramble-id')
+          el.removeAttribute('data-typewriter-id')
           return
         }
         let tmpTxt = currentText.map((l, idx) => {
@@ -67,13 +67,13 @@ export default class Typewriter {
       el.innerHTML = currentText.join('')
     }
 
-    el.removeAttribute('data-typewriter-scramble-id')
+    el.removeAttribute('data-typewriter-id')
   }
 
   public static stop(el: HTMLElement | string) {
-    const id = typeof el === "string" ? el : el.getAttribute('data-typewriter-scramble-id')
-    if (Typewriter.running[id]) {
-      delete Typewriter.running[id]
+    const id = typeof el === "string" ? el : el.getAttribute('data-typewriter-id')
+    if (Typewriter.#running[id]) {
+      delete Typewriter.#running[id]
     }
   }
 }

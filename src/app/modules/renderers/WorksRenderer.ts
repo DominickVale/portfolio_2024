@@ -4,11 +4,10 @@ import { radToDeg } from 'three/src/math/MathUtils.js'
 import Typewriter from '../../modules/animations/Typewriter'
 import gsap from 'gsap'
 
-import { Renderer } from '@unseenco/taxi'
-import WorksImage from '../../gl/Scenes/WorksImage'
 import Experience from '../../gl/Experience'
+import BaseRenderer from './base'
 
-export default class WorksRenderer extends Renderer {
+export default class WorksRenderer extends BaseRenderer {
   currIdx: number
   isDesktop: boolean
   projects: Record<string, { element: HTMLElement; fontSize: number }>
@@ -18,8 +17,16 @@ export default class WorksRenderer extends Renderer {
   debouncedHandleResizeFn: Function
   onWheelBound: (event: WheelEvent) => void;
   onResizeBound: (event: UIEvent) => void;
+  tl: gsap.core.Timeline
+
+  initialLoad() {
+    super.initialLoad()
+    this.onEnter()
+    this.onEnterCompleted()
+  }
 
   onEnter() {
+    super.onEnter()
     // run after the new content has been added to the Taxi container
      this.currIdx = 0
      this.isDesktop = window.innerWidth > 1024
@@ -44,12 +51,11 @@ export default class WorksRenderer extends Renderer {
     this.recalculateOthers()
     this.recalculateActive()
 
-    const tl = gsap.timeline()
-    tl.to('.project-title span', {
+    this.tl = gsap.timeline()
+    this.tl.to('.project-title span', {
       opacity: 1,
       duration: 0.05,
       ease: 'linear',
-      delay: 0.8,
       stagger: {
         repeat: 20,
         each: 0.1,
@@ -63,8 +69,8 @@ export default class WorksRenderer extends Renderer {
         onComplete: () => {
           this.experience.world.worksImage.show()
         }
-      })
-      .add(this.fuiCornersAnimationActive, '<50%')
+      }, "<+50%")
+      .add(this.fuiCornersAnimationActive, '<')
       .to('.work-details', {
         opacity: 1,
         duration: 0.35,
@@ -80,6 +86,7 @@ export default class WorksRenderer extends Renderer {
     window.removeEventListener('wheel', this.onWheelBound);
     window.removeEventListener('resize', this.onResizeBound);
     this.experience.world.worksImage.hide()
+    this.tl?.kill()
   }
 
   onLeaveCompleted() {

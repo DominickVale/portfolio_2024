@@ -6,8 +6,8 @@ import { $, $all, showCursorMessage } from './utils'
 import Typewriter from './modules/animations/Typewriter'
 import Animations from './modules/animations'
 import { Core as TaxiCore } from '@unseenco/taxi'
-import DefaultRenderer from './modules/renderers'
-import DefaultTransition from './modules/transitions'
+import DefaultRenderer from './modules/renderers/base'
+import DefaultTransition from './modules/transitions/base'
 import WorksRenderer from './modules/renderers/WorksRenderer'
 
 
@@ -26,6 +26,7 @@ export default class App {
     this.scrambles = new TextScramble()
     this.typewriter = new Typewriter()
     this.taxi = new TaxiCore({
+      allowInterruption: true,
       reloadCssFilter: (element) => true,
       transitions: {
         default: DefaultTransition,
@@ -34,6 +35,10 @@ export default class App {
         default: DefaultRenderer,
         works: WorksRenderer
       },
+    })
+    this.taxi.on('NAVIGATE_IN', ({ to, trigger }) => {
+      this.scrambles.reload()
+      this.cursor.reload()
     })
     Animations.init(this.cursor, this.experience)
   }

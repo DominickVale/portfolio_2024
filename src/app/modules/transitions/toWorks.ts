@@ -1,7 +1,7 @@
-import { Transition } from "@unseenco/taxi";
 import gsap from "gsap";
+import BaseTransition from "./base";
 
-export default class DefaultTransition extends Transition {
+export default class ToWorkTransition extends BaseTransition {
 	/**
 	 * Handle the transition leaving the previous page.
 	 * @param { { from: HTMLElement, trigger: string|HTMLElement|false, done: function } } props

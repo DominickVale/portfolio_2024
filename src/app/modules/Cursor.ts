@@ -20,10 +20,11 @@ export default class Cursor {
   lastPos: Vec2
   isMobile: boolean
   animations: Array<() => void>
+  els: HTMLElement[]
+  cursorMessageEvtController: AbortController
 
   constructor(public speed = 0.25) {
     this.isMobile = isMobile()
-    this.init()
     this.pos = {
       x: 0,
       y: 0,
@@ -33,6 +34,7 @@ export default class Cursor {
     this.ringEl = $('#cursor-ring')
     this.textEl = $('#cursor-text')
     this.animations = []
+    this.init()
   }
 
   init() {
@@ -44,7 +46,16 @@ export default class Cursor {
     )
     document.body.classList.add('no-cursor')
 
-    $all('[data-cursor-message]', document).forEach((el) => {
+    this.assignListeners()
+    if (!this.isMobile) {
+      requestAnimationFrame(this.render.bind(this))
+    }
+  }
+
+  assignListeners(){
+    const els = Array.from($all('[data-cursor-message]', document))
+    this.els = els
+    els.forEach((el) => {
       const message = el.getAttribute('data-cursor-message')
       const timeout = Number(el.getAttribute('data-cursor-timeout'))
       const delay = Number(el.getAttribute('data-cursor-delay')) || 0
@@ -77,10 +88,10 @@ export default class Cursor {
         }
       })
     })
+  }
 
-    if (!this.isMobile) {
-      requestAnimationFrame(this.render.bind(this))
-    }
+  reload(){
+    this.assignListeners()
   }
 
   addAnimation(fn: () => void) {
