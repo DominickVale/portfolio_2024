@@ -31,6 +31,7 @@ export default class World {
   update(renderer, delta) {
     if(!this.isReady) return
     this.attractor.update(renderer, delta)
+    this.worksImage.update(renderer, delta)
   }
 
   afterRender(renderer, delta, composer){

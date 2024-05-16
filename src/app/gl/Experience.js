@@ -114,9 +114,12 @@ export default class Experience {
   }
 
   update() {
+    const delta = this.clock.getDelta()
     this.camera.update()
     if(this.world.isReady){
-      this.renderer.render()
+      this.renderer.update(delta)
+      this.world.update(this.renderer.instance, delta)
+      // @TODO: remove, use gsap
       this.canvas.style.opacity = 1
     }
   }

@@ -1,8 +1,10 @@
-
-import Experience from '../Experience.js'
 import { $ } from '../../utils'
-import {ChromaticAberrationEffect, EffectComposer, EffectPass, RenderPass } from 'postprocessing';
+import Experience from '../Experience.js'
 import * as THREE from 'three'
+import frag from '../shaders/worksImage.frag'
+import vert from '../shaders/worksImage.vert'
+import { DigitalGlitch } from 'three/examples/jsm/Addons.js'
+
 
 const PERSPECTIVE = 1000
 const FOV = (180 * (2 * Math.atan(window.innerHeight / 2 / PERSPECTIVE))) / Math.PI
@@ -18,27 +20,32 @@ export default class WorksImage {
   }
 
   init(){
-    const planeGeometry = new THREE.PlaneGeometry(1, 1);
+    const planeGeometry = new THREE.PlaneGeometry(1, 1, 100, 100);
 
-    const planeMaterial = new THREE.MeshBasicMaterial({ map: this.resources.items.reggaecat });
+    this.planeMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uTexture: { value: null },
+        uOffset: { value: new THREE.Vector2(0.01, 0.009) },
+        uAspect: {value: 1},
+        uImageSize: {value: new THREE.Vector2(1, 1)},
+        uPlaneSize: {value: new THREE.Vector2(1, 1)},
+        uAlpha: {
+          value: 1,
+        },
+      },
+      vertexShader: vert,
+      fragmentShader: frag,
+      transparent: true,
+    })
     this.worksScene = new THREE.Scene();
 
-    const imagePlane = new THREE.Mesh(planeGeometry, planeMaterial);
+    const imagePlane = new THREE.Mesh(planeGeometry, this.planeMat);
     this.worksScene.userData.plane = imagePlane
 
     const worksCamera = new THREE.PerspectiveCamera(FOV, this.sizes.aspectRatio, 1, 1000)
     worksCamera.position.z = PERSPECTIVE
     this.worksScene.userData.camera = worksCamera
-
-    this.composer = new EffectComposer(this.experience.renderer.instance, { frameBufferType: THREE.HalfFloatType})
-    this.composer.setSize(this.experience.sizes.width, this.experience.sizes.height)
-    const renderPass = new RenderPass(this.worksScene, worksCamera)
-    this.composer.addPass(renderPass)
-
-    const chromaticAberrationEffect = new ChromaticAberrationEffect()
-    this.chromaticAberrationEffect = chromaticAberrationEffect
-    chromaticAberrationEffect.offset = new THREE.Vector2(0,0)
-    this.composer.addPass(new EffectPass(worksCamera, this.chromaticAberrationEffect))
   }
 
   show(){
@@ -54,7 +61,7 @@ export default class WorksImage {
 
   hide(){
     this.isShown = false
-    this.worksScene.remove(this.worksScene.userData.plane)
+    this.worksScene?.remove(this.worksScene.userData.plane)
   }
 
   resize(){
@@ -73,20 +80,15 @@ export default class WorksImage {
     plane.position.set(pos.x, pos.y, 1)
 
     const tex = this.resources.items.reggaecat
-    const planeAspect = rect.width / rect.height;
-    const imageAspect = tex.image.naturalWidth / tex.image.naturalHeight;
-    const aspect = imageAspect / planeAspect;
 
-    tex.offset.x = aspect > 1 ? (1 - 1 / aspect) / 2 : 0;
-    tex.repeat.x = aspect > 1 ? 1 / aspect : 1;
+    plane.material.uniforms.uTexture.value = tex
+    plane.material.uniforms.uPlaneSize.value = new THREE.Vector2(rect.width, rect.height)
+    plane.material.uniforms.uImageSize.value = new THREE.Vector2(tex.image.naturalWidth, tex.image.naturalHeight)
+  }
 
-    tex.offset.y = aspect > 1 ? 0 : (1 - aspect) / 2;
-    tex.repeat.y = aspect > 1 ? 1 : aspect;
-    text.wrapS = THREE.ClampToEdgeWrapping
-    text.wrapT = THREE.RepeatWrapping
-
-    plane.material.map = tex
-
+  update(renderer, delta) {
+    if(!this.isShown) return
+    this.planeMat.uniforms.uTime.value = delta
   }
 
   afterRender(renderer, delta, composer){

@@ -72,10 +72,7 @@ export default class Renderer {
     this.instance.setPixelRatio(this.sizes.pixelRatio)
   }
 
-render() {
-    const delta = this.experience.clock.getDelta()
-    //refactor later
-    this.experience.world.update(this.instance, delta)
+update(delta) {
     this.instance.setRenderTarget(null)
   
     this.composer.render()
