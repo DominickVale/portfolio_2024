@@ -40,6 +40,7 @@ export default class Cursor {
   init() {
     window.addEventListener('mousemove', this.onMouseMove.bind(this))
     window.addEventListener('touchmove', this.onTouchMove.bind(this))
+    window.addEventListener('mousedown', this.onClick.bind(this))
     window.addEventListener(
       'show-cursor-message',
       this.onShowMessage.bind(this),
@@ -52,7 +53,11 @@ export default class Cursor {
     }
   }
 
-  assignListeners(){
+  onClick() {
+    Typewriter.stop(this.textEl)
+  }
+
+  assignListeners() {
     const els = Array.from($all('[data-cursor-message]', document))
     this.els = els
     els.forEach((el) => {
@@ -90,7 +95,7 @@ export default class Cursor {
     })
   }
 
-  reload(){
+  reload() {
     this.assignListeners()
   }
 
