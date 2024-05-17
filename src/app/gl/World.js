@@ -28,14 +28,14 @@ export default class World {
     this.worksImage.resize()
   }
 
-  update(renderer, delta) {
+  update(renderer, delta, elapsed) {
     if(!this.isReady) return
-    this.attractor.update(renderer, delta)
-    this.worksImage.update(renderer, delta)
+    this.attractor.update(renderer, delta, elapsed)
+    this.worksImage.update(renderer, delta, elapsed)
   }
 
-  afterRender(renderer, delta, composer){
+  afterRender(renderer, delta){
     if(!this.isReady) return
-    this.worksImage.afterRender(renderer, delta, composer)
+    this.worksImage.afterRender(renderer, delta)
   }
 }

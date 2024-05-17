@@ -86,12 +86,12 @@ export default class WorksImage {
     plane.material.uniforms.uImageSize.value = new THREE.Vector2(tex.image.naturalWidth, tex.image.naturalHeight)
   }
 
-  update(renderer, delta) {
+  update(renderer, delta, elapsed) {
     if(!this.isShown) return
-    this.planeMat.uniforms.uTime.value = delta
+    this.planeMat.uniforms.uTime.value = elapsed
   }
 
-  afterRender(renderer, delta, composer){
+  afterRender(renderer, composer){
     if(!this.isShown) return
     const camera = this.worksScene.userData.camera;
     renderer.render(this.worksScene, camera);

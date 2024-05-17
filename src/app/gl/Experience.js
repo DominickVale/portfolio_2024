@@ -115,10 +115,11 @@ export default class Experience {
 
   update() {
     const delta = this.clock.getDelta()
+    const elapsed = this.clock.getElapsedTime()
     this.camera.update()
     if(this.world.isReady){
       this.renderer.update(delta)
-      this.world.update(this.renderer.instance, delta)
+      this.world.update(this.renderer.instance, delta, elapsed)
       // @TODO: remove, use gsap
       this.canvas.style.opacity = 1
     }
