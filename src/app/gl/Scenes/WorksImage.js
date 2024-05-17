@@ -22,22 +22,26 @@ export default class WorksImage {
   init(){
     const planeGeometry = new THREE.PlaneGeometry(1, 1, 100, 100);
 
-    this.planeMat = new THREE.ShaderMaterial({
-      uniforms: {
+this.planeMat = new THREE.ShaderMaterial({
+    uniforms: {
         uTime: { value: 0 },
         uTexture: { value: null },
         uOffset: { value: new THREE.Vector2(0.01, 0.009) },
-        uAspect: {value: 1},
-        uImageSize: {value: new THREE.Vector2(1, 1)},
-        uPlaneSize: {value: new THREE.Vector2(1, 1)},
-        uAlpha: {
-          value: 1,
-        },
-      },
-      vertexShader: vert,
-      fragmentShader: frag,
-      transparent: true,
-    })
+        uAspect: { value: 1 },
+        uImageSize: { value: new THREE.Vector2(1, 1) },
+        uPlaneSize: { value: new THREE.Vector2(1, 1) },
+        uAlpha: { value: 1 },
+        uColorSeparation: { value: true }, // Add this uniform
+        uAmp: { value: 0.1 }, // Add this uniform
+        uGlitchSpeed: { value: 0.16 }, // Add this uniform
+        uBarSize: { value: 0.05 }, // Add this uniform
+        uNumSlices: { value: 10.0 }, // Add this uniform
+        uCrossfade: { value: 1.0 } // Add this uniform
+    },
+    vertexShader: vert,
+    fragmentShader: frag,
+    transparent: true
+});
     this.worksScene = new THREE.Scene();
 
     const imagePlane = new THREE.Mesh(planeGeometry, this.planeMat);
