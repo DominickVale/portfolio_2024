@@ -20,7 +20,5 @@ const { Content } = await entry.render()
 ---
 
 <BlogLayout frontmatter={entry.data}>
-  <Content
-    components={{ section: BlogSection, img: BlogImage, h2: BlogSectionHeader }}
-  />
+  <Content components={{ section: BlogSection, img: BlogImage, h2: BlogSectionHeader }} />
 </BlogLayout>

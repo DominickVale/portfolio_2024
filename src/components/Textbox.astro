@@ -1,7 +1,7 @@
 ---
 import { type HTMLAttributes } from 'astro/types'
 
-type Props = HTMLAttributes<'input'> & { area?: boolean; uppercase?: boolean, frame?: boolean }
+type Props = HTMLAttributes<'input'> & { area?: boolean; uppercase?: boolean; frame?: boolean }
 const { area, uppercase, frame, ...props } = Astro.props
 
 const Component = Astro.props.area ? 'textarea' : 'input'
@@ -11,7 +11,7 @@ const Component = Astro.props.area ? 'textarea' : 'input'
   <Component
     type="text"
     class:list={[
-      'textbox focus:outline-none w-full bg-[rgba(0,0,0,0.9)] px-3 py-1 text-xs block',
+      'textbox block w-full bg-[rgba(0,0,0,0.9)] px-3 py-1 text-xs focus:outline-none',
       'placeholder:text-[rgba(255,255,255,0.6)]',
       area && 'min-h-16',
       uppercase && 'uppercase',
@@ -19,12 +19,7 @@ const Component = Astro.props.area ? 'textarea' : 'input'
     {...props}
   />
   {frame && <div class="fui-corners pointer-events-none" />}
-  <div
-    class:list={[
-      'absolute right-0 flex items-center pr-2',
-      area ? 'bottom-4' : 'inset-y-0',
-    ]}
-  >
+  <div class:list={['absolute right-0 flex items-center pr-2', area ? 'bottom-4' : 'inset-y-0']}>
     <div class="dot mr-2 h-1 w-1 rounded-full bg-white opacity-30"></div>
   </div>
 </div>
@@ -35,11 +30,11 @@ const Component = Astro.props.area ? 'textarea' : 'input'
   input:-webkit-autofill:focus,
   textarea:-webkit-autofill,
   textarea:-webkit-autofill:hover,
-  textarea:-webkit-autofill:focus{
+  textarea:-webkit-autofill:focus {
     -webkit-text-fill-color: white;
     -webkit-box-shadow: 0 0 0px 1000px var(--bg-dark) inset;
   }
-  input:-webkit-autofill::first-line{
+  input:-webkit-autofill::first-line {
     font-family: monospace !important;
   }
   .textbox-wrapper-valid .dot {

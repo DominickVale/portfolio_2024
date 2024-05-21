@@ -16,15 +16,13 @@ const {} = Astro.props
   >
     <div class="lg:ml-4 lg:mt-[20vh]">
       <div class="relative flex flex-col justify-center">
-        <div class="fui-frame image-wrapper opacity-0 h-[45vh] relative" id="works-image">
+        <div class="fui-frame image-wrapper relative h-[45vh] opacity-0" id="works-image">
           <!-- <Image -->
           <!-- /> -->
           <div class="fui-corners"></div>
         </div>
         <!-- <div class="absolute bottom-[-5vh] left-1/2 h-[4vh] w-[1px] bg-lines"></div> -->
-        <div
-          class="work-details 2lg:max-w-[30rem] mt-6 hidden max-w-[90%] opacity-0 lg:block"
-        >
+        <div class="work-details 2lg:max-w-[30rem] mt-6 hidden max-w-[90%] opacity-0 lg:block">
           <table class="text-xs">
             <WorkDetails />
           </table>
@@ -41,27 +39,18 @@ const {} = Astro.props
     <!-- </div> -->
   </div>
 
-  <div
-    class="col-span-1 col-start-12 mb-14 ml-2 hidden h-full items-center sm:flex"
-  >
+  <div class="col-span-1 col-start-12 mb-14 ml-2 hidden h-full items-center sm:flex">
     <NextPageBtn href="/blog">BLOG</NextPageBtn>
   </div>
 
-  <section
-    id="works-list"
-    class="col-span-4 col-start-8 row-start-1 hidden flex-col gap-[6vh] pt-[10vh] lg:flex"
-  >
+  <section id="works-list" class="col-span-4 col-start-8 row-start-1 hidden flex-col gap-[6vh] pt-[10vh] lg:flex">
     {
       Object.values(PROJECTS_LIST).map((project, i) => (
         <h2
           class="project-title relative ml-[-12%] flex h-[10vh] w-full items-center font-display font-bold uppercase text-primary-lightest"
           style={`--i: ${i}`}
         >
-          <span
-            class="block w-max leading-[100%] opacity-0"
-          >
-            {project.name}
-          </a>
+          <span class="block w-max leading-[100%] opacity-0">{project.name}</span>
           <div class="fui-corners highlighted-corner z-[100] hidden h-full font-mono opacity-0">
             <div class="line-container">
               <div class="line" />
@@ -69,42 +58,23 @@ const {} = Astro.props
               <div class="dynamic-line" />
             </div>
             <div class="absolute bottom-[-2.7rem] right-0 flex w-3/4 gap-3">
-              <Btn
-                href={project.linkCase}
-                class="w-full"
-                data-text-scramble="READ CASE"
-                bottom
-                frame
-              >
+              <Btn href={project.linkCase} class="w-full" data-text-scramble="READ CASE" bottom frame>
                 READ CASE
               </Btn>
-              <Btn
-                href={project.linkWebsite}
-                class="w-full"
-                data-text-scramble="VISIT WEBSITE"
-                bottom
-                frame
-              >
+              <Btn href={project.linkWebsite} class="w-full" data-text-scramble="VISIT WEBSITE" bottom frame>
                 VISIT WEBSITE
               </Btn>
             </div>
-            <small class="absolute left-8 top-[-1rem] text-xxs font-normal tracking-widest opacity-40">
-              PROJ_ID: 00{i}
-            </small>
+            <small class="absolute left-8 top-[-1rem] text-xxs font-normal tracking-widest opacity-40">PROJ_ID: 00{i}</small>
           </div>
         </h2>
       ))
     }
   </section>
-  <section
-    class="col-span-10 col-start-2 row-start-2 flex flex-col text-center lg:hidden"
-  >
+  <section class="col-span-10 col-start-2 row-start-2 flex flex-col text-center lg:hidden">
     {
       Object.values(PROJECTS_LIST).map((project, i) => (
-        <h2
-          class="project-title-mobile h-[5vh] w-full font-display text-2xl font-bold uppercase text-primary-lightest"
-          style={`--i: ${i}`}
-        >
+        <h2 class="project-title-mobile h-[5vh] w-full font-display text-2xl font-bold uppercase text-primary-lightest" style={`--i: ${i}`}>
           <a href={`/works/${project.name}`}>{project.name}</a>
           <div class="fui-corners highlighted-corner hidden h-full font-mono" />
         </h2>

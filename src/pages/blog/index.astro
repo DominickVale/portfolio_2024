@@ -10,12 +10,9 @@ const allPosts = await getCollection('blog')
 ---
 
 <Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default">
-
   <section class="relative col-span-10 col-start-2">
     <div class="relative my-8 flex h-max flex-col sm:my-0 sm:flex-row">
-      <h1
-        class="mt-[2vh] font-display text-[15vw] font-black leading-[100%] md:text-8xl lg:text-[calc(5vw+6.2vh)] tall:mt-[6vh] taller:mt-[10vh]"
-      >
+      <h1 class="mt-[2vh] font-display text-[15vw] font-black leading-[100%] md:text-8xl lg:text-[calc(5vw+6.2vh)] tall:mt-[6vh] taller:mt-[10vh]">
         BLOG
       </h1>
       <div
@@ -24,18 +21,12 @@ const allPosts = await getCollection('blog')
       </div>
       <div class="ml-1 mr-auto mt-2 gap-[7%] self-end sm:mb-6 sm:ml-4 lg:ml-6">
         <ul>
-          <StatusItem filled class="text-xxs md:text-xs"
-            >UPDATED:&nbsp;<date>{lastUpdated}</date></StatusItem
-          >
-          <StatusItem filled class="text-xxs md:text-xs"
-            >PROJ. CASES: 3</StatusItem
-          >
+          <StatusItem filled class="text-xxs md:text-xs">UPDATED:&nbsp;<date>{lastUpdated}</date></StatusItem>
+          <StatusItem filled class="text-xxs md:text-xs">PROJ. CASES: 3</StatusItem>
         </ul>
       </div>
     </div>
-    <h2
-      class="mb-3 ml-3 hidden whitespace-nowrap font-mono text-xs font-black tracking-button opacity-60 sm:block tall:text-base"
-    >
+    <h2 class="mb-3 ml-3 hidden whitespace-nowrap font-mono text-xs font-black tracking-button opacity-60 sm:block tall:text-base">
       UNCOORDINATED THOUGHTS AND PROJECT CASES
     </h2>
   </section>
@@ -45,22 +36,16 @@ const allPosts = await getCollection('blog')
   >
     {
       allPosts.map((post, i) => (
-        <a
-          class="my-[4vh] sm:mx-[2vw] sm:my-0 xl:mx-[3rem]"
-          href={`/blog/${post.slug}`}
-        >
+        <a class="my-[4vh] sm:mx-[2vw] sm:my-0 xl:mx-[3rem]" href={`/blog/${post.slug}`}>
           <BlogEntry id={i} {...post.data} />
         </a>
       ))
     }
   </section>
 
-  <div
-    class="col-span-1 col-start-12 mb-14 ml-2 hidden h-full items-center sm:flex"
-  >
+  <div class="col-span-1 col-start-12 mb-14 ml-2 hidden h-full items-center sm:flex">
     <NextPageBtn href="/contact">???</NextPageBtn>
   </div>
-
 </Layout>
 
 <style>
@@ -75,11 +60,7 @@ const allPosts = await getCollection('blog')
     left: 0;
     width: 100%;
     height: 10%;
-    background: linear-gradient(
-      0deg,
-      rgba(17, 16, 16, 1) 0%,
-      rgba(17, 16, 16, 0.1) 100%
-    );
+    background: linear-gradient(0deg, rgba(17, 16, 16, 1) 0%, rgba(17, 16, 16, 0.1) 100%);
     pointer-events: none;
     z-index: 1;
   }
@@ -91,7 +72,7 @@ const allPosts = await getCollection('blog')
 </style>
 
 <script>
-  import { $all, $, fitTextToContainerScr} from '../../app/utils'
+  import { $all, $, fitTextToContainerScr } from '../../app/utils'
   document.addEventListener('DOMContentLoaded', () => {
     const articles = $all('article')
 
@@ -101,20 +82,20 @@ const allPosts = await getCollection('blog')
       const x = event.clientX - rect.left
       const y = event.clientY - rect.top
 
-      gradientOverlay.style.opacity = "1"
+      gradientOverlay.style.opacity = '1'
       gradientOverlay.style.setProperty('--x', `${x}px`)
       gradientOverlay.style.setProperty('--y', `${y}px`)
     }
 
     function handleMouseLeave(event) {
       const gradientOverlay = $('.gradient-overlay', event.target)
-      gradientOverlay.style.opacity = "0"
+      gradientOverlay.style.opacity = '0'
     }
 
     articles.forEach((article) => {
       const articleTitleEl = $('.article-title', article)
       const fontSizeChanged = fitTextToContainerScr(articleTitleEl, articleTitleEl, 2)
-      if(fontSizeChanged) articleTitleEl.style.lineHeight = "unset"
+      if (fontSizeChanged) articleTitleEl.style.lineHeight = 'unset'
       article.addEventListener('mousemove', handleMouseMove)
       article.addEventListener('mouseleave', handleMouseLeave)
     })

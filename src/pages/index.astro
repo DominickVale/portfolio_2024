@@ -9,23 +9,17 @@ import NextPageBtn from '../components/NextPageBtn.astro'
   <section class="col-span-12 col-start-1 mt-6 flex justify-center sm:hidden">
     <NextPageBtn>WORKS</NextPageBtn>
   </section>
-  <section
-    class="col-span-10 col-start-2 row-span-4 row-start-2 flex flex-col content-start justify-end text-xs taller:pt-[17vh]"
-  >
+  <section class="col-span-10 col-start-2 row-span-4 row-start-2 flex flex-col content-start justify-end text-xs taller:pt-[17vh]">
     <div class="mt-4 flex justify-between sm:text-left">
       <div class="">
         <h2 class="text-primary">> whoami</h2>
-        <p
-          class="mb-3 select-none text-stone-300 sm:max-w-64 md:select-all"
-          data-menu-trigger="text"
-        >
-          I’m just the quiet, value-centered guy that gets the work done. My
-          interests range from front-end web development all the way down to
+        <p class="mb-3 select-none text-stone-300 sm:max-w-64 md:select-all" data-menu-trigger="text">
+          I’m just the quiet, value-centered guy that gets the work done. My interests range from front-end web development all the way down to
           reverse engineering, to mountain biking. Sounds interesting?
         </p>
         <Btn
           href="/about"
-          class="w-max mt-1 p-1"
+          class="mt-1 w-max p-1"
           innerClass="!block"
           data-cursor-delay="1000"
           data-cursor-message="You should probably check this out"
@@ -45,7 +39,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
       </div>
     </div>
     <h1
-      class="ml-[-0.05em] mt-14 text-nowrap font-display font-black text-[9.2vw] leading-[100%]"
+      class="ml-[-0.05em] mt-14 text-nowrap font-display text-[9.2vw] font-black leading-[100%]"
       data-cursor-delay="2000"
       data-cursor-message="My actual name is Domenico"
       data-cursor-iterations="3"
@@ -57,13 +51,10 @@ import NextPageBtn from '../components/NextPageBtn.astro'
     </h1>
     <!-- <h1 class="sr-only">DOMINICK VALE</h1> -->
     <!-- <img class="mt-6" src={nameSvg.src} /> -->
-    <div class="mt-4 flex justify-between gap-[7%] text-sm lg:mt-6 mb-[10vh]">
+    <div class="mb-[10vh] mt-4 flex justify-between gap-[7%] text-sm lg:mt-6">
       <ul>
-        <StatusItem class="text-nowrap" highlight
-          >FRONT-END DEVELOPER</StatusItem
-        >
-        <StatusItem class="text-nowrap" highlight>CREATIVE DEVELOPER</StatusItem
-        >
+        <StatusItem class="text-nowrap" highlight>FRONT-END DEVELOPER</StatusItem>
+        <StatusItem class="text-nowrap" highlight>CREATIVE DEVELOPER</StatusItem>
         <StatusItem class="text-nowrap">WANNABE ARTIST</StatusItem>
         <StatusItem>LEARNER</StatusItem>
       </ul>
@@ -97,8 +88,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
 </Layout>
 
 <style>
-h1{
-  transition: text-shadow 0.1s ease-out;
-}
+  h1 {
+    transition: text-shadow 0.1s ease-out;
+  }
 </style>
-

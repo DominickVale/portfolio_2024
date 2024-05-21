@@ -5,11 +5,9 @@ import { $all, debounce, isMobile, showCursorMessage } from '../utils'
 export default class Menus {
   menus: RadialMenu[]
   isMobile: boolean
-  triggers: { el: HTMLElement, cb: (e: MouseEvent) => void }[]
+  triggers: { el: HTMLElement; cb: (e: MouseEvent) => void }[]
 
-  constructor(
-    public onToggleDebug?: () => void,
-  ) {
+  constructor(public onToggleDebug?: () => void) {
     this.isMobile = isMobile()
     this.init()
     this.addListeners()
@@ -21,7 +19,7 @@ export default class Menus {
   }
 
   destroy() {
-    console.log("Destroying menus")
+    console.log('Destroying menus')
     this.menus.forEach((m) => m.destroy())
     this.triggers.forEach((t) => {
       t.el?.removeEventListener('contextmenu', t.cb)
@@ -30,7 +28,7 @@ export default class Menus {
   }
 
   createContextMenuCb = (menu: RadialMenu) => (e: MouseEvent) => {
-    if((e.target as HTMLElement).id.includes('radial-menu-thumb')) return
+    if ((e.target as HTMLElement).id.includes('radial-menu-thumb')) return
     e.preventDefault()
     e.stopPropagation()
     menu.open(e.clientX, e.clientY, e.target as HTMLElement)
@@ -38,23 +36,26 @@ export default class Menus {
 
   addListeners() {
     const triggerEls = $all('[data-menu-trigger]', document)
-    this.triggers = Array.from(triggerEls).map((el) => {
-      const menuId = el.getAttribute('data-menu-trigger')
-      const menu = this.menus.find((m) => m.id === menuId)
-      if (!menu){
-        console.info('Skipping menu', menuId)
-        return
-      }
-      if (menu.isMobile) {
-        return null
-      } else {
-        const callback = this.createContextMenuCb(menu)
-        el.addEventListener('contextmenu', callback)
-        return {
-          el, cb: callback
+    this.triggers = Array.from(triggerEls)
+      .map((el) => {
+        const menuId = el.getAttribute('data-menu-trigger')
+        const menu = this.menus.find((m) => m.id === menuId)
+        if (!menu) {
+          console.info('Skipping menu', menuId)
+          return
         }
-      }
-    }).filter(Boolean)
+        if (menu.isMobile) {
+          return null
+        } else {
+          const callback = this.createContextMenuCb(menu)
+          el.addEventListener('contextmenu', callback)
+          return {
+            el,
+            cb: callback,
+          }
+        }
+      })
+      .filter(Boolean)
   }
 
   getMenus() {
@@ -125,16 +126,7 @@ export default class Menus {
       },
     }
 
-    let defaultMenuItems: RadialMenuItem[] = [
-      homeSlice,
-      labSlice,
-      aboutSlice,
-      worksSlice,
-      blogSlice,
-      contactSlice,
-      settingsSlice,
-      contextSlice,
-    ]
+    let defaultMenuItems: RadialMenuItem[] = [homeSlice, labSlice, aboutSlice, worksSlice, blogSlice, contactSlice, settingsSlice, contextSlice]
     let defaultMenuItemsMobile: RadialMenuItem[] = [
       {
         ...homeSlice,
@@ -180,26 +172,13 @@ export default class Menus {
     ]
 
     const textMenu = new RadialMenu('text', textMenuItems)
-    if(this.isMobile){
-      const defaultMenuMobile = new RadialMenu(
-        'default-mobile',
-        defaultMenuItemsMobile,
-        { isMobile: true },
-      )
-      return [
-        textMenu,
-        settingsMenu,
-        defaultMenuMobile
-      ]
+    if (this.isMobile) {
+      const defaultMenuMobile = new RadialMenu('default-mobile', defaultMenuItemsMobile, { isMobile: true })
+      return [textMenu, settingsMenu, defaultMenuMobile]
     } else {
       const defaultMenu = new RadialMenu('default', defaultMenuItems)
       const defaultBlogMenu = new RadialMenu('default-blog', defaultMenuItems)
-      return [
-        defaultMenu,
-        textMenu,
-        settingsMenu,
-        defaultBlogMenu,
-      ]
+      return [defaultMenu, textMenu, settingsMenu, defaultBlogMenu]
     }
   }
 
@@ -210,10 +189,12 @@ export default class Menus {
   debounceResize = debounce(() => {
     this.isMobile = isMobile()
     this.destroy()
-    this.menus = [...this.getMenus().filter(menu => {
-      const isMenuMobile = menu.isMobile
-      return this.isMobile ? isMenuMobile : !isMenuMobile
-    })]
+    this.menus = [
+      ...this.getMenus().filter((menu) => {
+        const isMenuMobile = menu.isMobile
+        return this.isMobile ? isMenuMobile : !isMenuMobile
+      }),
+    ]
     this.addListeners()
   }, 1000)
 }

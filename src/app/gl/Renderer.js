@@ -1,9 +1,18 @@
 import * as THREE from 'three'
 import Experience from './Experience.js'
 
-import fullScreenVertex from './shaders/fullscreen.vert';
-import fullScreenFragment from './shaders/fullscreen.frag';
-import {ChromaticAberrationEffect, DepthOfFieldEffect, EffectComposer, EffectPass, KawaseBlurPass, KernelSize, RenderPass, SelectiveBloomEffect } from 'postprocessing';
+import fullScreenVertex from './shaders/fullscreen.vert'
+import fullScreenFragment from './shaders/fullscreen.frag'
+import {
+  ChromaticAberrationEffect,
+  DepthOfFieldEffect,
+  EffectComposer,
+  EffectPass,
+  KawaseBlurPass,
+  KernelSize,
+  RenderPass,
+  SelectiveBloomEffect,
+} from 'postprocessing'
 
 export default class Renderer {
   constructor() {
@@ -25,7 +34,7 @@ export default class Renderer {
     this.instance = new THREE.WebGLRenderer({
       canvas: this.canvas,
       alpha: true,
-      powerPreference: "high-performance",
+      powerPreference: 'high-performance',
       antialias: false,
       stencil: false,
       depth: false,
@@ -36,26 +45,26 @@ export default class Renderer {
     this.instance.setPixelRatio(this.sizes.pixelRatio)
     this.instance.outputEncoding = THREE.sRGBEncoding
 
-    this.composer = new EffectComposer(this.instance, { frameBufferType: THREE.HalfFloatType})
+    this.composer = new EffectComposer(this.instance, { frameBufferType: THREE.HalfFloatType })
     this.composer.setSize(this.sizes.width, this.sizes.height)
     const renderPass = new RenderPass(this.scene, this.camera.instance)
     this.composer.addPass(renderPass)
 
     this.bloomEffect = new SelectiveBloomEffect(this.scene, this.camera.instance, {
-			blendFunction: this.params.bloomBlendFunction,
-			mipmapBlur: true,
-			luminanceThreshold: this.params.bloomLuminanceThreshold,
-			luminanceSmoothing: this.params.bloomLuminanceSmoothing,
-			intensity: this.params.bloomIntensity,
+      blendFunction: this.params.bloomBlendFunction,
+      mipmapBlur: true,
+      luminanceThreshold: this.params.bloomLuminanceThreshold,
+      luminanceSmoothing: this.params.bloomLuminanceSmoothing,
+      intensity: this.params.bloomIntensity,
       radius: this.params.bloomRadius,
-	});
+    })
     const chromaticAberrationEffect = new ChromaticAberrationEffect()
     this.chromaticAberrationEffect = chromaticAberrationEffect
-    chromaticAberrationEffect.offset = new THREE.Vector2(0,0)
+    chromaticAberrationEffect.offset = new THREE.Vector2(0, 0)
     this.blurPass = new KawaseBlurPass({
-			height: 500,
-      kernelSize: KernelSize.VERY_LARGE
-		});
+      height: 500,
+      kernelSize: KernelSize.VERY_LARGE,
+    })
     this.blurPass.enabled = false
     this.composer.addPass(this.blurPass)
     this.composer.addPass(new EffectPass(this.camera.instance, this.chromaticAberrationEffect))
@@ -72,9 +81,9 @@ export default class Renderer {
     this.instance.setPixelRatio(this.sizes.pixelRatio)
   }
 
-update(delta) {
+  update(delta) {
     this.instance.setRenderTarget(null)
-  
+
     this.composer.render()
     // this.instance.render(this.scene, this.camera.instance);
     if (this.debug) {
@@ -87,7 +96,7 @@ update(delta) {
 
     this.experience.world.afterRender(this.instance, delta)
     this.composer.setSize(this.sizes.width, this.sizes.height)
-}
+  }
 
   saveImage() {
     const renderer = this.experience.renderer.instance
@@ -101,18 +110,18 @@ update(delta) {
 
   //Needed because of the setClearColor to transparent. Additive particles have a black background otherwise.
   createBackground() {
-    const geometry = new THREE.PlaneGeometry(2, 2);
+    const geometry = new THREE.PlaneGeometry(2, 2)
     const material = new THREE.ShaderMaterial({
       vertexShader: fullScreenVertex,
       fragmentShader: fullScreenFragment,
       uniforms: {
-        uColor: { value: new THREE.Color(this.experience.bgColor)},
+        uColor: { value: new THREE.Color(this.experience.bgColor) },
       },
       depthTest: false,
-      blending: THREE.AdditiveBlending      
-    });
+      blending: THREE.AdditiveBlending,
+    })
 
-    this.fullScreenBg = new THREE.Mesh(geometry, material);
-    this.scene.add(this.fullScreenBg);
+    this.fullScreenBg = new THREE.Mesh(geometry, material)
+    this.scene.add(this.fullScreenBg)
   }
 }

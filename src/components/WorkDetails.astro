@@ -8,21 +8,19 @@ const { small } = Astro.props
 
 {
   small ? (
-    <table class="w-full text-xxs flex-1">
+    <table class="w-full flex-1 text-xxs">
       <tbody class="flex w-full justify-between">
         <tr class="flex flex-col">
-          <th class="pl-0 pr-3 text-left tracking-widest text-primary-darker">
-            ROLE:
-          </th>
-          <td class="opacity-80 work-details-role"></td>
+          <th class="pl-0 pr-3 text-left tracking-widest text-primary-darker">ROLE:</th>
+          <td class="work-details-role opacity-80" />
         </tr>
         <tr class="flex flex-col justify-center">
           <th class="pl-0 text-left tracking-widest text-primary-darker">CLIENT:</th>
-          <td class="text-center opacity-80 work-details-client"></td>
+          <td class="work-details-client text-center opacity-80" />
         </tr>
         <tr class="flex flex-col">
           <th class="text-right tracking-widest text-primary-darker">YEAR:</th>
-          <td class="pr-1 text-right opacity-80 work-details-year"></td>
+          <td class="work-details-year pr-1 text-right opacity-80" />
         </tr>
       </tbody>
     </table>
@@ -30,16 +28,16 @@ const { small } = Astro.props
     <table class="flex-1 text-xs">
       <tbody class="grid min-w-[30vw] grid-cols-[1fr_2fr] items-start gap-4">
         <tr class="grid grid-cols-[3.5rem_1fr] gap-1">
-          <th class="pl-0 pr-3 text-left text-primary-darker animate-fui-flash tracking-widest">ROLE:</th>
-          <td class="text-left work-details-role"></td>
-          <th class="pl-0 pr-3 text-left text-primary-darker tracking-widest">CLIENT:</th>
-          <td class="text-left work-details-client"></td>
+          <th class="animate-fui-flash pl-0 pr-3 text-left tracking-widest text-primary-darker">ROLE:</th>
+          <td class="work-details-role text-left" />
+          <th class="pl-0 pr-3 text-left tracking-widest text-primary-darker">CLIENT:</th>
+          <td class="work-details-client text-left" />
         </tr>
         <tr class="grid w-full grid-cols-[3rem_1fr] gap-1">
-          <th class="pl-0 pr-3 text-left text-primary-darker tracking-widest">YEAR:</th>
-          <td class="text-left work-details-year"></td>
-          <th class="pl-0 pr-3 text-left text-primary-darker min-h-16 tracking-widest">TECH:</th>
-          <td class="min-w-32 text-left work-details-tech"></td>
+          <th class="pl-0 pr-3 text-left tracking-widest text-primary-darker">YEAR:</th>
+          <td class="work-details-year text-left" />
+          <th class="min-h-16 pl-0 pr-3 text-left tracking-widest text-primary-darker">TECH:</th>
+          <td class="work-details-tech min-w-32 text-left" />
         </tr>
       </tbody>
     </table>

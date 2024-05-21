@@ -10,7 +10,6 @@ import DefaultRenderer from './modules/renderers/base'
 import DefaultTransition from './modules/transitions/base'
 import WorksRenderer from './modules/renderers/WorksRenderer'
 
-
 export default class App {
   experience: Experience
   menus: Menus
@@ -33,7 +32,7 @@ export default class App {
       },
       renderers: {
         default: DefaultRenderer,
-        works: WorksRenderer
+        works: WorksRenderer,
       },
     })
     this.taxi.on('NAVIGATE_IN', ({ to, trigger }) => {
@@ -44,13 +43,12 @@ export default class App {
   }
 
   onToggleDebug() {
-   if(this.debug) {
+    if (this.debug) {
       this.debug = false
       this.experience.debug.stop()
     } else {
       this.debug = true
       this.experience.debug.start()
     }
-
   }
 }

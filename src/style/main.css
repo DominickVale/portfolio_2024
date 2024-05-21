@@ -5,25 +5,25 @@
 :root {
   --grid-x-gap: 1.2rem;
   --grid-y-gap: 0.5rem;
-  --primary: rgb(255,190,0);
+  --primary: rgb(255, 190, 0);
   --lorenz: rgb(255, 176, 102);
-  --primary-02: color-mix(in srgb,rgba(255,149,0,0.2),#f40 20%);
+  --primary-02: color-mix(in srgb, rgba(255, 149, 0, 0.2), #f40 20%);
   /* --primary: #ff3d00; */
   --inactive: #a7a7a7;
   --success: #96d800;
   --primary-darker: color-mix(in srgb, var(--primary), #000 10%);
-  --primary-lighter:  color-mix(in srgb,var(--primary),#fff 10%);
-  --primary-lightest: color-mix(in srgb,var(--primary),#fff 90%);
+  --primary-lighter: color-mix(in srgb, var(--primary), #fff 10%);
+  --primary-lightest: color-mix(in srgb, var(--primary), #fff 90%);
   --lines: rgba(255, 255, 255, 0.2);
-  --bg-dark: #110F10;
+  --bg-dark: #110f10;
   --bg-dark-light: rgba(36, 34, 34, 0.28);
   --bg-dark-lightest: rgba(66, 64, 64, 0.28);
-  --bg-dark-02: rgba(17,16,16, 0.2);
-  --bg-dark-05: rgba(17,16,16, 0.5);
+  --bg-dark-02: rgba(17, 16, 16, 0.2);
+  --bg-dark-05: rgba(17, 16, 16, 0.5);
   --blur-radial: 2px;
   --copy: #d3c4c4;
 }
-::selection{
+::selection {
   color: var(--bg-dark);
   background-color: var(--primary);
 }
@@ -119,10 +119,8 @@ body {
     linear-gradient(180deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 0 0,
     linear-gradient(270deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100% 0,
     linear-gradient(180deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100% 0,
-    linear-gradient(270deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100%
-      100%,
-    linear-gradient(0deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100%
-      100%,
+    linear-gradient(270deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100% 100%,
+    linear-gradient(0deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100% 100%,
     linear-gradient(90deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 0 100%,
     linear-gradient(0deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 0 100%;
 
@@ -130,7 +128,7 @@ body {
   background-size: var(--frame-bg-size) var(--frame-bg-size);
   border: var(--frame-bg-stroke-w) solid rgba(255, 255, 255, 0.2);
 }
-.fui-corners.animated{
+.fui-corners.animated {
   animation: slight-flickering 0.3s infinite alternate;
 }
 
@@ -169,22 +167,25 @@ body {
 
 .font-outline {
   --color: #949494;
-  text-shadow: -1px -1px 0 var(--color), 1px -1px 0 var(--color), -1px 1px 0 var(--color),
+  text-shadow:
+    -1px -1px 0 var(--color),
+    1px -1px 0 var(--color),
+    -1px 1px 0 var(--color),
     1px 1px 0 var(--color);
 }
-
 
 .intro-paragraph {
   @apply max-w-sm text-center text-xs text-white opacity-80;
   text-wrap: pretty;
 }
 
-
 /* BLOG PAGE */
 
-article{
-  .marquee, .marquee-tag, .marquee-dot {
-    transition: all .05s ease-in;
+article {
+  .marquee,
+  .marquee-tag,
+  .marquee-dot {
+    transition: all 0.05s ease-in;
   }
 }
 
@@ -200,9 +201,9 @@ article:hover {
   }
 }
 
-
 /* LENIS RECOMMENDED */
-html.lenis, html.lenis body {
+html.lenis,
+html.lenis body {
   height: auto;
 }
 
@@ -222,38 +223,38 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-@keyframes slight-flickering{
+@keyframes slight-flickering {
   0% {
     opacity: 0.85;
   }
-10% {
-  opacity: 1;
-}
-20% {
-  opacity: 0.95;
-}
-30% {
-  opacity: 1;
-}
-40% {
-  opacity: 0.8;
-}
-50% {
-  opacity: 1;
-}
-60% {
-  opacity: 0.9;
-}
-70% {
-  opacity: 1;
-}
-80% {
-  opacity: 0.85;
-}
-90% {
-  opacity: 1;
-}
-100% {
-  opacity: 0.9;
-}
+  10% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0.95;
+  }
+  30% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 0.9;
+  }
+  70% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.9;
+  }
 }

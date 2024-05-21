@@ -41,10 +41,7 @@ export default class Cursor {
     window.addEventListener('mousemove', this.onMouseMove.bind(this))
     window.addEventListener('touchmove', this.onTouchMove.bind(this))
     window.addEventListener('mousedown', this.onClick.bind(this))
-    window.addEventListener(
-      'show-cursor-message',
-      this.onShowMessage.bind(this),
-    )
+    window.addEventListener('show-cursor-message', this.onShowMessage.bind(this))
     document.body.classList.add('no-cursor')
 
     this.assignListeners()
@@ -120,17 +117,8 @@ export default class Cursor {
   }
 
   onShowMessage(e: CustomEvent<MessageShowEvent>) {
-    const {
-      message,
-      isError,
-      isSuccess,
-      timeout,
-      interval,
-      iterations,
-      delay,
-    } = e.detail
-    if (message.length > 1)
-      Typewriter.typewrite(this.textEl, message, iterations, interval)
+    const { message, isError, isSuccess, timeout, interval, iterations, delay } = e.detail
+    if (message.length > 1) Typewriter.typewrite(this.textEl, message, iterations, interval)
     else this.textEl.textContent = message
     if (isError) this.textEl.classList.add('error')
     else if (isSuccess) this.textEl.classList.add('success')

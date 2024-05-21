@@ -16,7 +16,7 @@ export default class ChromaticAberrationAnim {
     const els = Array.from($all('[data-aberration]'))
     this.elements = els.map((el) => {
       const value = Number(el.getAttribute('data-aberration'))
-      return {el, value: value }
+      return { el, value: value }
     })
   }
 
@@ -45,10 +45,7 @@ export default class ChromaticAberrationAnim {
         ${shiftY}px ${shiftXNeg}px 0 blue
       `
 
-      this.experience.renderer.chromaticAberrationEffect.offset.set(
-        shiftX / 1500,
-        shiftY / 1500,
-      )
+      this.experience.renderer.chromaticAberrationEffect.offset.set(shiftX / 1500, shiftY / 1500)
 
       el.style.filter = `blur(${blur}px)`
     }

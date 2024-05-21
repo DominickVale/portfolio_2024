@@ -1,13 +1,16 @@
 # TODOs
+
 - check @TODOS.
 - Animations ( don't forget the fake-code animations)
 - Reduced animations for prefer-reduced-motion
-- Optimize imports (no import * from ...)
+- Optimize imports (no import \* from ...)
 
 # REMINDERS
+
 - Sounds should mainly be comprised of lower frequencies, try to make them only hearable headphone users
 
 ## 🧞 Commands
+
 All commands are run from the root of the project, from a terminal:
 
 | Command                   | Action                                           |

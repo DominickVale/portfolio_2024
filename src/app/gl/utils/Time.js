@@ -1,35 +1,30 @@
 import Emitter from 'tiny-emitter'
 
-export default class Time extends Emitter
-{
-    constructor()
-    {
-        super()
+export default class Time extends Emitter {
+  constructor() {
+    super()
 
-        // Setup
-        this.start = Date.now()
-        this.current = this.start
-        this.elapsed = 0
-        this.delta = 16
+    // Setup
+    this.start = Date.now()
+    this.current = this.start
+    this.elapsed = 0
+    this.delta = 16
 
-        window.requestAnimationFrame(() =>
-        {
-            this.tick()
-        })
-    }
+    window.requestAnimationFrame(() => {
+      this.tick()
+    })
+  }
 
-    tick()
-    {
-        const currentTime = Date.now()
-        this.delta = currentTime - this.current
-        this.current = currentTime
-        this.elapsed = this.current - this.start
+  tick() {
+    const currentTime = Date.now()
+    this.delta = currentTime - this.current
+    this.current = currentTime
+    this.elapsed = this.current - this.start
 
-        this.emit('tick')
+    this.emit('tick')
 
-        window.requestAnimationFrame(() =>
-        {
-            this.tick()
-        })
-    }
+    window.requestAnimationFrame(() => {
+      this.tick()
+    })
+  }
 }

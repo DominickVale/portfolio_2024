@@ -5,7 +5,19 @@ import Footer from '../components/Footer.astro'
 import Contacts from '../components/Contacts.astro'
 import RadialMenu from '../components/RadialMenu.astro'
 import Cursor from '../components/Cursor.astro'
-import { ContactIcon, LabIcon, HomeIcon, WorksIcon, SettingsIcon, AboutIcon, BlogIcon, CopyIcon, ContextMenuIcon, DebugIcon, AudioIcon} from '../components/icons'
+import {
+  ContactIcon,
+  LabIcon,
+  HomeIcon,
+  WorksIcon,
+  SettingsIcon,
+  AboutIcon,
+  BlogIcon,
+  CopyIcon,
+  ContextMenuIcon,
+  DebugIcon,
+  AudioIcon,
+} from '../components/icons'
 import type { HTMLAttributes } from 'astro/types'
 
 interface Props extends HTMLAttributes<'div'> {
@@ -35,30 +47,21 @@ const { title, rowsMax, withContacts, class: classes, blurred, renderer, ...prop
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,200..900&family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
   </style>
-  <body id="root" class:list={[ "relative flex max-h-screen flex-col font-body overscroll-none w-full h-full", classes ] } {...props}>
-    <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-background-dark opacity-0 transition-opacity duration-1000 ease-in-out"
-    ></canvas>
-    { blurred && <div id="bg-blur" class="bg-blur-harder bg-transparent fixed inset-x-0 inset-y-0 z-[0]" />}
-    <Navbar/>
-    <div
-      class="z-10 h-full w-full relative flex-1 my-12"
-      data-taxi>
-      <main
-        data-taxi-view={renderer || ""}
-        class:list={[
-          'grid h-full w-full flex-1 grid-cols-12',
-          rowsMax && 'auto-rows-max',
-        ]}
-      >
+  <body id="root" class:list={['relative flex h-full max-h-screen w-full flex-col overscroll-none font-body', classes]} {...props}>
+    <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-background-dark opacity-0 transition-opacity duration-1000 ease-in-out"></canvas>
+    {blurred && <div id="bg-blur" class="bg-blur-harder fixed inset-x-0 inset-y-0 z-[0] bg-transparent" />}
+    <Navbar />
+    <div class="relative z-10 my-12 h-full w-full flex-1" data-taxi>
+      <main data-taxi-view={renderer || ''} class:list={['grid h-full w-full flex-1 grid-cols-12', rowsMax && 'auto-rows-max']}>
         <slot />
       </main>
-    {
-      withContacts && (
-        <div id="contacts" class="z-10 col-span-12 col-start-1 mt-8 grid min-h-[100vh] w-full flex-1 grid-cols-12">
-          <Contacts />
-        </div>
-      )
-    }
+      {
+        withContacts && (
+          <div id="contacts" class="z-10 col-span-12 col-start-1 mt-8 grid min-h-[100vh] w-full flex-1 grid-cols-12">
+            <Contacts />
+          </div>
+        )
+      }
     </div>
     <Footer />
     <div id="_icons" class="hidden">
@@ -69,19 +72,19 @@ const { title, rowsMax, withContacts, class: classes, blurred, renderer, ...prop
       <ContactIcon />
       <LabIcon />
       <SettingsIcon />
-      <CopyIcon/>
-      <ContextMenuIcon/>
-      <DebugIcon/>
-      <AudioIcon/>
+      <CopyIcon />
+      <ContextMenuIcon />
+      <DebugIcon />
+      <AudioIcon />
     </div>
     <RadialMenu id="text" size="calc(10rem + min(30vw, 10vh))" />
     <RadialMenu id="default" size="calc(10rem + 10vw)" />
     <RadialMenu id="default-blog" size="calc(10rem + 10vw)" />
-    <RadialMenu id="default-mobile" size="calc(10rem + 50vw)" mobile/>
+    <RadialMenu id="default-mobile" size="calc(10rem + 50vw)" mobile />
     <!-- <RadialMenu id="default-blog-mobile" size="calc(10rem + 50vw)" mobile/> -->
     <RadialMenu id="settings" size="calc(10rem + 5vw)" />
 
-    <Cursor/>
+    <Cursor />
   </body>
   <script>
     import '../app'

@@ -10,12 +10,12 @@ import BaseRenderer from './base'
 export default class WorksRenderer extends BaseRenderer {
   currIdx: number
   isDesktop: boolean
-  projects: Record<string, { element: HTMLElement; fontSize: number, image: string }>
+  projects: Record<string, { element: HTMLElement; fontSize: number; image: string }>
   pIds: string[]
   experience: Experience
   debouncedHandleResizeFn: Function
-  onWheelBound: (event: WheelEvent) => void;
-  onResizeBound: (event: UIEvent) => void;
+  onWheelBound: (event: WheelEvent) => void
+  onResizeBound: (event: UIEvent) => void
   tl: gsap.core.Timeline
   isFirstRender: boolean
   canChange: boolean
@@ -28,21 +28,21 @@ export default class WorksRenderer extends BaseRenderer {
 
   onEnter() {
     super.onEnter()
-    this.isFirstRender = true;
+    this.isFirstRender = true
     // user can change active/highlighted element. Resets on transitions complete
-    this.canChange = false;
+    this.canChange = false
     // run after the new content has been added to the Taxi container
-     this.currIdx = 0
-     this.isDesktop = window.innerWidth > 1024
-     this.projects = {}
-     this.pIds = []
+    this.currIdx = 0
+    this.isDesktop = window.innerWidth > 1024
+    this.projects = {}
+    this.pIds = []
 
     this.debouncedHandleResizeFn = debounce(this.handleResize.bind(this), 200)
 
-    this.onResizeBound = this.onResize.bind(this);
+    this.onResizeBound = this.onResize.bind(this)
 
-    window.addEventListener('wheel', this.handleActiveProject.bind(this));
-    window.addEventListener('resize', this.onResizeBound);
+    window.addEventListener('wheel', this.handleActiveProject.bind(this))
+    window.addEventListener('resize', this.onResizeBound)
     this.experience = new Experience()
   }
 
@@ -53,48 +53,58 @@ export default class WorksRenderer extends BaseRenderer {
     this.recalculateOthers()
     this.recalculateActive()
 
-    this.tl = gsap.timeline()
-    this.tl.to('.project-title span', {
-      opacity: 1,
-      duration: 0.05,
-      ease: 'linear',
-      stagger: {
-        repeat: 20,
-        each: 0.1,
-        ease: 'expo.in',
-      },
-    })
-      .to('#works-image', {
-        opacity: 1,
-        duration: 0.35,
-        ease: 'power4.out',
-        onComplete: () => {
-          this.experience.world.worksImage.show()
-          gsap.to(this.experience.world.worksImage.planeMat.uniforms.uStrength, {
-            value: 0.1,
-            duration: 2,
-            ease: 'power4.inOut',
+    //@ts-ignore
+    this.experience.resources.on('ready', () => {
+      this.experience.world.worksImage.show()
+      this.experience.world.worksImage.setImage(this.experience.resources.items[this.projects[this.currIdx].image])
+      this.tl = gsap.timeline()
+      this.tl
+        .to('.project-title span', {
+          opacity: 1,
+          duration: 0.05,
+          ease: 'linear',
+          stagger: {
+            repeat: 20,
+            each: 0.1,
+            ease: 'expo.in',
+          },
+        })
+        .to(
+          '#works-image',
+          {
+            opacity: 1,
+            duration: 0.35,
+            ease: 'power4.out',
             onComplete: () => {
-              this.canChange = true;
-            }
-          })
-        }
-      }, "<+50%") 
-      .add(this.fuiCornersAnimationActive, '<')
-      .to('.work-details', {
-        opacity: 1,
-        duration: 0.35,
-        ease: 'power4.out',
-      })
-      .then(() => {
-        this.updateProjectDetails()
-      })
+              this.isFirstRender = false
+              gsap.to(this.experience.world.worksImage.planeMat.uniforms.uStrength, {
+                value: 0.1,
+                duration: 2,
+                ease: 'power4.inOut',
+                onComplete: () => {
+                  this.canChange = true
+                },
+              })
+            },
+          },
+          '<+50%',
+        )
+        .add(this.fuiCornersAnimationActive, '<')
+        .to('.work-details', {
+          opacity: 1,
+          duration: 0.35,
+          ease: 'power4.out',
+        })
+        .then(() => {
+          this.updateProjectDetails()
+        })
+    })
   }
 
   onLeave() {
     // run before the transition.onLeave method is called
-    window.removeEventListener('wheel', this.onWheelBound);
-    window.removeEventListener('resize', this.onResizeBound);
+    window.removeEventListener('wheel', this.onWheelBound)
+    window.removeEventListener('resize', this.onResizeBound)
     this.experience.world.worksImage.hide()
     this.tl?.kill()
   }
@@ -105,9 +115,9 @@ export default class WorksRenderer extends BaseRenderer {
 
   ////////////////////////////////
 
-onResize(...args) {
-  this.debouncedHandleResizeFn(...args);
-}
+  onResize(...args) {
+    this.debouncedHandleResizeFn(...args)
+  }
 
   recalculateActive() {
     const resources = this.experience.resources.items
@@ -115,19 +125,14 @@ onResize(...args) {
     const highlightCorner = $('.highlighted-corner', activeProject.element)
     highlightCorner.classList.remove('hidden')
     activeProject.element.setAttribute('data-active', 'true')
-    activeProject.element.setAttribute('data-', 'true')
-    activeProject.element.style.fontSize =
-      this.projects[this.currIdx].fontSize + 'px'
+    activeProject.element.style.fontSize = this.projects[this.currIdx].fontSize + 'px'
 
-      if(this.isFirstRender){
-      this.experience.world.worksImage.setImage(resources[activeProject.image])
-      this.isFirstRender = false
-    } else {
+    if (!this.isFirstRender) {
       const planeMatUni = this.experience.world.worksImage.planeMat.uniforms
       //can't change el while transitioning
-      this.canChange = false;
+      this.canChange = false
       planeMatUni.uNextTexture.value = resources[activeProject.image]
-      planeMatUni.uProgress.value = 0.0;
+      planeMatUni.uProgress.value = 0.0
       const tl = gsap.timeline()
       tl.to(planeMatUni.uProgress, {
         value: 1,
@@ -135,17 +140,23 @@ onResize(...args) {
         ease: 'power4.inOut',
         onComplete: () => {
           planeMatUni.uTexture.value = resources[activeProject.image]
-          this.canChange = true;
-        }
-      }).to(planeMatUni.uStrength, {
-        value: 0.4,
-        duration: .09,
-        ease: 'power4.out',
-      }, '<').to(planeMatUni.uStrength, {
-        value: 0,
-        duration: .09,
-        ease: 'power4.in',
+          this.canChange = true
+        },
       })
+        .to(
+          planeMatUni.uStrength,
+          {
+            value: 0.4,
+            duration: 0.09,
+            ease: 'power4.out',
+          },
+          '<',
+        )
+        .to(planeMatUni.uStrength, {
+          value: 0,
+          duration: 0.09,
+          ease: 'power4.in',
+        })
     }
 
     if (this.isDesktop) {
@@ -179,9 +190,7 @@ onResize(...args) {
     this.pIds.forEach((id, i) => {
       const p = this.projects[id]
       p.element.setAttribute('data-active', 'false')
-      const newFontSize =
-        this.projects[i].fontSize /
-        Math.max(1, Math.abs(i - this.currIdx) + 1 / this.pIds.length)
+      const newFontSize = this.projects[i].fontSize / Math.max(1, Math.abs(i - this.currIdx) + 1 / this.pIds.length)
       const blur = Math.pow(Math.abs(i - this.currIdx), 2)
       gsap.to(p.element, {
         opacity: i === this.currIdx ? 1 : 0.5,
@@ -209,21 +218,15 @@ onResize(...args) {
   }
 
   recalculateBaseFontSizes() {
-    $all(this.isDesktop ? '.project-title' : '.project-title-mobile').forEach(
-      (p, i) => {
-        const innerText = $('span', p)
-        const newFontSize = fitTextToContainer(
-          innerText,
-          p,
-          window.innerWidth * 0.003,
-        )
-        this.projects[i] = {
-          element: p,
-          fontSize: newFontSize,
-          image: PROJECTS_LIST[i].image,
-        }
-      },
-    )
+    $all(this.isDesktop ? '.project-title' : '.project-title-mobile').forEach((p, i) => {
+      const innerText = $('span', p)
+      const newFontSize = fitTextToContainer(innerText, p, window.innerWidth * 0.003)
+      this.projects[i] = {
+        element: p,
+        fontSize: newFontSize,
+        image: PROJECTS_LIST[i].image,
+      }
+    })
   }
 
   updateProjectDetails() {
@@ -247,7 +250,7 @@ onResize(...args) {
   }
 
   handleActiveProject(e) {
-    if(!this.canChange) return
+    if (!this.canChange) return
     if (typeof e.deltaY !== 'undefined') {
       const direction = e.deltaY > 0 ? 'down' : 'up'
       if (direction === 'down') {

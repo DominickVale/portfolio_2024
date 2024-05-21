@@ -5,72 +5,44 @@ import Layout from '../../layouts/Layout.astro'
 ---
 
 <Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default" class="about">
-  <div
-    class="col-span-10 col-start-2 row-start-1 mt-12 flex flex-col md:col-span-6 md:col-start-2 md:row-start-1 md:mt-0"
-  >
+  <div class="col-span-10 col-start-2 row-start-1 mt-12 flex flex-col md:col-span-6 md:col-start-2 md:row-start-1 md:mt-0">
     <FakeLogs />
   </div>
 
-  <div
-    class="col-span-10 col-start-2 row-span-3 row-start-1 mb-32 flex h-full flex-col items-center justify-center pb-[10vh] md:pb-0"
-  >
-    <h2
-      class="mb-12 text-center text-base font-black tracking-button text-white"
-    >
+  <div class="col-span-10 col-start-2 row-span-3 row-start-1 mb-32 flex h-full flex-col items-center justify-center pb-[10vh] md:pb-0">
+    <h2 class="mb-12 text-center text-base font-black tracking-button text-white">
       I'M A<br />FRONT-END WEB DEVELOPER
     </h2>
     <div class="flex max-w-2xl flex-col md:ml-[7rem]">
       <div class="flex flex-col justify-between gap-12 md:flex-row">
         <div class="flex flex-col justify-between gap-10">
-          <p
-            class="intro-paragraph mx-auto h-auto md:h-24 md:min-w-64 md:text-left"
-          >
-            Lorem ipsum dolor sit amet consectetur. Interdum rutrum fermentum
-            ultrices dictum nisi etiam morbi tincidunt. Massa risus at sapien
-            tristique leo egestas Fermentum ut nulla curabitur odio nisl
-            malesuada fermentum. Amet eget diam elementum tellus nisi quisque
-            nisl suspendisse at. Massa risus at sapien tristique leo egestas
-            Fermentum ut nulla curabitur odio nisl malesuada fermentum.
+          <p class="intro-paragraph mx-auto h-auto md:h-24 md:min-w-64 md:text-left">
+            Lorem ipsum dolor sit amet consectetur. Interdum rutrum fermentum ultrices dictum nisi etiam morbi tincidunt. Massa risus at sapien
+            tristique leo egestas Fermentum ut nulla curabitur odio nisl malesuada fermentum. Amet eget diam elementum tellus nisi quisque nisl
+            suspendisse at. Massa risus at sapien tristique leo egestas Fermentum ut nulla curabitur odio nisl malesuada fermentum.
           </p>
-          <Btn href="/" class="hidden h-[4.5rem] w-52 md:flex justify-center bg-blur-harder" frame>OK</Btn
-          >
+          <Btn href="/" class="bg-blur-harder hidden h-[4.5rem] w-52 justify-center md:flex" frame>OK</Btn>
         </div>
 
         <div class="flex flex-col gap-10">
           <table class="text-xs md:w-80">
             <tbody>
-              <tr
-                class="text-wrap-pretty flex grid-cols-[5rem_1fr] flex-col items-center justify-center gap-1 text-center md:grid md:items-start"
-              >
-                <th class="pl-0 pr-3 text-primary-darker md:text-left"
-                  >SERVICES:</th
-                >
+              <tr class="text-wrap-pretty flex grid-cols-[5rem_1fr] flex-col items-center justify-center gap-1 text-center md:grid md:items-start">
+                <th class="pl-0 pr-3 text-primary-darker md:text-left">SERVICES:</th>
                 <td class="md:text-left">DEVELOPMENT && DESIGN</td>
-                <th class="pl-0 pr-3 text-primary-darker md:text-left"
-                  >COMPANY:</th
-                >
+                <th class="pl-0 pr-3 text-primary-darker md:text-left">COMPANY:</th>
                 <td class="md:text-left">YOURS, MAYBE?</td>
-                <th class="pl-0 pr-3 text-primary-darker md:text-left"
-                  >MAIN TECH:</th
-                >
-                <td class="md:text-left"
-                  >TYPESCRIPT, REACT, NEXTJS, REACT-NATIVE, THREEJS, TAILWIND,
-                  SCSS</td
-                >
-                <th class="pl-0 pr-3 text-primary-darker md:text-left"
-                  >TECH USED:</th
-                >
+                <th class="pl-0 pr-3 text-primary-darker md:text-left">MAIN TECH:</th>
+                <td class="md:text-left">TYPESCRIPT, REACT, NEXTJS, REACT-NATIVE, THREEJS, TAILWIND, SCSS</td>
+                <th class="pl-0 pr-3 text-primary-darker md:text-left">TECH USED:</th>
                 <td class="min-w-32 md:text-left">
-                  GRAPHQL + APOLLO + POTHOS, C/C++, ANDROID NDK, KOTLIN, PYTHON,
-                  BASH, DOCKER, HANDLEBARS, EXPRESSJS
+                  GRAPHQL + APOLLO + POTHOS, C/C++, ANDROID NDK, KOTLIN, PYTHON, BASH, DOCKER, HANDLEBARS, EXPRESSJS
                 </td>
               </tr>
             </tbody>
           </table>
 
-          <Btn href="/about/whoami" class="hidden h-[4.5rem] w-52 md:flex justify-center bg-blur-harder" frame
-            >WHO ARE YOU?</Btn
-          >
+          <Btn href="/about/whoami" class="bg-blur-harder hidden h-[4.5rem] w-52 justify-center md:flex" frame>WHO ARE YOU?</Btn>
         </div>
       </div>
     </div>

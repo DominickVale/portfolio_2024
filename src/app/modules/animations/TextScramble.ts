@@ -18,7 +18,7 @@ export default class TextScramble {
     })
   }
 
-  public reload(){
+  public reload() {
     TextScramble.init()
   }
 
@@ -26,8 +26,7 @@ export default class TextScramble {
     const originalText = el.getAttribute('data-text-scramble')
     if (!originalText) return
 
-    const id =
-      el.getAttribute('data-text-scramble-id') || Math.random().toString()
+    const id = el.getAttribute('data-text-scramble-id') || Math.random().toString()
     el.setAttribute('data-text-scramble-id', id)
 
     if (TextScramble.#elsIntervals[id]) {

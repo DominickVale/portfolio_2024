@@ -12,7 +12,10 @@ const Component = Astro.props.href ? 'a' : 'button'
     classes,
   ]}
 >
-  <Component class:list={["w-full h-full flex", bottom ? "justify-start items-end pl-3 pb-[0.225rem]" : "justify-center items-center", innerClass]} {...rest}>
+  <Component
+    class:list={['flex h-full w-full', bottom ? 'items-end justify-start pb-[0.225rem] pl-3' : 'items-center justify-center', innerClass]}
+    {...rest}
+  >
     <slot />
   </Component>
   {frame && <div class="fui-corners pointer-events-none" />}

@@ -4,7 +4,6 @@ import { $, $all, delay } from '../../utils'
 // this is cooler
 const CHARS = 'ᚠᚢᚦᚨᚩᚬᚭᚯᚰᚱᚲᚳᚴᚵᚶᚷᚸᚹᚺᚻᚼᚽᚾᚿᛀᛁᛂᛃᛄᛅᛆᛇᛈᛉᛊᛋᛌᛍᛎᛏᛐᛑᛒᛓᛔᛕᛖᛗᛘᛙᛚᛛᛜᛝᛞᛟᛠᛡᛢᛣᛤᛥᛦ<>-_\\/[]{}-=+*^?#________'
 
-
 export default class Typewriter {
   static #running: Record<string, any> = {}
 
@@ -19,15 +18,9 @@ export default class Typewriter {
     })
   }
 
-  public static async typewrite(
-    el: HTMLElement,
-    message?: string,
-    iterations?: number,
-    interval = 30,
-    customCharsSet?: string
-  ) {
+  public static async typewrite(el: HTMLElement, message?: string, iterations?: number, interval = 30, customCharsSet?: string) {
     const chars = customCharsSet || CHARS
-    if(el.getAttribute('data-typewriter-id')) {
+    if (el.getAttribute('data-typewriter-id')) {
       Typewriter.stop(el)
       await delay(100) // i don't like this one bit, but it'll do for now
     }
@@ -46,12 +39,12 @@ export default class Typewriter {
       const originalLetter = text[i]
       for (let j = 0; j < iter; j++) {
         if (!Typewriter.#running[id]) {
-          el.innerHTML = ""
+          el.innerHTML = ''
           el.removeAttribute('data-typewriter-id')
           return
         }
         let tmpTxt = currentText.map((l, idx) => {
-          if (idx > text.length - ( text.length / 3 ) ? idx > currentText.length - 2 : idx > currentText.length - 4 ) {
+          if (idx > text.length - text.length / 3 ? idx > currentText.length - 2 : idx > currentText.length - 4) {
             return `<span class="text-primary-lightest">${chars[Math.floor(Math.random() * chars.length)]}</span>`
           } else {
             return l
@@ -60,7 +53,7 @@ export default class Typewriter {
 
         el.innerHTML = tmpTxt.join('')
 
-        const newSpeed = speed * Math.pow(i, 1.2) / text.length
+        const newSpeed = (speed * Math.pow(i, 1.2)) / text.length
         await delay(newSpeed)
       }
       currentText.push(originalLetter)
@@ -71,7 +64,7 @@ export default class Typewriter {
   }
 
   public static stop(el: HTMLElement | string) {
-    const id = typeof el === "string" ? el : el.getAttribute('data-typewriter-id')
+    const id = typeof el === 'string' ? el : el.getAttribute('data-typewriter-id')
     if (Typewriter.#running[id]) {
       delete Typewriter.#running[id]
     }

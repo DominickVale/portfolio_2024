@@ -4,9 +4,7 @@ import ChromaticAberrationAnim from './ChromaticAberration'
 import type Cursor from '../Cursor'
 import type Experience from '../../gl/Experience'
 
-type EvtListenersContainer<T extends HTMLElement> = Partial<
-  Record<keyof HTMLElementEventMap, (ev: Event, el: T) => void>
->
+type EvtListenersContainer<T extends HTMLElement> = Partial<Record<keyof HTMLElementEventMap, (ev: Event, el: T) => void>>
 
 function getMockAnimationEvents(el): EvtListenersContainer<HTMLDivElement> {
   const svgs = el.querySelectorAll('svg')
@@ -34,10 +32,7 @@ function getMockAnimationEvents(el): EvtListenersContainer<HTMLDivElement> {
   }
 }
 
-function bindEvents(
-  el: HTMLElement,
-  container: EvtListenersContainer<HTMLElement>,
-) {
+function bindEvents(el: HTMLElement, container: EvtListenersContainer<HTMLElement>) {
   Object.entries(container).forEach(([key, value]) => {
     el.addEventListener(key, (ev) => value(ev, el))
   })

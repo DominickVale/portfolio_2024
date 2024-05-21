@@ -5,7 +5,6 @@ import frag from '../shaders/worksImage.frag'
 import vert from '../shaders/worksImage.vert'
 import { DigitalGlitch } from 'three/examples/jsm/Addons.js'
 
-
 const PERSPECTIVE = 1000
 const FOV = (180 * (2 * Math.atan(window.innerHeight / 2 / PERSPECTIVE))) / Math.PI
 
@@ -19,27 +18,27 @@ export default class WorksImage {
     this.firstRender = true
   }
 
-  init(){
-    const planeGeometry = new THREE.PlaneGeometry(1, 1, 100, 100);
+  init() {
+    const planeGeometry = new THREE.PlaneGeometry(1, 1, 100, 100)
 
-this.planeMat = new THREE.ShaderMaterial({
-    uniforms: {
+    this.planeMat = new THREE.ShaderMaterial({
+      uniforms: {
         uTime: { value: 0 },
         uProgress: { value: 1 },
         uTexture: { value: null },
         uNextTexture: { value: null },
         uImageSize: { value: new THREE.Vector2(1, 1) },
         uPlaneSize: { value: new THREE.Vector2(1, 1) },
-        uStrength: { value: 2.0},
-        uMouse: { value: new THREE.Vector2(0.0, 0.0) }
-    },
-    vertexShader: vert,
-    fragmentShader: frag,
-    transparent: true
-});
-    this.worksScene = new THREE.Scene();
+        uStrength: { value: 2.0 },
+        uMouse: { value: new THREE.Vector2(0.0, 0.0) },
+      },
+      vertexShader: vert,
+      fragmentShader: frag,
+      transparent: true,
+    })
+    this.worksScene = new THREE.Scene()
 
-    const imagePlane = new THREE.Mesh(planeGeometry, this.planeMat);
+    const imagePlane = new THREE.Mesh(planeGeometry, this.planeMat)
     this.worksScene.userData.plane = imagePlane
 
     const worksCamera = new THREE.PerspectiveCamera(FOV, this.sizes.aspectRatio, 1, 1000)
@@ -47,28 +46,28 @@ this.planeMat = new THREE.ShaderMaterial({
     this.worksScene.userData.camera = worksCamera
   }
 
-  show(){
-    if(this.isShown) return
-    if(this.firstRender) {
+  show() {
+    if (this.isShown) return
+    if (this.firstRender) {
       this.firstRender = false
       this.init()
     }
-    this.worksScene.add(this.worksScene.userData.plane);
+    this.worksScene.add(this.worksScene.userData.plane)
     this.isShown = true
     this.resize()
   }
 
-  hide(){
+  hide() {
     this.isShown = false
     this.worksScene?.remove(this.worksScene.userData.plane)
   }
 
-  resize(){
-    if(!this.isShown) return
-    const element = $("#works-image")
-    const plane = this.worksScene.userData.plane;
+  resize() {
+    if (!this.isShown) return
+    const element = $('#works-image')
+    const plane = this.worksScene.userData.plane
 
-    const rect = element.getBoundingClientRect();
+    const rect = element.getBoundingClientRect()
 
     const pos = {
       x: rect.left - window.innerWidth / 2 + rect.width / 2,
@@ -86,19 +85,19 @@ this.planeMat = new THREE.ShaderMaterial({
   }
 
   update(renderer, delta, elapsed) {
-    if(!this.isShown) return
+    if (!this.isShown) return
     this.planeMat.uniforms.uTime.value = elapsed * 100
     this.planeMat.uniforms.uMouse.value = new THREE.Vector2(this.experience.cursor.pos.x, this.experience.cursor.pos.y)
   }
 
-  afterRender(renderer, composer){
-    if(!this.isShown) return
-    const camera = this.worksScene.userData.camera;
-    renderer.render(this.worksScene, camera);
+  afterRender(renderer, composer) {
+    if (!this.isShown) return
+    const camera = this.worksScene.userData.camera
+    renderer.render(this.worksScene, camera)
   }
 
-  setImage(tex){
-    if(!this.isShown) return
+  setImage(tex) {
+    if (!this.isShown) return
     this.planeMat.uniforms.uTexture.value = tex
     this.planeMat.uniforms.uImageSize.value = new THREE.Vector2(tex.image.naturalWidth, tex.image.naturalHeight)
   }

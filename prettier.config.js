@@ -2,6 +2,7 @@
 export default {
   endOfLine: 'auto',
   semi: false,
+  printWidth: 150,
   singleQuote: true,
   plugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],
   overrides: [
@@ -18,4 +19,4 @@ export default {
       },
     },
   ],
-};
+}

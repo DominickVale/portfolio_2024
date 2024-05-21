@@ -31,8 +31,8 @@ export default class Debug {
     const colors = this.gui.addFolder('Colors')
     colors.addColor(this.params, 'lorenzColor').onChange(this.updateLorenzColor.bind(this))
     colors.addColor(this.params, 'primaryColor').onChange(this.updateCssVariables.bind(this))
-    colors.addColor(this.params, 'bgColor').onChange ( this.updateBgColor.bind(this) )
-    colors.add( this.params, 'blending', BLEND_TYPES ).onChange( this.updateBlending.bind(this) )
+    colors.addColor(this.params, 'bgColor').onChange(this.updateBgColor.bind(this))
+    colors.add(this.params, 'blending', BLEND_TYPES).onChange(this.updateBlending.bind(this))
     const postfx = this.gui.addFolder('Post-processing')
     postfx.add(this.params, 'bloomIntensity', 0, 100, 0.1).onChange(this.updateBloom.bind(this))
     postfx.add(this.params, 'bloomLuminanceThreshold', 0.0, 1.0, 0.001).onChange(this.updateBloom.bind(this))
@@ -49,14 +49,11 @@ export default class Debug {
     positioning.add(this.params, 'positionY', -50, 50).onChange(this.updatePosition.bind(this))
     positioning.add(this.params, 'positionZ', -50, 50).onChange(this.updatePosition.bind(this))
     const misc = this.gui.addFolder('Misc')
-    misc.add({ saveImage: () => this.shouldSaveImage = true }, 'saveImage').name('Save as Image')
+    misc.add({ saveImage: () => (this.shouldSaveImage = true) }, 'saveImage').name('Save as Image')
     misc.add(this, 'showFBOTextures', false).name('Show FBO Textures')
     misc.add(this, 'preset', LORENZ_PRESETS).onChange(this.setPreset.bind(this)).name('Preset')
 
-    this.controls = new OrbitControls(
-      this.experience.camera.instance,
-      this.experience.appEl,
-    )
+    this.controls = new OrbitControls(this.experience.camera.instance, this.experience.appEl)
     this.controls.enableDamping = true
     this.controls.dampingFactor = 0.05
     this.controls.enabled = false
@@ -78,21 +75,21 @@ export default class Debug {
   }
 
   update() {
-    if(this.stats){
+    if (this.stats) {
       this.stats.update()
     }
   }
 
-  setPreset(value){
-    this.params = {...this.params, ...value}
-    this.gui.controllersRecursive().forEach(c => {
-      if(c.parent._title === "Misc") return
+  setPreset(value) {
+    this.params = { ...this.params, ...value }
+    this.gui.controllersRecursive().forEach((c) => {
+      if (c.parent._title === 'Misc') return
       const newValue = this.params[c.property]
       c.setValue(newValue)
     })
   }
 
-  updateCssVariables(){
+  updateCssVariables() {
     document.documentElement.style.setProperty('--primary', this.params.primaryColor)
     document.documentElement.style.setProperty('--lorenz', this.params.lorenzColor)
     document.documentElement.style.setProperty('--bg-dark', this.params.bgColor)
@@ -100,7 +97,7 @@ export default class Debug {
     this.experience.renderer.fullScreenBg.material.uniforms.uColor.value = new THREE.Color(this.params.bgColor)
   }
 
-  updateBloom(){
+  updateBloom() {
     const bloom = this.experience.renderer.bloomEffect
     bloom.intensity = this.params.bloomIntensity
     bloom.luminanceMaterial.threshold = this.params.bloomLuminanceThreshold
@@ -130,17 +127,17 @@ export default class Debug {
     bufferMaterial.uniforms.uBeta.value = this.params.beta
   }
 
-  updateChromaticAberration(value){
+  updateChromaticAberration(value) {
     this.experience.renderer.chromaticAberrationEffect.offset.set(value, value)
   }
-  updateBgColor(value){
+  updateBgColor(value) {
     this.experience.renderer.fullScreenBg.material.uniforms.uColor.value = new THREE.Color(value)
   }
-  updateLorenzColor(value){
+  updateLorenzColor(value) {
     this.experience.world.attractor.renderMaterial.uniforms.uColor.value = new THREE.Color(value)
   }
 
-  updateBlending(value){
+  updateBlending(value) {
     this.experience.world.attractor.renderMaterial.blending = value
   }
 }

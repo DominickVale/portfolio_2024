@@ -7,25 +7,16 @@ type Props = {
 }
 
 const { id, size, mobile } = Astro.props
-const classMobile = "mobile md:hidden"
+const classMobile = 'mobile md:hidden'
 ---
 
-<div
-  id={id}
-  class={`radial-menu-wrapper radial-menu-hidden ${mobile ? classMobile : " "}`}
-  style=`--size: ${size};`
->
+<div id={id} class={`radial-menu-wrapper radial-menu-hidden ${mobile ? classMobile : ' '}`} style=`--size: ${size};`>
   <ul class="radial-menu">
-    <div
-      id={`radial-menu-thumb-${id}`}
-      class={`radial-menu-thumb ${mobile && 'mobile'}`}
-    >
+    <div id={`radial-menu-thumb-${id}`} class={`radial-menu-thumb ${mobile && 'mobile'}`}>
       <BrandIcon />
     </div>
     <svg class="radial-menu-shape" width="100%" height="100%">
-      <defs class="pointer-events-none"
-        ><mask width="110%" height="110%"> </mask>
-      </defs>
+      <defs class="pointer-events-none"><mask width="110%" height="110%"> </mask> </defs>
     </svg>
   </ul>
   <div class="radial-menu-bgs"></div>
@@ -64,11 +55,11 @@ const classMobile = "mobile md:hidden"
   .radial-menu-hidden:not(.mobile) {
     opacity: 0;
     pointer-events: none;
-    .radial-menu-thumb{
+    .radial-menu-thumb {
       pointer-events: none;
     }
   }
-  .radial-menu-hidden{
+  .radial-menu-hidden {
     pointer-events: none;
     .radial-menu-bgs,
     .radial-menu-item,
@@ -91,10 +82,7 @@ const classMobile = "mobile md:hidden"
     -webkit-mask: var(--mask);
     z-index: -1;
     &[data-highlighted='true'] {
-      background: radial-gradient(
-        white var(--progress),
-        rgba(255, 255, 255, 0.9) var(--progress)
-      );
+      background: radial-gradient(white var(--progress), rgba(255, 255, 255, 0.9) var(--progress));
     }
   }
   .radial-menu-item {
@@ -144,7 +132,9 @@ const classMobile = "mobile md:hidden"
     z-index: 10;
     touch-action: none;
     user-select: none;
-    svg { pointer-events: none; }
+    svg {
+      pointer-events: none;
+    }
   }
   .radial-menu-thumb.mobile {
     transform: translate(-50%, -50%) scale(1.5);
@@ -154,7 +144,7 @@ const classMobile = "mobile md:hidden"
     }
     &.pressed {
       @apply bg-white;
-      svg path{
+      svg path {
         @apply fill-background-dark;
       }
     }

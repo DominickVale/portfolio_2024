@@ -1,6 +1,6 @@
 <!-- this thing has a bunch of hacks since mdx + astro
 apparently isn't supposed to be used for anything more complex than a 1 column, simple blog layout -->
-<div class="flex flex-col gap-3 lg:gap-0 blog-section col-span-12 col-start-1 mt-[10vh] xl:mt-[20vh] lg:grid grid-cols-10">
+<div class="blog-section col-span-12 col-start-1 mt-[10vh] flex grid-cols-10 flex-col gap-3 lg:grid lg:gap-0 xl:mt-[20vh]">
   <slot />
   <!-- all the css in the children doesn't work -->
 </div>

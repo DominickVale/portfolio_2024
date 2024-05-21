@@ -13,17 +13,12 @@ const { title, tags, description, readTime, date, class: classes } = Astro.props
   <div class="gradient-overlay absolute left-0 top-0 h-full w-full"></div>
   <Marquee tags={tags} />
   <span class="mb-3">
-    <small
-      class="read-time relative ml-3 text-xxs sm:text-xs uppercase text-[rgba(255,255,255,0.77)]"
-      >{readTime}</small
-    >
-    <h3 class="article-title font-display text-2xl h-16 font-black">{title}</h3>
+    <small class="read-time relative ml-3 text-xxs uppercase text-[rgba(255,255,255,0.77)] sm:text-xs">{readTime}</small>
+    <h3 class="article-title h-16 font-display text-2xl font-black">{title}</h3>
   </span>
   <span>
-    <date class="relative text-xxs sm:text-xs uppercase text-[rgba(255,255,255,0.77)]"
-      >{date}</date
-    >
-    <p class="line-clamp-3 tall:line-clamp-none overflow-hidden text-xs sm:mt-1">{description}</p>
+    <date class="relative text-xxs uppercase text-[rgba(255,255,255,0.77)] sm:text-xs">{date}</date>
+    <p class="line-clamp-3 overflow-hidden text-xs sm:mt-1 tall:line-clamp-none">{description}</p>
   </span>
 </article>
 
@@ -43,11 +38,7 @@ const { title, tags, description, readTime, date, class: classes } = Astro.props
 
   .gradient-overlay {
     transition: all 0.25s ease-out;
-    background: radial-gradient(
-      20rem circle at var(--x) var(--y),
-      var(--primary-02),
-      transparent
-    );
+    background: radial-gradient(20rem circle at var(--x) var(--y), var(--primary-02), transparent);
     z-index: -1;
   }
 </style>

@@ -38,12 +38,8 @@ export default class Experience {
     this.canvas = _canvas
     this.appEl = document.getElementById('root')
     // get primary color from css global variables
-    this.primaryColor = getComputedStyle(this.appEl).getPropertyValue(
-      '--primary',
-    )
-    this.lorenzColor = getComputedStyle(this.appEl).getPropertyValue(
-      '--lorenz'
-    )
+    this.primaryColor = getComputedStyle(this.appEl).getPropertyValue('--primary')
+    this.lorenzColor = getComputedStyle(this.appEl).getPropertyValue('--lorenz')
     this.bgColor = getComputedStyle(this.appEl).getPropertyValue('--bg-dark')
     this.isMobile = isMobile()
 
@@ -69,7 +65,7 @@ export default class Experience {
       bloomLuminanceThreshold: 0,
       bloomLuminanceSmoothing: 0,
       bloomRadius: 0.64,
-      bloomBlendFunction: BlendFunction.MULTIPLY
+      bloomBlendFunction: BlendFunction.MULTIPLY,
     }
 
     // Setup
@@ -83,8 +79,8 @@ export default class Experience {
     this.renderer = new Renderer(this)
     this.world = new World(this)
 
-    this.camXto = gsap.quickTo(this.camera.instance.rotation, "x", { duration: 2, ease: "power3" })
-    this.camYto = gsap.quickTo(this.camera.instance.rotation, "y", { duration: 2, ease: "power3" })
+    this.camXto = gsap.quickTo(this.camera.instance.rotation, 'x', { duration: 2, ease: 'power3' })
+    this.camYto = gsap.quickTo(this.camera.instance.rotation, 'y', { duration: 2, ease: 'power3' })
 
     this.sizes.on('resize', () => {
       this.resize()
@@ -97,13 +93,12 @@ export default class Experience {
     window.addEventListener('mousemove', this.onMouseMove.bind(this))
   }
 
-
-  onMouseMove(){
-    if(this.isMobile) return;
+  onMouseMove() {
+    if (this.isMobile) return
     const { pos } = window.app.cursor
 
-    this.camXto(-( pos.y - this.sizes.width / 2 )/50000)
-    this.camYto(-( pos.x - this.sizes.width / 2 )/50000)
+    this.camXto(-(pos.y - this.sizes.width / 2) / 50000)
+    this.camYto(-(pos.x - this.sizes.width / 2) / 50000)
     this.camera.instance.updateProjectionMatrix()
   }
 
@@ -117,7 +112,7 @@ export default class Experience {
     const delta = this.clock.getDelta()
     const elapsed = this.clock.getElapsedTime()
     this.camera.update()
-    if(this.world.isReady){
+    if (this.world.isReady) {
       this.renderer.update(delta)
       this.world.update(this.renderer.instance, delta, elapsed)
       // @TODO: remove, use gsap

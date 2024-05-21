@@ -1,27 +1,13 @@
-import { BlendFunction } from "postprocessing"
+import { BlendFunction } from 'postprocessing'
 
-export const ICON_IDS = [
-  'home',
-  'works',
-  'about',
-  'blog',
-  'settings',
-  'brand',
-  'lab',
-  'copy',
-  'contact',
-  'context-menu',
-  'debug',
-  'audio'
-] as const
+export const ICON_IDS = ['home', 'works', 'about', 'blog', 'settings', 'brand', 'lab', 'copy', 'contact', 'context-menu', 'debug', 'audio'] as const
 
 export const SVGNS = 'http://www.w3.org/2000/svg'
 
 export const PROJECTS_LIST = [
   {
     name: 'ambientify',
-    linkWebsite:
-      'https://play.google.com/store/apps/details?id=com.dominickv.ambientify&hl=en_US',
+    linkWebsite: 'https://play.google.com/store/apps/details?id=com.dominickv.ambientify&hl=en_US',
     linkCase: '/blog/ambientify',
     image: 'ambientify1',
     data: {
@@ -33,8 +19,7 @@ export const PROJECTS_LIST = [
   },
   {
     name: 'vidra',
-    linkWebsite:
-      'https://web.archive.org/web/20210727234808/https://www.vidra.com/',
+    linkWebsite: 'https://web.archive.org/web/20210727234808/https://www.vidra.com/',
     linkCase: '/blog/vidra',
     image: 'ecorp',
     data: {
@@ -71,22 +56,21 @@ export const PROJECTS_LIST = [
 ] as const
 
 export const LORENZ_PRESETS = {
-  'default': {
-      lorenzColor: 'rgb(255, 176, 102)',
-      bloomIntensity: 14,
-      bloomLuminanceThreshold: 0,
-      bloomLuminanceSmoothing: 0,
-      bloomRadius: 0.64,
-      bloomBlendFunction: BlendFunction.MULTIPLY
+  default: {
+    lorenzColor: 'rgb(255, 176, 102)',
+    bloomIntensity: 14,
+    bloomLuminanceThreshold: 0,
+    bloomLuminanceSmoothing: 0,
+    bloomRadius: 0.64,
+    bloomBlendFunction: BlendFunction.MULTIPLY,
   },
-  'golden2': {
-      lorenzColor: 'rgb(255,124,0)',
-      chromaticAberration: 0,
-      bloomIntensity: 8,
-      bloomLuminanceThreshold: 0,
-      bloomLuminanceSmoothing: 0,
-      bloomRadius: 0.85,
-      bloomBlendFunction: BlendFunction.ADD
-  }
-
+  golden2: {
+    lorenzColor: 'rgb(255,124,0)',
+    chromaticAberration: 0,
+    bloomIntensity: 8,
+    bloomLuminanceThreshold: 0,
+    bloomLuminanceSmoothing: 0,
+    bloomRadius: 0.85,
+    bloomBlendFunction: BlendFunction.ADD,
+  },
 }
