@@ -23,6 +23,7 @@ export const PROJECTS_LIST = [
     linkWebsite:
       'https://play.google.com/store/apps/details?id=com.dominickv.ambientify&hl=en_US',
     linkCase: '/blog/ambientify',
+    image: 'ambientify1',
     data: {
       role: 'EVERYTHING',
       client: 'N/A',
@@ -35,6 +36,7 @@ export const PROJECTS_LIST = [
     linkWebsite:
       'https://web.archive.org/web/20210727234808/https://www.vidra.com/',
     linkCase: '/blog/vidra',
+    image: 'ecorp',
     data: {
       role: 'FRONT-END',
       client: 'Bemind.me',
@@ -46,6 +48,7 @@ export const PROJECTS_LIST = [
     name: 'e-corp ctf',
     linkWebsite: 'https://ecorp.ctf.intigriti.io',
     linkCase: '/blog/e-corp-ctf',
+    image: 'ecorp',
     data: {
       role: 'EVERYTHING',
       client: 'Intigriti.com',
@@ -57,6 +60,7 @@ export const PROJECTS_LIST = [
     name: 'portfolio v1',
     linkWebsite: 'https://domenicovale.netlify.app',
     linkCase: '/blog/portfolio-v1',
+    image: 'reggaecat',
     data: {
       role: 'EVERYTHING',
       client: 'N/A',

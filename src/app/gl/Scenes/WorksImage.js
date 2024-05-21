@@ -25,18 +25,13 @@ export default class WorksImage {
 this.planeMat = new THREE.ShaderMaterial({
     uniforms: {
         uTime: { value: 0 },
+        uProgress: { value: 1 },
         uTexture: { value: null },
-        uOffset: { value: new THREE.Vector2(0.01, 0.009) },
-        uAspect: { value: 1 },
+        uNextTexture: { value: null },
         uImageSize: { value: new THREE.Vector2(1, 1) },
         uPlaneSize: { value: new THREE.Vector2(1, 1) },
-        uAlpha: { value: 1 },
-        uColorSeparation: { value: true }, // Add this uniform
-        uAmp: { value: 0.1 }, // Add this uniform
-        uGlitchSpeed: { value: 0.16 }, // Add this uniform
-        uBarSize: { value: 0.05 }, // Add this uniform
-        uNumSlices: { value: 10.0 }, // Add this uniform
-        uCrossfade: { value: 1.0 } // Add this uniform
+        uStrength: { value: 2.0},
+        uMouse: { value: new THREE.Vector2(0.0, 0.0) }
     },
     vertexShader: vert,
     fragmentShader: frag,
@@ -80,7 +75,7 @@ this.planeMat = new THREE.ShaderMaterial({
       y: -rect.top + window.innerHeight / 2 - rect.height / 2,
     }
 
-    plane.scale.set(rect.width - 50, rect.height - 50, 1)
+    plane.scale.set(rect.width, rect.height, 1)
     plane.position.set(pos.x, pos.y, 1)
 
     const tex = this.resources.items.reggaecat
@@ -92,12 +87,19 @@ this.planeMat = new THREE.ShaderMaterial({
 
   update(renderer, delta, elapsed) {
     if(!this.isShown) return
-    this.planeMat.uniforms.uTime.value = elapsed
+    this.planeMat.uniforms.uTime.value = elapsed * 100
+    this.planeMat.uniforms.uMouse.value = new THREE.Vector2(this.experience.cursor.pos.x, this.experience.cursor.pos.y)
   }
 
   afterRender(renderer, composer){
     if(!this.isShown) return
     const camera = this.worksScene.userData.camera;
     renderer.render(this.worksScene, camera);
+  }
+
+  setImage(tex){
+    if(!this.isShown) return
+    this.planeMat.uniforms.uTexture.value = tex
+    this.planeMat.uniforms.uImageSize.value = new THREE.Vector2(tex.image.naturalWidth, tex.image.naturalHeight)
   }
 }

@@ -10,14 +10,15 @@ import BaseRenderer from './base'
 export default class WorksRenderer extends BaseRenderer {
   currIdx: number
   isDesktop: boolean
-  projects: Record<string, { element: HTMLElement; fontSize: number }>
+  projects: Record<string, { element: HTMLElement; fontSize: number, image: string }>
   pIds: string[]
   experience: Experience
-  debouncedHandleActiveFn: Function
   debouncedHandleResizeFn: Function
   onWheelBound: (event: WheelEvent) => void;
   onResizeBound: (event: UIEvent) => void;
   tl: gsap.core.Timeline
+  isFirstRender: boolean
+  canChange: boolean
 
   initialLoad() {
     super.initialLoad()
@@ -27,19 +28,20 @@ export default class WorksRenderer extends BaseRenderer {
 
   onEnter() {
     super.onEnter()
+    this.isFirstRender = true;
+    // user can change active/highlighted element. Resets on transitions complete
+    this.canChange = false;
     // run after the new content has been added to the Taxi container
      this.currIdx = 0
      this.isDesktop = window.innerWidth > 1024
      this.projects = {}
      this.pIds = []
 
-    this.debouncedHandleActiveFn = debounce(this.handleActiveProject.bind(this), 200)
     this.debouncedHandleResizeFn = debounce(this.handleResize.bind(this), 200)
 
-    this.onWheelBound = this.onWheel.bind(this);
     this.onResizeBound = this.onResize.bind(this);
 
-    window.addEventListener('wheel', this.onWheelBound);
+    window.addEventListener('wheel', this.handleActiveProject.bind(this));
     window.addEventListener('resize', this.onResizeBound);
     this.experience = new Experience()
   }
@@ -68,8 +70,16 @@ export default class WorksRenderer extends BaseRenderer {
         ease: 'power4.out',
         onComplete: () => {
           this.experience.world.worksImage.show()
+          gsap.to(this.experience.world.worksImage.planeMat.uniforms.uStrength, {
+            value: 0.1,
+            duration: 2,
+            ease: 'power4.inOut',
+            onComplete: () => {
+              this.canChange = true;
+            }
+          })
         }
-      }, "<+50%")
+      }, "<+50%") 
       .add(this.fuiCornersAnimationActive, '<')
       .to('.work-details', {
         opacity: 1,
@@ -94,15 +104,13 @@ export default class WorksRenderer extends BaseRenderer {
   }
 
   ////////////////////////////////
-onWheel(...args) {
-  this.debouncedHandleActiveFn(...args);
-}
 
 onResize(...args) {
   this.debouncedHandleResizeFn(...args);
 }
 
   recalculateActive() {
+    const resources = this.experience.resources.items
     const activeProject = this.projects[this.currIdx]
     const highlightCorner = $('.highlighted-corner', activeProject.element)
     highlightCorner.classList.remove('hidden')
@@ -110,6 +118,35 @@ onResize(...args) {
     activeProject.element.setAttribute('data-', 'true')
     activeProject.element.style.fontSize =
       this.projects[this.currIdx].fontSize + 'px'
+
+      if(this.isFirstRender){
+      this.experience.world.worksImage.setImage(resources[activeProject.image])
+      this.isFirstRender = false
+    } else {
+      const planeMatUni = this.experience.world.worksImage.planeMat.uniforms
+      //can't change el while transitioning
+      this.canChange = false;
+      planeMatUni.uNextTexture.value = resources[activeProject.image]
+      planeMatUni.uProgress.value = 0.0;
+      const tl = gsap.timeline()
+      tl.to(planeMatUni.uProgress, {
+        value: 1,
+        duration: 0.25,
+        ease: 'power4.inOut',
+        onComplete: () => {
+          planeMatUni.uTexture.value = resources[activeProject.image]
+          this.canChange = true;
+        }
+      }).to(planeMatUni.uStrength, {
+        value: 0.4,
+        duration: .09,
+        ease: 'power4.out',
+      }, '<').to(planeMatUni.uStrength, {
+        value: 0,
+        duration: .09,
+        ease: 'power4.in',
+      })
+    }
 
     if (this.isDesktop) {
       const p = activeProject.element
@@ -183,6 +220,7 @@ onResize(...args) {
         this.projects[i] = {
           element: p,
           fontSize: newFontSize,
+          image: PROJECTS_LIST[i].image,
         }
       },
     )
@@ -209,6 +247,7 @@ onResize(...args) {
   }
 
   handleActiveProject(e) {
+    if(!this.canChange) return
     if (typeof e.deltaY !== 'undefined') {
       const direction = e.deltaY > 0 ? 'down' : 'up'
       if (direction === 'down') {

@@ -14,4 +14,9 @@ export default [
     type: 'texture',
     path: '/reggaecat.jpg',
   },
+  {
+    name: 'ambientify1',
+    type: 'texture',
+    path: '/ambientify1.png',
+  },
 ]

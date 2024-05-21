@@ -30,6 +30,7 @@ export default class Experience {
     // Singleton
     if (instance) return instance
     instance = this
+    this.cursor = cursor
 
     // Global access
     window.experience = this
@@ -81,7 +82,6 @@ export default class Experience {
     this.camera = new Camera(this)
     this.renderer = new Renderer(this)
     this.world = new World(this)
-    this.cursor = cursor
 
     this.camXto = gsap.quickTo(this.camera.instance.rotation, "x", { duration: 2, ease: "power3" })
     this.camYto = gsap.quickTo(this.camera.instance.rotation, "y", { duration: 2, ease: "power3" })
