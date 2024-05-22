@@ -12,6 +12,8 @@ import {
   KernelSize,
   RenderPass,
   SelectiveBloomEffect,
+  TextureEffect,
+  SavePass
 } from 'postprocessing'
 
 export default class Renderer {
@@ -61,14 +63,22 @@ export default class Renderer {
     const chromaticAberrationEffect = new ChromaticAberrationEffect()
     this.chromaticAberrationEffect = chromaticAberrationEffect
     chromaticAberrationEffect.offset = new THREE.Vector2(0, 0)
+
+    const savePass = new SavePass();
     this.blurPass = new KawaseBlurPass({
-      height: 500,
       kernelSize: KernelSize.VERY_LARGE,
     })
-    this.blurPass.enabled = false
-    this.composer.addPass(this.blurPass)
+    this.textureEffect = new TextureEffect({
+			texture: savePass.renderTarget.texture
+		});
+    const texturePass = new EffectPass(this.camera.instance, this.textureEffect);
+    this.blurPass.scale = 0
+    this.blurPass.enabled = true
     this.composer.addPass(new EffectPass(this.camera.instance, this.chromaticAberrationEffect))
     this.composer.addPass(new EffectPass(this.camera.instance, this.bloomEffect))
+    this.composer.addPass(savePass)
+    this.composer.addPass(this.blurPass)
+    this.composer.addPass(texturePass)
     this.createBackground()
     this.resize()
   }

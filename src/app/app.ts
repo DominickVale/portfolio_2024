@@ -9,6 +9,8 @@ import { Core as TaxiCore } from '@unseenco/taxi'
 import DefaultRenderer from './modules/renderers/base'
 import DefaultTransition from './modules/transitions/base'
 import WorksRenderer from './modules/renderers/WorksRenderer'
+import FromWorkTransition from './modules/transitions/fromWorks'
+import ToWorkTransition from './modules/transitions/toWorks'
 
 export default class App {
   experience: Experience
@@ -29,6 +31,8 @@ export default class App {
       reloadCssFilter: (element) => true,
       transitions: {
         default: DefaultTransition,
+        fromWorks: FromWorkTransition,
+        toWorks: ToWorkTransition
       },
       renderers: {
         default: DefaultRenderer,
@@ -39,6 +43,8 @@ export default class App {
       this.scrambles.reload()
       this.cursor.reload()
     })
+    this.taxi.addRoute('/works', '.*', 'fromWorks')
+    this.taxi.addRoute('.*', '/works', 'toWorks')
     Animations.init(this.cursor, this.experience)
   }
 

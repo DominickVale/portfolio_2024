@@ -29,7 +29,7 @@ export default class WorksImage {
         uNextTexture: { value: null },
         uImageSize: { value: new THREE.Vector2(1, 1) },
         uPlaneSize: { value: new THREE.Vector2(1, 1) },
-        uStrength: { value: 2.0 },
+        uStrength: { value: 3.0 },
         uMouse: { value: new THREE.Vector2(0.0, 0.0) },
       },
       vertexShader: vert,

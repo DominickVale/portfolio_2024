@@ -46,6 +46,129 @@ export default class WorksRenderer extends BaseRenderer {
     this.experience = new Experience()
   }
 
+  revealImage() {
+    this.experience.world.worksImage.show()
+    this.experience.world.worksImage.setImage(this.experience.resources.items[this.projects[this.currIdx].image])
+    const renderer = this.experience.renderer
+    const params = this.experience.params
+    const attractor = this.experience.world.attractor
+    renderer.blurPass.enabled = true
+
+    const attractorPosTl = gsap
+      .timeline()
+      .to(
+        attractor.points.position,
+        {
+          x: params.positionX - 36.2,
+          y: params.positionY - 2,
+          z: params.positionZ + 8,
+          duration: 2,
+          ease: 'power2.inOut',
+        },
+        '<',
+      )
+      .to(
+        attractor.points.rotation,
+        {
+          y: 0.565486677646163,
+          z: -0.980176907920016,
+          duration: 2,
+          ease: 'power2.inOut',
+        },
+        '<',
+      )
+    const attractorUniformsTl = gsap
+      .timeline()
+      .to(
+        params,
+        {
+          speed: 70,
+          duration: 0.8,
+          ease: 'power4.inOut',
+          onComplete: () => {
+            gsap.to(params, {
+                speed: 20,
+                duration: 1.5,
+                ease: 'power2.in',
+              },
+            )
+          },
+        },
+        '<',
+      )
+      .to(
+        attractor.bufferMaterial.uniforms.uSigma,
+        {
+          value: -8,
+          duration: 0.01,
+          ease: 'power2.out',
+        },
+        '<',
+      )
+
+    this.tl = gsap.timeline({
+      onComplete: () => {
+        this.updateProjectDetails()
+      },
+    })
+
+    this.tl
+      .add(attractorPosTl)
+      .add(attractorUniformsTl, '<')
+      .to('.project-title span', {
+        opacity: 1,
+        duration: 0.05,
+        ease: 'linear',
+        stagger: {
+          repeat: 20,
+          each: 0.1,
+          ease: 'expo.in',
+        },
+      })
+      .to(renderer.blurPass, {
+        scale: 0.2,
+        duration: 0.8,
+        ease: 'circ.in',
+      }, "<")
+      .to(
+        renderer.textureEffect.blendMode.opacity,
+        {
+          value: 0,
+          duration: 0.8,
+          ease: 'circ.in',
+        },
+        '<',
+      )
+      .to(
+        this.experience.world.worksImage.planeMat.uniforms.uStrength,
+        {
+          value: 0.1,
+          duration: 2.5,
+          ease: 'power4.inOut',
+          onComplete: () => {
+            this.isFirstRender = false
+            this.canChange = true
+          },
+        },
+        '<',
+      )
+      .to(
+        '#works-image',
+        {
+          opacity: 1,
+          duration: 0.35,
+          ease: 'power4.out',
+        },
+        '<',
+      )
+      .add(this.fuiCornersAnimationActive, '<+50%')
+      .to('.work-details', {
+        opacity: 1,
+        duration: 0.35,
+        ease: 'power4.out',
+      })
+  }
+
   onEnterCompleted() {
     // run after the transition.onEnter has fully completed
     this.recalculateBaseFontSizes()
@@ -53,60 +176,18 @@ export default class WorksRenderer extends BaseRenderer {
     this.recalculateOthers()
     this.recalculateActive()
 
-    //@ts-ignore
-    this.experience.resources.on('ready', () => {
-      this.experience.world.worksImage.show()
-      this.experience.world.worksImage.setImage(this.experience.resources.items[this.projects[this.currIdx].image])
-      this.tl = gsap.timeline()
-      this.tl
-        .to('.project-title span', {
-          opacity: 1,
-          duration: 0.05,
-          ease: 'linear',
-          stagger: {
-            repeat: 20,
-            each: 0.1,
-            ease: 'expo.in',
-          },
-        })
-        .to(
-          '#works-image',
-          {
-            opacity: 1,
-            duration: 0.35,
-            ease: 'power4.out',
-            onComplete: () => {
-              this.isFirstRender = false
-              gsap.to(this.experience.world.worksImage.planeMat.uniforms.uStrength, {
-                value: 0.1,
-                duration: 2,
-                ease: 'power4.inOut',
-                onComplete: () => {
-                  this.canChange = true
-                },
-              })
-            },
-          },
-          '<+50%',
-        )
-        .add(this.fuiCornersAnimationActive, '<')
-        .to('.work-details', {
-          opacity: 1,
-          duration: 0.35,
-          ease: 'power4.out',
-        })
-        .then(() => {
-          this.updateProjectDetails()
-        })
-    })
+    if (this.experience.resources.isReady) {
+      this.revealImage()
+    } else {
+      //@ts-ignore
+      this.experience.resources.on('ready', this.revealImage.bind(this))
+    }
   }
 
   onLeave() {
     // run before the transition.onLeave method is called
     window.removeEventListener('wheel', this.onWheelBound)
     window.removeEventListener('resize', this.onResizeBound)
-    this.experience.world.worksImage.hide()
-    this.tl?.kill()
   }
 
   onLeaveCompleted() {
@@ -283,7 +364,7 @@ export default class WorksRenderer extends BaseRenderer {
     const base = '.project-title[data-active="true"] .fui-corners'
     fuiCornersTl.to(base, {
       opacity: 1,
-      duration: 0.05,
+      duration: 0.065,
       repeat: 6,
     })
   }

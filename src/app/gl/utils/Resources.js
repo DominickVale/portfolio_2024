@@ -10,6 +10,7 @@ export default class Resources extends Emitter {
 
     this.items = {}
     this.toLoad = this.sources.length
+    this.isReady = false
     this.loaded = 0
 
     this.setLoaders()
@@ -49,6 +50,7 @@ export default class Resources extends Emitter {
 
     if (this.loaded === this.toLoad) {
       this.emit('ready')
+      this.isReady = true
     }
   }
 }
