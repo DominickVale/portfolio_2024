@@ -30,7 +30,7 @@ export default class App {
     this.typewriter = new Typewriter()
     window.app = this
     this.taxi = new TaxiCore({
-      allowInterruption: true,
+      allowInterruption: false,
       reloadCssFilter: (element) => true,
       transitions: {
         default: DefaultTransition,
