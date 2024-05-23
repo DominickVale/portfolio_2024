@@ -179,7 +179,6 @@ export default class WorksRenderer extends BaseRenderer {
     if (this.experience.resources.isReady) {
       this.revealImage()
     } else {
-      //@ts-ignore
       this.experience.resources.on('ready', this.revealImage.bind(this))
     }
   }

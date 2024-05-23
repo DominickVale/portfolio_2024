@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import Emitter from 'tiny-emitter'
+import { TinyEmitter } from 'tiny-emitter'
 
-export default class Resources extends Emitter {
+export default class Resources extends TinyEmitter {
   constructor(sources) {
     super()
 

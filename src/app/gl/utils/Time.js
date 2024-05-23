@@ -1,6 +1,6 @@
-import Emitter from 'tiny-emitter'
+import { TinyEmitter } from 'tiny-emitter'
 
-export default class Time extends Emitter {
+export default class Time extends TinyEmitter {
   constructor() {
     super()
 

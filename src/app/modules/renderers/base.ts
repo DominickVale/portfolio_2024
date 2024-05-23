@@ -5,6 +5,7 @@ import { $all, $ } from '../../utils'
 export default class BaseRenderer extends Renderer {
   navLinks: HTMLAnchorElement[]
   initialLoad(): void {
+    super.initialLoad()
     this.navLinks = Array.from($all('nav li a')) as HTMLAnchorElement[]
     $('#navbar').addEventListener('click', (e) => {
       const clickedEl = e.target as HTMLElement
@@ -25,7 +26,11 @@ export default class BaseRenderer extends Renderer {
       }
     })
 
-    const enterTL = gsap.timeline({}).from(this.navLinks, {
+    const enterTL = gsap.timeline({
+      onComplete: () => {
+        window.app.isTransitioning = false
+      }
+    }).from(this.navLinks, {
       opacity: 0,
       duration: 0.08,
       ease: 'elastic.in',
@@ -43,11 +48,13 @@ export default class BaseRenderer extends Renderer {
   onEnterCompleted() {
     // run after the transition.onEnter has fully completed
     console.log('renderer onEnterCompleted')
+    window.app.isTransitioning = false
   }
 
   onLeave() {
     // run before the transition.onLeave method is called
     console.log('renderer onLeave')
+    window.app.isTransitioning = true
   }
 
   onLeaveCompleted() {

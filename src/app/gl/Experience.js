@@ -94,8 +94,8 @@ export default class Experience {
   }
 
   onMouseMove() {
-    if (this.isMobile) return
-    const { pos } = window.app.cursor
+    if (this.isMobile || !this.cursor) return
+    const { pos } = this.cursor
 
     this.camXto(-(pos.y - this.sizes.width / 2) / 50000)
     this.camYto(-(pos.x - this.sizes.width / 2) / 50000)

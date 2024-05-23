@@ -19,13 +19,16 @@ export default class App {
   scrambles: TextScramble
   typewriter: Typewriter
   taxi: TaxiCore
+  isTransitioning: boolean
 
   constructor(public debug = false) {
+    this.isTransitioning = true
     this.cursor = new Cursor()
     this.experience = new Experience($('#webgl') as HTMLCanvasElement, this.cursor)
     this.menus = new Menus(this.onToggleDebug.bind(this))
     this.scrambles = new TextScramble()
     this.typewriter = new Typewriter()
+    window.app = this
     this.taxi = new TaxiCore({
       allowInterruption: true,
       reloadCssFilter: (element) => true,

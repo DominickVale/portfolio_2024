@@ -21,7 +21,6 @@ export default class Cursor {
   isMobile: boolean
   animations: Array<() => void>
   els: HTMLElement[]
-  cursorMessageEvtController: AbortController
 
   constructor(public speed = 0.25) {
     this.isMobile = isMobile()
@@ -54,6 +53,17 @@ export default class Cursor {
     Typewriter.stop(this.textEl)
   }
 
+  abortCursorMessage(el: HTMLElement, showEmptyMessage: boolean) {
+    const delayID = el.getAttribute('data-cursor-delay-id')
+    if (showEmptyMessage) {
+      showCursorMessage({ message: '' })
+    }
+    if (delayID) {
+      clearTimeout(Number(delayID))
+      Typewriter.stop(this.textEl)
+    }
+  }
+
   assignListeners() {
     const els = Array.from($all('[data-cursor-message]', document))
     this.els = els
@@ -64,36 +74,33 @@ export default class Cursor {
       const interval = Number(el.getAttribute('data-cursor-interval'))
       const iterations = Number(el.getAttribute('data-cursor-iterations'))
       const type = el.getAttribute('data-cursor-type')
+      const oldPage = window.location.href
 
       el.addEventListener('mouseenter', (e) => {
         const delayID = setTimeout(() => {
-          showCursorMessage({
-            message,
-            timeout,
-            interval,
-            iterations,
-            isSuccess: type === 'success',
-            isError: type === 'error',
-          })
+          if (!window.app.isTransitioning && oldPage == window.location.href) {
+            showCursorMessage({
+              message,
+              timeout,
+              interval,
+              iterations,
+              isSuccess: type === 'success',
+              isError: type === 'error',
+            })
+          }
         }, delay)
         el.setAttribute('data-cursor-delay-id', delayID.toString())
       })
 
       el.addEventListener('mouseout', () => {
-        const delayID = el.getAttribute('data-cursor-delay-id')
-        if (timeout <= 0) {
-          showCursorMessage({ message: '' })
-        }
-        if (delayID) {
-          clearTimeout(Number(delayID))
-          Typewriter.stop(this.textEl)
-        }
+        this.abortCursorMessage(el, timeout <= 0)
       })
     })
   }
 
   reload() {
     this.assignListeners()
+    Typewriter.stop(this.textEl)
   }
 
   addAnimation(fn: () => void) {
