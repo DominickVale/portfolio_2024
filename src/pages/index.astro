@@ -12,7 +12,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
   <section class="col-span-10 col-start-2 row-span-4 row-start-2 flex flex-col content-start justify-end text-xs taller:pt-[17vh]">
     <div class="mt-4 flex justify-between sm:text-left">
       <div class="">
-        <h2 class="text-primary">> whoami</h2>
+        <h2 class="text-primary">whoami</h2>
         <p class="mb-3 select-none text-stone-300 sm:max-w-64 md:select-all" data-menu-trigger="text">
           I’m just the quiet, value-centered guy that gets the work done. My interests range from front-end web development all the way down to
           reverse engineering, to mountain biking. Sounds interesting?
@@ -24,7 +24,6 @@ import NextPageBtn from '../components/NextPageBtn.astro'
           data-cursor-delay="1000"
           data-cursor-message="You should probably check this out"
           data-cursor-timeout="0"
-          data-cursor-interval="30"
           data-text-scramble="READ MORE">READ MORE</Btn
         >
       </div>
@@ -32,9 +31,8 @@ import NextPageBtn from '../components/NextPageBtn.astro'
         <NextPageBtn
           class="p-2 text-inactive hover:text-white"
           data-cursor-delay="1000"
-          data-cursor-message="Let's go, in 'n out.<br/>2 minutes adventure."
-          data-cursor-timeout="0"
-          data-cursor-interval="35">NEXT</NextPageBtn
+          data-cursor-message="Let's\ngo, in 'n out.<br/>2 minutes adventure."
+          data-cursor-timeout="0">NEXT</NextPageBtn
         >
       </div>
     </div>
@@ -42,9 +40,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
       class="ml-[-0.05em] mt-14 text-nowrap font-display text-[9.2vw] font-black leading-[100%]"
       data-cursor-delay="2000"
       data-cursor-message="My actual name is Domenico"
-      data-cursor-iterations="3"
       data-cursor-timeout="0"
-      data-cursor-interval="40"
       data-aberration="1.3"
     >
       DOMINICK VALE
@@ -65,8 +61,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
             data-cursor-delay="100"
             data-cursor-message="(full-time or not)"
             data-cursor-timeout="2500"
-            data-cursor-type="success"
-            data-cursor-interval="20">AVAILABLE</span
+            data-cursor-type="success">AVAILABLE</span
           ></StatusItem
         >
       </ul>
@@ -78,7 +73,6 @@ import NextPageBtn from '../components/NextPageBtn.astro'
           data-cursor-delay="2000"
           data-cursor-message="My mother says i'm<br/>really good with computers."
           data-cursor-timeout="0"
-          data-cursor-interval="40"
         >
           COMING SOON :)
         </p>

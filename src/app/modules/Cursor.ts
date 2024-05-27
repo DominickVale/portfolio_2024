@@ -10,6 +10,8 @@ export type MessageShowEvent = {
   interval?: number
   iterations?: number
   delay?: number
+  speed?: number
+  charClass?: string
 }
 
 export default class Cursor {
@@ -69,9 +71,10 @@ export default class Cursor {
     this.els = els
     els.forEach((el) => {
       const message = el.getAttribute('data-cursor-message')
+      const charClass = el.getAttribute('data-cursor-char-class')
       const timeout = Number(el.getAttribute('data-cursor-timeout'))
       const delay = Number(el.getAttribute('data-cursor-delay')) || 0
-      const interval = Number(el.getAttribute('data-cursor-interval'))
+      const speed = Number(el.getAttribute('data-cursor-speed'))
       const iterations = Number(el.getAttribute('data-cursor-iterations'))
       const type = el.getAttribute('data-cursor-type')
       const oldPage = window.location.href
@@ -82,7 +85,8 @@ export default class Cursor {
             showCursorMessage({
               message,
               timeout,
-              interval,
+              speed,
+              charClass,
               iterations,
               isSuccess: type === 'success',
               isError: type === 'error',
@@ -124,8 +128,8 @@ export default class Cursor {
   }
 
   onShowMessage(e: CustomEvent<MessageShowEvent>) {
-    const { message, isError, isSuccess, timeout, interval, iterations, delay } = e.detail
-    if (message.length > 1) Typewriter.typewrite(this.textEl, message, iterations, interval)
+    const { message, isError, isSuccess, timeout, speed, charClass} = e.detail
+    if (message.length > 1) Typewriter.typewrite(this.textEl, message, speed, charClass)
     else this.textEl.textContent = message
     if (isError) this.textEl.classList.add('error')
     else if (isSuccess) this.textEl.classList.add('success')

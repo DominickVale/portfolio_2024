@@ -11,6 +11,7 @@ import DefaultTransition from './modules/transitions/base'
 import WorksRenderer from './modules/renderers/WorksRenderer'
 import FromWorkTransition from './modules/transitions/fromWorks'
 import ToWorkTransition from './modules/transitions/toWorks'
+import BlogRenderer from './modules/renderers/BlogRenderer'
 
 export default class App {
   experience: Experience
@@ -40,6 +41,7 @@ export default class App {
       renderers: {
         default: DefaultRenderer,
         works: WorksRenderer,
+        blog: BlogRenderer,
       },
     })
     this.taxi.on('NAVIGATE_IN', ({ to, trigger }) => {

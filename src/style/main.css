@@ -9,7 +9,7 @@
   --lorenz: rgb(255, 176, 102);
   --primary-02: color-mix(in srgb, rgba(255, 149, 0, 0.2), #f40 20%);
   /* --primary: #ff3d00; */
-  --inactive: #a7a7a7;
+  --inactive: #a0a0a0;
   --success: #96d800;
   --primary-darker: color-mix(in srgb, var(--primary), #000 10%);
   --primary-lighter: color-mix(in srgb, var(--primary), #fff 10%);
