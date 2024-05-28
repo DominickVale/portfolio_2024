@@ -1,4 +1,5 @@
 import type { Vec2 } from '../types'
+import gsap from 'gsap'
 import { $, $all, isMobile, lerp, showCursorMessage } from '../utils'
 import Typewriter from './animations/Typewriter'
 
@@ -7,11 +8,11 @@ export type MessageShowEvent = {
   isError?: boolean
   isSuccess?: boolean
   timeout?: number
-  interval?: number
-  iterations?: number
   delay?: number
   speed?: number
   charClass?: string
+  ease?: gsap.EaseString | gsap.EaseFunction
+  maxScrambleChars?: number
 }
 
 export default class Cursor {
@@ -75,7 +76,7 @@ export default class Cursor {
       const timeout = Number(el.getAttribute('data-cursor-timeout'))
       const delay = Number(el.getAttribute('data-cursor-delay')) || 0
       const speed = Number(el.getAttribute('data-cursor-speed'))
-      const iterations = Number(el.getAttribute('data-cursor-iterations'))
+      const ease = el.getAttribute('data-cursor-ease')
       const type = el.getAttribute('data-cursor-type')
       const oldPage = window.location.href
 
@@ -86,8 +87,9 @@ export default class Cursor {
               message,
               timeout,
               speed,
+              ease,
               charClass,
-              iterations,
+              maxScrambleChars: message.length > 10 ? undefined : Math.ceil(message.length / 5),
               isSuccess: type === 'success',
               isError: type === 'error',
             })
@@ -128,8 +130,8 @@ export default class Cursor {
   }
 
   onShowMessage(e: CustomEvent<MessageShowEvent>) {
-    const { message, isError, isSuccess, timeout, speed, charClass} = e.detail
-    if (message.length > 1) Typewriter.typewrite(this.textEl, message, speed, charClass)
+    const { message, isError, isSuccess, timeout, speed, charClass, ease, maxScrambleChars } = e.detail
+    if (message.length > 1) Typewriter.typewrite(this.textEl, { message, speed, charClass, ease, maxScrambleChars })
     else this.textEl.textContent = message
     if (isError) this.textEl.classList.add('error')
     else if (isSuccess) this.textEl.classList.add('success')

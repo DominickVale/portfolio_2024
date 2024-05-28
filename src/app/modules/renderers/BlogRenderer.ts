@@ -1,10 +1,10 @@
-import { $, $all, debounce, fitTextToContainerScr } from '../../utils'
+import { $, $all, debounce, fitTextToContainerScr, showCursorMessage } from '../../utils'
 import gsap from 'gsap'
-gsap.registerPlugin(TypewriterPlugin)
 
 import Experience from '../../gl/Experience'
 import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
+gsap.registerPlugin(TypewriterPlugin)
 
 export default class BlogRenderer extends BaseRenderer {
   currIdx: number
@@ -14,7 +14,7 @@ export default class BlogRenderer extends BaseRenderer {
   experience: Experience
   debouncedHandleResizeFn: Function
   onResizeBound: (event: UIEvent) => void
-  tl: gsap.core.Timeline
+  tlStack: gsap.core.Timeline[]
   isFirstRender: boolean
   canChange: boolean
   articles: HTMLElement[]
@@ -37,6 +37,7 @@ export default class BlogRenderer extends BaseRenderer {
     const subtitle = $('#blog-header h2')
     this.articles = Array.from($all('.blog-article'))
     this.aIds = this.articles.map((a) => a.id)
+    this.tlStack = []
 
     this.articles.forEach((article) => {
       const articleTitleEl = $('.article-title', article)
@@ -122,6 +123,9 @@ export default class BlogRenderer extends BaseRenderer {
   }
 
   ////////////////////////////////
+  onHoverArticle(e) {
+    console.log(e.target)
+  }
   handleMouseMove(event) {
     const gradientOverlay = $('.gradient-overlay', event.currentTarget)
     const rect = event.currentTarget.getBoundingClientRect()
@@ -174,15 +178,27 @@ export default class BlogRenderer extends BaseRenderer {
     const fuiCornersActive = $('.fui-corners-2', active)
     const fuiCornersOld = $('.fui-corners-2', oldActive)
 
+    this.tlStack.forEach((tl) => {
+      tl.seek('end')
+      tl.kill()
+    })
+    this.tlStack = []
+
+    active.classList.add('active')
+
     if (oldActive) {
+      oldActive.classList.remove('active')
       gsap
-        .timeline()
+        .timeline({})
         .to($('.article-description', oldActive), { height: 0 })
         .to(
           $('.gradient-overlay', oldActive),
           {
             alpha: 0,
             duration: 0.2,
+            onComplete: () => {
+              this.canChange = true
+            },
           },
           '<',
         )
@@ -201,63 +217,65 @@ export default class BlogRenderer extends BaseRenderer {
     gradientOverlay.style.setProperty('--x', '50%')
     gradientOverlay.style.setProperty('--y', '50%')
 
-    setTimeout(() => {
-      this.canChange = true
-    }, 350)
-
-    gsap
-      .timeline({})
-      .to($('.article-description p', active), {
-        typewrite: {
-          charClass: 'text-primary-lightest drop-shadow-glow',
-          maxScrambleChars: 3,
-        },
-        duration: 2,
-        ease: 'circ.out',
-      })
-      .from(
-        active,
-        {
-          alpha: 0,
-          repeat: 6,
-          duration: 0.06,
-        },
-        '<',
-      )
-      .fromTo(
-        fuiCornersActive,
-        { scale: 0 },
-        {
-          scale: 1,
-          duration: 0.3,
-        },
-        '<+50%',
-      )
-      .to(
-        fuiCornersActive,
-        {
-          alpha: 1,
-          repeat: 6,
-          duration: 0.06,
-        },
-        '<+50%',
-      )
-      .to(
-        gradientOverlay,
-        {
-          alpha: 0.1,
-          duration: 0.2,
-        },
-        '<',
-      )
-      .to(
-        $('.article-description', active),
-        {
+    this.tlStack.push(
+      gsap
+        .timeline()
+        .to($('.article-description', active), {
           height: 'auto',
           duration: 0.25,
-        },
-        '<',
-      )
+        })
+        .to(
+          $('.article-description p', active),
+          {
+            typewrite: {
+              charClass: 'text-primary-lightest drop-shadow-glow',
+              maxScrambleChars: 3,
+            },
+            duration: 2,
+            ease: 'circ.out',
+          },
+          '<',
+        )
+        .from(
+          active,
+          {
+            alpha: 0.5,
+            repeat: 6,
+            duration: 0.045,
+          },
+          '<',
+        )
+        .fromTo(
+          fuiCornersActive,
+          { scale: 0 },
+          {
+            scale: 1,
+            duration: 0.3,
+          },
+          '<+50%',
+        )
+        .to(
+          fuiCornersActive,
+          {
+            alpha: 1,
+            repeat: 6,
+            duration: 0.06,
+          },
+          '<+50%',
+        )
+        .to(
+          gradientOverlay,
+          {
+            alpha: 0.1,
+            duration: 0.2,
+            onComplete: () => {
+              this.canChange = true
+            },
+          },
+          '<',
+        )
+        .addLabel('end'),
+    )
     this.oldIdx = this.currIdx
   }
 

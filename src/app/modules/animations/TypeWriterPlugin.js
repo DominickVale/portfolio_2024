@@ -1,4 +1,4 @@
-import { TextPlugin, clamp } from "gsap/all"
+import { TextPlugin, clamp } from 'gsap/all'
 const { splitInnerHTML } = TextPlugin
 
 const CHARS = 'ᚠᚢᚦᚨᚩᚬᚭᚯᚰᚱᚲᚳᚴᚵᚶᚷᚸᚹᚺᚻᚼᚽᚾᚿᛀᛁᛂᛃᛄᛅᛆᛇᛈᛉᛊᛋᛌᛍᛎᛏᛐᛑᛒᛓᛔᛕᛖᛗᛘᛙᛚᛛᛜᛝᛞᛟᛠᛡᛢᛣᛤᛥᛦ<>-_\\/[]{}-=+*^?#________'
@@ -18,15 +18,21 @@ export const TypewriterPlugin = {
 
     data.target = target
     _tempDiv || (_tempDiv = document.createElement('div'))
-    _tempDiv.innerHTML = typeof value.value === 'string' ? value.value : target.innerHTML
+    // using original content prevents the typewrite from using the progressing animation to set the text
+    // as the next value when the animation is interrupted
+    let originalContent = target.getAttribute('data-typewrite-content')
+    if (!originalContent) {
+      target.setAttribute('data-typewrite-content', target.innerHTML)
+    }
+    _tempDiv.innerHTML = typeof value.value === 'string' ? value.value : originalContent || target.innerHTML
     text = splitInnerHTML(_tempDiv, delimiter, false, preserveSpaces)
-    const newSpeed = Math.min(0.05 / value.speed * text.length, value.maxDuration || 9999)
+    const newSpeed = Math.min((0.05 / value.speed) * text.length, value.maxDuration || 9999)
     value.speed && tween.duration(newSpeed)
     data.speed = newSpeed
     data.text = text
     data._props.push('text')
     data.maxScrambleChars = value.maxScrambleChars || 4
-    data.charClass = value.charClass 
+    data.charClass = value.charClass
     data.duration = tween.vars.duration
   },
   render(progress, data) {
@@ -50,7 +56,7 @@ export const TypewriterPlugin = {
     if (progress) {
       const randomChar = () => `<span class="${charClass}">${CHARS[Math.floor(Math.random() * CHARS.length)]}</span>`
       if (i === 0) {
-        str = ""
+        str = ''
       } else if (i >= l) {
         str = text.join(delimiter)
       } else if ((speed || duration) * dp < 0.9) {

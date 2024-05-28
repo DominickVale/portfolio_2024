@@ -12,7 +12,10 @@ const allPosts = await getCollection('blog')
 <Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default" renderer="blog">
   <section id="blog-header" class="relative col-span-10 col-start-2">
     <div class="relative my-8 flex h-max flex-col sm:my-0 sm:flex-row">
-      <h1 class="mt-[2vh] font-display text-[15vw] font-black leading-[100%] md:text-8xl lg:text-[calc(5vw+6.2vh)] tall:mt-[6vh] taller:mt-[10vh]">
+      <h1
+        class="mt-[2vh] font-display text-[15vw] font-black leading-[100%] md:text-8xl lg:text-[calc(5vw+6.2vh)] tall:mt-[6vh] taller:mt-[10vh]"
+        data-aberration="0.8"
+      >
         BLOG
       </h1>
       <div
@@ -33,7 +36,7 @@ const allPosts = await getCollection('blog')
   </section>
 
   <section
-    class="posts-container max-w-screen no-scrollbar col-span-10 col-start-2 row-start-2 flex max-h-[70vh] min-h-28 flex-col items-center pb-24 sm:col-span-12 sm:col-start-1 sm:max-h-none sm:flex-row sm:items-start sm:overflow-x-scroll sm:px-[8vw] sm:pb-0 pt-3"
+    class="posts-container max-w-screen no-scrollbar col-span-10 col-start-2 row-start-2 flex max-h-[70vh] min-h-28 flex-col items-center pb-24 pt-3 sm:col-span-12 sm:col-start-1 sm:max-h-none sm:flex-row sm:items-start sm:overflow-x-scroll sm:px-[8vw] sm:pb-0"
   >
     {
       allPosts.map((post, i) => (
@@ -90,5 +93,11 @@ const allPosts = await getCollection('blog')
     .marquee-dot {
       background-color: var(--bg-dark);
     }
+  }
+
+  .blog-article.active .marquee > span,
+  .blog-article:hover .marquee > span,
+  .blog-article:focus .marquee > span {
+    animation: marquee 30s infinite linear;
   }
 </style>

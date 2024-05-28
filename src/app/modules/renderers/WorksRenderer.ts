@@ -312,19 +312,19 @@ export default class WorksRenderer extends BaseRenderer {
     const activeProject = PROJECTS_LIST[this.currIdx]
     const roleEls = $all('.work-details-role')
     roleEls.forEach((r) => {
-      Typewriter.typewrite(r, activeProject.data.role)
+      Typewriter.typewrite(r, {message: activeProject.data.role })
     })
     const clientEls = $all('.work-details-client')
     clientEls.forEach((r) => {
-      Typewriter.typewrite(r, activeProject.data.client)
+      Typewriter.typewrite(r, {message: activeProject.data.client})
     })
     const yearEls = $all('.work-details-year')
     yearEls.forEach((r) => {
-      Typewriter.typewrite(r, activeProject.data.year)
+      Typewriter.typewrite(r, {message: activeProject.data.year})
     })
     const techEls = $all('.work-details-tech')
     techEls.forEach((r) => {
-      Typewriter.typewrite(r, activeProject.data.tech)
+      Typewriter.typewrite(r, {message: activeProject.data.tech})
     })
   }
 

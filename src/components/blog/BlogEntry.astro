@@ -9,8 +9,12 @@ const { title, tags, description, readTime, date, class: classes } = Astro.props
     'bg-blur-harder relative flex h-[16rem] w-full flex-col justify-center bg-transparent p-6 sm:w-[19rem] sm:p-12 tall:h-[21rem] tall:w-[21rem]',
     classes,
   ]}
+  data-cursor-message="Open"
+  data-cursor-timeout="0"
+  data-cursor-speed="0.2"
+  data-cursor-ease="power2.inOut"
 >
-  <div class="fui-corners-2 opacity-0 pointer-events-none absolute bottom-[-.65rem] left-[-.62rem] right-[-.6rem] top-[-.6rem]">
+  <div class="fui-corners-2 pointer-events-none absolute bottom-[-.65rem] left-[-.62rem] right-[-.6rem] top-[-.55rem] opacity-0">
     <div class="relative h-full w-full">
       <svg
         class="absolute bottom-0 right-0 h-3 w-3"
@@ -63,15 +67,15 @@ const { title, tags, description, readTime, date, class: classes } = Astro.props
     </div>
   </div>
 
-  <div class="absolute left-0 top-0 h-8 w-full overflow-hidden">
+  <div class="pointer-events-none absolute left-0 top-0 h-8 w-full overflow-hidden">
     <Marquee tags={tags} />
   </div>
-  <div class="gradient-overlay absolute left-0 top-0 h-full w-full"></div>
-  <span class="mb-5">
+  <div class="gradient-overlay pointer-events-none absolute left-0 top-0 h-full w-full"></div>
+  <span class="pointer-events-none mb-5">
     <small class="read-time relative ml-3 text-xxs uppercase tracking-wider text-inactive">{readTime}</small>
     <h3 class="article-title h-16 font-display text-2xl font-black">{title}</h3>
   </span>
-  <span class="flex flex-col gap-1">
+  <span class="pointer-events-none flex flex-col gap-1">
     <date class="relative text-xxs uppercase tracking-wider text-inactive">{date}</date>
     <div class="article-description h-0 overflow-hidden">
       <p class="line-clamp-3 min-h-24 text-xs text-copy tall:line-clamp-none">{description}</p>

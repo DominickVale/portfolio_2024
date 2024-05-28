@@ -6,18 +6,13 @@ gsap.registerPlugin(TypewriterPlugin)
 export default class Typewriter {
   static #running: Record<string, any> = {}
 
-  constructor() {
-    this.init()
-  }
+  constructor() { }
 
-  private init() {
-    const els = Array.from($all('[data-typewriter-scramble]')) as HTMLElement[]
-    els.forEach((el) => {
-      el.addEventListener('mouseover', () => Typewriter.typewrite(el))
-    })
-  }
-
-  public static async typewrite(el: HTMLElement, message?: string, speed?: number, charClass?: string) {
+  public static async typewrite(
+    el: HTMLElement,
+    opts?: { message?: string; speed?: number; charClass?: string; ease?: gsap.EaseString | gsap.EaseFunction; maxScrambleChars?: number },
+  ) {
+    const { message = '', speed = 0.8, charClass, ease, maxScrambleChars } = opts
     if (el.getAttribute('data-typewriter-id')) {
       Typewriter.stop(el)
       await delay(100) // i don't like this one bit, but it'll do for now
@@ -42,8 +37,9 @@ export default class Typewriter {
         value: message,
         speed: speed || 0.8,
         charClass: charClass || 'text-primary-lightest',
+        maxScrambleChars,
       },
-      ease: 'power4.inOut',
+      ease: ease || 'power4.inOut',
     })
   }
 

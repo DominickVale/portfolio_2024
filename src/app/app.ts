@@ -12,6 +12,7 @@ import WorksRenderer from './modules/renderers/WorksRenderer'
 import FromWorkTransition from './modules/transitions/fromWorks'
 import ToWorkTransition from './modules/transitions/toWorks'
 import BlogRenderer from './modules/renderers/BlogRenderer'
+import FromBlogTransition from './modules/transitions/fromBlog'
 
 export default class App {
   experience: Experience
@@ -36,7 +37,8 @@ export default class App {
       transitions: {
         default: DefaultTransition,
         fromWorks: FromWorkTransition,
-        toWorks: ToWorkTransition
+        toWorks: ToWorkTransition,
+        fromBlog: FromBlogTransition
       },
       renderers: {
         default: DefaultRenderer,
@@ -49,6 +51,7 @@ export default class App {
       this.cursor.reload()
     })
     this.taxi.addRoute('/works', '.*', 'fromWorks')
+    this.taxi.addRoute('/blog', '.*', 'fromBlog')
     this.taxi.addRoute('.*', '/works', 'toWorks')
     Animations.init(this.cursor, this.experience)
   }

@@ -9,15 +9,43 @@ type Props = {
 const { tags, class: classes } = Astro.props
 ---
 
-<div
-  class:list={['marquee absolute left-0 right-0 top-0 flex pt-1.5 min-w-max flex-nowrap items-center gap-3 bg-background-dark-05 text-xxs text-white', classes]}
->
-  {
-    tags.map((t) => (
-      <>
-        <div class="marquee-dot h-[0.2rem] w-[0.2rem] rounded-full bg-white opacity-70" />
-        <span class="marquee-tag relative ml-1">{t}</span>
-      </>
-    ))
-  }
+<div class:list={['marquee-container absolute left-0 right-0 top-0 min-w-max bg-background-dark-05 pt-1.5 text-xxs text-white', classes]}>
+  <div class="marquee flex gap-3">
+    {
+      Array.from(Array(5).keys()).map((_) => (
+        <span class="flex flex-nowrap items-center gap-3">
+          {tags.map((t) => (
+            <>
+              <span class="marquee-tag">{t}</span>
+              <div class="marquee-dot" />
+            </>
+          ))}
+        </span>
+      ))
+    }
+  </div>
 </div>
+
+<style is:global>
+  .marquee-tag {
+    position: relative;
+    @apply ml-1;
+  }
+
+  .marquee-dot {
+    height: 0.2rem;
+    width: 0.2rem;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 70%;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-200%);
+    }
+  }
+</style>

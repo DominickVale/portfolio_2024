@@ -131,28 +131,6 @@ body {
   background-size: var(--frame-bg-size) var(--frame-bg-size);
   border: var(--frame-bg-stroke-w) solid rgba(255, 255, 255, 0.2);
 }
-.fui-corners--variant {
-  --frame-bg-stroke-w: 1px;
-  --frame-bg-size: 6px;
-  --color: white;
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  background:
-    linear-gradient(90deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 0 0,
-    linear-gradient(180deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 0 0,
-    linear-gradient(270deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100% 0,
-    linear-gradient(180deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100% 0,
-    linear-gradient(270deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100% 100%,
-    linear-gradient(0deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100% 100%,
-    linear-gradient(90deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 0 100%,
-    linear-gradient(0deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 0 100%;
-
-  background-repeat: no-repeat;
-  background-size: var(--frame-bg-size) var(--frame-bg-size);
-}
 .fui-corners.animated {
   animation: slight-flickering 0.3s infinite alternate;
 }
