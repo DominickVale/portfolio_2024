@@ -7,9 +7,10 @@
   --grid-y-gap: 0.5rem;
   --primary: rgb(255, 190, 0);
   --lorenz: rgb(255, 176, 102);
-  --primary-02: color-mix(in srgb, rgba(255, 149, 0, 0.2), #f40 20%);
+  --primary-02: color-mix(in srgb, var(--primary), var(--lorenz) 100%);
   /* --primary: #ff3d00; */
   --inactive: #a0a0a0;
+  --label: #D7D7D7;
   --success: #96d800;
   --primary-darker: color-mix(in srgb, var(--primary), #000 10%);
   --primary-lighter: color-mix(in srgb, var(--primary), #fff 10%);
@@ -22,7 +23,9 @@
   --bg-dark-05: rgba(17, 16, 16, 0.5);
   --blur-radial: 2px;
   --copy: #d3c4c4;
+  --golden-glow: 0 0 4px color-mix(in srgb, transparent, var(--primary) 80%);
 }
+
 ::selection {
   color: var(--bg-dark);
   background-color: var(--primary);
@@ -128,6 +131,28 @@ body {
   background-size: var(--frame-bg-size) var(--frame-bg-size);
   border: var(--frame-bg-stroke-w) solid rgba(255, 255, 255, 0.2);
 }
+.fui-corners--variant {
+  --frame-bg-stroke-w: 1px;
+  --frame-bg-size: 6px;
+  --color: white;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background:
+    linear-gradient(90deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 0 0,
+    linear-gradient(180deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 0 0,
+    linear-gradient(270deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100% 0,
+    linear-gradient(180deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100% 0,
+    linear-gradient(270deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100% 100%,
+    linear-gradient(0deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 100% 100%,
+    linear-gradient(90deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 0 100%,
+    linear-gradient(0deg, var(--color) var(--frame-bg-stroke-w), transparent 0) 0 100%;
+
+  background-repeat: no-repeat;
+  background-size: var(--frame-bg-size) var(--frame-bg-size);
+}
 .fui-corners.animated {
   animation: slight-flickering 0.3s infinite alternate;
 }
@@ -177,28 +202,6 @@ body {
 .intro-paragraph {
   @apply max-w-sm text-center text-xs text-white opacity-80;
   text-wrap: pretty;
-}
-
-/* BLOG PAGE */
-
-article {
-  .marquee,
-  .marquee-tag,
-  .marquee-dot {
-    transition: all 0.05s ease-in;
-  }
-}
-
-article:hover {
-  .marquee {
-    background-color: white;
-  }
-  .marquee-tag {
-    color: var(--bg-dark);
-  }
-  .marquee-dot {
-    background-color: var(--bg-dark);
-  }
 }
 
 /* LENIS RECOMMENDED */

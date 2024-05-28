@@ -1,4 +1,4 @@
-import { TextPlugin } from "gsap/all"
+import { TextPlugin, clamp } from "gsap/all"
 const { splitInnerHTML } = TextPlugin
 
 const CHARS = 'ᚠᚢᚦᚨᚩᚬᚭᚯᚰᚱᚲᚳᚴᚵᚶᚷᚸᚹᚺᚻᚼᚽᚾᚿᛀᛁᛂᛃᛄᛅᛆᛇᛈᛉᛊᛋᛌᛍᛎᛏᛐᛑᛒᛓᛔᛕᛖᛗᛘᛙᛚᛛᛜᛝᛞᛟᛠᛡᛢᛣᛤᛥᛦ<>-_\\/[]{}-=+*^?#________'
@@ -27,16 +27,16 @@ export const TypewriterPlugin = {
     data._props.push('text')
     data.maxScrambleChars = value.maxScrambleChars || 4
     data.charClass = value.charClass 
+    data.duration = tween.vars.duration
   },
   render(progress, data) {
-    console.log(progress, data.text)
     if (progress > 1) {
       progress = 1
     } else if (progress < 0) {
       progress = 0
     }
 
-    let { text, delimiter, target, fillChar, previousProgress, maxScrambleChars, charClass, speed } = data,
+    let { text, delimiter, target, fillChar, previousProgress, maxScrambleChars, charClass, speed, duration } = data,
       l = text.length,
       i = (progress * l + 0.5) | 0,
       str
@@ -45,7 +45,7 @@ export const TypewriterPlugin = {
     const dSpeed = Math.abs(dp)
 
     // Determine the number of characters to scramble based on delta speed
-    const n = Math.ceil(dSpeed * maxScrambleChars * data.text.length)
+    const n = clamp(1, maxScrambleChars, Math.ceil(dSpeed * maxScrambleChars * 100))
 
     if (progress) {
       const randomChar = () => `<span class="${charClass}">${CHARS[Math.floor(Math.random() * CHARS.length)]}</span>`
@@ -53,7 +53,7 @@ export const TypewriterPlugin = {
         str = ""
       } else if (i >= l) {
         str = text.join(delimiter)
-      } else if (speed * dp < 0.9) {
+      } else if ((speed || duration) * dp < 0.9) {
         const startScrambleIndex = Math.max(0, i - n)
         let scrambledPart = text
           .slice(startScrambleIndex, i)

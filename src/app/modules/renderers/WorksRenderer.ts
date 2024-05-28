@@ -14,7 +14,6 @@ export default class WorksRenderer extends BaseRenderer {
   pIds: string[]
   experience: Experience
   debouncedHandleResizeFn: Function
-  onWheelBound: (event: WheelEvent) => void
   onResizeBound: (event: UIEvent) => void
   tl: gsap.core.Timeline
   isFirstRender: boolean
@@ -185,8 +184,8 @@ export default class WorksRenderer extends BaseRenderer {
 
   onLeave() {
     // run before the transition.onLeave method is called
-    window.removeEventListener('wheel', this.onWheelBound)
     window.removeEventListener('resize', this.onResizeBound)
+    window.removeEventListener('wheel', this.handleActiveProject)
   }
 
   onLeaveCompleted() {

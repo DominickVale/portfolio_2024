@@ -6,19 +6,76 @@ const { title, tags, description, readTime, date, class: classes } = Astro.props
 
 <article
   class:list={[
-    'bg-blur relative flex h-[16rem] w-full flex-col justify-center overflow-hidden p-6 sm:w-[19rem] sm:px-10 tall:h-[19rem] tall:w-[20rem]',
+    'bg-blur-harder relative flex h-[16rem] w-full flex-col justify-center bg-transparent p-6 sm:w-[19rem] sm:p-12 tall:h-[21rem] tall:w-[21rem]',
     classes,
   ]}
 >
+  <div class="fui-corners-2 opacity-0 pointer-events-none absolute bottom-[-.65rem] left-[-.62rem] right-[-.6rem] top-[-.6rem]">
+    <div class="relative h-full w-full">
+      <svg
+        class="absolute bottom-0 right-0 h-3 w-3"
+        preserveAspectRatio="xMinYMin meet"
+        viewBox="0 0 22 22"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M17.8574 17.8637V3.00586L21.8574 7.00586V18.8637H18.8574V21.8637H6.99902L2.99902 17.8637H17.8574Z" fill="#D7D7D7"></path>
+        <rect opacity="0.5" width="14.7443" height="2" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 11.8398 10.4258)" fill="#D7D7D7"
+        ></rect>
+      </svg>
+
+      <svg
+        class="absolute bottom-0 left-0 h-3 w-3"
+        preserveAspectRatio="xMinYMin meet"
+        viewBox="0 0 22 22"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M4.00001 17.8637V3.00586L1.14441e-05 7.00586V18.8637H3.00001V21.8637H14.8584L18.8584 17.8637H4.00001Z" fill="#D7D7D7"></path>
+        <rect opacity="0.5" x="10.0176" y="10.4258" width="14.7443" height="2" transform="rotate(-45 10.0176 10.4258)" fill="#D7D7D7"></rect>
+      </svg>
+
+      <svg
+        class="absolute left-0 top-0 h-3 w-3"
+        preserveAspectRatio="xMaxYMin meet"
+        viewBox="0 0 22 22"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M3.99903 3.99956V18.8574L-0.000965118 14.8574V2.99956H2.99903V-0.000444412H14.8574L18.8574 3.99956H3.99903Z" fill="#D7D7D7"></path>
+        <rect opacity="0.5" width="14.7443" height="2" transform="matrix(0.707107 0.707107 0.707107 -0.707107 10.0166 11.4375)" fill="#D7D7D7"></rect>
+      </svg>
+
+      <!-- <svg class="absolute left-0 bottom-0 w-2 h-2" preserveAspectRatio="xMinYMax meet" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg"> -->
+      <!--   <path d="M1.25891 3.74105V0L2.17261e-07 1.25895V4.24463H0.755348V5H3.74109L5 3.74105H1.25891Z" fill="#D9D9D9"></path> -->
+      <!-- </svg> -->
+
+      <svg
+        class="absolute right-0 top-0 h-3 w-3"
+        preserveAspectRatio="xMaxYMin meet"
+        viewBox="0 0 22 22"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M17.8574 3.99956V18.8574L21.8574 14.8574V2.99956H18.8574V-0.000444412H6.99902L2.99902 3.99956H17.8574Z" fill="#D7D7D7"></path>
+        <rect opacity="0.5" x="11.8398" y="11.4375" width="14.7443" height="2" transform="rotate(135 11.8398 11.4375)" fill="#D7D7D7"></rect>
+      </svg>
+    </div>
+  </div>
+
+  <div class="absolute left-0 top-0 h-8 w-full overflow-hidden">
+    <Marquee tags={tags} />
+  </div>
   <div class="gradient-overlay absolute left-0 top-0 h-full w-full"></div>
-  <Marquee tags={tags} />
-  <span class="mb-3">
-    <small class="read-time relative ml-3 text-xxs uppercase text-[rgba(255,255,255,0.77)] sm:text-xs">{readTime}</small>
+  <span class="mb-5">
+    <small class="read-time relative ml-3 text-xxs uppercase tracking-wider text-inactive">{readTime}</small>
     <h3 class="article-title h-16 font-display text-2xl font-black">{title}</h3>
   </span>
-  <span>
-    <date class="relative text-xxs uppercase text-[rgba(255,255,255,0.77)] sm:text-xs">{date}</date>
-    <p class="line-clamp-3 overflow-hidden text-xs sm:mt-1 tall:line-clamp-none">{description}</p>
+  <span class="flex flex-col gap-1">
+    <date class="relative text-xxs uppercase tracking-wider text-inactive">{date}</date>
+    <div class="article-description h-0 overflow-hidden">
+      <p class="line-clamp-3 min-h-24 text-xs text-copy tall:line-clamp-none">{description}</p>
+    </div>
   </span>
 </article>
 
@@ -28,17 +85,21 @@ const { title, tags, description, readTime, date, class: classes } = Astro.props
     &::before {
       content: '';
       position: absolute;
-      left: -30%;
-      top: 33%;
+      left: -20%;
+      top: 50%;
+      transform: translateY(-70%);
       background-color: theme('colors.primary');
-      height: theme('height.1');
-      width: theme('height.1');
+      height: 0.2rem;
+      width: 0.2rem;
     }
   }
 
   .gradient-overlay {
+    --x: 50%;
+    --y: 50%;
     transition: all 0.25s ease-out;
     background: radial-gradient(20rem circle at var(--x) var(--y), var(--primary-02), transparent);
+    opacity: 0;
     z-index: -1;
   }
 </style>

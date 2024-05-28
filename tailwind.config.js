@@ -48,6 +48,9 @@ export default {
         'blink-normal': 'blink-slow 0.8s linear infinite',
         'fui-flash': 'fui-flash 0.3s ease-in 3',
       },
+      dropShadow: {
+        glow: "var(--golden-glow)",
+      },
       keyframes: {
         'blink-slow': {
           '0%': { opacity: '0' },

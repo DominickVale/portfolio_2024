@@ -6,11 +6,11 @@ import Experience from '../../gl/Experience'
 import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
 
-export default class WorksRenderer extends BaseRenderer {
+export default class BlogRenderer extends BaseRenderer {
   currIdx: number
+  oldIdx: number
   isDesktop: boolean
-  projects: Record<string, { element: HTMLElement; fontSize: number; image: string }>
-  pIds: string[]
+  aIds: string[]
   experience: Experience
   debouncedHandleResizeFn: Function
   onResizeBound: (event: UIEvent) => void
@@ -21,12 +21,13 @@ export default class WorksRenderer extends BaseRenderer {
 
   initialLoad() {
     super.initialLoad()
-    this.onEnter()
-    this.onEnterCompleted()
   }
 
   onEnter() {
     super.onEnter()
+    this.canChange = false
+    this.currIdx = 0
+    this.oldIdx = 0
     this.isFirstRender = true
     this.isDesktop = window.innerWidth > 1024
 
@@ -34,10 +35,10 @@ export default class WorksRenderer extends BaseRenderer {
     this.onResizeBound = this.onResize.bind(this)
     const statusItems = $all('#blog-header #blog-status li')
     const subtitle = $('#blog-header h2')
-    const articles = $all('article')
-    this.articles = Array.from(articles)
+    this.articles = Array.from($all('.blog-article'))
+    this.aIds = this.articles.map((a) => a.id)
 
-    articles.forEach((article) => {
+    this.articles.forEach((article) => {
       const articleTitleEl = $('.article-title', article)
       const fontSizeChanged = fitTextToContainerScr(articleTitleEl, articleTitleEl, 2)
       if (fontSizeChanged) articleTitleEl.style.lineHeight = 'unset'
@@ -45,9 +46,9 @@ export default class WorksRenderer extends BaseRenderer {
       article.addEventListener('mouseleave', this.handleMouseLeave.bind(this))
     })
 
+    window.addEventListener('wheel', this.handleActiveArticle.bind(this))
     window.addEventListener('resize', this.onResizeBound)
     this.experience = new Experience()
-    const links = Array.from($all('.posts-container a'))
     const tl = gsap.timeline({})
 
     tl.fromTo(
@@ -61,33 +62,45 @@ export default class WorksRenderer extends BaseRenderer {
         ease: 'power4.inOut',
       },
     )
-      .to(statusItems, {
-        typewrite: {
-          speed: 0.3,
-          charClass: 'text-primary-lightest',
+      .to(
+        statusItems,
+        {
+          typewrite: {
+            speed: 0.3,
+            charClass: 'text-primary-lightest',
+          },
+          ease: 'power4.inOut',
+          onComplete: () => {
+            this.canChange = true
+            this.handleActiveArticle(null)
+          },
         },
-        ease: 'power4.inOut',
-      }, "<")
-      .to(subtitle, {
-        typewrite: {
-          speed: 0.6,
-          charClass: 'text-primary-lightest',
+        '<',
+      )
+      .to(
+        subtitle,
+        {
+          typewrite: {
+            speed: 0.6,
+            charClass: 'text-primary-lightest drop-shadow-glow',
+          },
+          ease: 'power4.inOut',
         },
-        ease: 'power4.inOut',
-      }, "<+30%")
+        '<+30%',
+      )
       .fromTo(
-      links,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: 0.05,
-        stagger: {
-          repeat: 20,
-          each: 0.1,
+        this.articles,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.05,
+          stagger: {
+            repeat: 20,
+            each: 0.1,
+          },
         },
-      },
-      '<+50%',
-    )
+        '<+50%',
+      )
   }
 
   onEnterCompleted() {
@@ -97,6 +110,7 @@ export default class WorksRenderer extends BaseRenderer {
   onLeave() {
     // run before the transition.onLeave method is called
     window.removeEventListener('resize', this.onResizeBound)
+    window.removeEventListener('wheel', this.handleActiveArticle)
     this.articles.forEach((article) => {
       article.removeEventListener('mousemove', this.handleMouseMove)
       article.removeEventListener('mouseleave', this.handleMouseLeave)
@@ -114,14 +128,137 @@ export default class WorksRenderer extends BaseRenderer {
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
 
-    gradientOverlay.style.opacity = '1'
+    gradientOverlay.style.opacity = '0.1'
     gradientOverlay.style.setProperty('--x', `${x}px`)
     gradientOverlay.style.setProperty('--y', `${y}px`)
   }
 
   handleMouseLeave(event) {
+    if (Number(event.target.id) === this.currIdx) return
     const gradientOverlay = $('.gradient-overlay', event.target)
     gradientOverlay.style.opacity = '0'
+  }
+
+  handleActiveArticle(e) {
+    if (!this.canChange) return
+    if (typeof e?.deltaY !== 'undefined') {
+      const direction = e.deltaY > 0 ? 'down' : 'up'
+      if (direction === 'down') {
+        this.currIdx = (this.currIdx + 1) % this.aIds.length
+      } else {
+        this.currIdx = this.currIdx - 1
+        this.currIdx = this.currIdx < 0 ? this.aIds.length - 1 : this.currIdx
+      }
+    }
+
+    this.canChange = false
+    let oldActive
+    if (this.oldIdx !== this.currIdx) {
+      oldActive = this.articles[this.oldIdx]
+      oldActive.classList.remove('active')
+    }
+
+    const active = this.articles[this.currIdx]
+    active.classList.add('active')
+    const container = active.parentElement
+    const containerRect = container.getBoundingClientRect()
+    const activeRect = active.getBoundingClientRect()
+
+    const scrollLeft = container.scrollLeft + (activeRect.left - containerRect.left) - (containerRect.width / 2 - activeRect.width / 2)
+
+    container.scroll({
+      left: scrollLeft,
+      behavior: 'smooth',
+    })
+
+    const fuiCornersActive = $('.fui-corners-2', active)
+    const fuiCornersOld = $('.fui-corners-2', oldActive)
+
+    if (oldActive) {
+      gsap
+        .timeline()
+        .to($('.article-description', oldActive), { height: 0 })
+        .to(
+          $('.gradient-overlay', oldActive),
+          {
+            alpha: 0,
+            duration: 0.2,
+          },
+          '<',
+        )
+        .to(
+          fuiCornersOld,
+          {
+            alpha: 0,
+            repeat: 4,
+            duration: 0.06,
+          },
+          '<',
+        )
+        .to(fuiCornersOld, { scale: 0, duration: 0.3 }, '<+80%')
+    }
+    const gradientOverlay = $('.gradient-overlay', active)
+    gradientOverlay.style.setProperty('--x', '50%')
+    gradientOverlay.style.setProperty('--y', '50%')
+
+    setTimeout(() => {
+      this.canChange = true
+    }, 350)
+
+    gsap
+      .timeline({})
+      .to($('.article-description p', active), {
+        typewrite: {
+          charClass: 'text-primary-lightest drop-shadow-glow',
+          maxScrambleChars: 3,
+        },
+        duration: 2,
+        ease: 'circ.out',
+      })
+      .from(
+        active,
+        {
+          alpha: 0,
+          repeat: 6,
+          duration: 0.06,
+        },
+        '<',
+      )
+      .fromTo(
+        fuiCornersActive,
+        { scale: 0 },
+        {
+          scale: 1,
+          duration: 0.3,
+        },
+        '<+50%',
+      )
+      .to(
+        fuiCornersActive,
+        {
+          alpha: 1,
+          repeat: 6,
+          duration: 0.06,
+        },
+        '<+50%',
+      )
+      .to(
+        gradientOverlay,
+        {
+          alpha: 0.1,
+          duration: 0.2,
+        },
+        '<',
+      )
+      .to(
+        $('.article-description', active),
+        {
+          height: 'auto',
+          duration: 0.25,
+        },
+        '<',
+      )
+    this.oldIdx = this.currIdx
   }
 
   onResize(...args) {
