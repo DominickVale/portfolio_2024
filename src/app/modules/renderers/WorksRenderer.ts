@@ -53,7 +53,6 @@ export default class WorksRenderer extends BaseRenderer {
     const renderer = this.experience.renderer
     const params = this.experience.params
     const attractor = this.experience.world.attractor
-    renderer.blurPass.enabled = true
 
     const attractorPosTl = gsap
       .timeline()
@@ -126,11 +125,6 @@ export default class WorksRenderer extends BaseRenderer {
           ease: 'expo.in',
         },
       })
-      .to(renderer.blurPass, {
-        scale: 0.2,
-        duration: 0.8,
-        ease: 'circ.in',
-      }, "<")
       .to(
         renderer.textureEffect.blendMode.opacity,
         {

@@ -102,7 +102,6 @@ export default class Debug {
     bloom.intensity = this.params.bloomIntensity
     bloom.luminanceMaterial.threshold = this.params.bloomLuminanceThreshold
     bloom.luminanceMaterial.smoothing = this.params.bloomLuminanceSmoothing
-    bloom.mipmapBlurPass.radius = this.params.bloomRadius
     bloom.blendMode.setBlendFunction(Number(this.params.bloomBlendFunction))
   }
 

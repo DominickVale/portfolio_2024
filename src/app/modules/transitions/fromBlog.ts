@@ -91,7 +91,6 @@ export default class FromBlogTransition extends BaseTransition {
       .timeline({
         onComplete: () => {
           worksImage.hide()
-          renderer.blurPass.enabled = false
           tl.kill()
           done()
         },

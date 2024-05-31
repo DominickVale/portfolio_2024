@@ -8,7 +8,6 @@ import {
   DepthOfFieldEffect,
   EffectComposer,
   EffectPass,
-  KawaseBlurPass,
   KernelSize,
   RenderPass,
   SelectiveBloomEffect,
@@ -65,20 +64,11 @@ export default class Renderer {
     chromaticAberrationEffect.offset = new THREE.Vector2(0, 0)
 
     const savePass = new SavePass();
-    this.blurPass = new KawaseBlurPass({
-      kernelSize: KernelSize.VERY_LARGE,
-    })
     this.textureEffect = new TextureEffect({
 			texture: savePass.renderTarget.texture
 		});
-    const texturePass = new EffectPass(this.camera.instance, this.textureEffect);
-    this.blurPass.scale = 0
-    this.blurPass.enabled = true
     this.composer.addPass(new EffectPass(this.camera.instance, this.chromaticAberrationEffect))
     this.composer.addPass(new EffectPass(this.camera.instance, this.bloomEffect))
-    this.composer.addPass(savePass)
-    this.composer.addPass(this.blurPass)
-    this.composer.addPass(texturePass)
     this.createBackground()
     this.resize()
   }

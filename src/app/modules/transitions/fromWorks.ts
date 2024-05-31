@@ -88,7 +88,6 @@ export default class FromWorkTransition extends BaseTransition {
       .timeline({
         onComplete: () => {
           worksImage.hide()
-          renderer.blurPass.enabled = false
           tl.kill()
           done()
         },
@@ -99,11 +98,6 @@ export default class FromWorkTransition extends BaseTransition {
         value: 3,
         duration: 0.5,
         ease: 'power4.in',
-      }, "<")
-      .to(renderer.blurPass, {
-        scale: 0.,
-        duration: 0.8,
-        ease: 'circ.in',
       }, "<")
       .to(
         renderer.textureEffect.blendMode.opacity,

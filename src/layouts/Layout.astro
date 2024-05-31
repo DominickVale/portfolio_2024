@@ -49,7 +49,7 @@ const { title, rowsMax, withContacts, class: classes, blurred, renderer, ...prop
   </style>
   <body id="root" class:list={['relative flex h-full max-h-screen w-full flex-col overscroll-none font-body', classes]} {...props}>
     <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-background-dark opacity-0 transition-opacity duration-1000 ease-in-out"></canvas>
-    {blurred && <div id="bg-blur" class="bg-blur-harder fixed inset-x-0 inset-y-0 z-[0] bg-transparent" />}
+    <div id="bg-blur" class={ `bg-blur-harder pointer-events-none fixed inset-x-0 inset-y-0 z-[0] bg-transparent transition-opacity duration-1000 ease-in ${blurred ? '' : "opacity-0" }`} />
     <Navbar />
     <div class="relative z-10 my-12 h-full w-full flex-1" data-taxi>
       <main data-taxi-view={renderer || ''} class:list={['grid h-full w-full flex-1 grid-cols-12', rowsMax && 'auto-rows-max']}>

@@ -21,6 +21,9 @@ export default class ContactsRenderer extends BaseRenderer {
   sendingEmail: boolean
   textboxes: NodeListOf<HTMLInputElement>
   submitButtonInner: Element
+  // Is this the actual page or the embedded version?
+  isContactsPage: boolean
+  static tl: gsap.core.Timeline
 
   initialLoad() {
     super.initialLoad()
@@ -30,6 +33,7 @@ export default class ContactsRenderer extends BaseRenderer {
     super.onEnter()
     this.isFirstRender = true
     this.isDesktop = window.innerWidth > 1024
+    this.isContactsPage = window.location.pathname.includes('/contact')
 
     emailjs.init(import.meta.env.EMAILJS_USER_KEY)
 
@@ -40,8 +44,13 @@ export default class ContactsRenderer extends BaseRenderer {
     const split = splitTextChars($('h1'), 'span')
 
     window.addEventListener('resize', this.onResizeBound)
-    gsap.set("#smiley", { autoAlpha: 0 })
+    gsap.set('#smiley', { autoAlpha: 0 })
+    gsap.set('h2', { autoAlpha: 0 })
     this.experience = new Experience()
+    console.log(this.isContactsPage, window.location.pathname)
+    if (this.isContactsPage) {
+      window["bg-blur"].classList.remove('opacity-0')
+    }
     this.setupForm()
     $('#email-button').addEventListener('click', (e) => {
       navigator.clipboard.writeText(EMAIL)
@@ -60,8 +69,8 @@ export default class ContactsRenderer extends BaseRenderer {
         ease: 'circ.inOut',
       })
     })
-    const tl = gsap.timeline({})
-    tl.set('h2', { autoAlpha: 0 })
+    ContactsRenderer.tl = gsap.timeline({})
+    ContactsRenderer.tl.set('h2', { autoAlpha: 0 })
 
     const lettersTLduration = 0.1
     const lettersTL = gsap.timeline({ duration: lettersTLduration, delay: 0.9 })
@@ -142,30 +151,33 @@ export default class ContactsRenderer extends BaseRenderer {
           },
         },
         '<+20%',
-      ).set('form > *', { clearProps: 'all' })
+      )
+      .set('form > *', { clearProps: 'all' })
 
-    tl.fromTo(
-      '.h2-bg',
-      {
-        scaleX: 0,
-      },
-      {
-        delay: 0.5,
-        scaleX: 1,
-        duration: 1.5,
-        ease: 'circ.inOut',
-      },
-    ).fromTo(
-      '.h2-bg',
-      { autoAlpha: 0 },
-      {
-        autoAlpha: 1,
-        duration: 0.06,
-        repeat: 20,
-      },
-      '<',
-    )
-    tl.set('h2', { autoAlpha: 1 }, '<+50%').to(
+    ContactsRenderer.tl
+      .fromTo(
+        '.h2-bg',
+        {
+          scaleX: 0,
+        },
+        {
+          delay: 0.5,
+          scaleX: 1,
+          duration: 1.5,
+          ease: 'circ.inOut',
+        },
+      )
+      .fromTo(
+        '.h2-bg',
+        { autoAlpha: 0 },
+        {
+          autoAlpha: 1,
+          duration: 0.06,
+          repeat: 20,
+        },
+        '<',
+      )
+    ContactsRenderer.tl.set('h2', { autoAlpha: 1 }, '<+50%').to(
       'h2',
       {
         typewrite: {
@@ -176,10 +188,9 @@ export default class ContactsRenderer extends BaseRenderer {
       },
       '<',
     )
-    tl.add(lettersTL)
-    tl.add(formTL, '<+30%')
-    tl.add(linksTL, '<+20%')
-      .set("#smiley", { autoAlpha: 1 })
+    ContactsRenderer.tl.add(lettersTL)
+    ContactsRenderer.tl.add(formTL, '<+30%')
+    ContactsRenderer.tl.add(linksTL, '<+20%').set('#smiley', { autoAlpha: 1 })
   }
 
   onEnterCompleted() {
@@ -211,7 +222,7 @@ export default class ContactsRenderer extends BaseRenderer {
     })
   }
 
-  handleMouseLeave(event) { }
+  handleMouseLeave(event) {}
 
   onResize(...args) {
     this.debouncedHandleResizeFn(...args)
@@ -262,7 +273,7 @@ export default class ContactsRenderer extends BaseRenderer {
       wrapper.classList.add('textbox-wrapper-valid')
     }
     this.updateButtonOpacity()
-    this.submitButtonInner.textContent = "SEND IT"
+    this.submitButtonInner.textContent = 'SEND IT'
   }
 
   updateButtonOpacity() {
@@ -290,7 +301,7 @@ export default class ContactsRenderer extends BaseRenderer {
     //   }).finally(() => {
     //     this.sendingEmail = false
     //   })
-    gsap.to("#send button", {
+    gsap.to('#send button', {
       typewrite: {
         value: 'SENT!',
         speed: 0.4,
@@ -306,12 +317,9 @@ export default class ContactsRenderer extends BaseRenderer {
         })
         this.submitButton.classList.remove('btn--enabled')
         this.submitButton.classList.add('btn--disabled')
-        setTimeout(() => {
-
-        })
-      }
+        setTimeout(() => {})
+      },
     })
-
   }
 
   //@TODO: add additional message element (cursor doesn't show on mobile)
