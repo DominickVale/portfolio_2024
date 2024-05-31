@@ -99,7 +99,9 @@ export default class Cursor {
       })
 
       el.addEventListener('mouseout', () => {
-        this.abortCursorMessage(el, timeout <= 0)
+        if(timeout <= 0){
+          this.abortCursorMessage(el, true)
+        }
       })
     })
   }

@@ -42,12 +42,12 @@ export default class BaseRenderer extends Renderer {
   }
   onEnter() {
     // run after the new content has been added to the Taxi container
-    console.log('renderer onEnter')
+    // console.log('renderer onEnter')
   }
 
   onEnterCompleted() {
     // run after the transition.onEnter has fully completed
-    console.log('renderer onEnterCompleted')
+    // console.log('renderer onEnterCompleted')
     window.app.isTransitioning = false
   }
 

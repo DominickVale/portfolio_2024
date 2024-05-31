@@ -47,11 +47,18 @@ export default {
         'blink-slow': 'blink-slow 2s linear infinite',
         'blink-normal': 'blink-slow 0.8s linear infinite',
         'fui-flash': 'fui-flash 0.3s ease-in 3',
+        'shake': 'shake 0.1s linear infinite',
       },
       dropShadow: {
         glow: "var(--golden-glow)",
       },
       keyframes: {
+        'shake': {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(-1px)' },
+          '50%': { transform: 'translateX(1px)' },
+          '75%': { transform: 'translateX(-1px)' },
+        },
         'blink-slow': {
           '0%': { opacity: '0' },
           '49%': { opacity: '0' },

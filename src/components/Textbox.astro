@@ -18,7 +18,7 @@ const Component = Astro.props.area ? 'textarea' : 'input'
     ]}
     {...props}
   />
-  {frame && <div class="fui-corners pointer-events-none" />}
+  {frame && <div class="fui-corners !border-0 pointer-events-none" />}
   <div class:list={['absolute right-0 flex items-center pr-2', area ? 'bottom-4' : 'inset-y-0']}>
     <div class="dot mr-2 h-1 w-1 rounded-full bg-white opacity-30"></div>
   </div>
@@ -50,8 +50,8 @@ const Component = Astro.props.area ? 'textarea' : 'input'
   }
   .fui-corners {
     opacity: 0;
-    transform: scale(0.8);
-    transition: all 0.2s ease-out;
+    transform: scale(0.2);
+    transition: all 0.2s ease-in-out;
   }
   .textbox:focus + .fui-corners {
     transform: scale(1);

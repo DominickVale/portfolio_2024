@@ -18,11 +18,10 @@ export default class WorksRenderer extends BaseRenderer {
   tl: gsap.core.Timeline
   isFirstRender: boolean
   canChange: boolean
+  handleActiveProjectBound: (event: UIEvent) => void
 
   initialLoad() {
     super.initialLoad()
-    this.onEnter()
-    this.onEnterCompleted()
   }
 
   onEnter() {
@@ -40,8 +39,11 @@ export default class WorksRenderer extends BaseRenderer {
 
     this.onResizeBound = this.onResize.bind(this)
 
-    window.addEventListener('wheel', this.handleActiveProject.bind(this))
-    window.addEventListener('resize', this.onResizeBound)
+    this.handleActiveProjectBound = this.handleActiveProject.bind(this);
+    this.onResizeBound = this.onResize.bind(this);
+
+    window.addEventListener('wheel', this.handleActiveProjectBound);
+    window.addEventListener('resize', this.onResizeBound);
     this.experience = new Experience()
   }
 
@@ -184,8 +186,8 @@ export default class WorksRenderer extends BaseRenderer {
 
   onLeave() {
     // run before the transition.onLeave method is called
-    window.removeEventListener('resize', this.onResizeBound)
-    window.removeEventListener('wheel', this.handleActiveProject)
+    window.removeEventListener('resize', this.onResizeBound);
+    window.removeEventListener('wheel', this.handleActiveProjectBound);
   }
 
   onLeaveCompleted() {

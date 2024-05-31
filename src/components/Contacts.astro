@@ -1,6 +1,7 @@
 ---
 import Textbox from './Textbox.astro'
 import Btn from './Btn.astro'
+import { EMAIL } from '../app/constants'
 ---
 
 <section
@@ -8,22 +9,24 @@ import Btn from './Btn.astro'
 >
   <span class="mb-[4vh] place-self-center text-xs opacity-60 md:hidden">OR</span>
   <form class="flex w-full flex-col justify-center gap-y-3">
-    <Textbox required uppercase minlength={3} pattern="^[a-zA-Z ]{2,30}$" name="name" placeholder="FULL NAME" frame />
-    <Textbox required type="email" name="email" placeholder="EMAIL" frame />
+    <Textbox required uppercase minlength={3} pattern="^[a-zA-Z ]{2,30}$" name="from_name" placeholder="FULL NAME" frame />
+    <Textbox required type="email" name="from_email" placeholder="EMAIL" frame />
     <Textbox required minlength={30} maxlength={3000} name="message" area placeholder="MESSAGE" frame />
-    <Btn id="send" class="btn--disabled mb-24 ml-3 mr-auto mt-3 text-xs font-normal md:mb-0">SEND IT</Btn>
+    <Btn containerId="send" class="btn--disabled mb-24 ml-3 mr-auto mt-3 text-xs font-normal md:mb-0 min-h-6">SEND IT</Btn>
   </form>
 </section>
 
 <section
   class="col-span-10 col-start-2 row-start-1 mt-[15vh] flex items-center justify-center md:col-span-4 md:col-start-5 md:row-start-2 md:mb-6 md:mt-0"
 >
-  <h2
-    class="mb-1 max-w-[90%] bg-background-dark px-3 text-center text-[3vw] font-normal tracking-button text-white sm:text-[2vw] md:text-sm md:font-black xl:text-lg"
-    data-aberration="0.5"
-  >
-    DID I INTEREST YOU&nbsp;TODAY?
-  </h2>
+  <div class="relative flex w-2/3 items-center justify-center">
+    <div class="h2-bg absolute left-0 top-0 my-auto h-[2vw] w-full origin-center translate-y-[-10%] bg-background-dark"></div>
+    <h2
+      class="z-10 mb-1 min-h-12 min-w-[80%] max-w-[90%] px-3 text-center text-[3vw] font-normal tracking-button text-white sm:text-[2vw] md:text-sm md:font-black xl:text-lg"
+    >
+      DID I INTEREST YOU&nbsp;TODAY?
+    </h2>
+  </div>
 </section>
 
 <div class="col-span-10 col-start-2 row-start-3 mb-6 flex items-center justify-center md:col-span-2 md:col-start-9 md:row-start-2 md:mr-auto">
@@ -31,15 +34,15 @@ import Btn from './Btn.astro'
     id="socials"
     class="grid h-fit w-[min(60vw,20rem)] grid-cols-3 grid-rows-3 items-center justify-center gap-6 sm:mx-0 sm:w-auto sm:gap-x-12 md:gap-x-[calc(4rem+3vw)] md:gap-y-6 xl:gap-x-[3.7vw] [&>*]:mx-auto"
   >
-    <div class="col-span-3 flex items-center gap-3 xl:!ml-1">
-      <a href="mailto:holla@dominickvale.it">
+    <div id="email-button" class="col-span-3 flex items-center gap-3 xl:!ml-1">
+      <a href="#">
         <svg id="mail-icon" width="32" height="26" viewBox="0 0 32 26" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M28.8 22.4H25.6V8.4L16 14.4L6.4 8.4V22.4H3.2V3.2H5.12L16 10L26.88 3.2H28.8M28.8 0H3.2C1.424 0 0 1.424 0 3.2V22.4C0 23.2487 0.337142 24.0626 0.937258 24.6627C1.53737 25.2629 2.35131 25.6 3.2 25.6H28.8C29.6487 25.6 30.4626 25.2629 31.0627 24.6627C31.6629 24.0626 32 23.2487 32 22.4V3.2C32 2.35131 31.6629 1.53737 31.0627 0.937258C30.4626 0.337142 29.6487 0 28.8 0Z"
             fill="white"></path>
         </svg>
       </a>
-      <a class="text-xs font-bold text-primary" href="mailto:holla@domminickvale.it">holla@dominickvale.it</a>
+      <a id="email-button-text" href="#" class="text-xs font-bold text-primary">{EMAIL}</a>
     </div>
 
     <a href="https://www.linkedin.com/in/domenico-vale-740a251a4/" target="_blank" rel="noopener">
@@ -82,7 +85,7 @@ import Btn from './Btn.astro'
       </svg>
     </a>
 
-    <a href="https://open.spotify.com/user/s60r7m5yuh4qa1y7ll7hxa8n4?si=a994ca313ada43ae">
+    <a href="https://open.spotify.com/user/s60r7m5yuh4qa1y7ll7hxa8n4?si=a994ca313ada43ae" target="_blank" rel="noopener">
       <svg width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           fill-rule="evenodd"
@@ -94,20 +97,21 @@ import Btn from './Btn.astro'
   </section>
 </div>
 
-<section class="col-span-10 col-start-2 row-start-2 mb-10 flex items-start justify-center text-center md:row-start-3 md:mb-0">
+<section class="relative col-span-10 col-start-2 row-start-2 mb-10 flex items-start justify-center text-center md:row-start-3 md:mb-0">
   <h1
     class="relative w-max text-nowrap font-display text-[12vw] font-black leading-[100%] sm:text-[calc(7.5vw+3vh)] md:text-[12.05vw] xl:text-[max(9.2vw,9rem)] 2xl:text-[9.2vw]"
     data-aberration="1.3"
   >
     REACH OUT
-    <span
-      class="absolute bottom-[1vw] right-[-1vw] hidden h-auto w-auto font-mono text-xs font-normal sm:block lg:bottom-4 lg:right-1 lg:h-auto lg:w-auto"
-      >:)</span
-    >
   </h1>
+  <span
+    id="smiley"
+    class="absolute right-[-10vw] top-[7.3vw] hidden h-auto w-auto font-mono text-xs font-normal sm:block lg:bottom-4 lg:right-[10vw] lg:h-auto lg:w-auto"
+    >:)</span
+  >
 </section>
 
-<style>
+<style is:global>
   #socials {
     svg {
     }
@@ -115,109 +119,13 @@ import Btn from './Btn.astro'
       opacity: 1;
     }
   }
+  #socials > *:hover {
+    & path {
+      fill: white;
+    }
+    animation: fast-blink 0.28s linear;
+  }
+  #socials > *:active{
+  @apply animate-fui-flash; 
+}
 </style>
-
-<script>
-  import { $, $all, showCursorMessage, translateValidity, capitalize } from '../app/utils'
-  document.addEventListener('DOMContentLoaded', () => {
-    let sendingEmail = false
-    const form = $('form') as HTMLFormElement
-    if (!form) return
-    const textboxes = $all('.textbox') as NodeListOf<HTMLInputElement>
-    const button = $('#send', form)
-
-    textboxes.forEach((textbox) => {
-      textbox.addEventListener('blur', handleTextboxBlur)
-      textbox.addEventListener('input', handleTextboxInput)
-    })
-
-    function handleTextboxBlur(event) {
-      const textbox = event.target
-      const wrapper = textbox.parentNode
-      const isValid = textbox.validity.valid
-
-      if (!textbox.value) {
-        wrapper.classList.remove('textbox-wrapper-valid')
-        wrapper.classList.remove('textbox-wrapper-invalid')
-        return
-      }
-      if (!isValid) {
-        wrapper.classList.remove('textbox-wrapper-valid')
-        wrapper.classList.add('textbox-wrapper-invalid')
-
-        let currErrorKey = ''
-        for (const k in textbox.validity) {
-          console.log(k, textbox.validity[k])
-          if (textbox.validity[k]) {
-            currErrorKey = k
-          }
-        }
-        showCursorMessage({
-          message: translateValidity(currErrorKey, textbox.name).toUpperCase(),
-          isError: true,
-          timeout: 2000,
-          interval: 10,
-          iterations: 3,
-        })
-      }
-
-      updateButtonOpacity()
-    }
-
-    function handleTextboxInput(event) {
-      const textbox = event.target
-      const wrapper = textbox.parentNode
-      const isValid = textbox.validity.valid
-
-      if (isValid) {
-        wrapper.classList.remove('textbox-wrapper-invalid')
-        wrapper.classList.add('textbox-wrapper-valid')
-      }
-      updateButtonOpacity()
-    }
-
-    function updateButtonOpacity() {
-      const allValid = Array.from(textboxes).every((textbox) => textbox.validity.valid)
-      if (allValid) {
-        button.classList.remove('btn--disabled')
-        button.classList.add('btn--enabled')
-      } else {
-        button.classList.remove('btn--enabled')
-        button.classList.add('btn--disabled')
-      }
-    }
-
-    form.addEventListener('submit', handleFormSubmit)
-
-    function handleFormSubmit(event: SubmitEvent) {
-      event.preventDefault()
-      if (sendingEmail) return
-
-      const name = (form.elements.namedItem('name') as HTMLInputElement).value
-      const email = (form.elements.namedItem('email') as HTMLInputElement).value
-      const message = (form.elements.namedItem('message') as HTMLInputElement).value
-      const body = `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
-
-      sendingEmail = true
-      textboxes.forEach((textbox) => {
-        const wrapper = textbox.parentNode as HTMLElement
-        textbox.value = ''
-        wrapper.classList.remove('textbox-wrapper-valid')
-        wrapper.classList.remove('textbox-wrapper-invalid')
-      })
-      button.classList.remove('btn--enabled')
-      button.classList.add('btn--disabled')
-      sendEmail(body)
-    }
-
-    //@TODO: either use backend or cheap email service
-    // also add additional message element (cursor doesn't show on mobile)
-    function sendEmail(body) {
-      console.log(body)
-      showCursorMessage({ message: 'Sent!', timeout: 3000, iterations: 5, interval: 60, isSuccess: true })
-      setTimeout(() => {
-        sendingEmail = false
-      }, 3000)
-    }
-  })
-</script>

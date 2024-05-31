@@ -4,6 +4,8 @@ export const ICON_IDS = ['home', 'works', 'about', 'blog', 'settings', 'brand', 
 
 export const SVGNS = 'http://www.w3.org/2000/svg'
 
+export const EMAIL = 'holla@domenicovale.it'
+
 export const PROJECTS_LIST = [
   {
     name: 'ambientify',

@@ -18,6 +18,7 @@ export default class BlogRenderer extends BaseRenderer {
   isFirstRender: boolean
   canChange: boolean
   articles: HTMLElement[]
+  handleActiveArticleBound: (event: UIEvent) => void
 
   initialLoad() {
     super.initialLoad()
@@ -47,7 +48,8 @@ export default class BlogRenderer extends BaseRenderer {
       article.addEventListener('mouseleave', this.handleMouseLeave.bind(this))
     })
 
-    window.addEventListener('wheel', this.handleActiveArticle.bind(this))
+    this.handleActiveArticleBound = this.handleActiveArticle.bind(this)
+    window.addEventListener('wheel', this.handleActiveArticleBound)
     window.addEventListener('resize', this.onResizeBound)
     this.experience = new Experience()
     const tl = gsap.timeline({})
@@ -111,7 +113,7 @@ export default class BlogRenderer extends BaseRenderer {
   onLeave() {
     // run before the transition.onLeave method is called
     window.removeEventListener('resize', this.onResizeBound)
-    window.removeEventListener('wheel', this.handleActiveArticle)
+    window.removeEventListener('wheel', this.handleActiveArticleBound)
     this.articles.forEach((article) => {
       article.removeEventListener('mousemove', this.handleMouseMove)
       article.removeEventListener('mouseleave', this.handleMouseLeave)

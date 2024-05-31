@@ -13,6 +13,7 @@ import FromWorkTransition from './modules/transitions/fromWorks'
 import ToWorkTransition from './modules/transitions/toWorks'
 import BlogRenderer from './modules/renderers/BlogRenderer'
 import FromBlogTransition from './modules/transitions/fromBlog'
+import ContactsRenderer from './modules/renderers/ContactsRenderer'
 
 export default class App {
   experience: Experience
@@ -44,6 +45,7 @@ export default class App {
         default: DefaultRenderer,
         works: WorksRenderer,
         blog: BlogRenderer,
+        contact: ContactsRenderer
       },
     })
     this.taxi.on('NAVIGATE_IN', ({ to, trigger }) => {
