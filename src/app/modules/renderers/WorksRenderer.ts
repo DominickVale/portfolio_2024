@@ -1,4 +1,4 @@
-import { $, $all, debounce, fitTextToContainer } from '../../utils'
+import { $, $all, fitTextToContainer } from '../../utils'
 import { PROJECTS_LIST } from '../../constants'
 import { radToDeg } from 'three/src/math/MathUtils.js'
 import Typewriter from '../../modules/animations/Typewriter'
@@ -9,12 +9,9 @@ import BaseRenderer from './base'
 
 export default class WorksRenderer extends BaseRenderer {
   currIdx: number
-  isDesktop: boolean
   projects: Record<string, { element: HTMLElement; fontSize: number; image: string }>
   pIds: string[]
   experience: Experience
-  debouncedHandleResizeFn: Function
-  onResizeBound: (event: UIEvent) => void
   tl: gsap.core.Timeline
   isFirstRender: boolean
   canChange: boolean
@@ -34,16 +31,11 @@ export default class WorksRenderer extends BaseRenderer {
     this.isDesktop = window.innerWidth > 1024
     this.projects = {}
     this.pIds = []
+    this.resizeHandlers.push(this.handleResize.bind(this))
 
-    this.debouncedHandleResizeFn = debounce(this.handleResize.bind(this), 200)
+    this.handleActiveProjectBound = this.handleActiveProject.bind(this)
 
-    this.onResizeBound = this.onResize.bind(this)
-
-    this.handleActiveProjectBound = this.handleActiveProject.bind(this);
-    this.onResizeBound = this.onResize.bind(this);
-
-    window.addEventListener('wheel', this.handleActiveProjectBound);
-    window.addEventListener('resize', this.onResizeBound);
+    window.addEventListener('wheel', this.handleActiveProjectBound)
     this.experience = new Experience()
   }
 
@@ -87,11 +79,10 @@ export default class WorksRenderer extends BaseRenderer {
           ease: 'power4.inOut',
           onComplete: () => {
             gsap.to(params, {
-                speed: 20,
-                duration: 1.5,
-                ease: 'power2.in',
-              },
-            )
+              speed: 20,
+              duration: 1.5,
+              ease: 'power2.in',
+            })
           },
         },
         '<',
@@ -180,8 +171,7 @@ export default class WorksRenderer extends BaseRenderer {
 
   onLeave() {
     // run before the transition.onLeave method is called
-    window.removeEventListener('resize', this.onResizeBound);
-    window.removeEventListener('wheel', this.handleActiveProjectBound);
+    window.removeEventListener('wheel', this.handleActiveProjectBound)
   }
 
   onLeaveCompleted() {
@@ -189,10 +179,6 @@ export default class WorksRenderer extends BaseRenderer {
   }
 
   ////////////////////////////////
-
-  onResize(...args) {
-    this.debouncedHandleResizeFn(...args)
-  }
 
   recalculateActive() {
     const resources = this.experience.resources.items
@@ -308,19 +294,19 @@ export default class WorksRenderer extends BaseRenderer {
     const activeProject = PROJECTS_LIST[this.currIdx]
     const roleEls = $all('.work-details-role')
     roleEls.forEach((r) => {
-      Typewriter.typewrite(r, {message: activeProject.data.role })
+      Typewriter.typewrite(r, { message: activeProject.data.role })
     })
     const clientEls = $all('.work-details-client')
     clientEls.forEach((r) => {
-      Typewriter.typewrite(r, {message: activeProject.data.client})
+      Typewriter.typewrite(r, { message: activeProject.data.client })
     })
     const yearEls = $all('.work-details-year')
     yearEls.forEach((r) => {
-      Typewriter.typewrite(r, {message: activeProject.data.year})
+      Typewriter.typewrite(r, { message: activeProject.data.year })
     })
     const techEls = $all('.work-details-tech')
     techEls.forEach((r) => {
-      Typewriter.typewrite(r, {message: activeProject.data.tech})
+      Typewriter.typewrite(r, { message: activeProject.data.tech })
     })
   }
 
@@ -342,8 +328,6 @@ export default class WorksRenderer extends BaseRenderer {
   }
 
   handleResize() {
-    this.isDesktop = window.innerWidth > 1024
-
     $all('.project-title').forEach((p, i) => {
       let newFontSize = p.clientHeight
       p.style.fontSize = newFontSize + 'px'

@@ -10,10 +10,7 @@ import * as emailjs from '@emailjs/browser'
 gsap.registerPlugin(TypewriterPlugin)
 
 export default class ContactsRenderer extends BaseRenderer {
-  isDesktop: boolean
   experience: Experience
-  debouncedHandleResizeFn: Function
-  onResizeBound: (event: UIEvent) => void
   tlStack: gsap.core.Timeline[]
   isFirstRender: boolean
   form: HTMLFormElement
@@ -37,13 +34,10 @@ export default class ContactsRenderer extends BaseRenderer {
 
     emailjs.init(import.meta.env.EMAILJS_USER_KEY)
 
-    this.debouncedHandleResizeFn = debounce(this.handleResize.bind(this), 200)
-    this.onResizeBound = this.onResize.bind(this)
     this.tlStack = []
 
     const split = splitTextChars($('h1'), 'span')
 
-    window.addEventListener('resize', this.onResizeBound)
     gsap.set('#smiley', { autoAlpha: 0 })
     gsap.set('h2', { autoAlpha: 0 })
     this.experience = new Experience()
@@ -199,7 +193,6 @@ export default class ContactsRenderer extends BaseRenderer {
 
   onLeave() {
     // run before the transition.onLeave method is called
-    window.removeEventListener('resize', this.onResizeBound)
   }
 
   onLeaveCompleted() {
@@ -224,13 +217,6 @@ export default class ContactsRenderer extends BaseRenderer {
 
   handleMouseLeave(event) {}
 
-  onResize(...args) {
-    this.debouncedHandleResizeFn(...args)
-  }
-
-  handleResize() {
-    this.isDesktop = window.innerWidth > 1024
-  }
   handleTextboxBlur(event) {
     const textbox = event.target
     const wrapper = textbox.parentNode
