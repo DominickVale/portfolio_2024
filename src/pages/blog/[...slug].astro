@@ -4,8 +4,6 @@ import BlogLayout from '../../layouts/BlogLayout.astro'
 import BlogSection from '../../components/blog/BlogSection.astro'
 import BlogImage from '../../components/blog/BlogImage.astro'
 import BlogSectionHeader from '../../components/blog/BlogSectionHeader.astro'
-import Contacts from '../../components/Contacts.astro'
-import BlogParagraph from '../../components/blog/BlogParagraph.astro'
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog')

@@ -6,6 +6,7 @@ import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
 import { EMAIL } from '../../constants'
 import * as emailjs from '@emailjs/browser'
+import { blurStagger } from '../animations/gsap'
 
 gsap.registerPlugin(TypewriterPlugin)
 
@@ -36,10 +37,6 @@ export default class ContactsRenderer extends BaseRenderer {
 
     this.tlStack = []
 
-    const split = splitTextChars($('h1'), 'span')
-
-    gsap.set('#smiley', { autoAlpha: 0 })
-    gsap.set('h2', { autoAlpha: 0 })
     this.experience = new Experience()
     console.log(this.isContactsPage, window.location.pathname)
     if (this.isContactsPage) {
@@ -65,47 +62,9 @@ export default class ContactsRenderer extends BaseRenderer {
     })
     ContactsRenderer.tl = gsap.timeline({})
     ContactsRenderer.tl.set('h2', { autoAlpha: 0 })
-
-    const lettersTLduration = 0.1
-    const lettersTL = gsap.timeline({ duration: lettersTLduration, delay: 0.9 })
-    const splitArr = Array.from(split)
+    const lettersTL = blurStagger($('h1'))
 
     const links = Array.from($all('#socials > *'))
-
-    let remainingLetters = [...splitArr]
-    splitArr.forEach((_, __, arr) => {
-      //random letter
-      const ri = Math.floor(Math.random() * remainingLetters.length)
-      const rl = remainingLetters[ri]
-      remainingLetters.splice(ri, 1)
-      const randomDelay = Math.random() * lettersTLduration
-      const ltl = gsap
-        .timeline({ delay: randomDelay })
-        .fromTo(
-          rl,
-          { alpha: 0 },
-          {
-            alpha: 1,
-            duration: 0.05,
-            repeat: 20 * Math.random(),
-          },
-          '<',
-        )
-        .fromTo(
-          rl,
-          {
-            filter: 'blur(10px)',
-          },
-          {
-            duration: 2.5 * Math.max(Math.random(), 0.2),
-            ease: 'circ.inOut',
-            filter: 'blur(0px)',
-          },
-          '<',
-        )
-
-      lettersTL.add(ltl, '<')
-    })
 
     const linksTL = gsap.timeline().fromTo(
       links,

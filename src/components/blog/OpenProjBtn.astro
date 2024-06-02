@@ -9,7 +9,7 @@ const { link, class: classes, ...props } = Astro.props
 ---
 
 <a href={link} target="_blank" class:list={['items-center justify-center opacity-90', classes]} {...props}>
-  <Btn class="flex items-center gap-3">
+  <Btn class="flex items-center gap-3" innerClass="flex gap-3">
     <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M10.5813 7.07027L5.29069 1.77962L8.85149 1.77966L13.0739 6.00206L12.0057 7.07028L13.0739 8.13854L8.85144 12.361L5.29065 12.361L10.5813 7.07027Z"
@@ -17,5 +17,5 @@ const { link, class: classes, ...props } = Astro.props
     </svg>
     OPEN PROJECT</Btn
   >
-  <div class="fui-corners"></div>
+  <!-- <div class="fui-corners"></div> -->
 </a>

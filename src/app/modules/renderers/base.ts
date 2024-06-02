@@ -29,7 +29,7 @@ export default class BaseRenderer extends Renderer {
 
     const currentUrl = window.location.href
     this.navLinks.forEach((link) => {
-      if (link.href === currentUrl) {
+      if (link.href === currentUrl || (link.href.includes('blog') && currentUrl.includes('blog'))) {
         link.classList.add('active')
       } else {
         link.classList.remove('active')
@@ -38,6 +38,11 @@ export default class BaseRenderer extends Renderer {
 
     const enterTL = gsap
       .timeline({
+        onStart: () => {
+          window['navbar'].classList.remove('opacity-0')
+          window['body-wrapper'].classList.remove('opacity-0')
+          $('footer').classList.remove('opacity-0')
+        },
         onComplete: () => {
           window.app.isTransitioning = false
         },
@@ -84,7 +89,7 @@ export default class BaseRenderer extends Renderer {
 
   #handleResize() {
     this.isDesktop = window.innerWidth > 1024
-    console.log("onResize", this.isDesktop)
-    this.resizeHandlers.forEach(f => f())
+    console.log('onResize', this.isDesktop)
+    this.resizeHandlers.forEach((f) => f())
   }
 }

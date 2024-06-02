@@ -108,6 +108,17 @@ body {
   padding: theme(padding.4);
 }
 
+.dot {
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 50%;
+  background-color: white;
+  &--small{
+    width: 0.125rem;
+    height: 0.125rem;
+  }
+}
+
 .fui-corners {
   --frame-bg-stroke-w: 1px;
   --frame-bg-size: 4px;

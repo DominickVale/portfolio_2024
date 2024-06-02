@@ -15,6 +15,7 @@ import FromBlogTransition from './modules/transitions/fromBlog'
 import ContactsRenderer from './modules/renderers/ContactsRenderer'
 import FromContactsTransition from './modules/transitions/fromContacts'
 import HomeRenderer from './modules/renderers/HomeRenderer'
+import BlogArticleRenderer from './modules/renderers/BlogArticleRenderer'
 
 export default class App {
   experience: Experience
@@ -46,7 +47,8 @@ export default class App {
         default: HomeRenderer,
         works: WorksRenderer,
         blog: BlogRenderer,
-        contact: ContactsRenderer
+        contact: ContactsRenderer,
+        blogArticle: BlogArticleRenderer
       },
     })
     this.taxi.on('NAVIGATE_IN', ({ to, trigger }) => {

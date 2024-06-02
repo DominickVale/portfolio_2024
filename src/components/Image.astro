@@ -6,24 +6,26 @@ interface Props extends HTMLAttributes<'img'>{
   cover?: boolean
   contain?: boolean
   variant?: "blog" | "default"
+  containerId?: string
 }
 
-const { class: classes, cover, contain, variant, alt, ...props} = Astro.props
+const { class: classes, containerId, cover, contain, variant, alt, ...props} = Astro.props
 
+//@TODO: Replace placeholderr file names with actual names
 const imageVariant = variant || "default"
 ---
 
 {imageVariant === "default" ? (
-  <div class:list={[ "fui-frame mr-auto uppercase", classes ] }>
+  <div id={containerId} class:list={[ "fui-frame mr-auto uppercase", classes ] }>
     <small
-      class="vertical-text--left absolute bottom-4 left-[-0.25rem] text-xxs leading-[100%] opacity-40"
+      class="small-1 vertical-text--left absolute bottom-4 left-[-0.25rem] text-xxs leading-[100%] opacity-40 tracking-widest"
       >IMG_003.jpg</small
     >
     <img class:list={[  "w-full", cover && "h-full object-cover", contain && "h-full object-contain" ] } src="/ecorp.png" alt="" {...props} />
     <!-- <small class="text-xxs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
     <div class="absolute right-0 top-0 flex h-full w-3">
       <small
-        class="vertical-text--right mt-11 w-[1.6rem] text-xxs leading-[100%] opacity-40"
+        class="small-2 vertical-text--right mt-11 w-[1.6rem] text-xxs leading-[100%] opacity-40 tracking-widest"
         >IMAGE_NAME-2492929.jpg</small
       >
     </div>

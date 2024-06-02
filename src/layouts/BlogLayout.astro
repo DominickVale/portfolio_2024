@@ -4,7 +4,6 @@ import type { Frontmatter } from '../content/config'
 import BaseLayout from './Layout.astro'
 import Btn from '../components/Btn.astro'
 import Image from '../components/Image.astro'
-import BlogParagraph from '../components/blog/BlogParagraph.astro'
 import OpenProjBtn from '../components/blog/OpenProjBtn.astro'
 import WorkDetails from '../components/WorkDetails.astro'
 import Marquee from '../components/Marquee.astro'
@@ -17,29 +16,32 @@ const { frontmatter, ...rest } = Astro.props
 const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro } = frontmatter
 ---
 
-<BaseLayout title="Blog page" rowsMax withContacts data-menu-trigger="default-blog" blurred>
+<BaseLayout title="Blog page" rowsMax withContacts data-menu-trigger="default-blog" blurred renderer="blogArticle">
   <div class="col-span-12 col-start-1 row-start-1 hidden h-[10vh] w-full lg:block"></div>
   <section class="relative col-span-10 col-start-2 row-start-2 md:col-span-8 md:col-start-3 lg:col-span-4 lg:col-start-2">
-    <Btn
-      class="mt-8 flex w-max items-center justify-center gap-3 p-2 font-normal sm:mb-8 sm:mt-12 lg:mt-0 lg:justify-start"
-      href={project ? '/works' : '/blog'}
-    >
-      <svg width="7" height="8" viewBox="0 0 7 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M2.52091 3.99987L6.26185 0.258921L3.74403 0.258921L0.75843 3.24452L1.51378 3.99987L0.758429 4.75521L3.74416 7.74095L6.26198 7.74095L2.52091 3.99987Z"
-          fill="#D9D9D9"></path>
-      </svg>
-      BACK TO {project ? 'WORKS' : 'BLOG'}</Btn
-    >
+    <!-- <Btn -->
+    <!--   class="mt-8 flex w-max items-center justify-center gap-3 p-2 font-normal sm:mb-8 sm:mt-12 lg:mt-0 lg:justify-start" -->
+    <!--   href={project ? '/works' : '/blog'} -->
+    <!-- > -->
+    <!--   <svg width="7" height="8" viewBox="0 0 7 8" fill="none" xmlns="http://www.w3.org/2000/svg"> -->
+    <!--     <path -->
+    <!--       d="M2.52091 3.99987L6.26185 0.258921L3.74403 0.258921L0.75843 3.24452L1.51378 3.99987L0.758429 4.75521L3.74416 7.74095L6.26198 7.74095L2.52091 3.99987Z" -->
+    <!--       fill="#D9D9D9"></path> -->
+    <!--   </svg> -->
+    <!--   BACK TO {project ? 'WORKS' : 'BLOG'}</Btn -->
+    <!-- > -->
     <div class="flex h-max flex-col sm:flex-row">
       <span class="relative mt-8 md:mt-[2vh] lg:mt-[6vh]">
-        <span class="absolute left-1 top-[-1rem] text-xxs opacity-50">CASE_N: 001</span>
+        <span id="case-n" class="absolute left-1 top-[-1rem] text-xxs !opacity-0 opacity-50">CASE_N: 001</span>
         <h1 class="h-20 font-display text-[9.2vw] font-black leading-[100%] md:text-[3.7vw] lg:h-[9.2vw]">
           {title}
         </h1>
       </span>
     </div>
-    <h2 class="mb-[6vh] ml-3 mt-3 whitespace-nowrap font-mono text-xs font-black tracking-button opacity-60 sm:block sm:text-lg">
+    <h2
+      id="subtitle"
+      class="mb-[6vh] ml-3 mt-3 min-h-8 whitespace-nowrap font-mono text-xs font-black tracking-button !opacity-0 opacity-60 sm:block sm:text-lg"
+    >
       {subtitle}
     </h2>
 
@@ -58,43 +60,52 @@ const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro 
       }
     </section>
 
-    <span class="mb-2 mt-6 flex items-center gap-3 text-xxs opacity-50 md:text-xs">
+    <span id="intro-details" class="mb-2 mt-6 flex items-center gap-3 text-xxs !opacity-0 opacity-50 transition-opacity duration-1000 md:text-xs">
       <p>LAST UPDATE: <date>{lastUpdated}</date></p>
       <div class="h-1 w-1 rounded-full bg-white opacity-70"></div>
       <p>TTR: {ttr} MINUTES</p>
     </span>
 
-    <BlogParagraph>
+    <div id="intro" class="font-copy text-xs font-light tracking-wide text-copy opacity-0 sm:text-sm xl:text-lg">
       {intro}
-    </BlogParagraph>
+    </div>
   </section>
   <section
+    id="image-section"
     class="col-span-10 col-start-1 row-start-3 hidden flex-col items-center self-start lg:col-span-4 lg:col-start-8 lg:row-start-2 lg:mt-[8vh] lg:flex"
   >
-    <Image />
+    <Image containerId="main-image-container" id="main-image" />
     {
       project && (
         <>
-          <div class="h-6 w-[1px] bg-lines" />
+          <div class="cable relative h-6 w-[1px] bg-lines">
+            <div class="dot dot--small absolute left-0 top-0" />
+            <div class="dot dot--small absolute bottom-0 left-0" />
+          </div>
           <div class="relative flex min-h-12 w-full flex-col xl:flex-row">
             <div class="fui-frame flex-1">
               <table class="text-xs">
                 <tbody class="">
                   <tr class="grid grid-cols-[3rem_1fr] gap-1">
                     <th class="pl-0 pr-3 text-left text-primary-darker">ROLE:</th>
-                    <td class="text-left">{project.role}</td>
+                    <td class="work-details-role text-left opacity-0">{project.role}</td>
                     <th class="pl-0 pr-3 text-left text-primary-darker">CLIENT:</th>
-                    <td class="text-left">{project.client}</td>
+                    <td class="work-details-client text-left opacity-0">{project.client}</td>
                     <th class="pl-0 pr-3 text-left text-primary-darker">YEAR:</th>
-                    <td class="text-left">{project.year}</td>
+                    <td class="work-details-year text-left opacity-0">{project.year}</td>
                     <th class="pl-0 pr-3 text-left text-primary-darker">TECH:</th>
-                    <td class="min-w-32 text-left"> {project.tech.join(', ')}</td>
+                    <td class="work-details-tech min-w-32 text-left opacity-0"> {project.tech.join(', ')}</td>
                   </tr>
                 </tbody>
               </table>
-              <div class="fui-corners" />
             </div>
-            <OpenProjBtn class="fui-frame bg-striped flex flex-1 " link={project.linkWebsite} />
+            <OpenProjBtn id="open-proj-btn" class="fui-frame bg-striped flex flex-1 border-solid border-lines" link={project.linkWebsite} />
+            <div class="corners absolute left-0 top-0 h-full w-full border-[1px] border-solid border-lines">
+              <div class="dot absolute left-0 top-0 translate-x-[-50%] translate-y-[-50%]" />
+              <div class="dot absolute bottom-0 left-0  translate-x-[-50%] translate-y-[50%]" />
+              <div class="dot absolute right-0 top-0 translate-x-[50%] translate-y-[-50%]" />
+              <div class="dot absolute bottom-0 right-0 translate-x-[50%] translate-y-[50%]" />
+            </div>
           </div>
         </>
       )

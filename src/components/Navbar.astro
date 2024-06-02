@@ -4,7 +4,7 @@ interface Props {}
 const {} = Astro.props
 ---
 
-<nav id="navbar" class="fixed left-0 z-20 mt-6 w-full text-xs text-inactive sm:mt-12">
+<nav id="navbar" class="fixed left-0 z-20 mt-6 w-full text-xs text-inactive sm:mt-12 opacity-0">
   <ul class="grid grid-cols-12 font-light">
     <li class="nav-link active col-span-1 col-start-2 text-right sm:col-start-1 sm:mr-2">
       <a href="/" aria-current="page" data-text-scramble="HOME">HOME</a>
@@ -22,7 +22,7 @@ const {} = Astro.props
         </li>
       </div>
     </div>
-    <li class="col-span-2 col-start-10 flex justify-end sm:col-span-1 sm:col-start-12 sm:ml-2 sm:justify-start">
+    <li class="nav-link col-span-2 col-start-10 flex justify-end sm:col-span-1 sm:col-start-12 sm:ml-2 sm:justify-start">
       <a href="/contact" class="mix-blend-difference" data-text-scramble="CONTACT">CONTACT</a>
     </li>
   </ul>

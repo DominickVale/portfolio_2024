@@ -292,21 +292,32 @@ export default class WorksRenderer extends BaseRenderer {
 
   updateProjectDetails() {
     const activeProject = PROJECTS_LIST[this.currIdx]
-    const roleEls = $all('.work-details-role')
-    roleEls.forEach((r) => {
-      Typewriter.typewrite(r, { message: activeProject.data.role })
+    gsap.to('.work-details-role', {
+      typewrite: {
+        value: activeProject.data.role,
+      },
+      ease: 'power4.out',
     })
-    const clientEls = $all('.work-details-client')
-    clientEls.forEach((r) => {
-      Typewriter.typewrite(r, { message: activeProject.data.client })
+    gsap.to('.work-details-client', {
+      typewrite: {
+        value: activeProject.data.client,
+      },
+      duration: 1.5,
+      ease: 'power4.out',
     })
-    const yearEls = $all('.work-details-year')
-    yearEls.forEach((r) => {
-      Typewriter.typewrite(r, { message: activeProject.data.year })
+    gsap.to('.work-details-year', {
+      typewrite: {
+        value: activeProject.data.year,
+      },
+      duration: 2,
+      ease: 'power4.out',
     })
-    const techEls = $all('.work-details-tech')
-    techEls.forEach((r) => {
-      Typewriter.typewrite(r, { message: activeProject.data.tech })
+    gsap.to('.work-details-tech', {
+      typewrite: {
+        value: activeProject.data.tech,
+      },
+      duration: 1.5,
+      ease: 'power4.out',
     })
   }
 

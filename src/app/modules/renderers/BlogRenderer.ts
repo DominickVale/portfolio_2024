@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import Experience from '../../gl/Experience'
 import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
+import { blurStagger } from '../animations/gsap'
 gsap.registerPlugin(TypewriterPlugin)
 
 export default class BlogRenderer extends BaseRenderer {
@@ -34,6 +35,7 @@ export default class BlogRenderer extends BaseRenderer {
     this.articles = Array.from($all('.blog-article'))
     this.aIds = this.articles.map((a) => a.id)
     this.tlStack = []
+    const lettersTL = blurStagger($('h1'), 0.08, 0.5)
 
     this.articles.forEach((article) => {
       const articleTitleEl = $('.article-title', article)
@@ -59,6 +61,7 @@ export default class BlogRenderer extends BaseRenderer {
         ease: 'power4.inOut',
       },
     )
+      .add(lettersTL, "<")
       .to(
         statusItems,
         {

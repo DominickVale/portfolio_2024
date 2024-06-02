@@ -51,7 +51,7 @@ const { title, rowsMax, withContacts, class: classes, blurred, renderer, ...prop
     <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-background-dark opacity-0 transition-opacity duration-1000 ease-in-out"></canvas>
     <div id="bg-blur" class={ `bg-blur-harder pointer-events-none fixed inset-x-0 inset-y-0 z-[0] bg-transparent transition-opacity duration-1000 ease-in ${blurred ? '' : "opacity-0" }`} />
     <Navbar />
-    <div class="relative z-10 my-12 h-full w-full flex-1" data-taxi>
+    <div id="body-wrapper" class="relative z-10 my-12 h-full w-full flex-1 opacity-0" data-taxi>
       <main data-taxi-view={renderer || ''} class:list={['grid h-full w-full flex-1 grid-cols-12', rowsMax && 'auto-rows-max']}>
         <slot />
       </main>
