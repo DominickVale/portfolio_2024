@@ -18,6 +18,10 @@ export default class FromBlogArticleTransition extends BaseTransition {
     //       done()
     //     },
     //   })
+    BlogArticleRenderer.contactsTl.pause()
+    .duration(1)
+    .reverse()
+
     BlogArticleRenderer.tl.pause()
       .duration(1)
       .reverse()

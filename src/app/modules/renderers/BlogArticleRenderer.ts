@@ -7,10 +7,11 @@ import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
 import { blurStagger } from '../animations/gsap'
 import Lenis from 'lenis'
+import { ContactsInternalRenderer } from './ContactsRenderer'
 gsap.registerPlugin(TypewriterPlugin)
 
 function removeOpacity() {
-  this.targets()[0].classList.remove('opacity-0')
+  this.targets()[0]?.classList.remove('opacity-0')
 }
 
 export default class BlogArticleRenderer extends BaseRenderer {
@@ -18,7 +19,9 @@ export default class BlogArticleRenderer extends BaseRenderer {
   tlStack: gsap.core.Timeline[]
   isFirstRender: boolean
   static tl: gsap.core.Timeline
+  static contactsTl: gsap.core.Timeline
   lenis: any
+  contactsRenderer: ContactsInternalRenderer
 
   initialLoad() {
     super.initialLoad()
@@ -33,6 +36,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
     this.experience = new Experience()
     const debouncedHandleResizeFn = debounce(this.handleResize.bind(this), 100)
     this.resizeHandlers.push(debouncedHandleResizeFn)
+    this.handleResize()
     const lettersTL = blurStagger($('h1'), 0.08, 0.8)
     const imageSmall1 = $('#main-image-container .small-1')
     const imageSmall2 = $('#main-image-container .small-2')
@@ -78,7 +82,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
             end: 'bottom center',
           },
         })
-        .from($('.ui-corners-dot', img), {
+        .from($('.fui-corners-dot', img), {
           scale: 0,
           duration: 0.5,
           ease: 'expo.in',
@@ -326,6 +330,9 @@ export default class BlogArticleRenderer extends BaseRenderer {
         '<',
       )
       .add(imageTL, '<')
+
+    this.contactsRenderer = new ContactsInternalRenderer(this.isDesktop, BlogArticleRenderer.tl)
+    BlogArticleRenderer.contactsTl = this.contactsRenderer.onEnter()
   }
 
   onEnterCompleted() {
@@ -343,7 +350,6 @@ export default class BlogArticleRenderer extends BaseRenderer {
 
   ////////////////////////////////
   handleResize() {
-    console.log('DEBOUNCED handlresize')
     const titleEl = $('h1')
     const titleElChars = titleEl.innerHTML.split('')
     if (titleElChars.length > 24) {

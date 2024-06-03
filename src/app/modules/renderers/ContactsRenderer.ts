@@ -11,6 +11,22 @@ import { blurStagger } from '../animations/gsap'
 gsap.registerPlugin(TypewriterPlugin)
 
 export default class ContactsRenderer extends BaseRenderer {
+  internalRenderer: ContactsInternalRenderer
+  static tl: gsap.core.Timeline
+  initialLoad() {
+    super.initialLoad()
+  }
+
+  onEnter() {
+    super.onEnter()
+    ContactsRenderer.tl = gsap.timeline()
+    this.internalRenderer = new ContactsInternalRenderer(this.isDesktop, ContactsRenderer.tl)
+    this.internalRenderer.onEnter()
+  }
+}
+
+// Special case of reusable renderer. (Contacts is re-used under the blog article pages)
+export class ContactsInternalRenderer {
   experience: Experience
   tlStack: gsap.core.Timeline[]
   isFirstRender: boolean
@@ -21,26 +37,29 @@ export default class ContactsRenderer extends BaseRenderer {
   submitButtonInner: Element
   // Is this the actual page or the embedded version?
   isContactsPage: boolean
-  static tl: gsap.core.Timeline
+  tl: gsap.core.Timeline
 
-  initialLoad() {
-    super.initialLoad()
+  constructor(
+    public isDesktop: boolean,
+    tl: gsap.core.Timeline,
+  ) {
+    this.tl = tl
   }
 
   onEnter() {
-    super.onEnter()
     this.isFirstRender = true
-    this.isDesktop = window.innerWidth > 1024
     this.isContactsPage = window.location.pathname.includes('/contact')
 
     emailjs.init(import.meta.env.EMAILJS_USER_KEY)
 
     this.tlStack = []
 
+    // scoped selector
+    const s = (query: string) => $(query, $(this.isContactsPage ? 'main' : '#contacts'))
+
     this.experience = new Experience()
-    console.log(this.isContactsPage, window.location.pathname)
     if (this.isContactsPage) {
-      window["bg-blur"].classList.remove('opacity-0')
+      window['bg-blur'].classList.remove('opacity-0')
     }
     this.setupForm()
     $('#email-button').addEventListener('click', (e) => {
@@ -60,9 +79,9 @@ export default class ContactsRenderer extends BaseRenderer {
         ease: 'circ.inOut',
       })
     })
-    ContactsRenderer.tl = gsap.timeline({})
-    ContactsRenderer.tl.set('h2', { autoAlpha: 0 })
-    const lettersTL = blurStagger($('h1'))
+    gsap.set(s('h2'), { autoAlpha: 0 })
+    gsap.set('#smiley', { autoAlpha: 0 })
+    const lettersTL = blurStagger(s('h1'))
 
     const links = Array.from($all('#socials > *'))
 
@@ -107,9 +126,18 @@ export default class ContactsRenderer extends BaseRenderer {
       )
       .set('form > *', { clearProps: 'all' })
 
-    ContactsRenderer.tl
+    return (
+      this.isContactsPage
+        ? this.tl
+        : gsap.timeline({
+            scrollTrigger: {
+              trigger: '#contacts',
+              start: 'top center',
+            },
+          })
+    )
       .fromTo(
-        '.h2-bg',
+        s('.h2-bg'),
         {
           scaleX: 0,
         },
@@ -121,7 +149,7 @@ export default class ContactsRenderer extends BaseRenderer {
         },
       )
       .fromTo(
-        '.h2-bg',
+        s('.h2-bg'),
         { autoAlpha: 0 },
         {
           autoAlpha: 1,
@@ -130,20 +158,22 @@ export default class ContactsRenderer extends BaseRenderer {
         },
         '<',
       )
-    ContactsRenderer.tl.set('h2', { autoAlpha: 1 }, '<+50%').to(
-      'h2',
-      {
-        typewrite: {
-          speed: 0.8,
-          charClass: 'text-primary-lightest drop-shadow-glow',
+      .set(s('h2'), { autoAlpha: 1 }, '<+50%')
+      .to(
+        s('h2'),
+        {
+          typewrite: {
+            speed: 0.8,
+            charClass: 'text-primary-lightest drop-shadow-glow',
+          },
+          ease: 'power4.inOut',
         },
-        ease: 'power4.inOut',
-      },
-      '<',
-    )
-    ContactsRenderer.tl.add(lettersTL)
-    ContactsRenderer.tl.add(formTL, '<+30%')
-    ContactsRenderer.tl.add(linksTL, '<+20%').set('#smiley', { autoAlpha: 1 })
+        '<',
+      )
+      .add(lettersTL)
+      .add(formTL, '<+30%')
+      .add(linksTL, '<+20%')
+      .to('#smiley', { autoAlpha: 1, duration: 1, ease: 'power4.in' })
   }
 
   onEnterCompleted() {
@@ -192,7 +222,6 @@ export default class ContactsRenderer extends BaseRenderer {
 
       let currErrorKey = ''
       for (const k in textbox.validity) {
-        console.log(k, textbox.validity[k])
         if (textbox.validity[k]) {
           currErrorKey = k
         }

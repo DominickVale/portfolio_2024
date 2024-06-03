@@ -32,6 +32,9 @@ export default class BlogRenderer extends BaseRenderer {
 
     const statusItems = $all('#blog-header #blog-status li')
     const subtitle = $('#blog-header h2')
+
+    gsap.set(subtitle, { autoAlpha: 0 })
+
     this.articles = Array.from($all('.blog-article'))
     this.aIds = this.articles.map((a) => a.id)
     this.tlStack = []
@@ -61,7 +64,7 @@ export default class BlogRenderer extends BaseRenderer {
         ease: 'power4.inOut',
       },
     )
-      .add(lettersTL, "<")
+      .add(lettersTL, '<')
       .to(
         statusItems,
         {
@@ -70,9 +73,11 @@ export default class BlogRenderer extends BaseRenderer {
             charClass: 'text-primary-lightest',
           },
           ease: 'power4.inOut',
-          onComplete: () => {
-            this.canChange = true
-            this.handleActiveArticle(null)
+          onStart: () => {
+            setTimeout(() => {
+              this.canChange = true
+              this.handleActiveArticle(null)
+            }, 500)
           },
         },
         '<',
@@ -85,6 +90,9 @@ export default class BlogRenderer extends BaseRenderer {
             charClass: 'text-primary-lightest drop-shadow-glow',
           },
           ease: 'power4.inOut',
+          onStart: function () {
+            gsap.set(this.targets()[0], {autoAlpha: 1})
+          }
         },
         '<+30%',
       )
