@@ -7,6 +7,7 @@ import Image from '../components/Image.astro'
 import OpenProjBtn from '../components/blog/OpenProjBtn.astro'
 import WorkDetails from '../components/WorkDetails.astro'
 import Marquee from '../components/Marquee.astro'
+import FuiCorners from '../components/FuiCorners.astro'
 
 type Props = {
   frontmatter: Frontmatter
@@ -40,7 +41,7 @@ const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro 
     </div>
     <h2
       id="subtitle"
-      class="mb-[6vh] ml-3 mt-3 min-h-8 whitespace-nowrap font-mono text-xs font-black tracking-button !opacity-0 opacity-60 sm:block sm:text-lg"
+      class="mb-[6vh] ml-3 mt-3 lg:mt-[-0.5rem] min-h-8 whitespace-nowrap font-mono text-xs font-black tracking-button !opacity-0 opacity-60 sm:block sm:text-lg"
     >
       {subtitle}
     </h2>
@@ -54,7 +55,7 @@ const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro 
         project && (
           <div class="relative flex flex-col justify-between gap-3 sm:flex-row">
             <WorkDetails small />
-            <OpenProjBtn class="fui-frame bg-striped hidden flex-[0.8] sm:flex" link={project.linkWebsite} />
+            <OpenProjBtn class="bg-striped hidden flex-[0.8] sm:flex" link={project.linkWebsite} />
           </div>
         )
       }
@@ -78,12 +79,12 @@ const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro 
     {
       project && (
         <>
-          <div class="cable relative h-6 w-[1px] bg-lines">
+          <div class="cable relative h-12 w-[1px] bg-lines">
             <div class="dot dot--small absolute left-0 top-0" />
             <div class="dot dot--small absolute bottom-0 left-0" />
           </div>
           <div class="relative flex min-h-12 w-full flex-col xl:flex-row">
-            <div class="fui-frame flex-1">
+            <div class="relative p-4 flex-1">
               <table class="text-xs">
                 <tbody class="">
                   <tr class="grid grid-cols-[3rem_1fr] gap-1">
@@ -99,13 +100,8 @@ const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro 
                 </tbody>
               </table>
             </div>
-            <OpenProjBtn id="open-proj-btn" class="fui-frame bg-striped flex flex-1 border-solid border-lines" link={project.linkWebsite} />
-            <div class="corners absolute left-0 top-0 h-full w-full border-[1px] border-solid border-lines">
-              <div class="dot absolute left-0 top-0 translate-x-[-50%] translate-y-[-50%]" />
-              <div class="dot absolute bottom-0 left-0  translate-x-[-50%] translate-y-[50%]" />
-              <div class="dot absolute right-0 top-0 translate-x-[50%] translate-y-[-50%]" />
-              <div class="dot absolute bottom-0 right-0 translate-x-[50%] translate-y-[50%]" />
-            </div>
+            <OpenProjBtn id="open-proj-btn" class="bg-striped flex-1 border-solid border-lines" link={project.linkWebsite} />
+            <FuiCorners dot/>
           </div>
         </>
       )
@@ -115,50 +111,3 @@ const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro 
     <slot />
   </div>
 </BaseLayout>
-
-<script>
-  import gsap from 'gsap'
-  import { ScrollTrigger } from 'gsap/ScrollTrigger'
-  import { $, fitTextToContainerScr, debounce } from '../app/utils'
-  import Lenis from 'lenis'
-
-  gsap.registerPlugin(ScrollTrigger)
-
-  document.addEventListener('DOMContentLoaded', () => {
-    // Dynamic font size
-    const titleEl = $('h1')
-    const titleElChars = titleEl.innerHTML.split('')
-    function handleResize() {
-      if (titleElChars.length > 24) {
-        const fontSizeChanged = fitTextToContainerScr(titleEl, titleEl)
-        if (fontSizeChanged) {
-          titleEl.style.lineHeight = 'unset'
-        }
-      }
-      titleEl.style.height = 'auto'
-    }
-    handleResize()
-    const debouncedHandleResizeFn = debounce(handleResize, 100)
-    document.addEventListener('resize', debouncedHandleResizeFn)
-
-    //Scroll
-    const lenis = new Lenis({ duration: 2, smoothWheel: true })
-
-    lenis.on('scroll', ScrollTrigger.update)
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000)
-    })
-    gsap.ticker.lagSmoothing(0)
-
-    // Scroll anims
-    gsap.to('#bg-blur', {
-      scrollTrigger: {
-        trigger: '#contacts',
-        start: 'top center',
-        end: 'bottom bottom',
-        scrub: 0.5,
-      },
-      opacity: 0,
-    })
-  })
-</script>

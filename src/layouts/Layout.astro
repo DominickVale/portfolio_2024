@@ -49,19 +49,25 @@ const { title, rowsMax, withContacts, class: classes, blurred, renderer, ...prop
   </style>
   <body id="root" class:list={['relative flex h-full max-h-screen w-full flex-col overscroll-none font-body', classes]} {...props}>
     <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-background-dark opacity-0 transition-opacity duration-1000 ease-in-out"></canvas>
-    <div id="bg-blur" class={ `bg-blur-harder pointer-events-none fixed inset-x-0 inset-y-0 z-[0] bg-transparent transition-opacity duration-1000 ease-in ${blurred ? '' : "opacity-0" }`} />
+    <div
+      id="bg-blur"
+      class={`bg-blur-harder pointer-events-none fixed inset-x-0 inset-y-0 z-[0] bg-transparent transition-opacity duration-500 ease-in ${blurred ? '' : 'opacity-0'}`}
+    >
+    </div>
     <Navbar />
     <div id="body-wrapper" class="relative z-10 my-12 h-full w-full flex-1 opacity-0" data-taxi>
-      <main data-taxi-view={renderer || ''} class:list={['grid h-full w-full flex-1 grid-cols-12', rowsMax && 'auto-rows-max']}>
-        <slot />
+      <main data-taxi-view={renderer || ''} class="h-full w-full min-h-full">
+        <div class="body-inner" class:list={['grid h-full w-full min-h-full flex-1 grid-cols-12', rowsMax && 'auto-rows-max']}>
+          <slot />
+        </div>
+        {
+          withContacts && (
+            <div id="contacts" class="z-10 col-span-12 col-start-1 mt-8 grid min-h-[100vh] w-full flex-1 grid-cols-12">
+              <Contacts />
+            </div>
+          )
+        }
       </main>
-      {
-        withContacts && (
-          <div id="contacts" class="z-10 col-span-12 col-start-1 mt-8 grid min-h-[100vh] w-full flex-1 grid-cols-12">
-            <Contacts />
-          </div>
-        )
-      }
     </div>
     <Footer />
     <div id="_icons" class="hidden">

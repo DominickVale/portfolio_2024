@@ -1,0 +1,65 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = {
+  dot?: boolean
+} & HTMLAttributes<'div'>
+
+const { dot, class: classes, ...props } = Astro.props
+---
+
+{
+  dot ? (
+    <div class:list={['fui-corners-dot pointer-events-none absolute left-0 top-0 h-full w-full border-[1px] border-solid border-lines', classes]} {...props}>
+      <div class="dot absolute left-0 top-0 translate-x-[-50%] translate-y-[-50%]" />
+      <div class="dot absolute bottom-0 left-0  translate-x-[-50%] translate-y-[50%]" />
+      <div class="dot absolute right-0 top-0 translate-x-[50%] translate-y-[-50%]" />
+      <div class="dot absolute bottom-0 right-0 translate-x-[50%] translate-y-[50%]" />
+      <slot />
+    </div>
+  ) : (
+    <div class:list={['new-fui-corners fui-corners pointer-events-none absolute bottom-0 left-0 right-0 top-0 opacity-0', classes]} {...props}>
+      <div class="relative h-full w-full">
+        <svg
+          class="absolute left-[-2px] top-0 h-3 w-3"
+          preserveAspectRatio="xMaxYMin meet"
+          viewBox="0 0 10 11"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M10 0H0V11H3.33333V3.66667H10V0Z" fill="#959595" />
+        </svg>
+
+        <svg
+          class="absolute right-0 top-0 h-3 w-3"
+          preserveAspectRatio="xMaxYMin meet"
+          viewBox="0 0 10 11"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H10V11H6.66667V3.66667H0V0Z" fill="#959595" />
+        </svg>
+
+        <svg
+          class="absolute bottom-0 right-[-2px] h-3 w-3"
+          preserveAspectRatio="xMinYMin meet"
+          viewBox="0 0 10 11"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0 11H10V0H6.66667V7.33333H0V11Z" fill="#959595" />
+        </svg>
+
+        <svg
+          class="absolute bottom-0 left-0 h-3 w-3"
+          preserveAspectRatio="xMinYMin meet"
+          viewBox="0 0 10 11"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M10 11H0V0H3.33333V7.33333H10V11Z" fill="#959595" />
+        </svg>
+      </div>
+    </div>
+  )
+}

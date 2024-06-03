@@ -120,7 +120,7 @@ export function translateValidity(errCode: string, inputName: string) {
 export const isMobile = () => window.innerWidth < 768
 
 export function splitTextChars(el: HTMLElement, tag: string, className?: string) {
-  const splitChars = el.textContent.split('').map((c) => `<${tag} class="${className}">${c}</${tag}>`)
+  const splitChars = el.textContent.split('').map((c) => `<${tag} ${className ? `class="${className}"` : ''}>${c}</${tag}>`)
   el.innerHTML = splitChars.join('')
   return el.childNodes
 }

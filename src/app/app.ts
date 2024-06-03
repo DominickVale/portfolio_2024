@@ -16,6 +16,7 @@ import ContactsRenderer from './modules/renderers/ContactsRenderer'
 import FromContactsTransition from './modules/transitions/fromContacts'
 import HomeRenderer from './modules/renderers/HomeRenderer'
 import BlogArticleRenderer from './modules/renderers/BlogArticleRenderer'
+import FromBlogArticleTransition from './modules/transitions/fromBlogArticle'
 
 export default class App {
   experience: Experience
@@ -41,7 +42,8 @@ export default class App {
         default: DefaultTransition,
         fromWorks: FromWorkTransition,
         fromBlog: FromBlogTransition,
-        fromContacts: FromContactsTransition
+        fromContacts: FromContactsTransition,
+        fromBlogArticle: FromBlogArticleTransition
       },
       renderers: {
         default: HomeRenderer,
@@ -56,6 +58,7 @@ export default class App {
       this.cursor.reload()
     })
     this.taxi.addRoute('/works', '.*', 'fromWorks')
+    this.taxi.addRoute('/blog/.*', '.*', 'fromBlogArticle')
     this.taxi.addRoute('/blog', '.*', 'fromBlog')
     this.taxi.addRoute('/contact', '.*', 'fromContacts')
     Animations.init(this.cursor, this.experience)

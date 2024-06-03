@@ -4,6 +4,8 @@
 - Animations ( don't forget the fake-code animations)
 - Reduced animations for prefer-reduced-motion
 - Optimize imports (no import \* from ...)
+- Test accessibility
+- Figure out some hacks for font rendering
 
 # REMINDERS
 

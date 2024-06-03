@@ -26,4 +26,17 @@ export default defineConfig({
   vite: {
     plugins,
   },
+  markdown: {
+    shikiConfig: {
+      // https://shiki.style/themes
+      theme: 'ayu-dark',
+      // https://shiki.style/languages
+      langs: [],
+      // Enable word wrap to prevent horizontal scrolling
+      wrap: true,
+      // Add custom transformers: https://shiki.style/guide/transformers
+      // Find common transformers: https://shiki.style/packages/transformers
+      transformers: [],
+    },
+  },
 })
