@@ -18,19 +18,17 @@ export default class FromBlogArticleTransition extends BaseTransition {
     //       done()
     //     },
     //   })
-    BlogArticleRenderer.contactsTl.pause()
-    .duration(1)
-    .reverse()
+    BlogArticleRenderer.scrollTl.kill()
+    BlogArticleRenderer.contactsTl.pause().duration(1).reverse().then(() => {
+        gsap.set('#bg-blur', { opacity: 0 })
+    })
 
-    BlogArticleRenderer.tl.pause()
+    BlogArticleRenderer.tl
+      .pause()
       .duration(1)
       .reverse()
-      .then(() => {
-        gsap.set('#bg-blur', { opacity: 0})
-        done()
-      })
+      .then(done)
   }
-
 
   /**
    * Handle the transition entering the next page.

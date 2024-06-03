@@ -17,7 +17,7 @@ const { frontmatter, ...rest } = Astro.props
 const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro } = frontmatter
 ---
 
-<BaseLayout title="Blog page" rowsMax withContacts data-menu-trigger="default-blog" blurred renderer="blogArticle">
+<BaseLayout title="Blog page" rowsMax withContacts data-menu-trigger="default-blog" renderer="blogArticle">
   <div class="col-span-12 col-start-1 row-start-1 hidden h-[10vh] w-full lg:block"></div>
   <section class="relative col-span-10 col-start-2 row-start-2 md:col-span-8 md:col-start-3 lg:col-span-4 lg:col-start-2">
     <!-- <Btn -->

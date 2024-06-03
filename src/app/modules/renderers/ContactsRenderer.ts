@@ -59,7 +59,7 @@ export class ContactsInternalRenderer {
 
     this.experience = new Experience()
     if (this.isContactsPage) {
-      window['bg-blur'].classList.remove('opacity-0')
+      gsap.set('#bg-blur', { opacity: 1 })
     }
     this.setupForm()
     $('#email-button').addEventListener('click', (e) => {

@@ -24,11 +24,10 @@ interface Props extends HTMLAttributes<'div'> {
   title: string
   rowsMax?: boolean
   withContacts?: boolean
-  blurred?: boolean
   renderer?: string
 }
 
-const { title, rowsMax, withContacts, class: classes, blurred, renderer, ...props } = Astro.props
+const { title, rowsMax, withContacts, class: classes, renderer, ...props } = Astro.props
 
 // @TODO find better ways to blur bg
 ---
@@ -51,7 +50,7 @@ const { title, rowsMax, withContacts, class: classes, blurred, renderer, ...prop
     <canvas id="webgl" class="fixed top-0 z-0 h-full w-full bg-background-dark opacity-0 transition-opacity duration-1000 ease-in-out"></canvas>
     <div
       id="bg-blur"
-      class={`bg-blur-harder pointer-events-none fixed inset-x-0 inset-y-0 z-[0] bg-transparent transition-opacity duration-500 ease-in ${blurred ? '' : 'opacity-0'}`}
+      class={`bg-blur-harder pointer-events-none fixed inset-x-0 inset-y-0 z-[0] bg-transparent transition-opacity duration-500 ease-in opacity-0`}
     >
     </div>
     <Navbar />

@@ -20,6 +20,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
   isFirstRender: boolean
   static tl: gsap.core.Timeline
   static contactsTl: gsap.core.Timeline
+  static scrollTl: gsap.core.Timeline
   lenis: any
   contactsRenderer: ContactsInternalRenderer
 
@@ -60,15 +61,18 @@ export default class BlogArticleRenderer extends BaseRenderer {
 
     setTimeout(() => {
       // Scroll anims
-      gsap.to('#bg-blur', {
-        scrollTrigger: {
-          trigger: '#contacts',
-          start: 'top center',
-          end: 'bottom bottom',
-          scrub: 0.1,
-        },
-        opacity: 0,
-      })
+      BlogArticleRenderer.scrollTl = gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: '#contacts',
+            start: 'top center',
+            end: 'bottom bottom',
+            scrub: 0.1,
+          },
+        })
+        .to('#bg-blur', {
+          opacity: 0,
+        })
     }, 500)
 
     const blogImages = $all('.blog-image').forEach((img) => {
