@@ -63,8 +63,9 @@ export default class Cursor {
     }
     if (delayID) {
       clearTimeout(Number(delayID))
-      Typewriter.stop(this.textEl)
     }
+    Typewriter.stop(this.textEl)
+    this.textEl.textContent = ''
   }
 
   assignListeners() {
@@ -99,7 +100,7 @@ export default class Cursor {
       })
 
       el.addEventListener('mouseout', () => {
-        if(timeout <= 0){
+        if (timeout <= 0) {
           this.abortCursorMessage(el, true)
         }
       })
@@ -109,6 +110,7 @@ export default class Cursor {
   reload() {
     this.assignListeners()
     Typewriter.stop(this.textEl)
+    this.textEl.textContent = ''
   }
 
   addAnimation(fn: () => void) {
