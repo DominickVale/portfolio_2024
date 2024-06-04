@@ -30,7 +30,7 @@ export default class WorksRenderer extends BaseRenderer {
     this.isDesktop = window.innerWidth > 1024
     this.projects = {}
     this.pIds = []
-    this.resizeHandlers.push(this.handleResize.bind(this))
+    BaseRenderer.resizeHandlers.push(this.handleResize.bind(this))
 
     this.handleActiveProjectBound = this.handleActiveProject.bind(this)
 
@@ -105,7 +105,7 @@ export default class WorksRenderer extends BaseRenderer {
     this.tl
       .add(attractorPosTl)
       .add(attractorUniformsTl, '<')
-      .to('.project-title span', {
+      .to('.project-title svg', {
         opacity: 1,
         duration: 0.05,
         ease: 'linear',

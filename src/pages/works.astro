@@ -50,7 +50,8 @@ const {} = Astro.props
           class="project-title relative ml-[-12%] flex h-[10vh] w-full items-center font-display font-bold uppercase text-primary-lightest"
           style={`--i: ${i}`}
         >
-          <span class="block w-max leading-[100%] opacity-0">{project.name}</span>
+          <svg class="absolute left-0 top-0 h-full w-full fill-primary-lightest flex justify-start origin-left opacity-0"><text>{project.name}</text></svg>
+          <!-- <span class="block w-max leading-[100%] opacity-0">{project.name}</span> -->
           <div class="fui-corners highlighted-corner z-[100] hidden h-full font-mono opacity-0">
             <div class="line-container">
               <div class="line" />

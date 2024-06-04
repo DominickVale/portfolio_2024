@@ -34,14 +34,21 @@ const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro 
     <div class="flex h-max flex-col sm:flex-row">
       <span class="relative mt-8 md:mt-[2vh] lg:mt-[6vh]">
         <span id="case-n" class="absolute left-1 top-[-1rem] text-xxs !opacity-0 opacity-50">CASE_N: 001</span>
-        <h1 class="h-20 font-display text-[9.2vw] font-black leading-[100%] md:text-[3.7vw] lg:h-[9.2vw]">
-          {title}
-        </h1>
+        <div class="relative h-[9.2vw] text-[unset]">
+          <h1 id="article-shadow-title" class="pointer-events-none font-display font-black leading-[130%] opacity-0">
+            {title}
+          </h1>
+          <div class="absolute left-0 top-0 h-full w-full">
+            <h1 id="article-title" class="font-display font-black leading-[130%]">
+              {title}
+            </h1>
+          </div>
+        </div>
       </span>
     </div>
     <h2
       id="subtitle"
-      class="mb-[6vh] ml-3 mt-3 lg:mt-[-0.5rem] min-h-8 whitespace-nowrap font-mono text-xs font-black tracking-button !opacity-0 opacity-60 sm:block sm:text-lg"
+      class="mb-[6vh] ml-3 mt-3 min-h-8 whitespace-nowrap font-mono text-xs font-black tracking-button !opacity-0 opacity-60 sm:block sm:text-lg lg:mt-7"
     >
       {subtitle}
     </h2>
@@ -77,14 +84,14 @@ const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro 
   >
     <Image containerId="main-image-container" id="main-image" />
     {
-      project && (
+      project ? (
         <>
           <div class="cable relative h-12 w-[1px] bg-lines">
             <div class="dot dot--small absolute left-0 top-0" />
             <div class="dot dot--small absolute bottom-0 left-0" />
           </div>
           <div class="relative flex min-h-12 w-full flex-col xl:flex-row">
-            <div class="relative p-4 flex-1">
+            <div class="relative flex-1 p-4">
               <table class="text-xs">
                 <tbody class="">
                   <tr class="grid grid-cols-[3rem_1fr] gap-1">
@@ -101,9 +108,11 @@ const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro 
               </table>
             </div>
             <OpenProjBtn id="open-proj-btn" class="bg-striped flex-1 border-solid border-lines" link={project.linkWebsite} />
-            <FuiCorners dot/>
+            <FuiCorners dot />
           </div>
         </>
+      ) : (
+        <div class="mb-[20vh]" />
       )
     }
   </section>

@@ -40,13 +40,9 @@ export default class BlogRenderer extends BaseRenderer {
     this.tlStack = []
     const lettersTL = blurStagger($('h1'), 0.08, 0.5)
 
-    this.articles.forEach((article) => {
-      const articleTitleEl = $('.article-title', article)
-      const fontSizeChanged = fitTextToContainerScr(articleTitleEl, articleTitleEl, 2)
-      if (fontSizeChanged) articleTitleEl.style.lineHeight = 'unset'
-      article.addEventListener('mousemove', this.handleMouseMove.bind(this))
-      article.addEventListener('mouseleave', this.handleMouseLeave.bind(this))
-    })
+    this.resizeTitles()
+
+    BaseRenderer.resizeHandlers.push(this.resizeTitles.bind(this))
 
     this.handleActiveArticleBound = this.handleActiveArticle.bind(this)
     window.addEventListener('wheel', this.handleActiveArticleBound)
@@ -91,8 +87,8 @@ export default class BlogRenderer extends BaseRenderer {
           },
           ease: 'power4.inOut',
           onStart: function () {
-            gsap.set(this.targets()[0], {autoAlpha: 1})
-          }
+            gsap.set(this.targets()[0], { autoAlpha: 1 })
+          },
         },
         '<+30%',
       )
@@ -283,5 +279,16 @@ export default class BlogRenderer extends BaseRenderer {
         .addLabel('end'),
     )
     this.oldIdx = this.currIdx
+  }
+
+  resizeTitles(){
+    this.articles.forEach((article) => {
+      const articleTitleEl = $('.article-title', article)
+      const fontSizeChanged = fitTextToContainerScr(articleTitleEl, articleTitleEl, 2)
+      console.log("RESIZING: ", fontSizeChanged)
+      if (fontSizeChanged) articleTitleEl.style.lineHeight = 'unset'
+      article.addEventListener('mousemove', this.handleMouseMove.bind(this))
+      article.addEventListener('mouseleave', this.handleMouseLeave.bind(this))
+    })
   }
 }

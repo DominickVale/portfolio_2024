@@ -1,17 +1,17 @@
 import { Renderer } from '@unseenco/taxi'
 import gsap from 'gsap'
-import { $all, $, debounce } from '../../utils'
+import { $all, $, debounceTrailing } from '../../utils'
 
 export default class BaseRenderer extends Renderer {
   navLinks: HTMLAnchorElement[]
   isDesktop: boolean
   #debouncedHandleResizeFn: Function
   #onResizeBound: () => void
-  resizeHandlers: Array<() => void>
+  static resizeHandlers: Array<() => void>
   initialLoad(): void {
     super.initialLoad()
 
-    this.#debouncedHandleResizeFn = debounce(this.#handleResize.bind(this), 200)
+    this.#debouncedHandleResizeFn = debounceTrailing(this.#handleResize.bind(this), 200)
 
     this.#onResizeBound = this.#onResize.bind(this)
     window.addEventListener('resize', this.#onResizeBound)
@@ -60,7 +60,7 @@ export default class BaseRenderer extends Renderer {
   onEnter() {
     // run after the new content has been added to the Taxi container
     // console.log('renderer onEnter')
-    this.resizeHandlers = []
+    BaseRenderer.resizeHandlers = []
   }
 
   onEnterCompleted() {
@@ -73,6 +73,7 @@ export default class BaseRenderer extends Renderer {
     // run before the transition.onLeave method is called
     console.log('renderer onLeave')
     window.removeEventListener('resize', this.#onResizeBound)
+    BaseRenderer.resizeHandlers = []
     window.app.isTransitioning = true
   }
 
@@ -90,6 +91,6 @@ export default class BaseRenderer extends Renderer {
   #handleResize() {
     this.isDesktop = window.innerWidth > 1024
     console.log('onResize', this.isDesktop)
-    this.resizeHandlers.forEach((f) => f())
+    BaseRenderer.resizeHandlers.forEach((f) => f())
   }
 }

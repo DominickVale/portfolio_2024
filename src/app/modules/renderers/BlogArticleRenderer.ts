@@ -35,10 +35,10 @@ export default class BlogArticleRenderer extends BaseRenderer {
     this.isDesktop = window.innerWidth > 1024
 
     this.experience = new Experience()
+    const titleLettersTL = blurStagger($('#article-title'), 0.08, 0.8)
     const debouncedHandleResizeFn = debounce(this.handleResize.bind(this), 100)
-    this.resizeHandlers.push(debouncedHandleResizeFn)
-    this.handleResize()
-    const lettersTL = blurStagger($('h1'), 0.08, 0.8)
+    BaseRenderer.resizeHandlers.push(debouncedHandleResizeFn)
+    this.handleResize(true)
     const imageSmall1 = $('#main-image-container .small-1')
     const imageSmall2 = $('#main-image-container .small-2')
     const imageSectionCable = $('#image-section .cable')
@@ -303,7 +303,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
           window['case-n'].classList.remove('!opacity-0')
         },
       })
-      .add(lettersTL)
+      .add(titleLettersTL)
       .to(
         '#subtitle',
         {
@@ -353,15 +353,33 @@ export default class BlogArticleRenderer extends BaseRenderer {
   }
 
   ////////////////////////////////
-  handleResize() {
-    const titleEl = $('h1')
-    const titleElChars = titleEl.innerHTML.split('')
-    if (titleElChars.length > 24) {
-      const fontSizeChanged = fitTextToContainerScr(titleEl, titleEl)
-      if (fontSizeChanged) {
-        titleEl.style.lineHeight = 'unset'
-      }
+  handleResize(firstRender?: boolean) {
+    // shadow title is the original title to be resized
+    const shadowTitle = $('#article-shadow-title')
+    // titleEl is the overlapped one with the split characters
+    const oldTitleEl = $('#article-title')
+    if(firstRender){
+      const newFontSize = fitTextToContainerScr(shadowTitle, shadowTitle.parentElement)
+
+      Array.from(oldTitleEl.childNodes).forEach((e: HTMLElement) => {
+        e.style.lineHeight = '130%'
+        e.style.fontSize = newFontSize + 'px'
+      })
+      return
     }
-    titleEl.style.height = 'auto'
+    // else it's in the resize evt
+    const parent = oldTitleEl.parentNode
+    const newTitleEl = oldTitleEl.cloneNode(true)
+    oldTitleEl.remove()
+    const newFontSize = fitTextToContainerScr(shadowTitle, shadowTitle.parentElement)
+
+    Array.from(newTitleEl.childNodes).forEach((e: HTMLElement) => {
+      e.style.opacity = "1"
+      e.style.filter = ""
+      e.style.lineHeight = '130%'
+      e.style.fontSize = newFontSize + 'px'
+    })
+    // reinsert tmpEl in parent as a child
+    parent.append(newTitleEl)
   }
 }

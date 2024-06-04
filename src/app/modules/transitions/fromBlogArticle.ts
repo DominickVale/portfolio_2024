@@ -18,6 +18,12 @@ export default class FromBlogArticleTransition extends BaseTransition {
     //       done()
     //     },
     //   })
+
+    // I currently don't have time to figure why taxijs is calling this transition from blog/ to works/
+    if(window.location.pathname === "/blog/") {
+      done()
+      return
+    }
     BlogArticleRenderer.scrollTl.kill()
     BlogArticleRenderer.contactsTl.pause().duration(1).reverse().then(() => {
         gsap.set('#bg-blur', { opacity: 0 })
