@@ -1,7 +1,6 @@
-import { $, $all, fitTextToContainer } from '../../utils'
+import { $, $all, setupSvgText } from '../../utils'
 import { PROJECTS_LIST } from '../../constants'
 import { radToDeg } from 'three/src/math/MathUtils.js'
-import Typewriter from '../../modules/animations/Typewriter'
 import gsap from 'gsap'
 
 import Experience from '../../gl/Experience'
@@ -9,7 +8,7 @@ import BaseRenderer from './base'
 
 export default class WorksRenderer extends BaseRenderer {
   currIdx: number
-  projects: Record<string, { element: HTMLElement; fontSize: number; image: string }>
+  projects: Record<string, { element: HTMLElement; image: string }>
   pIds: string[]
   experience: Experience
   tl: gsap.core.Timeline
@@ -157,7 +156,7 @@ export default class WorksRenderer extends BaseRenderer {
 
   onEnterCompleted() {
     // run after the transition.onEnter has fully completed
-    this.recalculateBaseFontSizes()
+    this.setupProjectTitles()
     this.pIds = Object.keys(this.projects)
     this.recalculateOthers()
     this.recalculateActive()
@@ -186,7 +185,6 @@ export default class WorksRenderer extends BaseRenderer {
     const highlightCorner = $('.highlighted-corner', activeProject.element)
     highlightCorner.classList.remove('hidden')
     activeProject.element.setAttribute('data-active', 'true')
-    activeProject.element.style.fontSize = this.projects[this.currIdx].fontSize + 'px'
 
     if (!this.isFirstRender) {
       const planeMatUni = this.experience.world.worksImage.planeMat.uniforms
@@ -248,20 +246,21 @@ export default class WorksRenderer extends BaseRenderer {
   }
 
   recalculateOthers() {
-    this.pIds.forEach((id, i) => {
+   this.pIds.forEach((id, i) => {
       const p = this.projects[id]
       p.element.setAttribute('data-active', 'false')
-      const newFontSize = this.projects[i].fontSize / Math.max(1, Math.abs(i - this.currIdx) + 1 / this.pIds.length)
+      const newScale = 1 / Math.max(1, Math.abs(i - this.currIdx) + 1 / this.pIds.length)
+      const svg = $('svg', p.element)
+      gsap.to(svg, {
+        scale: newScale,
+        duration: 0.45,
+        ease: 'power4.out',
+      })
       const blur = Math.pow(Math.abs(i - this.currIdx), 2)
       gsap.to(p.element, {
         opacity: i === this.currIdx ? 1 : 0.5,
         filter: `blur(${blur}px)`,
         duration: 0.45,
-        ease: 'power4.out',
-      })
-      gsap.to(p.element.children[0], {
-        fontSize: newFontSize,
-        duration: 0.8,
         ease: 'power4.out',
       })
       if (i !== this.currIdx) {
@@ -278,13 +277,11 @@ export default class WorksRenderer extends BaseRenderer {
     })
   }
 
-  recalculateBaseFontSizes() {
+  setupProjectTitles() {
     $all(this.isDesktop ? '.project-title' : '.project-title-mobile').forEach((p, i) => {
-      const innerText = $('span', p)
-      const newFontSize = fitTextToContainer(innerText, p, window.innerWidth * 0.003)
+      setupSvgText(p)
       this.projects[i] = {
         element: p,
-        fontSize: newFontSize,
         image: PROJECTS_LIST[i].image,
       }
     })
@@ -339,11 +336,7 @@ export default class WorksRenderer extends BaseRenderer {
   }
 
   handleResize() {
-    $all('.project-title').forEach((p, i) => {
-      let newFontSize = p.clientHeight
-      p.style.fontSize = newFontSize + 'px'
-    })
-    this.recalculateBaseFontSizes()
+    this.setupProjectTitles()
     this.recalculateOthers()
     this.recalculateActive()
   }

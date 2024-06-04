@@ -29,6 +29,15 @@ export function getCurrentPage() {
   }
 }
 
+//debounce with trailing call
+export function debounceTrailing<T extends Function>(cb: T, wait = 20) {
+  let timer = 0
+  return function debouncedFn(...args: any) {
+    clearTimeout(timer)
+    timer = setTimeout(() => cb(...args), wait)
+  }
+}
+
 //debounce with leading call
 export function debounce<T extends Function>(cb: T, wait = 20) {
   let timer = 0
@@ -123,4 +132,16 @@ export function splitTextChars(el: HTMLElement, tag: string, className?: string)
   const splitChars = el.textContent.split('').map((c) => `<${tag} ${className ? `class="${className}"` : ''}>${c}</${tag}>`)
   el.innerHTML = splitChars.join('')
   return el.childNodes
+}
+
+/*
+ * Given a rootEl containing an SVG element with TEXT inside, it sets up the text to fit the svg container
+ */
+export function setupSvgText(rootEl: HTMLElement) {
+  const svg = $('svg', rootEl)
+  const text = $('text', svg) as unknown as SVGTextElement
+  let bbox = text.getBBox()
+
+  svg.setAttribute('viewBox', [bbox.x, bbox.y, bbox.width, bbox.height].join(' '))
+  svg.setAttribute('preserveAspectRatio', 'xMinYMin meet')
 }
