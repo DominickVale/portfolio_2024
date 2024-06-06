@@ -6,6 +6,7 @@
 - Optimize imports (no import \* from ...)
 - Test accessibility
 - Figure out some hacks for font rendering
+- Add more post-processing (blur/aberration on transitions based on position speed etc.)
 
 # REMINDERS
 

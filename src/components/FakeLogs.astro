@@ -1,46 +1,40 @@
-<pre
-  class="fake-logs pointer-events-none ml-4 mt-[8vh] hidden min-h-[7.2rem] text-xxs uppercase opacity-50 xl:block">
+<div class="fake-logs pointer-events-none ml-4 mt-[8vh] hidden min-h-[7.2rem] flex-col text-xxs uppercase text-inactive opacity-80 md:flex">
+  <pre>
     {
       `
 {
-    const projects = await api.getProjects()
-    logger.info("DONE")
-    for (const p of projects) {
-      this.renderData(p)
-    }
-    // . . .
-    logger.info("DONE").
-}      `}
+    _load("JOB_SKILLS");
+    // loading ...
+`}
 </pre>
-
-<style>
-  @media screen and (max-height: 640px) {
-    pre {
-      display: none;
-    }
-  }
-</style>
-
-<script>
-  import Typewriter from '../app/modules/animations/Typewriter'
-  import { $all } from '../app/utils'
-
-  const fakeLogs = $all('.fake-logs')
-  fakeLogs.forEach((el) => {
-    Typewriter.typewrite(
-      el,
+  <pre class="mt-[-1rem]">
+    {
       `
-{
-    // loading proj_id: 001
     // done.
-    // rendering data
-    // . . .
-    // add obj(“img_003.jpg”)
+
+`}
+</pre>
+  <pre class="mt-[-2.5rem]">
+    {`
+
+    _render(this, flush);
+    if( web_dev ) {
+      try{ 
+      return center_div()
+       }
+     }
+
+    _load("buttons");
+    // loading ...
+
+`}
+  </pre>
+  <pre class="mt-[-2.5rem]">
+{ `
     // done.
+    render(buttons);
+    exit 0;
 }
-`,
-      2,
-      2,
-    )
-  })
-</script>
+`}
+  </pre>
+</div>

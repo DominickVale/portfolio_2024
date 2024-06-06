@@ -29,6 +29,7 @@ export default {
         error: 'red',
         lines: 'var(--lines)',
         copy: 'var(--copy)',
+        label: 'var(--label)',
         background: {
           dark: 'var(--bg-dark)',
           'dark-02': 'var(--bg-dark-02)',
@@ -47,17 +48,29 @@ export default {
         'blink-slow': 'blink-slow 2s linear infinite',
         'blink-normal': 'blink-slow 0.8s linear infinite',
         'fui-flash': 'fui-flash 0.3s ease-in 3',
-        'shake': 'shake 0.1s linear infinite',
+        shake: 'shake 0.07s linear infinite',
       },
       dropShadow: {
-        glow: "var(--golden-glow)",
+        glow: 'var(--golden-glow)',
       },
       keyframes: {
-        'shake': {
-          '0%, 100%': { transform: 'translateX(0)' },
-          '25%': { transform: 'translateX(-1px)' },
-          '50%': { transform: 'translateX(1px)' },
-          '75%': { transform: 'translateX(-1px)' },
+        shake: {
+          '0%, 100%': {
+            transform: 'translate3d(0, 0, 0)',
+            textShadow: '0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent',
+          },
+          '25%': {
+            transform: 'translate3d(-1px, 0, 0)',
+            textShadow: '-2px 0 0 var(--primary), 0 0 0 transparent, 0 0 0 transparent',
+          },
+          '50%': {
+            transform: 'translate3d(1px, 0, 0)',
+            textShadow: '0 0 0 transparent, 2px 0 0 green, 0 0 0 transparent',
+          },
+          '75%': {
+            transform: 'translate3d(-1px, 0, 0)',
+            textShadow: '0 0 0 transparent, 0 0 0 transparent, 2px 0 0 blue',
+          },
         },
         'blink-slow': {
           '0%': { opacity: '0' },

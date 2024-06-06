@@ -17,6 +17,8 @@ export default class Debug {
     this.preset = LORENZ_PRESETS['default']
   }
   start() {
+    this.attractor = this.experience.world.attractor
+    this.attractorUniforms = this.attractor.bufferMaterial.uniforms
     this.enabled = true
     this.params = this.experience.params
     this.stats = new Stats()
@@ -24,9 +26,9 @@ export default class Debug {
 
     this.gui = new GUI()
     const lorenzParams = this.gui.addFolder('Lorenz parameters')
-    lorenzParams.add(this.params, 'sigma', -8, 100).onChange(this.updateLorenzParams.bind(this))
-    lorenzParams.add(this.params, 'rho', -100, 100).onChange(this.updateLorenzParams.bind(this))
-    lorenzParams.add(this.params, 'beta', -6, 6).onChange(this.updateLorenzParams.bind(this))
+    lorenzParams.add(this.attractorUniforms.uSigma, 'value', -8, 100).name("α")
+    lorenzParams.add(this.attractorUniforms.uRho, 'value', -100, 100).name("ρ")
+    lorenzParams.add(this.attractorUniforms.uBeta, 'value', -6, 6).name("β")
     lorenzParams.add(this.params, 'speed', 1, 100)
     const colors = this.gui.addFolder('Colors')
     colors.addColor(this.params, 'lorenzColor').onChange(this.updateLorenzColor.bind(this))
@@ -42,12 +44,12 @@ export default class Debug {
 
     postfx.add(this.params, 'chromaticAberration', -0.01, 0.01, 0.0001).onChange(this.updateChromaticAberration.bind(this))
     const positioning = this.gui.addFolder('Positioning')
-    positioning.add(this.params, 'rotationX', -TAU, TAU).onChange(this.updateRotation.bind(this))
-    positioning.add(this.params, 'rotationY', -TAU, TAU).onChange(this.updateRotation.bind(this))
-    positioning.add(this.params, 'rotationZ', -TAU, TAU).onChange(this.updateRotation.bind(this))
-    positioning.add(this.params, 'positionX', -50, 50).onChange(this.updatePosition.bind(this))
-    positioning.add(this.params, 'positionY', -50, 50).onChange(this.updatePosition.bind(this))
-    positioning.add(this.params, 'positionZ', -50, 50).onChange(this.updatePosition.bind(this))
+    positioning.add(this.attractor.points.rotation, 'x', -Math.PI, Math.PI).name("Rotation X")
+    positioning.add(this.attractor.points.rotation, 'y', -Math.PI, Math.PI).name("Rotation Y")
+    positioning.add(this.attractor.points.rotation, 'z', -Math.PI, Math.PI).name("Rotation Z")
+    positioning.add(this.attractor.points.position, 'x', -50, 50).name("Position X")
+    positioning.add(this.attractor.points.position, 'y', -50, 50).name("Position Y")
+    positioning.add(this.attractor.points.position, 'z', -50, 50).name("Position Z")
     const misc = this.gui.addFolder('Misc')
     misc.add({ saveImage: () => (this.shouldSaveImage = true) }, 'saveImage').name('Save as Image')
     misc.add(this, 'showFBOTextures', false).name('Show FBO Textures')
@@ -103,27 +105,6 @@ export default class Debug {
     bloom.luminanceMaterial.threshold = this.params.bloomLuminanceThreshold
     bloom.luminanceMaterial.smoothing = this.params.bloomLuminanceSmoothing
     bloom.blendMode.setBlendFunction(Number(this.params.bloomBlendFunction))
-  }
-
-  updateRotation() {
-    const points = this.experience.world.attractor.points
-    points.rotation.x = this.params.rotationX
-    points.rotation.y = this.params.rotationY
-    points.rotation.z = this.params.rotationZ
-  }
-
-  updatePosition() {
-    const points = this.experience.world.attractor.points
-    points.position.x = this.params.positionX
-    points.position.y = this.params.positionY
-    points.position.z = this.params.positionZ
-  }
-
-  updateLorenzParams() {
-    const bufferMaterial = this.experience.world.attractor.bufferMaterial
-    bufferMaterial.uniforms.uSigma.value = this.params.sigma
-    bufferMaterial.uniforms.uRho.value = this.params.rho
-    bufferMaterial.uniforms.uBeta.value = this.params.beta
   }
 
   updateChromaticAberration(value) {

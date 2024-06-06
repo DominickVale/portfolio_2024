@@ -7,7 +7,6 @@ import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
 gsap.registerPlugin(TypewriterPlugin)
 
 export default class HomeRenderer extends BaseRenderer {
-  isDesktop: boolean
   experience: Experience
   isFirstRender: boolean
 
@@ -20,8 +19,32 @@ export default class HomeRenderer extends BaseRenderer {
     this.isFirstRender = true
     this.isDesktop = window.innerWidth > 1024
 
-    console.log("HOME RENDER")
     this.experience = new Experience()
+    const attractor = this.experience.world.attractor
+    gsap.timeline()
+      .to(
+        attractor.points.position,
+        {
+          // x: -1.4,
+          // y: -15,
+          // z: -11.5,
+          x: this.experience.params.positionX,
+          y: this.experience.params.positionY,
+          z: this.experience.params.positionZ,
+          duration: 1,
+          ease: 'power2.inOut',
+        },
+      )
+      .to(
+        attractor.points.rotation,
+        {
+          x: this.experience.params.rotationX,
+          z: this.experience.params.rotationZ,
+          duration: 1,
+          ease: 'power2.inOut',
+        },
+        '<',
+      )
   }
 
   onEnterCompleted() {

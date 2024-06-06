@@ -53,7 +53,6 @@ export default class BlogArticleRenderer extends BaseRenderer {
 
     gsap.set(imageSmall1, { opacity: 0 })
     gsap.set(imageSmall2, { opacity: 0 })
-    gsap.set(imageSmall2, { opacity: 0 })
     gsap.set(imageSectionCable, { opacity: 0 })
     gsap.set('#open-proj-btn', {
       opacity: 0,

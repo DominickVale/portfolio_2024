@@ -12,7 +12,6 @@ export const TypewriterPlugin = {
   init(target, value, tween) {
     typeof value !== 'object' && (value = { value: value })
     let data = this,
-      { preserveSpaces } = value,
       delimiter = (data.delimiter = value.delimiter || ''),
       text
 
@@ -24,8 +23,8 @@ export const TypewriterPlugin = {
     if (!originalContent) {
       target.setAttribute('data-typewrite-content', target.innerHTML)
     }
-    _tempDiv.innerHTML = typeof value.value === 'string' ? value.value : originalContent || target.innerHTML
-    text = splitInnerHTML(_tempDiv, delimiter, false, preserveSpaces)
+    _tempDiv.innerHTML = (typeof value.value === 'string' ? value.value : originalContent || target.innerHTML).replace(/\n/g, '<br/>');
+    text = splitInnerHTML(_tempDiv, delimiter, false, true)
     const newSpeed = Math.min((0.05 / value.speed) * text.length, value.maxDuration || 9999)
     value.speed && tween.duration(newSpeed)
     data.speed = newSpeed

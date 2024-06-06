@@ -1,11 +1,10 @@
 ---
-import Btn from '../../components/Btn.astro'
-import FakeLogs from '../../components/FakeLogs.astro'
+import AboutButtons from '../../components/about/buttons.astro'
 import Image from '../../components/Image.astro'
 import Layout from '../../layouts/Layout.astro'
 ---
 
-<Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default" class="about">
+<Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default" class="about" renderer="about">
   <div class="col-span-2 col-start-2 row-start-2 hidden items-end lg:flex">
     <Image />
   </div>
@@ -13,26 +12,66 @@ import Layout from '../../layouts/Layout.astro'
     <Image cover class="h-2/3" />
   </div>
   <div class="col-span-10 col-start-2 row-start-1 mt-12 flex flex-col md:col-span-6 md:col-start-2 md:row-start-1 md:mt-0">
-    <FakeLogs />
+    <div class="fake-logs pointer-events-none ml-4 mt-[8vh] hidden min-h-[7.2rem] flex-col text-xxs uppercase text-inactive opacity-80 md:flex">
+      <pre>
+    {
+      `
+{
+    _load("IDENTITY");
+    // loading ...
+`}
+</pre>
+      <pre class="mt-[-1rem]">
+    {
+      `
+    // done.
+
+`}
+</pre>
+      <pre class="mt-[-2.5rem]">
+    {`
+
+    _render(this, flush);
+    _load("buttons");
+    // loading ...
+
+`}
+  </pre>
+      <pre
+        class="mt-[-2.5rem]">
+{ `
+    // done.
+    render(buttons);
+
+    try(_digDeeper())
+
+    // ERROR fetching inner identity
+    // Eᚱᚲᚱᛜᚩᚱᚲ: ideᚸᚹᚺᚻ7y nᛜt f0ᚰᚱuᚲd
+    // Aᚦ0ᚱᚲᛚᛛi̶͍͑̍G 
+}
+`}
+  </pre>
+    </div>
   </div>
 
   <div class="col-span-10 col-start-2 row-span-3 row-start-1 mb-32 flex h-full flex-col items-center justify-center pb-[10vh] md:pb-0">
-    <h2 class="mb-12 text-center text-base font-black tracking-button text-white">
-      I'M DOMINICK.<br />PLEASURE TO MEET YOU
-    </h2>
-    <p class="intro-paragraph">
-      Lorem ipsum dolor sit amet consectetur. Interdum rutrum fermentum ultrices dictum nisi etiam morbi tincidunt. Massa risus at sapien tristique
-      leo egestas posuere vestibulum.
-    </p>
-    <p class="intro-paragraph">
-      Fermentum ut nulla curabitur odio nisl malesuada fermentum. Amet eget diam elementum tellus nisi quisque nisl suspendisse at. Mi facilisi
-      ridiculus ultrices elit enim posuere ut ultricies et. Aenean mollis pharetra dui leo morbi urna. Tempus adipiscing ligula nisi amet libero nulla
-      ipsum velit. Nunc eget pellentesque at sem.
-    </p>
-    <p class="intro-paragraph mt-4">Available for any kind of front-end development job, web or not.</p>
-    <div class="mt-[8vh] flex w-full flex-col items-center justify-center gap-6 sm:w-[28rem] sm:flex-row sm:justify-between md:w-[32rem]">
-      <Btn href="/" class="bg-blur-harder h-[4.5rem] w-52 justify-center" frame>OK</Btn>
-      <Btn href="/about/whatido" class="bg-blur-harder h-[4.5rem] w-52 justify-center" frame>WHAT CAN YOU DO?</Btn>
+    <h2 class="min-h-6 text-center text-base font-black tracking-button text-white">I'M DOMINICK,</h2>
+    <h2 class="min-h-6 text-center text-base font-black tracking-button text-white">PLEASURE TO MEET YOU</h2>
+
+    <div class="mt-12 flex flex-col items-center justify-center gap-10">
+      <div class="flex flex-col">
+        <p class="intro-paragraph min-h-20">
+          Lorem ipsum dolor sit amet consectetur. Interdum rutrum fermentum ultrices dictum nisi etiam morbi tincidunt. Massa risus at sapien
+          tristique leo egestas posuere vestibulum.
+        </p>
+        <p class="intro-paragraph">
+          Fermentum ut nulla curabitur odio nisl malesuada fermentum. Amet eget diam elementum tellus nisi quisque nisl suspendisse at. Mi facilisi
+          ridiculus ultrices elit enim posuere ut ultricies et. Aenean mollis pharetra dui leo morbi urna. Tempus adipiscing ligula nisi amet libero
+          nulla ipsum velit. Nunc eget pellentesque at sem.
+        </p>
+        <p class="intro-paragraph mt-4">Available for any kind of front-end development job, web or not.</p>
+      </div>
+      <AboutButtons class="mt-0" l={{ link: '/', text: 'OK' }} r={{ link: '/about/whoami', text: 'WHAT ARE YOU?' }} />
     </div>
   </div>
 </Layout>

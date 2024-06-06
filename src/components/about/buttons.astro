@@ -1,0 +1,22 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+import Btn from '../Btn.astro'
+import { twMerge } from 'tailwind-merge';
+type Props = {
+  l: { link: string; text: string }
+  r: { link: string; text: string }
+} & HTMLAttributes<'div'>
+
+const { l, r, class: classes } = Astro.props
+
+export const btnClasses = 'bg-background-dark-02 backdrop-blur-[16px] mx-auto h-20 w-52 justify-center overflow-hidden whitespace-nowrap text-nowrap'
+---
+
+<div
+  class={twMerge([
+    'mt-[8vh] flex w-full flex-col items-center justify-center gap-28 text-white sm:w-[28rem] sm:flex-row sm:justify-between md:w-[32rem]',
+  ], classes)}
+>
+  <Btn href={l.link} data-text-scramble={l.text} data-text-scramble-speed="20" class={btnClasses} frame>{l.text}</Btn>
+  <Btn href={r.link} data-text-scramble={r.text} data-text-scramble-speed="20" class={btnClasses} frame>{r.text}</Btn>
+</div>

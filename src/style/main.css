@@ -122,7 +122,7 @@ body {
 .fui-corners {
   --frame-bg-stroke-w: 1px;
   --frame-bg-size: 4px;
-  --color: white;
+  --color: var(--label);
   bottom: 0;
   left: 0;
   position: absolute;
@@ -179,6 +179,10 @@ body {
     background-color: var(--bg-dark-05);
     backdrop-filter: blur(16px);
   }
+  .bg-blur-max {
+    background-color: var(--bg-dark-05);
+    backdrop-filter: blur(24px);
+  }
 }
 
 .font-outline {
@@ -191,7 +195,7 @@ body {
 }
 
 .intro-paragraph {
-  @apply max-w-sm text-center text-xs text-white opacity-80;
+  @apply max-w-lg text-center font-normal text-sm text-label;
   text-wrap: pretty;
 }
 

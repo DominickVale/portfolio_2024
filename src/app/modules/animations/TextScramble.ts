@@ -14,7 +14,8 @@ export default class TextScramble {
   static init() {
     $all('[data-text-scramble]').forEach((el, i) => {
       el.setAttribute('data-text-scramble', el.innerText)
-      el.addEventListener('mouseover', () => TextScramble.scramble(el))
+      const speed = el.getAttribute('data-text-scramble-speed')
+      el.addEventListener('mouseover', () => TextScramble.scramble(el, Number(speed) || undefined))
     })
   }
 

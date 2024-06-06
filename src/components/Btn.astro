@@ -1,4 +1,6 @@
 ---
+import { twMerge } from 'tailwind-merge'
+
 const { small, class: classes, innerClass, frame, bottom, containerId, ...rest } = Astro.props
 
 const Component = Astro.props.href ? 'a' : 'button'
@@ -6,26 +8,28 @@ const Component = Astro.props.href ? 'a' : 'button'
 
 <div
   id={containerId}
-  class="btn-wrapper relative"
-  class:list={[
-    'btn relative text-xs font-light tracking-button active:animate-fui-flash',
-    frame && 'frame h-8 w-32 font-bold backdrop-blur-[1px] ',
-    classes,
-  ]}
+  class="btn-wrapper relative hover:animate-shake"
+  class:list={twMerge(['btn relative text-xs font-light tracking-button active:animate-fui-flash', frame && 'frame h-8 w-32 font-bold', classes])}
 >
   <Component
-    class:list={['flex h-full w-full', bottom ? 'items-end justify-start pb-[0.225rem] pl-3' : 'items-center justify-center', innerClass]}
+    class:list={twMerge(['flex h-full w-full', bottom ? 'items-end justify-start pb-[0.225rem] pl-3' : 'items-center justify-center', innerClass])}
     {...rest}
   >
     <slot />
   </Component>
-  {frame && <div class="fui-corners pointer-events-none" />}
+  {frame && <div class="fui-corners pointer-events-none transition-all duration-200 ease-in-out" />}
 </div>
 
 <style>
   .btn-wrapper:active {
     @apply animate-fui-flash;
     animation-duration: 0.1s linear infinite;
+  }
+  .btn-wrapper:hover {
+    .fui-corners {
+      --frame-bg-size: 8px;
+      --color: white;
+    }
   }
   .btn--enabled:not(:hover) {
     opacity: 1;

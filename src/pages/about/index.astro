@@ -1,20 +1,19 @@
 ---
-import Btn from '../../components/Btn.astro'
+import AboutButtons from '../../components/about/buttons.astro'
 import Layout from '../../layouts/Layout.astro'
 ---
 
-<Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default" class="about">
+<Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default" class="about" renderer="about">
   <div class="col-span-10 col-start-2 flex h-full flex-col items-center justify-center pb-[10vh] md:pb-0">
-    <h2 class="mb-12 text-center text-base font-black tracking-button text-white">
-      HELLO THERE.<br />I'M SO GLAD THAT YOU MADE IT HERE.
-    </h2>
-    <p class="intro-paragraph">
+    <h2 class="min-h-6 text-center text-base font-black tracking-button text-white">HELLO THERE.</h2>
+    <h2 class="min-h-6 text-center text-base font-black tracking-button text-white">I'M SO GLAD THAT YOU MADE IT HERE.</h2>
+    <p class="intro-paragraph mt-12 min-h-24">
       Funny to know that the entire history of events in our universe led to this exact moment. You reading this was a ~14 billions years coming.
+      <br /><br />Oh, right — sorry, you wanted to know about me. What are you interested in, specifically?
     </p>
-    <p class="intro-paragraph">Oh, right — sorry, you wanted to know about me. What are you interested in, specifically?</p>
-    <div class="mt-[8vh] flex w-full flex-col items-center justify-center gap-6 sm:w-[28rem] sm:flex-row sm:justify-between md:w-[32rem]">
-      <Btn href="/about/whoami" data-text-scramble="YOUR PERSONALITY" class="bg-blur-harder h-14 w-52 justify-center" frame>YOUR PERSONALITY.</Btn>
-      <Btn href="/about/whatido" data-text-scramble="YOUR YOUR SKILLS." class="bg-blur-harder h-14 w-52 justify-center" frame>YOUR SKILLS.</Btn>
-    </div>
+    <AboutButtons
+      l={{ link: '/about/whoami', text: 'YOUR PERSONALITY.' }}
+      r={{ link: '/about/whatido', text: 'YOUR SKILLS.' }}
+    />
   </div>
 </Layout>
