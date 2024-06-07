@@ -1,10 +1,12 @@
 import { $, $all, debounce, fitTextToContainerScr, showCursorMessage } from '../../utils'
 import gsap from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger'
 
 import Experience from '../../gl/Experience'
 import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
 import { blurStagger } from '../animations/gsap'
+import Lenis from 'lenis'
 gsap.registerPlugin(TypewriterPlugin)
 
 export default class BlogRenderer extends BaseRenderer {
@@ -14,9 +16,9 @@ export default class BlogRenderer extends BaseRenderer {
   experience: Experience
   tlStack: gsap.core.Timeline[]
   isFirstRender: boolean
-  canChange: boolean
   articles: HTMLElement[]
   handleActiveArticleBound: (event: UIEvent) => void
+  lenis: Lenis
 
   initialLoad() {
     super.initialLoad()
@@ -24,7 +26,6 @@ export default class BlogRenderer extends BaseRenderer {
 
   onEnter() {
     super.onEnter()
-    this.canChange = false
     this.currIdx = 0
     this.oldIdx = 0
     this.isFirstRender = true
@@ -32,8 +33,17 @@ export default class BlogRenderer extends BaseRenderer {
 
     const statusItems = $all('#blog-header #blog-status li')
     const subtitle = $('#blog-header h2')
+    const scrollWrapper = $('#posts-container')
+
+    this.lenis = new Lenis({ wrapper: scrollWrapper, duration: 2, smoothWheel: true, orientation: 'horizontal', eventsTarget: window })
+    this.lenis.on('scroll', ScrollTrigger.update)
+    gsap.ticker.add((time) => {
+      this.lenis.raf(time * 1000)
+    })
+    gsap.ticker.lagSmoothing(0)
 
     gsap.set(subtitle, { autoAlpha: 0 })
+    gsap.set(scrollWrapper, { pointerEvents: 'none' })
 
     this.articles = Array.from($all('.blog-article'))
     this.aIds = this.articles.map((a) => a.id)
@@ -45,9 +55,12 @@ export default class BlogRenderer extends BaseRenderer {
     BaseRenderer.resizeHandlers.push(this.resizeTitles.bind(this))
 
     this.handleActiveArticleBound = this.handleActiveArticle.bind(this)
-    window.addEventListener('wheel', this.handleActiveArticleBound)
+    this.articles.forEach((article) => {
+      article.addEventListener('mouseover', this.handleActiveArticleBound)
+    })
+
     this.experience = new Experience()
-    const tl = gsap.timeline({})
+    const tl = gsap.timeline({ })
 
     tl.fromTo(
       '#blog-header',
@@ -71,7 +84,6 @@ export default class BlogRenderer extends BaseRenderer {
           ease: 'power4.inOut',
           onStart: () => {
             setTimeout(() => {
-              this.canChange = true
               this.handleActiveArticle(null)
             }, 500)
           },
@@ -102,6 +114,10 @@ export default class BlogRenderer extends BaseRenderer {
             repeat: 20,
             each: 0.1,
           },
+
+      onComplete: () => {
+        gsap.set(scrollWrapper, { pointerEvents: 'all' })
+      },
         },
         '<+50%',
       )
@@ -146,19 +162,8 @@ export default class BlogRenderer extends BaseRenderer {
   }
 
   handleActiveArticle(e) {
-    if (!this.canChange) return
-    if (typeof e?.deltaY !== 'undefined') {
-      const direction = e.deltaY > 0 ? 'down' : 'up'
-      if (direction === 'down') {
-        this.currIdx = (this.currIdx + 1) % this.aIds.length
-      } else {
-        this.currIdx = this.currIdx - 1
-        this.currIdx = this.currIdx < 0 ? this.aIds.length - 1 : this.currIdx
-      }
-    }
-
-    this.canChange = false
-    let oldActive
+    let oldActive: HTMLElement
+    this.currIdx = Number(e?.currentTarget?.id || 0)
     if (this.oldIdx !== this.currIdx) {
       oldActive = this.articles[this.oldIdx]
       oldActive.classList.remove('active')
@@ -166,16 +171,6 @@ export default class BlogRenderer extends BaseRenderer {
 
     const active = this.articles[this.currIdx]
     active.classList.add('active')
-    const container = active.parentElement
-    const containerRect = container.getBoundingClientRect()
-    const activeRect = active.getBoundingClientRect()
-
-    const scrollLeft = container.scrollLeft + (activeRect.left - containerRect.left) - (containerRect.width / 2 - activeRect.width / 2)
-
-    container.scroll({
-      left: scrollLeft,
-      behavior: 'smooth',
-    })
 
     const fuiCornersActive = $('.fui-corners-2', active)
     const fuiCornersOld = $('.fui-corners-2', oldActive)
@@ -198,9 +193,6 @@ export default class BlogRenderer extends BaseRenderer {
           {
             alpha: 0,
             duration: 0.2,
-            onComplete: () => {
-              this.canChange = true
-            },
           },
           '<',
         )
@@ -270,9 +262,6 @@ export default class BlogRenderer extends BaseRenderer {
           {
             alpha: 0.1,
             duration: 0.2,
-            onComplete: () => {
-              this.canChange = true
-            },
           },
           '<',
         )
@@ -281,11 +270,11 @@ export default class BlogRenderer extends BaseRenderer {
     this.oldIdx = this.currIdx
   }
 
-  resizeTitles(){
+  resizeTitles() {
     this.articles.forEach((article) => {
       const articleTitleEl = $('.article-title', article)
       const fontSizeChanged = fitTextToContainerScr(articleTitleEl, articleTitleEl, 2)
-      console.log("RESIZING: ", fontSizeChanged)
+      console.log('RESIZING: ', fontSizeChanged)
       if (fontSizeChanged) articleTitleEl.style.lineHeight = 'unset'
       article.addEventListener('mousemove', this.handleMouseMove.bind(this))
       article.addEventListener('mouseleave', this.handleMouseLeave.bind(this))

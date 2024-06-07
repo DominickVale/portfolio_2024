@@ -113,8 +113,7 @@ import { EMAIL } from '../app/constants'
 
 <style is:global>
   #socials {
-    svg {
-    }
+    svg path{ }
     #mail-icon {
       opacity: 1;
     }
@@ -123,7 +122,7 @@ import { EMAIL } from '../app/constants'
     & path {
       fill: white;
     }
-    animation: fast-blink 0.28s linear;
+    animation: fast-blink-short 0.1s linear;
   }
   #socials > *:active{
   @apply animate-fui-flash; 

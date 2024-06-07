@@ -92,8 +92,8 @@ export class ContactsInternalRenderer {
         autoAlpha: 1,
         duration: 0.045,
         stagger: {
-          each: 0.15,
-          repeat: 10,
+          each: 0.08,
+          repeat: 6,
           from: 'random',
         },
         ease: 'circ.inOut',

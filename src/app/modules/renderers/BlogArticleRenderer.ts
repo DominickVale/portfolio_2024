@@ -14,6 +14,10 @@ function removeOpacity() {
   this.targets()[0]?.classList.remove('opacity-0')
 }
 
+function removeSetOpacity() {
+  gsap.set(this.targets()[0], { opacity: 1 })
+}
+
 export default class BlogArticleRenderer extends BaseRenderer {
   experience: Experience
   tlStack: gsap.core.Timeline[]
@@ -53,6 +57,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
 
     gsap.set(imageSmall1, { opacity: 0 })
     gsap.set(imageSmall2, { opacity: 0 })
+    gsap.set('#intro-details', { opacity: 0 })
     gsap.set(imageSectionCable, { opacity: 0 })
     gsap.set('#open-proj-btn', {
       opacity: 0,
@@ -74,9 +79,15 @@ export default class BlogArticleRenderer extends BaseRenderer {
         })
     }, 500)
 
-    const blogImages = $all('.blog-image').forEach((img) => {
-      gsap.set($('.alt', img), { autoAlpha: 0 })
-      gsap.set($('small', img), { autoAlpha: 0 })
+    const blogParagraphs = $all('.blog-section').forEach((b) => {
+      const img = $('.blog-image', b)
+      const content = $all('.blog-section-content > *:not(h2)', b)
+      const title = $('h2', b)
+
+      gsap.set(content, { opacity: 0 })
+      gsap.set(title, { opacity: 0 })
+      gsap.set($('.alt', img), { opacity: 0 })
+      gsap.set($('small', img), { opacity: 0 })
       const blogSectionImageTl = gsap
         .timeline({
           scrollTrigger: {
@@ -85,11 +96,31 @@ export default class BlogArticleRenderer extends BaseRenderer {
             end: 'bottom center',
           },
         })
-        .from($('.fui-corners-dot', img), {
-          scale: 0,
-          duration: 0.5,
-          ease: 'expo.in',
+        .to(title, {
+          typewrite: {},
+          duration: 2,
+          ease: 'circ.inOut',
+          onStart: removeSetOpacity,
         })
+        .to(
+          content,
+          {
+            opacity: 1,
+            duration: 3,
+            stagger: 0.5,
+            ease: 'circ.inOut',
+          },
+          '<',
+        )
+        .from(
+          $('.fui-corners-dot', img),
+          {
+            scale: 0,
+            duration: 0.5,
+            ease: 'expo.in',
+          },
+          '<+50%',
+        )
         .from(
           $('.fui-corners-dot', img),
           {
@@ -327,11 +358,11 @@ export default class BlogArticleRenderer extends BaseRenderer {
           ease: 'power4.inOut',
           onStart: function () {
             window['intro'].classList.remove('opacity-0')
-            window['intro-details'].classList.remove('!opacity-0')
           },
         },
         '<',
       )
+      .to('#intro-details', { opacity: 0.5, ease: 'power4.in' }, '<')
       .add(imageTL, '<')
 
     this.contactsRenderer = new ContactsInternalRenderer(this.isDesktop, BlogArticleRenderer.tl)
@@ -357,7 +388,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
     const shadowTitle = $('#article-shadow-title')
     // titleEl is the overlapped one with the split characters
     const oldTitleEl = $('#article-title')
-    if(firstRender){
+    if (firstRender) {
       const newFontSize = fitTextToContainerScr(shadowTitle, shadowTitle.parentElement)
 
       Array.from(oldTitleEl.childNodes).forEach((e: HTMLElement) => {
@@ -373,8 +404,8 @@ export default class BlogArticleRenderer extends BaseRenderer {
     const newFontSize = fitTextToContainerScr(shadowTitle, shadowTitle.parentElement)
 
     Array.from(newTitleEl.childNodes).forEach((e: HTMLElement) => {
-      e.style.opacity = "1"
-      e.style.filter = ""
+      e.style.opacity = '1'
+      e.style.filter = ''
       e.style.lineHeight = '130%'
       e.style.fontSize = newFontSize + 'px'
     })

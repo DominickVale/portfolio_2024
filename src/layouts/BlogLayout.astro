@@ -14,7 +14,7 @@ type Props = {
 }
 const { frontmatter, ...rest } = Astro.props
 
-const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro } = frontmatter
+const {id, title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro } = frontmatter
 ---
 
 <BaseLayout title="Blog page" rowsMax withContacts data-menu-trigger="default-blog" renderer="blogArticle">
@@ -33,7 +33,7 @@ const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro 
     <!-- > -->
     <div class="flex h-max flex-col sm:flex-row">
       <span class="relative mt-8 md:mt-[2vh] lg:mt-[6vh]">
-        <span id="case-n" class="absolute left-1 top-[-1rem] text-xxs !opacity-0 opacity-50">CASE_N: 001</span>
+        <span id="case-n" class="absolute left-1 top-[-1rem] text-xxs !opacity-0 opacity-50">{project ? `CASE_N:` : `ARTICLE_ID:`} 00{id}</span>
         <div class="relative h-[9.2vw] text-[unset]">
           <h1 id="article-shadow-title" class="pointer-events-none font-display font-black leading-[130%] opacity-0">
             {title}
@@ -68,7 +68,7 @@ const { title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro 
       }
     </section>
 
-    <span id="intro-details" class="mb-2 mt-6 flex items-center gap-3 text-xxs !opacity-0 opacity-50 transition-opacity duration-1000 md:text-xs">
+    <span id="intro-details" class="mb-3 mt-6 flex items-center gap-3 text-xxs opacity-50 md:text-xs">
       <p>LAST UPDATE: <date>{lastUpdated}</date></p>
       <div class="h-1 w-1 rounded-full bg-white opacity-70"></div>
       <p>TTR: {ttr} MINUTES</p>
