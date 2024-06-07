@@ -12,7 +12,7 @@ export default class FromAboutTransition extends BaseTransition {
 
     gsap
       .timeline({ onComplete: done })
-      .to('.btn, p, h2, table, .fake-logs, .img-container', {
+      .to('.btn, .intro-paragraph, h2, table, .fake-logs, .img-container', {
         opacity: 0,
         duration: 1,
         ease: 'power4.out',

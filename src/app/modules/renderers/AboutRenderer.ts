@@ -36,7 +36,7 @@ export default class AboutRenderer extends BaseRenderer {
     gsap.set('.fake-logs > *', { opacity: 0 })
     gsap.set('h2:first-of-type', { opacity: 0 })
     gsap.set('h2:last-of-type', { opacity: 0 })
-    gsap.set('p', { opacity: 0 })
+    gsap.set('.intro-paragraph', { opacity: 0 })
     gsap.set('.btn', { opacity: 0 })
 
 
