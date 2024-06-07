@@ -256,7 +256,6 @@ export default class RadialMenu {
   }
 
   close() {
-    console.log('Closed')
     this.currTarget = null
     this.shown = false
     this._wrapper.classList.add('radial-menu-hidden')

@@ -141,9 +141,6 @@ export default class BlogRenderer extends BaseRenderer {
   }
 
   ////////////////////////////////
-  onHoverArticle(e) {
-    console.log(e.target)
-  }
   handleMouseMove(event) {
     const gradientOverlay = $('.gradient-overlay', event.currentTarget)
     const rect = event.currentTarget.getBoundingClientRect()
@@ -274,7 +271,6 @@ export default class BlogRenderer extends BaseRenderer {
     this.articles.forEach((article) => {
       const articleTitleEl = $('.article-title', article)
       const fontSizeChanged = fitTextToContainerScr(articleTitleEl, articleTitleEl, 2)
-      console.log('RESIZING: ', fontSizeChanged)
       if (fontSizeChanged) articleTitleEl.style.lineHeight = 'unset'
       article.addEventListener('mousemove', this.handleMouseMove.bind(this))
       article.addEventListener('mouseleave', this.handleMouseLeave.bind(this))

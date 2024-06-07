@@ -71,7 +71,6 @@ export default class BaseRenderer extends Renderer {
 
   onLeave() {
     // run before the transition.onLeave method is called
-    console.log('renderer onLeave')
     window.removeEventListener('resize', this.#onResizeBound)
     BaseRenderer.resizeHandlers = []
     window.app.isTransitioning = true
@@ -79,7 +78,6 @@ export default class BaseRenderer extends Renderer {
 
   onLeaveCompleted() {
     // run after the transition.onleave has fully completed
-    console.log('renderer onLeaveCompleted')
   }
 
   /////////////////////
@@ -90,7 +88,6 @@ export default class BaseRenderer extends Renderer {
 
   #handleResize() {
     this.isDesktop = window.innerWidth > 1024
-    console.log('onResize', this.isDesktop)
     BaseRenderer.resizeHandlers.forEach((f) => f())
   }
 }

@@ -19,7 +19,7 @@ export default class Menus {
   }
 
   destroy() {
-    console.log('Destroying menus')
+    // console.log('Destroying menus')
     this.menus.forEach((m) => m.destroy())
     this.triggers.forEach((t) => {
       t.el?.removeEventListener('contextmenu', t.cb)
