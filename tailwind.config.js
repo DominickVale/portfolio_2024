@@ -11,13 +11,7 @@ export default {
       mono: ['Inconsolata', 'Roboto Mono'],
       copy: ['Roboto', 'Arial'],
     },
-    screens: {
-      xs: '420px',
-      ...defaultTheme.screens,
-      tall: { raw: '((min-height: 500px) and (min-width: 640px))' },
-      taller: { raw: '((min-height: 650px) and (min-width: 640px))' },
-      'laptop-h': { raw: '((min-height: 720px) and (min-width: 1024px))' },
-    },
+    screens: require('./tailwind.screens'),
     extend: {
       colors: {
         primary: 'var(--primary)',

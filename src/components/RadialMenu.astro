@@ -7,10 +7,9 @@ type Props = {
 }
 
 const { id, size, mobile } = Astro.props
-const classMobile = 'mobile md:hidden'
 ---
 
-<div id={id} class={`radial-menu-wrapper radial-menu-hidden ${mobile ? classMobile : ' '}`} style=`--size: ${size};`>
+<div id={id} class={`radial-menu-wrapper radial-menu-hidden ${mobile ? 'mobile' : ' '}`} style=`--size: ${size};`>
   <ul class="radial-menu">
     <div id={`radial-menu-thumb-${id}`} class={`radial-menu-thumb ${mobile && 'mobile'}`}>
       <BrandIcon />
@@ -23,6 +22,11 @@ const classMobile = 'mobile md:hidden'
 </div>
 
 <style is:global>
+  @media (min-aspect-ratio: 4/4) {
+    .radial-menu-wrapper.mobile {
+      display: none;
+    }
+  }
   .radial-menu-bgs {
     position: absolute;
     top: 0;

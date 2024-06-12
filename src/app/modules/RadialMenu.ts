@@ -176,8 +176,8 @@ export default class RadialMenu {
 
       const pathData = `M ${outerStartX} ${outerStartY}
                       A ${this._radius} ${this._radius} 0 0 1 ${outerEndX} ${outerEndY}
-                      L ${innerEndX} ${innerEndY}
-                      A ${innerRadius} ${innerRadius} 0 0 0 ${innerStartX} ${innerStartY}
+                      L ${innerEndX || 0} ${innerEndY || 0}
+                      A ${innerRadius} ${innerRadius} 0 0 0 ${innerStartX || 0} ${innerStartY || 0}
                       Z`
 
       maskPathData.push(pathData)

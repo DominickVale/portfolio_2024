@@ -24,6 +24,7 @@ export default class Cursor {
   isMobile: boolean
   animations: Array<() => void>
   els: HTMLElement[]
+  wasLastClickTouch: boolean
 
   constructor(public speed = 0.25) {
     this.isMobile = isMobile()
@@ -40,6 +41,7 @@ export default class Cursor {
   }
 
   init() {
+    window.addEventListener('pointerup', this.onPointerUp.bind(this))
     window.addEventListener('mousemove', this.onMouseMove.bind(this))
     window.addEventListener('touchmove', this.onTouchMove.bind(this))
     window.addEventListener('mousedown', this.onClick.bind(this))
@@ -54,6 +56,13 @@ export default class Cursor {
 
   onClick() {
     Typewriter.stop(this.textEl)
+  }
+
+  onPointerUp(e: PointerEvent) {
+    if (e.pointerType !== 'mouse' && !this.wasLastClickTouch) {
+      gsap.to(this.el.parentElement, { autoAlpha: 0, duration: 0.5, ease: 'power4.out' })
+      this.wasLastClickTouch = true
+    }
   }
 
   abortCursorMessage(el: HTMLElement, showEmptyMessage: boolean) {
@@ -131,6 +140,11 @@ export default class Cursor {
       y: e.clientY,
     }
     this.pos = pos
+    
+    if (this.wasLastClickTouch) {
+      this.wasLastClickTouch = false
+      gsap.to(this.el.parentElement, { autoAlpha: 1, duration: 0.15, ease: 'power4.out' })
+    }
   }
 
   onShowMessage(e: CustomEvent<MessageShowEvent>) {

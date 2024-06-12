@@ -1,6 +1,6 @@
 import { Renderer } from '@unseenco/taxi'
 import gsap from 'gsap'
-import { $all, $, debounceTrailing } from '../../utils'
+import { $all, $, debounceTrailing, isMobile } from '../../utils'
 
 export default class BaseRenderer extends Renderer {
   navLinks: HTMLAnchorElement[]
@@ -87,7 +87,7 @@ export default class BaseRenderer extends Renderer {
   }
 
   #handleResize() {
-    this.isDesktop = window.innerWidth > 1024
+    this.isDesktop = !isMobile()
     BaseRenderer.resizeHandlers.forEach((f) => f())
   }
 }

@@ -112,7 +112,7 @@ export default class FromBlogTransition extends BaseTransition {
       .to(
         '#blog-header',
         {
-          x: '-50vw',
+          x: '-80vw',
           duration: 1.35,
           ease: 'power4.inOut',
         },

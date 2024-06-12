@@ -13,35 +13,39 @@ const allPosts = await getCollection('blog')
   <section id="blog-header" class="relative col-span-10 col-start-2">
     <div class="relative my-8 flex h-max flex-col sm:my-0 sm:flex-row">
       <h1
-        class="mt-[2vh] font-display text-[15vw] font-black leading-[100%] md:text-8xl lg:text-[calc(5vw+6.2vh)] tall:mt-[6vh] taller:mt-[10vh]"
+        class="mt-[2vh] font-display text-[15vw] font-black leading-[100%] sm:mt-[8vh] md:text-8xl lg:text-[calc(5vw+6.2vh)]"
         data-aberration="0.8"
+        data-menu-trigger="text"
       >
         BLOG
       </h1>
       <div
         id="blog-blurred-bg"
-        class="bg bg-blur cut-corner absolute bottom-[-5.5vh] left-[-62%] z-[-1] hidden h-1/2 w-[55rem] sm:block md:w-[60rem] lg:w-[70rem] xl:w-full"
+        class="bg bg-blur cut-corner absolute left-[-45rem] top-[5.5vh] z-[-1] h-2/3 w-[55rem] sm:left-[-62%] sm:top-[60%] md:w-[60rem] lg:w-[70rem] xl:w-full"
       >
       </div>
-      <div class="ml-1 mr-auto mt-2 gap-[7%] self-end sm:mb-6 sm:ml-4 lg:ml-6">
+      <div class="ml-1 mr-auto mt-2 min-h-8 gap-[7%] self-end sm:mb-6 sm:ml-4 lg:ml-6">
         <ul id="blog-status">
-          <StatusItem filled class="text-xxs md:text-xs">UPDATED:&nbsp;{lastUpdated}</StatusItem>
-          <StatusItem filled class="text-xxs md:text-xs">PROJ. CASES: 3</StatusItem>
+          <StatusItem filled class="text-xxs md:text-xs" data-menu-trigger="text">UPDATED:&nbsp;{lastUpdated}</StatusItem>
+          <StatusItem filled class="text-xxs md:text-xs" data-menu-trigger="text">PROJ. CASES: 3</StatusItem>
         </ul>
       </div>
     </div>
-    <h2 class="mb-3 ml-3 hidden min-h-6 whitespace-nowrap font-mono text-xs font-black tracking-button text-inactive sm:block tall:text-base">
+    <h2
+      class="mb-12 ml-3 hidden min-h-6 whitespace-nowrap font-mono text-xs font-black tracking-button text-inactive sm:block tall:text-base"
+      data-menu-trigger="text"
+    >
       UNCOORDINATED THOUGHTS AND PROJECT CASES
     </h2>
   </section>
 
   <section
     id="posts-container"
-    class="max-w-screen no-scrollbar col-span-10 col-start-2 row-start-2 flex max-h-[70vh] min-h-28 flex-col items-center pb-24 pt-3 sm:col-span-12 sm:col-start-1 sm:max-h-none sm:flex-row sm:items-start sm:overflow-x-scroll sm:px-[8vw] sm:pb-0"
+    class="max-w-screen no-scrollbar justify-center col-span-10 col-start-2 row-start-2 flex flex-row flex-wrap gap-x-[4vw] gap-y-[8vh] overflow-y-visible pb-[15vh]"
   >
     {
       allPosts.map((post, i) => (
-        <a id={`${i}`} class="blog-article my-[4vh] sm:mx-[2vw] sm:my-0 xl:mx-[3rem]" href={`/blog/${post.slug}`}>
+        <a id={`${i}`} class="blog-article sm:my-0 xl:mx-[3rem]" href={`/blog/${post.slug}`}>
           <BlogEntry {...post.data} />
         </a>
       ))
@@ -54,15 +58,48 @@ const allPosts = await getCollection('blog')
 </Layout>
 
 <style is:global>
+  #posts-container {
+    max-width: 100vw;
+  }
+
+  #posts-container {
+  }
+
+  @media (min-aspect-ratio: 4/4) {
+    #posts-container {
+      @apply col-start-1;
+      @apply col-span-12;
+      @apply px-[8vw];
+      @apply gap-12;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      flex-direction: row;
+      justify-content: start;
+      flex-wrap: nowrap;
+      & > a {
+        margin-bottom: auto;
+      }
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (max-aspect-ratio: 3.9999/4) {
+    #posts-container {
+      justify-content: center;
+      margin-top: 8vh;
+      padding-bottom: 10vh;
+    }
+  }
   .cut-corner {
     clip-path: polygon(100% 0, 100% 45%, 96% 100%, 0 100%, 0 0);
   }
+
   #posts-container::before {
     @apply sm:hidden;
     @apply bottom-12;
     content: '';
-    position: absolute;
+    position: fixed;
     left: 0;
+    bottom: 10vh;
     width: 100%;
     height: 10%;
     background: linear-gradient(0deg, rgba(17, 16, 16, 1) 0%, rgba(17, 16, 16, 0.1) 100%);

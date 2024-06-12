@@ -5,17 +5,31 @@ import StatusItem from '../components/StatusItem.astro'
 import NextPageBtn from '../components/NextPageBtn.astro'
 ---
 
+<!--   <path d="M140.652 0H0V206H367.067L400 182V54L367.067 20H168.096L140.652 0Z" fill="#111010" fill-opacity="0.5"></path> -->
 <Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default">
   <section class="col-span-12 col-start-1 mt-6 flex justify-center sm:hidden">
     <NextPageBtn>WORKS</NextPageBtn>
   </section>
   <section class="col-span-10 col-start-2 row-span-4 row-start-2 flex flex-col content-start justify-end text-xs taller:pt-[17vh]">
     <div class="mt-4 flex justify-between sm:text-left">
-      <div class="">
-        <h2 class="text-primary">whoami</h2>
-        <p class="mb-3 select-none text-stone-300 sm:max-w-64 md:select-all" data-menu-trigger="text">
-          I’m just the quiet, value-centered guy that gets the work done. My interests range from front-end web development all the way down to
-          reverse engineering, to mountain biking. Sounds interesting?
+      <div class="relative overflow-visible">
+        <h2 class="relative flex items-center gap-2 text-primary">
+          <svg
+            class="mt-0. h-2.5 w-2.5 fill-primary"
+            preserveAspectRatio="xMaxYMin meet"
+            viewBox="0 0 15 15"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.5813 7.07027L5.29069 1.77962L8.85149 1.77966L13.0739 6.00206L12.0057 7.07028L13.0739 8.13854L8.85144 12.361L5.29065 12.361L10.5813 7.07027Z"
+            ></path>
+          </svg>
+          whoami
+        </h2>
+        <p class="my-3 select-none text-stone-300 sm:max-w-64 md:select-all" data-menu-trigger="text">
+          reverse engineering, to mountain biking. Sounds interesting? I’m just the quiet, value-centered guy that gets the work done. My interests
+          range from front-end web development all the way down to
         </p>
         <Btn
           href="/about"

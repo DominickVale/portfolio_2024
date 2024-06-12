@@ -6,7 +6,7 @@ const { title, tags, description, readTime, date, class: classes } = Astro.props
 
 <article
   class:list={[
-    'bg-blur-harder relative flex h-[16rem] w-full flex-col justify-center bg-transparent p-6 sm:w-[19rem] sm:p-12 tall:h-[21rem] tall:w-[21rem]',
+    'bg-blur-harder relative mx-auto flex h-[30vh] w-[90%] flex-col justify-center bg-transparent p-6 sm:w-[19rem] lg:p-12 md:h-[16rem] xs:gap-4 sm:gap-0 md:gap-4 tall:h-[21rem] tall:w-[21rem]',
     classes,
   ]}
   data-cursor-message="Open"
@@ -78,7 +78,16 @@ const { title, tags, description, readTime, date, class: classes } = Astro.props
   <span class="pointer-events-none flex flex-col gap-1">
     <date class="relative text-xxs uppercase tracking-wider text-inactive">{date}</date>
     <div class="article-description h-0 overflow-hidden">
-      <p class="line-clamp-3 min-h-24 text-xs text-copy tall:line-clamp-none">{description}</p>
+      <div class="relative">
+        <p class="absolute left-0 top-0 line-clamp-2 h-full w-full min-w-full text-xs text-copy sm:min-h-24 md:line-clamp-3 tall:line-clamp-none">
+          {description}
+        </p>
+        <p
+          class="shadow-description pointer-events-none line-clamp-2 min-w-full text-xs text-copy opacity-0 sm:min-h-24 md:line-clamp-3 tall:line-clamp-none"
+        >
+          {description}
+        </p>
+      </div>
     </div>
   </span>
 </article>

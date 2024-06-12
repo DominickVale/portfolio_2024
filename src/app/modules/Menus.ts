@@ -1,6 +1,6 @@
 import type { RadialMenuItem } from './RadialMenu'
 import RadialMenu from './RadialMenu'
-import { $all, debounce, isMobile, showCursorMessage } from '../utils'
+import { $all, debounceTrailing, isMobile, showCursorMessage } from '../utils'
 
 export default class Menus {
   menus: RadialMenu[]
@@ -19,7 +19,6 @@ export default class Menus {
   }
 
   destroy() {
-    // console.log('Destroying menus')
     this.menus.forEach((m) => m.destroy())
     this.triggers.forEach((t) => {
       t.el?.removeEventListener('contextmenu', t.cb)
@@ -31,7 +30,13 @@ export default class Menus {
     if ((e.target as HTMLElement).id.includes('radial-menu-thumb')) return
     e.preventDefault()
     e.stopPropagation()
-    menu.open(e.clientX, e.clientY, e.target as HTMLElement)
+    
+    const isTouchOrBound = window.app.cursor.pos.x <= 3 || window.app.cursor.pos.y <= 3
+    const pos = {
+      x: isTouchOrBound ? window.innerWidth / 2 : e.clientX,
+      y: isTouchOrBound ? window.innerHeight / 2 : e.clientY,
+    }
+    menu.open(pos.x, pos.y, e.target as HTMLElement)
   }
 
   addListeners() {
@@ -177,6 +182,7 @@ export default class Menus {
       return [textMenu, settingsMenu, defaultMenuMobile]
     } else {
       const defaultMenu = new RadialMenu('default', defaultMenuItems)
+      //@TODO: add per page menu to improve perf
       const defaultBlogMenu = new RadialMenu('default-blog', defaultMenuItems)
       return [defaultMenu, textMenu, settingsMenu, defaultBlogMenu]
     }
@@ -186,15 +192,12 @@ export default class Menus {
     this.debounceResize()
   }
 
-  debounceResize = debounce(() => {
+  debounceResize = debounceTrailing(() => {
     this.isMobile = isMobile()
+    
     this.destroy()
-    this.menus = [
-      ...this.getMenus().filter((menu) => {
-        const isMenuMobile = menu.isMobile
-        return this.isMobile ? isMenuMobile : !isMenuMobile
-      }),
-    ]
+    this.menus = this.getMenus()
     this.addListeners()
+
   }, 1000)
 }

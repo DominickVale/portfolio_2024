@@ -1,4 +1,4 @@
-import { $, $all, debounce, fitTextToContainerScr, showCursorMessage } from '../../utils'
+import { $, $all, debounce, fitTextToContainerScr, getZPosition, showCursorMessage } from '../../utils'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 
@@ -8,6 +8,23 @@ import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
 import { blurStagger } from '../animations/gsap'
 import Lenis from 'lenis'
 gsap.registerPlugin(TypewriterPlugin)
+
+const createLenis = (lenis: Lenis | undefined, scrollWrapper: HTMLElement, isHorizontal: boolean, onScroll?: Function) => {
+  if (lenis) lenis.destroy()
+
+  lenis = new Lenis({
+    wrapper: scrollWrapper,
+    duration: 2,
+    smoothWheel: true,
+    orientation: isHorizontal ? 'horizontal' : 'vertical',
+    eventsTarget: isHorizontal ? window : undefined,
+  })
+  lenis.on('scroll', ScrollTrigger.update)
+  if(onScroll) lenis.on('scroll', onScroll)
+  gsap.ticker.add((time) => {
+    lenis.raf(time * 1000)
+  })
+}
 
 export default class BlogRenderer extends BaseRenderer {
   currIdx: number
@@ -29,17 +46,13 @@ export default class BlogRenderer extends BaseRenderer {
     this.currIdx = 0
     this.oldIdx = 0
     this.isFirstRender = true
-    this.isDesktop = window.innerWidth > 1024
+
+    this.experience = new Experience()
 
     const statusItems = $all('#blog-header #blog-status li')
     const subtitle = $('#blog-header h2')
     const scrollWrapper = $('#posts-container')
 
-    this.lenis = new Lenis({ wrapper: scrollWrapper, duration: 2, smoothWheel: true, orientation: 'horizontal', eventsTarget: window })
-    this.lenis.on('scroll', ScrollTrigger.update)
-    gsap.ticker.add((time) => {
-      this.lenis.raf(time * 1000)
-    })
     gsap.ticker.lagSmoothing(0)
 
     gsap.set(subtitle, { autoAlpha: 0 })
@@ -51,16 +64,18 @@ export default class BlogRenderer extends BaseRenderer {
     const lettersTL = blurStagger($('h1'), 0.08, 0.5)
 
     this.resizeTitles()
+    this.handleLorenzResize()
 
     BaseRenderer.resizeHandlers.push(this.resizeTitles.bind(this))
+    BaseRenderer.resizeHandlers.push(this.handleLorenzResize.bind(this))
 
     this.handleActiveArticleBound = this.handleActiveArticle.bind(this)
     this.articles.forEach((article) => {
       article.addEventListener('mouseover', this.handleActiveArticleBound)
+      article.addEventListener('touchstart', this.handleActiveArticleBound)
     })
 
-    this.experience = new Experience()
-    const tl = gsap.timeline({ })
+    const tl = gsap.timeline({})
 
     tl.fromTo(
       '#blog-header',
@@ -115,12 +130,23 @@ export default class BlogRenderer extends BaseRenderer {
             each: 0.1,
           },
 
-      onComplete: () => {
-        gsap.set(scrollWrapper, { pointerEvents: 'all' })
-      },
+          onComplete: () => {
+            gsap.set(scrollWrapper, { pointerEvents: 'all' })
+          },
         },
         '<+50%',
       )
+
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: "#blog-header",
+        start: 'top top',
+        scrub: true
+      }
+    }).to(".nav-link", {
+        opacity: 0,
+        duration: 1,
+    })
   }
 
   onEnterCompleted() {
@@ -216,7 +242,7 @@ export default class BlogRenderer extends BaseRenderer {
           duration: 0.25,
         })
         .to(
-          $('.article-description p', active),
+          $('.article-description p:not(.shadow-description)', active),
           {
             typewrite: {
               charClass: 'text-primary-lightest drop-shadow-glow',
@@ -230,9 +256,9 @@ export default class BlogRenderer extends BaseRenderer {
         .from(
           active,
           {
-            alpha: 0.5,
-            repeat: 6,
-            duration: 0.045,
+            alpha: 0.4,
+            repeat: 4,
+            duration: 0.08,
           },
           '<',
         )
@@ -265,15 +291,27 @@ export default class BlogRenderer extends BaseRenderer {
         .addLabel('end'),
     )
     this.oldIdx = this.currIdx
-  }
+  } 
 
   resizeTitles() {
     this.articles.forEach((article) => {
       const articleTitleEl = $('.article-title', article)
       const fontSizeChanged = fitTextToContainerScr(articleTitleEl, articleTitleEl, 2)
-      if (fontSizeChanged) articleTitleEl.style.lineHeight = 'unset'
+      if (fontSizeChanged) articleTitleEl.style.lineHeight = 160 + articleTitleEl.innerHTML.split('').length - fontSizeChanged + '%'
       article.addEventListener('mousemove', this.handleMouseMove.bind(this))
       article.addEventListener('mouseleave', this.handleMouseLeave.bind(this))
     })
+
+    const scrollWrapper = $('#posts-container')
+    //@TODO: use tailwind values instead of hardcoded
+    createLenis(this.lenis, scrollWrapper, window.innerHeight >= 640)
+  }
+
+  handleLorenzResize() {
+    const attractor = this.experience.world.attractor
+    this.experience.params.positionZ = getZPosition()
+    const aspect = window.innerWidth / window.innerHeight
+    const newY = aspect > 1 ? this.experience.params.positionY : this.experience.params.positionY - (window.innerHeight / 100)
+    gsap.to(attractor.points.position, { z: this.experience.params.positionZ, y: newY, duration: 0.25, ease: 'power4.out' })
   }
 }

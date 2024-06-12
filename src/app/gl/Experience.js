@@ -1,18 +1,17 @@
-import * as THREE from 'three'
 import gsap from 'gsap'
+import * as THREE from 'three'
 
-import Debug from './utils/Debug'
-import Sizes from './utils/Sizes'
-import Resources from './utils/Resources'
-import Time from './utils/Time'
 import Camera from './Camera'
 import Renderer from './Renderer'
 import World from './World'
+import Debug from './utils/Debug'
+import Resources from './utils/Resources'
+import Sizes from './utils/Sizes'
+import Time from './utils/Time'
 
-import { isMobile } from '../utils'
-import sources from './sources'
 import { BlendFunction } from 'postprocessing'
-import { LORENZ_PRESETS } from '../constants'
+import { getZPosition, isMobile } from '../utils'
+import sources from './sources'
 
 let instance = null
 
@@ -41,7 +40,7 @@ export default class Experience {
     this.primaryColor = getComputedStyle(this.appEl).getPropertyValue('--primary')
     this.lorenzColor = getComputedStyle(this.appEl).getPropertyValue('--lorenz')
     this.bgColor = getComputedStyle(this.appEl).getPropertyValue('--bg-dark')
-    this.isMobile = isMobile()
+    this.isMobile = isMobile() && window.innerWidth <= 640
 
     this.params = {
       sigma: 10,
@@ -54,7 +53,7 @@ export default class Experience {
       rotationZ: -Math.PI / 5,
       positionX: this.isMobile ? -2 : -1.6,
       positionY: this.isMobile ? 25 : 4.5,
-      positionZ: this.isMobile ? -65 : -1.5,
+      positionZ: getZPosition(),
       particlesBufWidth: this.isMobile ? 100 : 250,
       bgColor: this.bgColor,
       primaryColor: this.primaryColor,
