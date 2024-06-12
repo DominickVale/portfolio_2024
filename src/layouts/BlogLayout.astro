@@ -1,24 +1,23 @@
 ---
 //@TODO: Replace blured prop with threejs blur on canvas
+import FuiCorners from '../components/FuiCorners.astro'
+import Image from '../components/Image.astro'
+import Marquee from '../components/Marquee.astro'
+import WorkDetails from '../components/WorkDetails.astro'
+import OpenProjBtn from '../components/blog/OpenProjBtn.astro'
 import type { Frontmatter } from '../content/config'
 import BaseLayout from './Layout.astro'
-import Btn from '../components/Btn.astro'
-import Image from '../components/Image.astro'
-import OpenProjBtn from '../components/blog/OpenProjBtn.astro'
-import WorkDetails from '../components/WorkDetails.astro'
-import Marquee from '../components/Marquee.astro'
-import FuiCorners from '../components/FuiCorners.astro'
 
 type Props = {
   frontmatter: Frontmatter
 }
 const { frontmatter, ...rest } = Astro.props
 
-const {id, title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro } = frontmatter
+const { id, title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro } = frontmatter
 ---
 
 <BaseLayout title="Blog page" rowsMax withContacts data-menu-trigger="default-blog" renderer="blogArticle">
-  <div class="col-span-12 col-start-1 row-start-1 hidden h-[10vh] w-full lg:block"></div>
+  <div class="col-span-12 col-start-1 row-start-1 h-[5vh] w-full lg:block"></div>
   <section class="relative col-span-10 col-start-2 row-start-2 md:col-span-8 md:col-start-3 lg:col-span-4 lg:col-start-2">
     <!-- <Btn -->
     <!--   class="mt-8 flex w-max items-center justify-center gap-3 p-2 font-normal sm:mb-8 sm:mt-12 lg:mt-0 lg:justify-start" -->
@@ -34,7 +33,7 @@ const {id, title, tags, readTime, date, subtitle, lastUpdated, ttr, project, int
     <div class="flex h-max flex-col sm:flex-row">
       <span class="relative mt-8 md:mt-[2vh] lg:mt-[6vh]">
         <span id="case-n" class="absolute left-1 top-[-1rem] text-xxs !opacity-0 opacity-50">{project ? `CASE_N:` : `ARTICLE_ID:`} 00{id}</span>
-        <div class="relative h-[9.2vw] text-[unset]">
+        <div class="relative h-16 md:h-[9.2vw] text-[unset]">
           <h1 id="article-shadow-title" class="pointer-events-none font-display font-black leading-[130%] opacity-0">
             {title}
           </h1>
@@ -48,26 +47,25 @@ const {id, title, tags, readTime, date, subtitle, lastUpdated, ttr, project, int
     </div>
     <h2
       id="subtitle"
-      class="mb-[6vh] ml-3 mt-3 min-h-8 whitespace-nowrap font-mono text-xs font-black tracking-button !opacity-0 opacity-60 sm:block sm:text-lg lg:mt-7"
+      class="md:mb-[6vh] mt-2 md:ml-3 md:mt-3 min-h-8 whitespace-nowrap font-mono text-xs font-black tracking-button !opacity-0 opacity-60 sm:block sm:text-lg lg:mt-7"
     >
       {subtitle}
     </h2>
 
-    <section class="mb-16 mt-[5vh] sm:mt-[0vh] lg:hidden">
-      <div class="relative">
-        <Image class="mb-3" />
-        <Marquee tags={project?.tech || tags} class="left-4 right-4 top-4 min-w-0 bg-white text-background-dark" />
-      </div>
-      {
-        project && (
-          <div class="relative flex flex-col justify-between gap-3 sm:flex-row">
-            <WorkDetails small />
-            <OpenProjBtn class="bg-striped hidden flex-[0.8] sm:flex" link={project.linkWebsite} />
-          </div>
-        )
-      }
-    </section>
-
+      <section id="image-section-mobile" class="mb-16 mt-[4vh] sm:mt-[0vh] lg:hidden">
+        <div class="relative">
+          <Image class="mb-3"  containerId="main-image-container-mobile" id="main-image-mobile"  />
+          <Marquee animated tags={project?.tech || tags} class="left-4 right-4 top-4 bg-white text-background-dark" />
+        </div>
+        {
+          project && (
+            <div class="relative flex flex-col justify-between gap-3 sm:flex-row">
+          <WorkDetails small project={project} />
+              <OpenProjBtn class="bg-striped hidden flex-[0.8] sm:flex" link={project.linkWebsite} />
+            </div>
+          )
+        }
+      </section>
     <span id="intro-details" class="mb-3 mt-6 flex items-center gap-3 text-xxs opacity-50 md:text-xs">
       <p>LAST UPDATE: <date>{lastUpdated}</date></p>
       <div class="h-1 w-1 rounded-full bg-white opacity-70"></div>
@@ -120,3 +118,11 @@ const {id, title, tags, readTime, date, subtitle, lastUpdated, ttr, project, int
     <slot />
   </div>
 </BaseLayout>
+
+<style is:global>
+  #image-section-mobile {
+    .marquee-dot {
+      @apply !bg-background-dark;
+    }
+  }
+</style>

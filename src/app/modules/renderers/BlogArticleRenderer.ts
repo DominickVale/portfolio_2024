@@ -39,13 +39,18 @@ export default class BlogArticleRenderer extends BaseRenderer {
     this.isDesktop = window.innerWidth > 1024
 
     this.experience = new Experience()
-    const titleLettersTL = blurStagger($('#article-title'), 0.08, 0.8)
+    const titleLettersTL = blurStagger($('#article-title'), 0.01, 0.5)
     const debouncedHandleResizeFn = debounce(this.handleResize.bind(this), 100)
     BaseRenderer.resizeHandlers.push(debouncedHandleResizeFn)
     this.handleResize(true)
-    const imageSmall1 = $('#main-image-container .small-1')
-    const imageSmall2 = $('#main-image-container .small-2')
-    const imageSectionCable = $('#image-section .cable')
+    const imageSection = this.isDesktop ? '#image-section' : '#image-section-mobile'
+    const mainImageContainer = this.isDesktop ? '#main-image-container' : '#main-image-container-mobile'
+    const mainImage = this.isDesktop ? '#main-image' : '#main-image-mobile'
+
+    const marquee = $('.marquee-container')
+    const imageSmall1 = $(`${mainImageContainer} .small-1`)
+    const imageSmall2 = $(`${mainImageContainer} .small-2`)
+    const imageSectionCable = $(`${imageSection} .cable`)
     this.lenis = new Lenis({ duration: 2, smoothWheel: true })
     gsap.set('#bg-blur', { opacity: 1 })
 
@@ -55,6 +60,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
     })
     gsap.ticker.lagSmoothing(0)
 
+    gsap.set(marquee, { opacity: 0 })
     gsap.set(imageSmall1, { opacity: 0 })
     gsap.set(imageSmall2, { opacity: 0 })
     gsap.set('#intro-details', { opacity: 0 })
@@ -63,8 +69,8 @@ export default class BlogArticleRenderer extends BaseRenderer {
       opacity: 0,
     })
 
+    //contacts bg blur on scroll
     setTimeout(() => {
-      // Scroll anims
       BlogArticleRenderer.scrollTl = gsap
         .timeline({
           scrollTrigger: {
@@ -119,15 +125,15 @@ export default class BlogArticleRenderer extends BaseRenderer {
             duration: 0.5,
             ease: 'expo.in',
           },
-          '<+50%',
+          '<',
         )
         .from(
           $('.fui-corners-dot', img),
           {
             opacity: 0,
-            duration: 0.09,
+            duration: 0.075,
             stagger: {
-              repeat: 20,
+              repeat: 10,
               each: 0.1,
             },
           },
@@ -140,7 +146,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
             duration: 0.5,
             ease: 'expo.in',
           },
-          '<+60%',
+          '<',
         )
         .set($('.alt', img), { autoAlpha: 1 })
         .to($('.alt', img), {
@@ -165,17 +171,21 @@ export default class BlogArticleRenderer extends BaseRenderer {
     const imageTL = gsap
       .timeline({
         onStart: () => {
-          window['image-section'].classList.remove('opacity-0')
-          $all('#main-image-container small').forEach((e) => gsap.set(e, { autoAlpha: 0 }))
+          if (this.isDesktop) {
+            window['image-section'].classList.remove('opacity-0')
+          } else {
+            window['image-section-mobile'].classList.remove('opacity-0')
+          }
+          $all(`${mainImageContainer} small`).forEach((e) => gsap.set(e, { autoAlpha: 0 }))
         },
       })
-      .from('#main-image-container .new-fui-corners', {
+      .from(`${mainImageContainer} .new-fui-corners`, {
         scale: 0,
         duration: 0.35,
         ease: 'circ.in',
       })
       .fromTo(
-        '#main-image-container .new-fui-corners',
+        `${mainImageContainer} .new-fui-corners`,
         { opacity: 0 },
         {
           opacity: 1,
@@ -188,6 +198,18 @@ export default class BlogArticleRenderer extends BaseRenderer {
         '<+50%',
       )
       .fromTo(
+        mainImage,
+        {
+          scaleY: 0,
+        },
+        {
+          scaleY: 1,
+          duration: 0.35,
+          ease: 'power4.inOut',
+        },
+        '<+20%',
+      )
+      .fromTo(
         imageSectionCable,
         { opacity: 0 },
         {
@@ -198,10 +220,23 @@ export default class BlogArticleRenderer extends BaseRenderer {
             each: 0.1,
           },
         },
-        '<+25%',
+        '<+10%',
       )
       .fromTo(
-        '#image-section .fui-corners-dot',
+        marquee,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.07,
+          stagger: {
+            repeat: 10,
+            each: 0.1,
+          },
+        },
+      '<'
+      )
+      .fromTo(
+        `${imageSection} .fui-corners-dot`,
         { opacity: 0 },
         {
           opacity: 1,
@@ -214,7 +249,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         '<+10%',
       )
       .from(
-        '#image-section .fui-corners-dot',
+        `${imageSection} .fui-corners-dot`,
         {
           scaleX: 0,
           duration: 0.5,
@@ -229,25 +264,12 @@ export default class BlogArticleRenderer extends BaseRenderer {
         },
         '<+5%',
       )
-      .fromTo(
-        '#main-image',
-        {
-          scaleY: 0,
-        },
-        {
-          scaleY: 1,
-          duration: 0.5,
-          ease: 'expo.in',
-        },
-        '<',
-      )
       .to(imageSmall1, {
         onStart: function () {
           gsap.set(imageSmall1, { opacity: 0.4, visibility: 'unset' })
         },
-        typewrite: {
-          speed: 0.35,
-        },
+        typewrite: {},
+        duration: 0.35,
         ease: 'power4.in',
       })
       .to(
@@ -256,15 +278,14 @@ export default class BlogArticleRenderer extends BaseRenderer {
           onStart: function () {
             gsap.set(imageSmall2, { opacity: 0.4, visibility: 'unset' })
           },
-          typewrite: {
-            speed: 0.35,
-          },
+          typewrite: {},
+          duration: 0.35,
           ease: 'power4.in',
         },
         '<',
       )
       .fromTo(
-        '#image-section th',
+        `${imageSection} th`,
         { opacity: 0 },
         {
           opacity: 1,
@@ -277,7 +298,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         '<+25%',
       )
       .to(
-        '#image-section .work-details-role',
+        `${imageSection} .work-details-role`,
         {
           onStart: removeOpacity,
           typewrite: {},
@@ -287,7 +308,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         '<',
       )
       .to(
-        '#image-section .work-details-client',
+        `${imageSection} .work-details-client`,
         {
           onStart: removeOpacity,
           typewrite: {},
@@ -297,7 +318,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         '<+20%',
       )
       .to(
-        '#image-section .work-details-year',
+        `${imageSection} .work-details-year`,
         {
           onStart: removeOpacity,
           typewrite: {},
@@ -307,7 +328,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         '<+20%',
       )
       .to(
-        '#image-section .work-details-tech',
+        `${imageSection} .work-details-tech`,
         {
           onStart: removeOpacity,
           typewrite: {},
@@ -333,7 +354,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
           window['case-n'].classList.remove('!opacity-0')
         },
       })
-      .add(titleLettersTL)
+      .add(titleLettersTL, '<')
       .to(
         '#subtitle',
         {

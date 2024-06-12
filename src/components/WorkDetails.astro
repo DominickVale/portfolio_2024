@@ -1,9 +1,12 @@
 ---
+import type { Frontmatter } from '../content/config'
+
 type Props = {
   small?: boolean
+  project: Frontmatter
 }
 
-const { small } = Astro.props
+const { small, project } = Astro.props
 ---
 
 {
@@ -12,15 +15,15 @@ const { small } = Astro.props
       <tbody class="flex w-full justify-between">
         <tr class="flex flex-col">
           <th class="pl-0 pr-3 text-left tracking-widest text-primary-darker">ROLE:</th>
-          <td class="work-details-role opacity-80" />
+          <td class="work-details-role opacity-0">{project?.role}</td>
         </tr>
         <tr class="flex flex-col justify-center">
           <th class="pl-0 text-left tracking-widest text-primary-darker">CLIENT:</th>
-          <td class="work-details-client text-center opacity-80" />
+          <td class="work-details-client text-center opacity-0">{project?.client}</td>
         </tr>
         <tr class="flex flex-col">
           <th class="text-right tracking-widest text-primary-darker">YEAR:</th>
-          <td class="work-details-year pr-1 text-right opacity-80" />
+          <td class="work-details-year pr-1 min-w-full text-right opacity-0">{project?.year}</td>
         </tr>
       </tbody>
     </table>
