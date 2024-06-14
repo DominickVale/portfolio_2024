@@ -18,33 +18,30 @@ const imageVariant = variant || "default"
 
 {imageVariant === "default" ? (
   <div id={containerId} class:list={[ "img-container relative p-4 mr-auto uppercase", classes ] }>
-    <small
-      class="small-1 vertical-text--left absolute bottom-4 left-[-0.25rem] text-xxs leading-[100%] opacity-40 tracking-widest"
-      >IMG_003.jpg</small
-    >
+    <small class="small-1 vertical-text--left absolute bottom-4 left-[-0.25rem] text-[0.5rem] leading-[100%] opacity-40 tracking-widest">IMG_003.jpg</small>
     <img class:list={[  "w-full", cover && "h-full object-cover", contain && "h-full object-contain" ] } src="/ecorp.png" alt="" {...props} />
-    <!-- <small class="text-xxs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
+    <!-- <small class="text-xs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
     <div class="absolute right-0 top-0 flex h-full w-3">
       <small
-        class="small-2 vertical-text--right mt-11 w-[1.6rem] text-xxs leading-[100%] opacity-40 tracking-widest"
+        class="small-2 vertical-text--right mt-11 w-[1.6rem] text-[0.5rem] leading-[100%] opacity-40 tracking-widest"
         >IMAGE_NAME-2492929.jpg</small
       >
     </div>
     <FuiCorners />
   </div>
 ) : (
-  <div class:list={[ "w-full uppercase", classes ] }>
+  <div class:list={[ "w-full uppercase ", classes ] }>
     <div class="relative flex-col w-full h-full flex justify-center items-center p-3">
-      <small
-        class="vertical-text--left absolute top-[45%] left-0 text-xxs leading-[100%] opacity-40 z-20 tracking-label"
-        >IMG_003.jpg</small>
+    <div class="vertical-text--left absolute top-[35%] left-0 z-20 img-small-left">
+      <div class="bg-lines absolute top-1.5 right-[calc(-45%-4px)] w-[1.6rem] h-[1px] origin-top-left rotate-45"></div>
+      <div class="bg-lines absolute top-1.5 left-[-10%] w-[120%] h-[1px]"></div>
+      <div class="bg-lines absolute top-1.5 left-[calc(-45%-4px)] w-[1.6rem] h-[1px] origin-top-right rotate-[-45deg]"></div>
+      <small class="shadow text-[0.5rem] leading-[50%] opacity-0 pointer-events-none tracking-label" >IMG_003.jpg</small>
+      <small class="absolute left-0 bottom-[-1rem] w-full h-full text-[0.5rem] leading-[50%] tracking-label" >IMG_003.jpg</small>
+    </div>
       <img class:list={[  "w-full", cover && "h-full object-cover", contain && "h-full object-contain" ] } src="/ecorp.png" alt={alt} {...props} />
       <span class="alt ml-3 relative image-caption self-start mt-4 text-xs text-copy opacity-80">{alt}</span>
-      <FuiCorners class="!border-l-0" dot>
-        <svg class="absolute left-[calc(-1.2rem-1px)] top-0 h-full" viewBox="0 0 19 376" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18.5 0C18.5 0 18.5 13.6813 18.5 36.5L1 53C1 106.208 1 191 1 191L18.5 209C18.5 238.604 18.5 349.857 18.5 376" stroke="#484848"/>
-        </svg>
-      </FuiCorners>
+      <FuiCorners class="" dot/>
     </div>
     <div class="absolute left-[-1rem] top-[-2rem] bg-striped w-5/6 h-20 z-10" />
   </div>

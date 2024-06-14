@@ -32,7 +32,7 @@ const { id, title, tags, readTime, date, subtitle, lastUpdated, ttr, project, in
     <!-- > -->
     <div class="flex h-max flex-col sm:flex-row">
       <span class="relative mt-8 md:mt-[2vh] lg:mt-[6vh]">
-        <span id="case-n" class="absolute left-1 top-[-1rem] text-xxs !opacity-0 opacity-50">{project ? `CASE_N:` : `ARTICLE_ID:`} 00{id}</span>
+        <span id="case-n" class="absolute left-1 top-[-1rem] text-xs !opacity-0 opacity-50">{project ? `CASE_N:` : `ARTICLE_ID:`} 00{id}</span>
         <div class="relative h-16 md:h-[9.2vw] text-[unset]">
           <h1 id="article-shadow-title" class="pointer-events-none font-display font-black leading-[130%] opacity-0">
             {title}
@@ -47,7 +47,7 @@ const { id, title, tags, readTime, date, subtitle, lastUpdated, ttr, project, in
     </div>
     <h2
       id="subtitle"
-      class="md:mb-[6vh] mt-2 md:ml-3 md:mt-3 min-h-8 whitespace-nowrap font-mono text-xs font-black tracking-button !opacity-0 opacity-60 sm:block sm:text-lg lg:mt-7"
+      class="md:mb-[6vh] mt-2 md:ml-3 md:mt-3 min-h-8 whitespace-nowrap font-mono text-md font-black tracking-button !opacity-0 opacity-60 sm:block sm:text-lg lg:mt-7"
     >
       {subtitle}
     </h2>
@@ -61,18 +61,18 @@ const { id, title, tags, readTime, date, subtitle, lastUpdated, ttr, project, in
           project && (
             <div class="relative flex flex-col justify-between gap-3 sm:flex-row">
           <WorkDetails small project={project} />
-              <OpenProjBtn class="bg-striped hidden flex-[0.8] sm:flex" link={project.linkWebsite} />
+              <OpenProjBtn id="open-proj-mobile" class="bg-striped hidden flex-[0.8] sm:flex" link={project.linkWebsite} />
             </div>
           )
         }
       </section>
-    <span id="intro-details" class="mb-3 mt-6 flex items-center gap-3 text-xxs opacity-50 md:text-xs">
+    <span id="intro-details" class="mb-3 mt-6 flex items-center gap-3 text-xs opacity-50">
       <p>LAST UPDATE: <date>{lastUpdated}</date></p>
       <div class="h-1 w-1 rounded-full bg-white opacity-70"></div>
       <p>TTR: {ttr} MINUTES</p>
     </span>
 
-    <div id="intro" class="font-copy text-xs font-light tracking-wide text-copy opacity-0 sm:text-sm xl:text-lg">
+    <div id="intro" class="font-copy text-sm font-light tracking-wide text-copy opacity-0 sm:text-sm xl:text-lg">
       {intro}
     </div>
   </section>

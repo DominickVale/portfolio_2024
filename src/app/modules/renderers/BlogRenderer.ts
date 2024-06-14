@@ -56,7 +56,6 @@ export default class BlogRenderer extends BaseRenderer {
     gsap.ticker.lagSmoothing(0)
 
     gsap.set(subtitle, { autoAlpha: 0 })
-    gsap.set(scrollWrapper, { pointerEvents: 'none' })
 
     this.articles = Array.from($all('.blog-article'))
     this.aIds = this.articles.map((a) => a.id)
@@ -128,10 +127,6 @@ export default class BlogRenderer extends BaseRenderer {
           stagger: {
             repeat: 20,
             each: 0.1,
-          },
-
-          onComplete: () => {
-            gsap.set(scrollWrapper, { pointerEvents: 'all' })
           },
         },
         '<+50%',
@@ -302,9 +297,11 @@ export default class BlogRenderer extends BaseRenderer {
       article.addEventListener('mouseleave', this.handleMouseLeave.bind(this))
     })
 
+    const aspect = window.innerWidth / window.innerHeight
+    const isHorizontal = aspect >= 1
     const scrollWrapper = $('#posts-container')
-    //@TODO: use tailwind values instead of hardcoded
-    createLenis(this.lenis, scrollWrapper, window.innerHeight >= 640)
+    
+    createLenis(this.lenis, scrollWrapper, isHorizontal)
   }
 
   handleLorenzResize() {

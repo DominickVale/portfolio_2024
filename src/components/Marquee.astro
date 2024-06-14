@@ -13,7 +13,7 @@ const { tags, animated, class: classes } = Astro.props
 
 <div
   class:list={twMerge(
-    'marquee-container absolute left-0 right-0 top-0 overflow-hidden bg-background-dark-05 pt-1.5 text-xxs text-white',
+    'marquee-container absolute left-0 right-0 top-0 overflow-hidden bg-background-dark-05 pt-1.5 text-xs text-white',
     classes,
     animated && 'animated',
   )}
@@ -37,7 +37,7 @@ const { tags, animated, class: classes } = Astro.props
 <style is:global>
   .marquee-tag {
     position: relative;
-    @apply text-xxs;
+    @apply text-xs;
     @apply ml-1;
   }
 

@@ -9,6 +9,7 @@ type RadialMenuOptions = {
   labelsPosFactor?: number
   position?: Vec2
   isMobile?: boolean
+  size?: string
 }
 
 export type RadialMenuItem = {
@@ -34,7 +35,9 @@ export default class RadialMenu {
   private _wrapperBounds: DOMRect
   private _thumbBounds: DOMRect
   private _lastActiveSliceId: number
+  private _size: string
 
+  id: string
   itemsEl: HTMLElement[]
   innerRadiusPercent: number
   gap: number
@@ -45,23 +48,23 @@ export default class RadialMenu {
   currTarget: HTMLElement | null
 
   constructor(
-    public id: string,
+    id: string,
     public items: RadialMenuItem[],
-    { innerRadiusPercent = 35, gap = 8, position = { x: 0, y: 0 }, isMobile = false }: RadialMenuOptions = {},
+    { innerRadiusPercent = 35, gap = 8, position = { x: 0, y: 0 }, isMobile = false, size }: RadialMenuOptions = {},
   ) {
+    this.id = id
     this.shown = false
     this.isMobile = isMobile
     this.innerRadiusPercent = innerRadiusPercent
     this.gap = gap
     this._position = position
     this._bgs = []
+    this._size = size || this.isMobile ? 'calc(10rem + 50vw)' : 'calc(10rem + 10vw)'
 
-    // console.info(`Creating radial menu ${id}`, this)
+    this.createWrapper()
 
-    this._wrapper = $(`#${id}`)
-    if (!this._wrapper) throw new Error(`Radial menu with ID "${id}" not found! \n Did you include <RadialMenu id="${id}">?`)
     this._menuElContainer = $(`.radial-menu`, this._wrapper)
-    this._thumb = $(`#radial-menu-thumb-${this.id}`, this._wrapper)
+    this._thumb = $(`#radial-menu-thumb-${id}`, this._wrapper)
     window.addEventListener('mousemove', this.handleMouseMove.bind(this))
     window.addEventListener('keyup', this.handleKeyboard.bind(this))
     window.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: true })
@@ -95,6 +98,33 @@ export default class RadialMenu {
     this.innerRadius = (this._radius * this.innerRadiusPercent) / 100
     this._centralAngle = (this.isMobile ? 180 : 360) / this.itemsEl.length
     this.innerRadiusBound = this.innerRadius - this._thumbBounds.width / 2
+  }
+
+  createWrapper() {
+    const wrapper = document.createElement('div')
+    wrapper.id = 'radial-menu-' + this.id
+    wrapper.classList.add('radial-menu-wrapper', 'radial-menu-hidden', this.isMobile && 'mobile')
+    wrapper.style.setProperty('--size', this._size)
+    wrapper.innerHTML = `
+  <ul class="radial-menu">
+    <div id="radial-menu-thumb-${this.id}" class="${`radial-menu-thumb ${this.isMobile && 'mobile'}`}">
+      <svg id="_icon_brand" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M9.05524 9.55434L7.11367 12.9739L5 11.733L13.1005 26V24.0083H16.9836V25.8057L25 11.6869L22.8084 12.9735L20.8669 9.55391L23.5137 8H6.40767L9.05524 9.55434ZM14.5499 18.1089H16.1719V15.6348H14.5499V18.1089ZM16.7865 22.6234L21.6835 14.0869L22.3841 14.5025L17.487 23.0389L16.7865 22.6234ZM13.2882 22.6238L8.39117 14.0874L7.69062 14.5029L12.5877 23.0393L13.2882 22.6238Z"
+          fill="#363636"></path>
+      </svg>
+    </div>
+    <svg class="radial-menu-shape" width="100%" height="100%">
+      <defs class="pointer-events-none"><mask width="110%" height="110%"> </mask> </defs>
+    </svg>
+  </ul>
+  <div class="radial-menu-bgs"></div>
+`
+    document.body.append(wrapper)
+    this._wrapper = wrapper
+    console.log('Created wrapper: ', this._wrapper)
   }
 
   populateItems() {
@@ -245,6 +275,7 @@ export default class RadialMenu {
       }
       child.remove()
     })
+    this._wrapper.remove()
   }
 
   open(x: number, y: number, target: HTMLElement) {
@@ -270,6 +301,7 @@ export default class RadialMenu {
   }
 
   set size(size: string) {
+    this._size = size
     this._wrapper.style.setProperty('--size', size)
     this.recalculateBounds()
     this.create()

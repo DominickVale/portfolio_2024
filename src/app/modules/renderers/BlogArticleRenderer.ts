@@ -59,6 +59,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
       this.lenis.raf(time * 1000)
     })
     gsap.ticker.lagSmoothing(0)
+    this.lenis.scrollTo('top', { immediate: true })
 
     gsap.set(marquee, { opacity: 0 })
     gsap.set(imageSmall1, { opacity: 0 })
@@ -87,37 +88,16 @@ export default class BlogArticleRenderer extends BaseRenderer {
 
     const blogParagraphs = $all('.blog-section').forEach((b) => {
       const img = $('.blog-image', b)
+      const smallAlt = $('small:not(.shadow)', img)
+      smallAlt.innerText = smallAlt.innerText.replace('3', String((Math.random() * 10).toFixed(0)))
       const content = $all('.blog-section-content > *:not(h2)', b)
       const title = $('h2', b)
 
       gsap.set(content, { opacity: 0 })
       gsap.set(title, { opacity: 0 })
       gsap.set($('.alt', img), { opacity: 0 })
-      gsap.set($('small', img), { opacity: 0 })
-      const blogSectionImageTl = gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: img,
-            start: 'top center',
-            end: 'bottom center',
-          },
-        })
-        .to(title, {
-          typewrite: {},
-          duration: 2,
-          ease: 'circ.inOut',
-          onStart: removeSetOpacity,
-        })
-        .to(
-          content,
-          {
-            opacity: 1,
-            duration: 3,
-            stagger: 0.5,
-            ease: 'circ.inOut',
-          },
-          '<',
-        )
+      gsap.set(smallAlt, { opacity: 0 })
+      const imgtl = gsap.timeline({})
         .from(
           $('.fui-corners-dot', img),
           {
@@ -153,12 +133,49 @@ export default class BlogArticleRenderer extends BaseRenderer {
           typewrite: {},
           duration: 1,
         })
-        .set($('small', img), { autoAlpha: 0.4 }, '<')
+        .set(smallAlt, { autoAlpha: 0.25 }, '<')
+        .from(
+          $all('.img-small-left .bg-lines', img),
+          {
+            opacity: 0,
+            duration: 0.075,
+            stagger: {
+              repeat: 10,
+              each: 0.1,
+            },
+          },
+          '<',
+        )
         .to(
-          $('small', img),
+          smallAlt,
           {
             typewrite: {},
             duration: 1.5,
+            ease: 'circ.inOut',
+          },
+          '<',
+        )
+      const blogSectionImageTl = gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: img,
+            start: 'top center',
+            end: 'bottom center',
+          },
+        })
+        .add(imgtl)
+        .to(title, {
+          typewrite: {},
+          duration: 2,
+          ease: 'circ.inOut',
+          onStart: removeSetOpacity,
+        }, "<")
+        .to(
+          content,
+          {
+            opacity: 1,
+            duration: 2,
+            stagger: 0.5,
             ease: 'circ.inOut',
           },
           '<',
@@ -233,7 +250,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
             each: 0.1,
           },
         },
-      '<'
+        '<',
       )
       .fromTo(
         `${imageSection} .fui-corners-dot`,
@@ -410,7 +427,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
     // titleEl is the overlapped one with the split characters
     const oldTitleEl = $('#article-title')
     if (firstRender) {
-      const newFontSize = fitTextToContainerScr(shadowTitle, shadowTitle.parentElement)
+      const newFontSize = fitTextToContainerScr(shadowTitle, shadowTitle.parentElement, 5)
 
       Array.from(oldTitleEl.childNodes).forEach((e: HTMLElement) => {
         e.style.lineHeight = '130%'
@@ -422,7 +439,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
     const parent = oldTitleEl.parentNode
     const newTitleEl = oldTitleEl.cloneNode(true)
     oldTitleEl.remove()
-    const newFontSize = fitTextToContainerScr(shadowTitle, shadowTitle.parentElement)
+    const newFontSize = fitTextToContainerScr(shadowTitle, shadowTitle.parentElement, 5)
 
     Array.from(newTitleEl.childNodes).forEach((e: HTMLElement) => {
       e.style.opacity = '1'

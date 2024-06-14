@@ -1,6 +1,6 @@
 import type { RadialMenuItem } from './RadialMenu'
 import RadialMenu from './RadialMenu'
-import { $all, debounceTrailing, isMobile, showCursorMessage } from '../utils'
+import { $, $all, debounceTrailing, isMobile, showCursorMessage } from '../utils'
 
 export default class Menus {
   menus: RadialMenu[]
@@ -30,7 +30,7 @@ export default class Menus {
     if ((e.target as HTMLElement).id.includes('radial-menu-thumb')) return
     e.preventDefault()
     e.stopPropagation()
-    
+
     const isTouchOrBound = window.app.cursor.pos.x <= 3 || window.app.cursor.pos.y <= 3
     const pos = {
       x: isTouchOrBound ? window.innerWidth / 2 : e.clientX,
@@ -107,6 +107,14 @@ export default class Menus {
       position: 4,
       callback: navigateTo('/lab'),
     }
+    const openProjSlice: RadialMenuItem = {
+      iconId: 'lab',
+      label: 'OPEN<br/>PROJECT',
+      position: 4,
+      callback: () => {
+        navigateTo(($('#open-proj-mobile') as HTMLAnchorElement).href)
+      },
+    }
     const settingsSlice: RadialMenuItem = {
       iconId: 'settings',
       label: 'SETTINGS',
@@ -132,6 +140,16 @@ export default class Menus {
     }
 
     let defaultMenuItems: RadialMenuItem[] = [homeSlice, labSlice, aboutSlice, worksSlice, blogSlice, contactSlice, settingsSlice, contextSlice]
+    const blogPageMenuItems: RadialMenuItem[] = [
+      homeSlice,
+      openProjSlice,
+      aboutSlice,
+      worksSlice,
+      blogSlice,
+      contactSlice,
+      settingsSlice,
+      contextSlice,
+    ]
     let defaultMenuItemsMobile: RadialMenuItem[] = [
       {
         ...homeSlice,
@@ -140,6 +158,21 @@ export default class Menus {
       aboutSlice,
       { ...blogSlice, position: 3 },
       labSlice,
+      worksSlice,
+      {
+        ...contactSlice,
+        position: 6,
+      },
+    ]
+
+    let blogPageMenuItemsMobile: RadialMenuItem[] = [
+      {
+        ...homeSlice,
+        position: 1,
+      },
+      aboutSlice,
+      { ...blogSlice, position: 3 },
+      openProjSlice,
       worksSlice,
       {
         ...contactSlice,
@@ -161,7 +194,7 @@ export default class Menus {
         callback: cb,
       },
     ]
-    const settingsMenu = new RadialMenu('settings', settingsItems)
+    const settingsMenu = new RadialMenu('settings', settingsItems, { size: "calc(10rem + 5vw)"})
 
     const textMenuItems: RadialMenuItem[] = [
       {
@@ -176,15 +209,30 @@ export default class Menus {
       contextSlice,
     ]
 
-    const textMenu = new RadialMenu('text', textMenuItems)
+    const textMenu = new RadialMenu('text', textMenuItems, { size: "calc(10rem + min(30vw, 10vh))"})
     if (this.isMobile) {
-      const defaultMenuMobile = new RadialMenu('default-mobile', defaultMenuItemsMobile, { isMobile: true })
-      return [textMenu, settingsMenu, defaultMenuMobile]
+      const menus = [textMenu, settingsMenu]
+
+      if (window.location.pathname.includes('blog/')) {
+        const defaultBlogMenuMobile = new RadialMenu('default-blog-mobile', blogPageMenuItemsMobile, { isMobile: true })
+        menus.push(defaultBlogMenuMobile)
+      } else {
+        const defaultMenuMobile = new RadialMenu('default-mobile', defaultMenuItemsMobile, { isMobile: true })
+        menus.push(defaultMenuMobile)
+      }
+      return menus
     } else {
-      const defaultMenu = new RadialMenu('default', defaultMenuItems)
-      //@TODO: add per page menu to improve perf
-      const defaultBlogMenu = new RadialMenu('default-blog', defaultMenuItems)
-      return [defaultMenu, textMenu, settingsMenu, defaultBlogMenu]
+      const menus = [textMenu, settingsMenu]
+
+      if (window.location.pathname.includes('blog/')) {
+        const defaultBlogMenu = new RadialMenu('default-blog', blogPageMenuItems)
+        menus.push(defaultBlogMenu)
+      } else {
+        const defaultMenu = new RadialMenu('default', defaultMenuItems)
+        menus.push(defaultMenu)
+      }
+      
+      return menus
     }
   }
 
@@ -194,10 +242,9 @@ export default class Menus {
 
   debounceResize = debounceTrailing(() => {
     this.isMobile = isMobile()
-    
+
     this.destroy()
     this.menus = this.getMenus()
     this.addListeners()
-
   }, 1000)
 }

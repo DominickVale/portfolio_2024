@@ -15,7 +15,7 @@
   --primary-darker: color-mix(in srgb, var(--primary), #000 10%);
   --primary-lighter: color-mix(in srgb, var(--primary), #fff 10%);
   --primary-lightest: color-mix(in srgb, var(--primary), #fff 90%);
-  --lines: rgba(255, 255, 255, 0.2);
+  --lines: #484848;
   --bg-dark: #110f10;
   --bg-dark-light: rgba(36, 34, 34, 0.28);
   --bg-dark-lightest: rgba(66, 64, 64, 0.28);
@@ -113,7 +113,7 @@ body {
   height: 0.25rem;
   border-radius: 50%;
   background-color: white;
-  &--small{
+  &--small {
     width: 0.125rem;
     height: 0.125rem;
   }
@@ -161,14 +161,144 @@ body {
 .bg-striped {
   --color: color-mix(in srgb, var(--lines), var(--bg-dark-02) 90%);
   opacity: 0.2;
-  background: repeating-linear-gradient(
-    45deg,
-    var(--color),
-    var(--color) 10px,
-    transparent 13px,
-    transparent 20px
-  );
+  background: repeating-linear-gradient(45deg, var(--color), var(--color) 10px, transparent 13px, transparent 20px);
 }
+
+/* RADIAL MENUS */
+
+@media (min-aspect-ratio: 4/4) {
+  .radial-menu-wrapper.mobile {
+    display: none;
+  }
+}
+.radial-menu-bgs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+}
+.radial-menu-wrapper {
+  position: fixed;
+  left: var(--pos-x);
+  top: var(--pos-y);
+  height: var(--size);
+  width: var(--size);
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+.radial-menu {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+.radial-menu-wrapper.mobile {
+  bottom: 6vh;
+  left: 50%;
+  top: auto;
+  transform: translate(-50%, 50%);
+}
+.radial-menu-hidden:not(.mobile) {
+  opacity: 0;
+  pointer-events: none;
+  .radial-menu-thumb {
+    pointer-events: none;
+  }
+}
+.radial-menu-hidden {
+  pointer-events: none;
+  .radial-menu-bgs,
+  .radial-menu-item,
+  .radial-menu-shape {
+    opacity: 0;
+  }
+}
+.radial-menu-item-bg {
+  --progress: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  backdrop-filter: blur(var(--blur-radial));
+  background: var(--bg-dark-05);
+
+  mask: var(--mask);
+  -webkit-mask: var(--mask);
+  z-index: -1;
+  &[data-highlighted='true'] {
+    background: radial-gradient(white var(--progress), rgba(255, 255, 255, 0.9) var(--progress));
+  }
+}
+.radial-menu-item {
+  @apply gap-1;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  position: absolute;
+  text-align: center;
+  top: var(--y);
+  left: var(--x);
+  transform: translate(-50%, -50%);
+  &[data-highlighted='true'] {
+    path {
+      @apply fill-background-dark;
+    }
+    @apply text-background-dark;
+  }
+}
+.radial-menu-item-label {
+  @apply text-xs;
+}
+.radial-menu-shape {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.radial-menu-thumb {
+  --x: 50%;
+  --y: 50%;
+  pointer-events: all;
+  position: absolute;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 100%;
+  background-color: white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  touch-action: none;
+  user-select: none;
+  svg {
+    pointer-events: none;
+  }
+}
+.radial-menu-thumb.mobile {
+  transform: translate(-50%, -50%) scale(1.5);
+  @apply bg-background-dark;
+  svg path {
+    @apply fill-white;
+  }
+  &.pressed {
+    @apply bg-white;
+    svg path {
+      @apply fill-background-dark;
+    }
+  }
+}
+
+/******************************/
 
 @layer components {
   .bg-blur {
@@ -195,10 +325,9 @@ body {
 }
 
 .intro-paragraph {
-  @apply max-w-lg text-center font-normal text-sm text-label;
+  @apply max-w-lg text-center text-sm font-normal text-label;
   text-wrap: pretty;
 }
-
 
 /* CODE BLOCKS OVERRIDES */
 .astro-code {
@@ -304,7 +433,6 @@ html.lenis body {
     opacity: 1;
   }
 }
-
 
 @keyframes fast-blink-short {
   from {

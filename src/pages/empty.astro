@@ -14,7 +14,6 @@ import {
   DebugIcon,
   AudioIcon,
 } from '../components/icons'
-import RadialMenu from '../components/RadialMenu.astro'
 import Preloader from '../components/Preloader.astro'
 ---
 
@@ -50,12 +49,6 @@ import Preloader from '../components/Preloader.astro'
     <DebugIcon />
     <AudioIcon />
   </div>
-  <RadialMenu id="text" size="calc(10rem + min(30vw, 10vh))" />
-  <RadialMenu id="default" size="calc(10rem + 10vw)" />
-  <RadialMenu id="default-blog" size="calc(10rem + 10vw)" />
-  <RadialMenu id="default-mobile" size="calc(10rem + 50vw)" mobile />
-  <!-- <RadialMenu id="default-blog-mobile" size="calc(10rem + 50vw)" mobile/> -->
-  <RadialMenu id="settings" size="calc(10rem + 5vw)" />
 
   <Cursor />
   <script>

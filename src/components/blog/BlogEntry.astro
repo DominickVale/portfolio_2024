@@ -72,11 +72,11 @@ const { title, tags, description, readTime, date, class: classes } = Astro.props
   </div>
   <div class="gradient-overlay pointer-events-none absolute left-0 top-0 h-full w-full"></div>
   <span class="pointer-events-none mb-5">
-    <small class="read-time relative ml-3 text-xxs uppercase tracking-wider text-inactive">{readTime}</small>
+    <small class="read-time relative ml-3 text-xs uppercase tracking-wider text-inactive">{readTime}</small>
     <h3 class="article-title h-16 font-display text-2xl font-black">{title}</h3>
   </span>
   <span class="pointer-events-none flex flex-col gap-1">
-    <date class="relative text-xxs uppercase tracking-wider text-inactive">{date}</date>
+    <date class="relative text-xs uppercase tracking-wider text-inactive">{date}</date>
     <div class="article-description h-0 overflow-hidden">
       <div class="relative">
         <p class="absolute left-0 top-0 line-clamp-2 h-full w-full min-w-full text-xs text-copy sm:min-h-24 md:line-clamp-3 tall:line-clamp-none">
