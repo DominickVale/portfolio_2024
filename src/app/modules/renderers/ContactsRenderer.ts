@@ -79,7 +79,7 @@ export class ContactsInternalRenderer {
         ease: 'circ.inOut',
       })
     })
-    gsap.set(s('h2'), { autoAlpha: 0 })
+    gsap.set(s('h2:not(.shadow)'), { autoAlpha: 0 })
     gsap.set('#smiley', { autoAlpha: 0 })
     const lettersTL = blurStagger(s('h1'))
 
@@ -158,9 +158,9 @@ export class ContactsInternalRenderer {
         },
         '<',
       )
-      .set(s('h2'), { autoAlpha: 1 }, '<+50%')
+      .set(s('h2:not(.shadow)'), { autoAlpha: 1 }, '<+50%')
       .to(
-        s('h2'),
+        s('h2:not(.shadow)'),
         {
           typewrite: {
             speed: 0.8,

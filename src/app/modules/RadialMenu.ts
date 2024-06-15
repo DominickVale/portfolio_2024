@@ -124,7 +124,6 @@ export default class RadialMenu {
 `
     document.body.append(wrapper)
     this._wrapper = wrapper
-    console.log('Created wrapper: ', this._wrapper)
   }
 
   populateItems() {

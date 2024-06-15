@@ -160,7 +160,7 @@ body {
 
 .bg-striped {
   --color: color-mix(in srgb, var(--lines), var(--bg-dark-02) 90%);
-  opacity: 0.2;
+  opacity: 0.5;
   background: repeating-linear-gradient(45deg, var(--color), var(--color) 10px, transparent 13px, transparent 20px);
 }
 
@@ -332,6 +332,7 @@ body {
 /* CODE BLOCKS OVERRIDES */
 .astro-code {
   @apply !bg-background-dark-05;
+  @apply text-sm;
 }
 
 /* LENIS RECOMMENDED */
