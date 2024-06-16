@@ -5,14 +5,10 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 import Experience from '../../gl/Experience'
 import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
-import { blurStagger } from '../animations/gsap'
+import { blurStagger, workDetailsTL } from '../animations/gsap'
 import Lenis from 'lenis'
 import { ContactsInternalRenderer } from './ContactsRenderer'
 gsap.registerPlugin(TypewriterPlugin)
-
-function removeOpacity() {
-  this.targets()[0]?.classList.remove('opacity-0')
-}
 
 function removeSetOpacity() {
   gsap.set(this.targets()[0], { opacity: 1 })
@@ -38,19 +34,20 @@ export default class BlogArticleRenderer extends BaseRenderer {
     this.isFirstRender = true
     this.isDesktop = window.innerWidth > 1024
 
+    document.body.dataset.page = 'blogArticle'
     this.experience = new Experience()
     const titleLettersTL = blurStagger($('#article-title'), 0.01, 0.5)
     const debouncedHandleResizeFn = debounce(this.handleResize.bind(this), 100)
     BaseRenderer.resizeHandlers.push(debouncedHandleResizeFn)
     this.handleResize(true)
-    const imageSection = this.isDesktop ? '#image-section' : '#image-section-mobile'
-    const mainImageContainer = this.isDesktop ? '#main-image-container' : '#main-image-container-mobile'
-    const mainImage = this.isDesktop ? '#main-image' : '#main-image-mobile'
+    const imageSectionQuery = this.isDesktop ? '#image-section' : '#image-section-mobile'
+    const mainImageContainerQuery = this.isDesktop ? '#main-image-container' : '#main-image-container-mobile'
+    const mainImageQuery = this.isDesktop ? '#main-image' : '#main-image-mobile'
 
     const marquee = $('.marquee-container')
-    const imageSmall1 = $(`${mainImageContainer} .small-1`)
-    const imageSmall2 = $(`${mainImageContainer} .small-2`)
-    const imageSectionCable = $(`${imageSection} .cable`)
+    const imageSmall1 = $(`${mainImageContainerQuery} .small-1`)
+    const imageSmall2 = $(`${mainImageContainerQuery} .small-2`)
+    const imageSectionCable = $(`${imageSectionQuery} .cable`)
     this.lenis = new Lenis({ duration: 2, smoothWheel: true })
     gsap.set('#bg-blur', { opacity: 1 })
 
@@ -92,12 +89,24 @@ export default class BlogArticleRenderer extends BaseRenderer {
       smallAlt.innerText = smallAlt.innerText.replace('3', String((Math.random() * 10).toFixed(0)))
       const content = $all('.blog-section-content > *:not(h2)', b)
       const title = $('h2', b)
+      const stripes = $('.bg-striped', b)
 
       gsap.set(content, { opacity: 0 })
       gsap.set(title, { opacity: 0 })
       gsap.set($('.alt', img), { opacity: 0 })
       gsap.set(smallAlt, { opacity: 0 })
-      const imgtl = gsap.timeline({})
+      //TODO: use stroke or some path to animate tripes
+      const imgtl = gsap
+        .timeline({})
+        .fromTo(
+          stripes,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            duration: 0.1,
+            repeat: 10,
+          },
+        )
         .from(
           $('.fui-corners-dot', img),
           {
@@ -164,12 +173,16 @@ export default class BlogArticleRenderer extends BaseRenderer {
           },
         })
         .add(imgtl)
-        .to(title, {
-          typewrite: {},
-          duration: 2,
-          ease: 'circ.inOut',
-          onStart: removeSetOpacity,
-        }, "<")
+        .to(
+          title,
+          {
+            typewrite: {},
+            duration: 2,
+            ease: 'circ.inOut',
+            onStart: removeSetOpacity,
+          },
+          '<',
+        )
         .to(
           content,
           {
@@ -193,16 +206,16 @@ export default class BlogArticleRenderer extends BaseRenderer {
           } else {
             window['image-section-mobile'].classList.remove('opacity-0')
           }
-          $all(`${mainImageContainer} small`).forEach((e) => gsap.set(e, { autoAlpha: 0 }))
+          $all(`${mainImageContainerQuery} small`).forEach((e) => gsap.set(e, { autoAlpha: 0 }))
         },
       })
-      .from(`${mainImageContainer} .new-fui-corners`, {
+      .from(`${mainImageContainerQuery} .new-fui-corners`, {
         scale: 0,
         duration: 0.35,
         ease: 'circ.in',
       })
       .fromTo(
-        `${mainImageContainer} .new-fui-corners`,
+        `${mainImageContainerQuery} .new-fui-corners`,
         { opacity: 0 },
         {
           opacity: 1,
@@ -215,7 +228,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         '<+50%',
       )
       .fromTo(
-        mainImage,
+        mainImageQuery,
         {
           scaleY: 0,
         },
@@ -253,7 +266,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         '<',
       )
       .fromTo(
-        `${imageSection} .fui-corners-dot`,
+        `${imageSectionQuery} .fui-corners-dot`,
         { opacity: 0 },
         {
           opacity: 1,
@@ -266,7 +279,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         '<+10%',
       )
       .from(
-        `${imageSection} .fui-corners-dot`,
+        `${imageSectionQuery} .fui-corners-dot`,
         {
           scaleX: 0,
           duration: 0.5,
@@ -301,59 +314,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         },
         '<',
       )
-      .fromTo(
-        `${imageSection} th`,
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 0.09,
-          stagger: {
-            repeat: 20,
-            each: 0.1,
-          },
-        },
-        '<+25%',
-      )
-      .to(
-        `${imageSection} .work-details-role`,
-        {
-          onStart: removeOpacity,
-          typewrite: {},
-          duration: 1,
-          ease: 'power4.out',
-        },
-        '<',
-      )
-      .to(
-        `${imageSection} .work-details-client`,
-        {
-          onStart: removeOpacity,
-          typewrite: {},
-          duration: 1,
-          ease: 'power4.out',
-        },
-        '<+20%',
-      )
-      .to(
-        `${imageSection} .work-details-year`,
-        {
-          onStart: removeOpacity,
-          typewrite: {},
-          duration: 1,
-          ease: 'power4.out',
-        },
-        '<+20%',
-      )
-      .to(
-        `${imageSection} .work-details-tech`,
-        {
-          onStart: removeOpacity,
-          typewrite: {},
-          duration: 1.5,
-          ease: 'power4.out',
-        },
-        '<+20%',
-      )
+      .add(workDetailsTL(imageSectionQuery), '<')
       .to('#open-proj-btn', { opacity: 1, duration: 0.5, ease: 'power4.in' }, '<')
 
     ///

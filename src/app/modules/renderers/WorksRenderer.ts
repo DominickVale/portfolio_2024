@@ -2,9 +2,11 @@ import { $, $all, setupSvgText } from '../../utils'
 import { PROJECTS_LIST } from '../../constants'
 import { radToDeg } from 'three/src/math/MathUtils.js'
 import gsap from 'gsap'
+import * as taxi from '@unseenco/taxi'
 
 import Experience from '../../gl/Experience'
 import BaseRenderer from './base'
+import { workDetailsTL } from '../animations/gsap'
 
 export default class WorksRenderer extends BaseRenderer {
   currIdx: number
@@ -15,6 +17,8 @@ export default class WorksRenderer extends BaseRenderer {
   isFirstRender: boolean
   canChange: boolean
   handleActiveProjectBound: (event: UIEvent) => void
+  lastTouchY: number
+  handleTouchStartBound: (event: UIEvent) => void
 
   initialLoad() {
     super.initialLoad()
@@ -30,12 +34,23 @@ export default class WorksRenderer extends BaseRenderer {
     this.isDesktop = window.innerWidth > 1024
     this.projects = {}
     this.pIds = []
+    this.lastTouchY = 0
+
     BaseRenderer.resizeHandlers.push(this.handleResize.bind(this))
 
     this.handleActiveProjectBound = this.handleActiveProject.bind(this)
+    this.handleTouchStartBound = this.handleTouchStart.bind(this)
 
     window.addEventListener('wheel', this.handleActiveProjectBound)
+    window.addEventListener('touchstart', this.handleTouchStart.bind(this))
+    window.addEventListener('touchmove', this.handleActiveProjectBound)
+    const workImage = $('#works-image')
+    workImage.addEventListener('click', this.onImageClick.bind(this))
     this.experience = new Experience()
+  }
+
+  onImageClick() {
+    window.app.taxi.navigateTo(PROJECTS_LIST[this.currIdx].linkCase)
   }
 
   revealImage() {
@@ -44,13 +59,15 @@ export default class WorksRenderer extends BaseRenderer {
     const renderer = this.experience.renderer
     const params = this.experience.params
     const attractor = this.experience.world.attractor
+    const workImage = $('#works-image')
+    const projectTitleQuery = this.isDesktop ? ".project-title" : '.project-title-mobile'
 
     const attractorPosTl = gsap
       .timeline()
       .to(
         attractor.points.position,
         {
-          x: params.positionX - 36.2,
+          x: this.isDesktop ? params.positionX - 36.2 : params.positionX - 20,
           y: params.positionY - 2,
           z: params.positionZ + 8,
           duration: 2,
@@ -105,7 +122,7 @@ export default class WorksRenderer extends BaseRenderer {
     this.tl
       .add(attractorPosTl)
       .add(attractorUniformsTl, '<')
-      .to('.project-title svg', {
+      .to(`${projectTitleQuery} svg`, {
         opacity: 1,
         duration: 0.05,
         ease: 'linear',
@@ -138,7 +155,7 @@ export default class WorksRenderer extends BaseRenderer {
         '<',
       )
       .to(
-        '#works-image',
+        workImage,
         {
           opacity: 1,
           duration: 0.35,
@@ -151,7 +168,8 @@ export default class WorksRenderer extends BaseRenderer {
         opacity: 1,
         duration: 0.35,
         ease: 'power4.out',
-      })
+      }, "<+50%")
+      .add(workDetailsTL('.work-details-mobile'), '<')
   }
 
   onEnterCompleted() {
@@ -171,6 +189,8 @@ export default class WorksRenderer extends BaseRenderer {
   onLeave() {
     // run before the transition.onLeave method is called
     window.removeEventListener('wheel', this.handleActiveProjectBound)
+    window.removeEventListener('touchstart', this.handleTouchStartBound)
+    window.removeEventListener('touchmove', this.handleActiveProjectBound)
   }
 
   onLeaveCompleted() {
@@ -223,8 +243,9 @@ export default class WorksRenderer extends BaseRenderer {
       const line = $('.dynamic-line', p)
       const horizontalLine = $('.line', p)
       const horizontalLineWidth = horizontalLine.clientWidth
+      const workImage = $('#works-image')
       const element1 = p
-      const element2 = $('#works-image .fui-corners')
+      const element2 = $('.fui-corners', workImage)
 
       const element1Rect = element1.getBoundingClientRect()
       const element2Rect = element2.getBoundingClientRect()
@@ -246,7 +267,7 @@ export default class WorksRenderer extends BaseRenderer {
   }
 
   recalculateOthers() {
-   this.pIds.forEach((id, i) => {
+    this.pIds.forEach((id, i) => {
       const p = this.projects[id]
       p.element.setAttribute('data-active', 'false')
       const newScale = 1 / Math.max(1, Math.abs(i - this.currIdx) + 1 / this.pIds.length)
@@ -279,7 +300,7 @@ export default class WorksRenderer extends BaseRenderer {
 
   setupProjectTitles() {
     $all(this.isDesktop ? '.project-title' : '.project-title-mobile').forEach((p, i) => {
-      setupSvgText(p)
+      setupSvgText(p, this.isDesktop)
       this.projects[i] = {
         element: p,
         image: PROJECTS_LIST[i].image,
@@ -318,17 +339,36 @@ export default class WorksRenderer extends BaseRenderer {
     })
   }
 
+  handleTouchStart(e) {
+    if (e.touches.length > 0) {
+      this.lastTouchY = e.touches[0].clientY
+    }
+  }
+
   handleActiveProject(e) {
     if (!this.canChange) return
+
+    let direction: 'up' | 'down'
+
     if (typeof e.deltaY !== 'undefined') {
-      const direction = e.deltaY > 0 ? 'down' : 'up'
-      if (direction === 'down') {
-        this.currIdx = (this.currIdx + 1) % this.pIds.length
-      } else {
-        this.currIdx = this.currIdx - 1
-        this.currIdx = this.currIdx < 0 ? this.pIds.length - 1 : this.currIdx
-      }
+      // Wheel event
+      direction = e.deltaY > 0 ? 'down' : 'up'
+    } else if (e.touches && e.touches.length > 0) {
+      // Touch event
+      const currentTouchY = e.touches[0].clientY
+      direction = currentTouchY > this.lastTouchY ? 'up' : 'down'
+      this.lastTouchY = currentTouchY
+    } else {
+      return // Ignore if not a wheel or touch event
     }
+
+    if (direction === 'down') {
+      this.currIdx = (this.currIdx + 1) % this.pIds.length
+    } else {
+      this.currIdx = this.currIdx - 1
+      this.currIdx = this.currIdx < 0 ? this.pIds.length - 1 : this.currIdx
+    }
+
     this.updateProjectDetails()
     this.recalculateOthers()
     this.recalculateActive()
@@ -343,7 +383,7 @@ export default class WorksRenderer extends BaseRenderer {
 
   fuiCornersAnimationActive() {
     const fuiCornersTl = gsap.timeline({})
-    const base = '.project-title[data-active="true"] .fui-corners'
+    const base = `.project-title${this.isDesktop ? '' : '-mobile'}[data-active="true"] .fui-corners`
     fuiCornersTl.to(base, {
       opacity: 1,
       duration: 0.065,

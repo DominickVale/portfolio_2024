@@ -59,7 +59,7 @@ export default class RadialMenu {
     this.gap = gap
     this._position = position
     this._bgs = []
-    this._size = size || this.isMobile ? 'calc(10rem + 50vw)' : 'calc(10rem + 10vw)'
+    this._size = size || ( this.isMobile ? 'calc(10rem + 50vw)' : 'calc(10rem + 10vw)' )
 
     this.createWrapper()
 
@@ -316,7 +316,6 @@ export default class RadialMenu {
   }
 
   onSliceClick(ev: MouseEvent) {
-    console.log('CLICK! Add sound here')
     const slice = ev.currentTarget as SVGElement
     const i = slice.getAttribute('data-i')
     this.onSliceActivate(Number(i), ev.target as HTMLElement, ev)

@@ -45,3 +45,67 @@ export function blurStagger(el: HTMLElement, duration?: number, delay?: number) 
 
   return lettersTL
 }
+
+export function workDetailsTL(imageSectionQuery: string) {
+  function removeOpacity() {
+    this.targets()[0]?.classList.remove('opacity-0')
+  }
+
+  const tl = gsap.timeline()
+      .set(imageSectionQuery, { opacity: 1 })
+      .fromTo(
+        `${imageSectionQuery} th`,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.09,
+          stagger: {
+            repeat: 20,
+            each: 0.1,
+          },
+        },
+        '<+25%',
+      )
+      .to(
+        `${imageSectionQuery} .work-details-role`,
+        {
+          onStart: removeOpacity,
+          typewrite: {},
+          duration: 1,
+          ease: 'power4.out',
+        },
+        '<',
+      )
+      .to(
+        `${imageSectionQuery} .work-details-client`,
+        {
+          onStart: removeOpacity,
+          typewrite: {},
+          duration: 1,
+          ease: 'power4.out',
+        },
+        '<+20%',
+      )
+      .to(
+        `${imageSectionQuery} .work-details-year`,
+        {
+          onStart: removeOpacity,
+          typewrite: {},
+          duration: 1,
+          ease: 'power4.out',
+        },
+        '<+20%',
+      )
+      .to(
+        `${imageSectionQuery} .work-details-tech`,
+        {
+          onStart: removeOpacity,
+          typewrite: {},
+          duration: 1.5,
+          ease: 'power4.out',
+        },
+        '<+20%',
+      )
+
+  return tl
+}

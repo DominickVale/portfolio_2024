@@ -81,6 +81,7 @@ export class ContactsInternalRenderer {
     })
     gsap.set(s('h2:not(.shadow)'), { autoAlpha: 0 })
     gsap.set('#smiley', { autoAlpha: 0 })
+    gsap.set('#or', { autoAlpha: 0 })
     const lettersTL = blurStagger(s('h1'))
 
     const links = Array.from($all('#socials > *'))
@@ -171,8 +172,9 @@ export class ContactsInternalRenderer {
         '<',
       )
       .add(lettersTL)
-      .add(formTL, '<+30%')
-      .add(linksTL, '<+20%')
+      .add(this.isDesktop ? formTL : linksTL, '<+30%')
+      .to("#or", { autoAlpha: 1, duration: 1, ease: 'power4.in' }, "<+30%")
+      .add(this.isDesktop ? linksTL : formTL, '<+80%')
       .to('#smiley', { autoAlpha: 1, duration: 1, ease: 'power4.in' })
   }
 

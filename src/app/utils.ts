@@ -126,13 +126,13 @@ export function splitTextChars(el: HTMLElement, tag: string, className?: string)
 /*
  * Given a rootEl containing an SVG element with TEXT inside, it sets up the text to fit the svg container
  */
-export function setupSvgText(rootEl: HTMLElement) {
+export function setupSvgText(rootEl: HTMLElement, isDesktop: boolean) {
   const svg = $('svg', rootEl)
   const text = $('text', svg) as unknown as SVGTextElement
   let bbox = text.getBBox()
 
   svg.setAttribute('viewBox', [bbox.x, bbox.y, bbox.width, bbox.height].join(' '))
-  svg.setAttribute('preserveAspectRatio', 'xMinYMin meet')
+  svg.setAttribute('preserveAspectRatio', isDesktop ? 'xMinYMin' : 'xMidYMid meet')
 }
 
 export function getZPosition() {

@@ -12,16 +12,16 @@ const { small, project } = Astro.props
 {
   small ? (
     <table class="w-full flex-1 text-xs">
-      <tbody class="flex w-full justify-between">
-        <tr class="flex flex-col">
+      <tbody class="flex w-full">
+        <tr class="flex flex-col flex-1">
           <th class="pl-0 pr-3 text-left tracking-widest text-primary-darker">ROLE:</th>
           <td class="work-details-role opacity-0">{project?.role}</td>
         </tr>
-        <tr class="flex flex-col justify-center">
-          <th class="pl-0 text-left tracking-widest text-primary-darker">CLIENT:</th>
+        <tr class="flex flex-col justify-center items-center flex-1">
+          <th class="pl-0 text-left tracking-widest text-primary-darker mr-[-0.4rem]">CLIENT:</th>
           <td class="work-details-client text-center opacity-0">{project?.client}</td>
         </tr>
-        <tr class="flex flex-col">
+        <tr class="flex flex-col flex-1">
           <th class="text-right tracking-widest text-primary-darker">YEAR:</th>
           <td class="work-details-year pr-1 min-w-full text-right opacity-0">{project?.year}</td>
         </tr>
