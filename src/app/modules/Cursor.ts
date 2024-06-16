@@ -35,7 +35,7 @@ export default class Cursor {
     this.lastPos = this.pos
     this.el = $('#cursor')
     this.ringEl = $('#cursor-ring')
-    this.textEl = $('#cursor-text')
+    this.textEl = this.isMobile ? $('#cursor-text-mobile') : $('#cursor-text')
     this.animations = []
     this.init()
   }

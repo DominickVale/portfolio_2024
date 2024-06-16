@@ -50,7 +50,7 @@ export class ContactsInternalRenderer {
     this.isFirstRender = true
     this.isContactsPage = window.location.pathname.includes('/contact')
 
-    emailjs.init(import.meta.env.EMAILJS_USER_KEY)
+    emailjs.init(import.meta.env.PUBLIC_EMAILJS_USER_KEY)
 
     this.tlStack = []
 
@@ -173,7 +173,7 @@ export class ContactsInternalRenderer {
       )
       .add(lettersTL)
       .add(this.isDesktop ? formTL : linksTL, '<+30%')
-      .to("#or", { autoAlpha: 1, duration: 1, ease: 'power4.in' }, "<+30%")
+      .to('#or', { autoAlpha: 1, duration: 1, ease: 'power4.in' }, '<+30%')
       .add(this.isDesktop ? linksTL : formTL, '<+80%')
       .to('#smiley', { autoAlpha: 1, duration: 1, ease: 'power4.in' })
   }
@@ -263,40 +263,37 @@ export class ContactsInternalRenderer {
     }
   }
 
-  handleFormSubmit(event: SubmitEvent) {
+  async handleFormSubmit(event: SubmitEvent) {
     event.preventDefault()
     if (this.sendingEmail) return
     this.sendingEmail = true
 
-    //@TODO: RE-ENABLE
-    // emailjs.sendForm(import.meta.env.EMAILJS_SERVICE_ID, import.meta.env.EMAILJS_TEMPLATE_ID, event.target as HTMLFormElement)
-    //   .then(() => {
-    //     showCursorMessage({ message: 'Sent!<br/>I\'ll get back to you ASAP.', timeout: 5000, isSuccess: true })
-    //   }, (error) => {
-    //     showCursorMessage({ message: 'ERROR: ' + error.text, timeout: 10_000, isError: true});
-    //   }).finally(() => {
-    //     this.sendingEmail = false
-    //   })
-    gsap.to('#send button', {
-      typewrite: {
-        value: 'SENT!',
-        speed: 0.4,
-        charClass: 'text-primary-lightest drop-shadow-glow',
-      },
-      ease: 'power4.inOut',
-      onComplete: () => {
-        this.textboxes.forEach((textbox) => {
-          const wrapper = textbox.parentNode as HTMLElement
-          textbox.value = ''
-          wrapper.classList.remove('textbox-wrapper-valid')
-          wrapper.classList.remove('textbox-wrapper-invalid')
-        })
-        this.submitButton.classList.remove('btn--enabled')
-        this.submitButton.classList.add('btn--disabled')
-        setTimeout(() => {})
-      },
-    })
-  }
+    try {
+      await emailjs.sendForm(import.meta.env.PUBLIC_EMAILJS_SERVICE_ID, import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID, event.target as HTMLFormElement)
+      showCursorMessage({ message: "Sent!<br/>I'll get back to you ASAP.", timeout: 5000, isSuccess: true })
 
-  //@TODO: add additional message element (cursor doesn't show on mobile)
+      gsap.to('#send button', {
+        typewrite: {
+          value: 'SENT!',
+          speed: 0.4,
+          charClass: 'text-primary-lightest drop-shadow-glow',
+        },
+        ease: 'power4.inOut',
+        onComplete: () => {
+          this.textboxes.forEach((textbox) => {
+            const wrapper = textbox.parentNode as HTMLElement
+            textbox.value = ''
+            wrapper.classList.remove('textbox-wrapper-valid')
+            wrapper.classList.remove('textbox-wrapper-invalid')
+          })
+          this.submitButton.classList.remove('btn--enabled')
+          this.submitButton.classList.add('btn--disabled')
+          setTimeout(() => {})
+        },
+      })
+    } catch (e) {
+      showCursorMessage({ message: 'ERROR: ' + (e.text || e), timeout: 10_000, isError: true })
+    }
+    this.sendingEmail = false
+  }
 }

@@ -9,8 +9,8 @@ import { EMAIL } from '../app/constants'
 >
   <span id="or" class="text-inactive mb-[4vh] place-self-center text-xs opacity-60 md:hidden">OR</span>
   <form class="flex w-full flex-col justify-center gap-y-3">
-    <Textbox required uppercase minlength={3} pattern="^[a-zA-Z ]{2,30}$" name="from_name" placeholder="FULL NAME" frame />
-    <Textbox required type="email" name="from_email" placeholder="EMAIL" frame />
+    <Textbox required uppercase minlength={3} pattern="^[a-zA-Z ]{2,30}$" name="name" placeholder="FULL NAME" frame />
+    <Textbox required type="email" name="email" placeholder="EMAIL" frame />
     <Textbox required minlength={30} maxlength={3000} name="message" area placeholder="MESSAGE" frame />
     <Btn containerId="send" class="btn--disabled mb-24 ml-3 mr-auto mt-3 text-xs font-normal md:mb-0 min-h-6">SEND IT</Btn>
   </form>

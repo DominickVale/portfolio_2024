@@ -8,7 +8,7 @@
   <span id="cursor-text" class="bg-background-dark font-mono text-xs text-inactive"></span>
 </div>
 
-<style>
+<style is:global>
   #cursor,
   #cursor-ring,
   #cursor-text {
@@ -19,24 +19,23 @@
     transform-origin: center;
     translate: -50% -50%;
   }
-  #cursor-text {
+  #cursor-text,
+  #cursor-text-mobile {
     translate: 0% 0%;
   }
-  #cursor-text.error {
+  #cursor-text.error,
+  #cursor-text-mobile {
     @apply text-error;
     @apply font-black;
     @apply bg-background-dark;
     @apply px-1;
     opacity: 1;
   }
-  #cursor-text.success {
+  #cursor-text.success,
+  #cursor-text-mobile.success {
     @apply text-success;
     @apply font-black;
     @apply px-1;
     opacity: 1;
-  }
-  #cursor-ring,
-  #cursor-text {
-    /* mix-blend-mode: difference; */
   }
 </style>
