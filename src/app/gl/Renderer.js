@@ -14,6 +14,8 @@ import {
   TextureEffect,
   SavePass,
   ShockWaveEffect,
+  NoiseEffect,
+  BlendFunction,
 } from 'postprocessing'
 
 export default class Renderer {
@@ -65,10 +67,6 @@ export default class Renderer {
     this.chromaticAberrationEffect = chromaticAberrationEffect
     chromaticAberrationEffect.offset = new THREE.Vector2(0, 0)
 
-    const savePass = new SavePass()
-    this.textureEffect = new TextureEffect({
-      texture: savePass.renderTarget.texture,
-    })
     this.shockWaveEffect = new ShockWaveEffect(this.camera.instance, new THREE.Vector3(0, 3, 0), {
       speed: 1.5,
       maxRadius: 30,
@@ -76,9 +74,16 @@ export default class Renderer {
       amplitude: 5,
     })
 
+    this.noiseEffect = new NoiseEffect({
+      blendFunction: BlendFunction.MULTIPLY,
+    })
+
+    this.noiseEffect.blendMode.opacity.value = 0.6
+
     this.composer.addPass(new EffectPass(this.camera.instance, this.bloomEffect))
     this.composer.addPass(new EffectPass(this.camera.instance, this.chromaticAberrationEffect))
     this.composer.addPass(new EffectPass(this.camera.instance, this.shockWaveEffect))
+    this.composer.addPass(new EffectPass(this.camera.instance, this.noiseEffect))
     this.createBackground()
     this.resize()
   }

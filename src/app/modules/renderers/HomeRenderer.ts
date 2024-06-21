@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import Experience from '../../gl/Experience'
 import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
-import { $, getZPosition } from '../../utils'
+import { $, $all, getZPosition } from '../../utils'
 import { blurStagger } from '../animations/gsap'
 
 gsap.registerPlugin(TypewriterPlugin)
@@ -26,21 +26,46 @@ export default class HomeRenderer extends BaseRenderer {
     this.handleResize()
     BaseRenderer.resizeHandlers.push(this.handleResize.bind(this))
 
+    const statusItems = $all('.status-item')
+    const itemsTL = gsap.timeline()
+
+    statusItems.forEach((el, i) => {
+      gsap.set(el, { opacity: 0 })
+      const tl = gsap
+        .timeline()
+        .to(
+          el,
+          {
+            typewrite: {
+              charClass: 'text-primary-lightest drop-shadow-glow',
+              maxScrambleChars: 3,
+            },
+            duration: 1,
+            delay: i / 20,
+          },
+          '<',
+        )
+        .to(el, { opacity: 1, duration: 0.15, ease: 'power4.inOut' }, '<')
+      itemsTL.add(tl, '<')
+    })
+
     const lettersTL = blurStagger($('h1'))
     const attractor = this.experience.world.attractor
+    attractor.resetParams()
     HomeRenderer.enterTL = gsap
       .timeline({ paused: true })
       .add(lettersTL)
-      .to(attractor.points.position, {
-        // x: -1.4,
-        // y: -15,
-        // z: -11.5,
-        x: this.experience.params.positionX,
-        y: this.experience.params.positionY,
-        z: this.experience.params.positionZ,
-        duration: 1,
-        ease: 'power2.inOut',
-      })
+      .to(
+        attractor.points.position,
+        {
+          x: this.experience.params.positionX,
+          y: this.experience.params.positionY,
+          z: this.experience.params.positionZ,
+          duration: 1,
+          ease: 'power2.inOut',
+        },
+        '<',
+      )
       .to(
         attractor.points.rotation,
         {
@@ -50,6 +75,15 @@ export default class HomeRenderer extends BaseRenderer {
           ease: 'power2.inOut',
         },
         '<',
+      )
+      .add(itemsTL, '<+80%')
+      .from(
+        '#home-about',
+        {
+          opacity: 0,
+          duration: 1.5,
+          ease: 'power4.inOut',
+        }, "<50%"
       )
 
     if (window.app.isFirstTime) {

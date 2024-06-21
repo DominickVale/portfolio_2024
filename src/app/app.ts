@@ -30,10 +30,12 @@ export default class App {
   taxi: TaxiCore
   isTransitioning: boolean
   isFirstTime: boolean
-    preloader: Preloader
+  preloaderFinished: Boolean
+  preloader: Preloader
 
   constructor(public debug = false) {
-    this.isFirstTime = true
+    this.isFirstTime = !localStorage.getItem('visited') || true
+    this.preloaderFinished = false
     window.app = this
     this.isTransitioning = true
     this.cursor = new Cursor()
@@ -76,7 +78,7 @@ export default class App {
     this.taxi.addRoute('/contact', '.*', 'fromContacts')
     Animations.init(this.cursor, this.experience)
 
-    if(this.isFirstTime) this.preloader.init()
+    if(!this.preloaderFinished) this.preloader.init()
   }
 
   onToggleDebug() {

@@ -28,8 +28,18 @@ export default class BaseRenderer extends Renderer {
       }
     })
 
+    const linksTL = gsap.timeline()
+
     const currentUrl = window.location.href
-    this.navLinks.forEach((link) => {
+    this.navLinks.forEach((link, i) => {
+      const tl = gsap.timeline()
+      tl.from(link, {
+        opacity: 0,
+        duration: 0.08,
+        repeat: 9,
+        delay: i / 8,
+      })
+      linksTL.add(tl, '<')
       if (link.href === currentUrl || (link.href.includes('blog') && currentUrl.includes('blog'))) {
         link.classList.add('active')
       } else {
@@ -49,15 +59,7 @@ export default class BaseRenderer extends Renderer {
           window.app.isTransitioning = false
         },
       })
-      .from(this.navLinks, {
-        opacity: 0,
-        duration: 0.08,
-        ease: 'elastic.in',
-        stagger: {
-          repeat: 10,
-          each: 0.12,
-        },
-      })
+      .add(linksTL, '<')
 
 
     if(!window.app.isFirstTime) BaseRenderer.enterTL.play()

@@ -99,15 +99,6 @@ export default class FromWorkTransition extends BaseTransition {
         duration: 0.5,
         ease: 'power4.in',
       }, "<")
-      .to(
-        renderer.textureEffect.blendMode.opacity,
-        {
-          value: 0,
-          duration: 0.8,
-          ease: 'circ.in',
-        },
-        '<',
-      )
   }
 
   /**

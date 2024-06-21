@@ -84,7 +84,7 @@ export default class LorenzAttractor {
       fragmentShader: renderFrag,
     })
 
-    const preset = LORENZ_PRESETS[this.type || 'default']
+    const preset = this.type ? LORENZ_PRESETS[this.type] : this.params
 
     this.points = new THREE.Points(this.#lorenzGeometry, this.renderMaterial)
 
@@ -124,6 +124,12 @@ export default class LorenzAttractor {
     this.renderMaterial.uniforms.alphaMap.value = texture
   }
 
+  resetParams(){
+    this.bufferMaterial.uniforms.uSigma.value = this.params.sigma
+    this.bufferMaterial.uniforms.uRho.value = this.params.rho
+    this.bufferMaterial.uniforms.uBeta.value = this.params.beta
+  }
+
   reset() {
     this.firstRender = true
     this.type = 'default'
@@ -142,9 +148,7 @@ export default class LorenzAttractor {
     this.points.position.y = this.params.positionY
     this.points.position.z = this.params.positionZ
 
-    this.bufferMaterial.uniforms.uSigma.value = this.params.sigma
-    this.bufferMaterial.uniforms.uRho.value = this.params.rho
-    this.bufferMaterial.uniforms.uBeta.value = this.params.beta
+    this.resetParams()
 
     this.points.material.uniforms.uTexture.value = initialTexture
     this.points.material.uniforms.uInitialPositions.value = initialTexturePos

@@ -19,6 +19,8 @@ export default class Preloader {
   container: HTMLElement
   experience: any
   isMobile: boolean
+  loadingTL: gsap.core.Timeline
+  enterTL: gsap.core.Timeline
 
   constructor(public onEnterCb: (withSound: boolean) => void) {
     this.container = $('#preloader')
@@ -33,24 +35,32 @@ export default class Preloader {
 
     this.experience = new Experience()
     this.experience.params.speed = 0.001
-    this.experience.resources.on('ready', () => {
-      this.progress += 50
-      this.onProgress()
-    })
+    this.createLoadingFinishedTL()
+    if (window.app.isFirstTime) {
+      this.experience.resources.on('ready', () => {
+        this.progress += 50
+        this.onProgress()
+      })
+    }
   }
 
   init() {
     this.container.classList.remove('hidden')
-    const iid = setInterval(() => {
-      const random = Math.random()
-      if (random < this.progress / 100) return
-      if (this.progress >= 100) {
-        clearInterval(iid)
-        return
-      }
-      this.progress++
-      this.onProgress()
-    }, 10)
+    if (window.app.isFirstTime) {
+      const iid = setInterval(() => {
+        const random = Math.random()
+        if (random < this.progress / 100) return
+        if (this.progress >= 100) {
+          clearInterval(iid)
+          return
+        }
+        this.progress++
+        this.onProgress()
+      }, 10)
+    } else {
+      gsap.set([this.title, this.bar.parentElement, this.p, this.buttons], { opacity: 0 })
+      this.loadingTL.play('welcome')
+    }
 
     if (this.isMobile) {
       this.buttons[0].addEventListener('touchstart', () => {
@@ -89,7 +99,7 @@ export default class Preloader {
     attractor.points.position.z = preset.positionZ
 
     // bloom.blendMode.setBlendFunction(BlendFunction.ADD)
-    gsap
+    this.enterTL = gsap
       .timeline({
         onComplete: () => {
           // this.container.style.display = 'none'
@@ -167,7 +177,7 @@ export default class Preloader {
       .to(attractor.points.position, {
         z: 70,
         y: 0,
-        duration: 3,
+        duration: window.app.isFirstTime ? 3 : 1.5,
         ease: 'power4.in',
       })
       .to(
@@ -181,13 +191,16 @@ export default class Preloader {
       )
       .to('#flash-screen', {
         autoAlpha: 0,
-        duration: 4,
+        duration: window.app.isFirstTime ? 4 : 2,
+        ease: 'power4.in',
         delay: 1,
         onStart: () => {
           $('#flash-screen').classList.remove('mix-blend-lighten')
 
+          const dpreset = LORENZ_PRESETS['default']
           attractor.points.position.z = getZPosition()
-          bloom.blendMode.setBlendFunction(LORENZ_PRESETS['default'].bloomBlendFunction)
+          bloom.blendMode.setBlendFunction(dpreset.bloomBlendFunction)
+          this.experience.params.speed = dpreset.speed
           this.experience.world.attractor.reset()
         },
       })
@@ -200,75 +213,83 @@ export default class Preloader {
         },
         '<+60%',
       )
-      .add(() => BaseRenderer.enterTL.play(), '<+30%')
       .add(() => {
+        BaseRenderer.enterTL.play()
         window.dispatchEvent(new CustomEvent('preload-end'))
-      }, "<")
+      })
   }
 
   onProgress() {
     this.p.innerText = Math.min(100, this.progress) + '%'
-    // update --progress variable
     this.bar.style.setProperty('--progress', this.progress + '%')
     if (this.progress >= 100) {
-      gsap
-        .timeline()
-        .to(this.title, {
-          opacity: 0,
-          duration: 1.5,
-          ease: 'power4.out',
-        })
-        .to(this.bar.parentElement, { opacity: 0, duration: 0.6, ease: 'power4.in' }, '<')
-        .to(this.p, { opacity: 0, duration: 0.5, ease: 'power4.in' }, '<+20%')
-        .set(this.buttons, { opacity: 0 })
-        .add(() => {
-          this.bar.classList.add('hidden')
-          this.buttonsContainer.classList.remove('hidden')
-          this.buttonsContainer.classList.add('flex')
-          this.p.innerText = 'This website uses audio to enhance the overall experience. Headphones recommended.'
-        })
-        .to(this.title, {
+      this.loadingTL.play()
+    }
+  }
+
+  createLoadingFinishedTL() {
+    this.loadingTL = gsap
+      .timeline({ paused: true })
+      .to(this.title, {
+        opacity: 0,
+        duration: 1.5,
+        ease: 'power4.out',
+      })
+      .to(this.bar.parentElement, { opacity: 0, duration: 0.6, ease: 'power4.in' }, '<')
+      .to(this.p, { opacity: 0, duration: 0.5, ease: 'power4.in' }, '<+20%')
+      .set(this.buttons, { opacity: 0 })
+      .addLabel('welcome')
+      .add(() => {
+        this.bar.classList.add('hidden')
+        this.buttonsContainer.classList.remove('hidden')
+        this.buttonsContainer.classList.add('flex')
+        this.p.innerText = 'This website uses audio to enhance the overall experience. Headphones recommended.'
+      }, 'welcome')
+      .to(
+        this.title,
+        {
           opacity: 1,
           duration: 1,
           ease: 'power4.out',
-        }, "<")
-        .to(
-          this.title,
-          {
-            typewrite: {
-              value: 'WELCOME',
-              charClass: 'text-primary-lightest drop-shadow-glow',
-              maxScrambleChars: 1,
-            },
-            duration: 2,
-            ease: 'power4.inOut',
+        },
+        '<',
+      )
+      .to(
+        this.title,
+        {
+          typewrite: {
+            value: window.app.isFirstTime ? 'WELCOME' : 'WELCOME BACK ',
+            charClass: 'text-primary-lightest drop-shadow-glow',
+            maxScrambleChars: 1,
           },
-          '<',
-        )
-        .to(this.p, {
-          opacity: 1,
-          duration: 2.2,
+          duration: 2,
           ease: 'power4.inOut',
-        })
-        .to(
-          this.buttons[0],
-          {
-            opacity: 1,
-            repeat: 9,
-            duration: 0.06,
-          },
-          '<+50%',
-        )
-        .to(
-          this.buttons[1],
-          {
-            opacity: 1,
-            repeat: 9,
-            duration: 0.06,
-            ease: 'power4.inOut',
-          },
-          '<+30%',
-        )
-    }
+        },
+        '<',
+      )
+      .to(this.p, {
+        opacity: 1,
+        duration: 2.2,
+        ease: 'power4.inOut',
+      })
+      .to(
+        this.buttons[0],
+        {
+          opacity: 1,
+          repeat: 9,
+          duration: 0.06,
+        },
+        '<+50%',
+      )
+      .to(
+        this.buttons[1],
+        {
+          opacity: 1,
+          repeat: 9,
+          duration: 0.06,
+          ease: 'power4.inOut',
+        },
+        '<+30%',
+      )
   }
 }

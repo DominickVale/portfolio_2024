@@ -133,15 +133,6 @@ export default class WorksRenderer extends BaseRenderer {
         },
       })
       .to(
-        renderer.textureEffect.blendMode.opacity,
-        {
-          value: 0,
-          duration: 0.8,
-          ease: 'circ.in',
-        },
-        '<',
-      )
-      .to(
         this.experience.world.worksImage.planeMat.uniforms.uStrength,
         {
           value: 0.1,

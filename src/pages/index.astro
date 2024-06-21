@@ -5,14 +5,13 @@ import StatusItem from '../components/StatusItem.astro'
 import NextPageBtn from '../components/NextPageBtn.astro'
 ---
 
-<!--   <path d="M140.652 0H0V206H367.067L400 182V54L367.067 20H168.096L140.652 0Z" fill="#111010" fill-opacity="0.5"></path> -->
 <Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default">
   <section class="col-span-12 col-start-1 mt-6 flex justify-center sm:hidden">
     <NextPageBtn>WORKS</NextPageBtn>
   </section>
   <section class="col-span-10 col-start-2 row-span-4 row-start-2 flex flex-col content-start justify-end text-xs taller:pt-[17vh]">
     <div class="mt-4 flex justify-between sm:text-left">
-      <div class="relative overflow-visible">
+      <div id="home-about" class="relative overflow-visible">
         <h2 class="relative flex items-center gap-2 text-primary">
           <svg
             class="mt-0. h-2.5 w-2.5 fill-primary"
@@ -79,17 +78,14 @@ import NextPageBtn from '../components/NextPageBtn.astro'
           ></StatusItem
         >
       </ul>
-      <ul class="ml-[32%] hidden md:block">
-        <div class="flex flex-col"></div>
+      <ul class="ml-[32%] hidden md:block lg:flex flex-col gap-[7%]">
         <StatusItem highlight>AWARDS:</StatusItem>
-        <p
-          class="font-mono text-xs font-normal text-inactive"
+        <StatusItem
+          class="before:hidden"
           data-cursor-delay="2000"
           data-cursor-message="My mother says i'm<br/>really good with computers."
           data-cursor-timeout="0"
-        >
-          COMING SOON :)
-        </p>
+        >COMING SOON :)</StatusItem>
       </ul>
     </div>
   </section>

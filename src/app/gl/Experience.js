@@ -117,24 +117,15 @@ export default class Experience {
 
       if (!this.isShown) {
         this.isShown = true
-        if (window.app.isFirstTime) {
-          console.log('Firs time')
-          gsap.fromTo(
-            this.canvas,
-            { opacity: 0 },
-            {
-              opacity: 1,
-              repeat: 9,
-              duration: 0.06,
-            },
-          )
-        } else {
-          gsap.to(this.canvas, {
+        gsap.fromTo(
+          this.canvas,
+          { opacity: 0 },
+          {
             opacity: 1,
-            duration: 1,
-            ease: 'power4.inOut',
-          })
-        }
+            repeat: 9,
+            duration: 0.06,
+          },
+        )
       }
     }
   }

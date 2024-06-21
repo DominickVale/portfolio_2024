@@ -9,7 +9,7 @@ export default class World {
     this.sizes = this.experience.sizes
     this.resources = this.experience.resources
     this.isReady = false
-    const lorenzType = window.app.isFirstTime ? 'collapsed' : 'default'
+    const lorenzType = window.app.isFirstTime ? 'collapsed' : undefined
     this.attractor = new LorenzAttractor(lorenzType)
     this.worksImage = new WorksImage()
     this.scene.add(this.attractor.points)
