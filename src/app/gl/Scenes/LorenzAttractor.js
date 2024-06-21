@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import Experience from '../Experience.js'
+import { LORENZ_PRESETS } from '../../constants'
 
 import renderFrag from '../shaders/render.frag'
 import renderVert from '../shaders/render.vert'
@@ -8,7 +9,7 @@ import simVert from '../shaders/simulation.vert'
 
 export default class LorenzAttractor {
   #lorenzGeometry
-  constructor() {
+  constructor(type) {
     this.firstRender = true
     this.experience = new Experience()
     this.scene = this.experience.scene
@@ -17,6 +18,8 @@ export default class LorenzAttractor {
     this.time = this.experience.time
     this.sizes = this.experience.sizes
     this.debug = this.experience.debug
+    this.boxCenter = new THREE.Vector3(0, 0, 0)
+    this.type = type
 
     this.init()
   }
@@ -25,9 +28,6 @@ export default class LorenzAttractor {
     //setup ping pong
     this.bufferScene = new THREE.Scene()
     this.bufferCamera = new THREE.OrthographicCamera(-1, 1, 1, -1)
-
-    const initialTexture = this.createInitialTexture()
-    const initialTexturePos = initialTexture.clone()
     this.#lorenzGeometry = new THREE.BufferGeometry()
 
     const settings = {
@@ -58,6 +58,9 @@ export default class LorenzAttractor {
     this.#lorenzGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
     this.#lorenzGeometry.setAttribute('reference', new THREE.BufferAttribute(refs, 2))
 
+    const [initialTexture, initialTextureData] = this.createInitialTexture()
+    const initialTexturePos = initialTexture.clone()
+
     //Screen Material
     this.renderMaterial = new THREE.ShaderMaterial({
       side: THREE.DoubleSide,
@@ -81,23 +84,27 @@ export default class LorenzAttractor {
       fragmentShader: renderFrag,
     })
 
+    const preset = LORENZ_PRESETS[this.type || 'default']
+
     this.points = new THREE.Points(this.#lorenzGeometry, this.renderMaterial)
-    this.points.rotation.x = this.params.rotationX
-    this.points.rotation.y = this.params.rotationY
-    this.points.rotation.z = this.params.rotationZ
-    this.points.position.x = this.params.positionX
-    this.points.position.y = this.params.positionY
-    this.points.position.z = this.params.positionZ
+
+    this.points.rotation.x = preset.rotationX
+    this.points.rotation.y = preset.rotationY
+    this.points.rotation.z = preset.rotationZ
+
+    this.points.position.x = preset.positionX
+    this.points.position.y = preset.positionY
+    this.points.position.z = preset.positionZ
 
     // Simulation Material
     this.bufferMaterial = new THREE.ShaderMaterial({
       dithering: true,
       uniforms: {
         uTime: { value: 0.0 },
-        uSigma: { value: this.params.sigma },
-        uRho: { value: this.params.rho },
-        uBeta: { value: this.params.beta },
-        uDt: { value: 0.0001 * Math.pow(this.params.speed, 2) },
+        uSigma: { value: preset.sigma },
+        uRho: { value: preset.rho },
+        uBeta: { value: preset.beta },
+        uDt: { value: 0.0001 * Math.pow(preset.speed, 2) },
         uTexture: { value: initialTexture },
         uInitialPositions: { value: initialTexturePos },
       },
@@ -108,14 +115,41 @@ export default class LorenzAttractor {
     this.bufferMaterial.defines.resolution =
       'vec2( ' + this.params.particlesBufWidth.toFixed(1) + ' , ' + this.params.particlesBufWidth.toFixed(1) + ' )'
 
-    const bufferMesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), this.bufferMaterial)
-
-    this.bufferScene.add(bufferMesh)
+    this.bufferMesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), this.bufferMaterial)
+    this.bufferScene.add(this.bufferMesh)
   }
 
   setTexture(texture) {
     texture.minFilter = THREE.LinearMipMapLinearFilter
     this.renderMaterial.uniforms.alphaMap.value = texture
+  }
+
+  reset() {
+    this.firstRender = true
+    this.type = 'default'
+    // this.bufferMesh.geometry.dispose()
+    // this.bufferMesh.material.dispose()
+    // this.bufferScene.remove(this.bufferMesh)
+
+    const [initialTexture, initialTextureData] = this.createInitialTexture()
+    const initialTexturePos = initialTexture.clone()
+
+    this.points.rotation.x = this.params.rotationX
+    this.points.rotation.y = this.params.rotationY
+    this.points.rotation.z = this.params.rotationZ
+
+    this.points.position.x = this.params.positionX
+    this.points.position.y = this.params.positionY
+    this.points.position.z = this.params.positionZ
+
+    this.bufferMaterial.uniforms.uSigma.value = this.params.sigma
+    this.bufferMaterial.uniforms.uRho.value = this.params.rho
+    this.bufferMaterial.uniforms.uBeta.value = this.params.beta
+
+    this.points.material.uniforms.uTexture.value = initialTexture
+    this.points.material.uniforms.uInitialPositions.value = initialTexturePos
+    this.bufferMaterial.uniforms.uTexture.value = initialTexture
+    this.bufferMaterial.uniforms.uInitialPositions.value = initialTexturePos
   }
 
   //@TODO: implement
@@ -131,49 +165,84 @@ export default class LorenzAttractor {
     this.bufferMaterial.uniforms.uDt = {
       value: delta * 0.0001 * Math.pow(this.params.speed, 2),
     }
-
-    if (this.debug.showFBOTextures) {
-      if (!this.debugPlane) {
-        this.debugPlane = new THREE.Mesh(new THREE.PlaneGeometry(3, 3), new THREE.MeshBasicMaterial())
-        this.debugPlane.position.x = 10
-        this.debugPlane.position.z = 60
-        this.scene.add(this.debugPlane)
-      }
-      this.debugPlane.material.map = read.texture
-    } else if (this.debugPlane) {
-      this.scene.remove(this.debugPlane)
-      this.debugPlane = null
-    }
   }
 
   createInitialTexture() {
     const size = this.params.particlesBufWidth * this.params.particlesBufWidth * 4
     const data = new Float32Array(size)
 
-    const a = this.params.sigma
-    const b = this.params.rho
-    const c = this.params.beta
+    const preset = LORENZ_PRESETS[this.type || 'default']
 
-    let x = 0.1
-    let y = 0.1
-    let z = 0.1
+    if (this.type === 'collapsed') {
+      const scaleX = 0.01
+      const scaleY = 0.01
+      const scaleZ = 0.2
+      const gradientFactor = 10
 
-    for (let i = 0; i < size; i += 4) {
-      let dt = 0.01
-      let dx = a * (y - x) * dt
-      let dy = (x * (b - z) - y) * dt
-      let dz = (x * y - c * z) * dt
-      x = x + dx
-      y = y + dy
-      z = z + dz
+      // Use the geometry of a filled elongated sphere (almost like a line)
+      for (let i = 0; i < size; i += 4) {
+        const u = Math.random()
+        const v = Math.random()
+        const theta = 2 * Math.PI * u
+        const phi = Math.acos(2 * v - 1)
+        const r = Math.cbrt(Math.random() * Math.exp(gradientFactor * Math.random())) // Gradient distribution
 
-      data[i] = x
-      data[i + 1] = y
-      data[i + 2] = z
-      data[i + 3] = 1
+        const x = r * Math.sin(phi) * Math.cos(theta) * scaleX
+        const y = r * Math.sin(phi) * Math.sin(theta) * scaleY
+        const z = r * Math.cos(phi) * scaleZ
+
+        data[i] = x
+        data[i + 1] = y
+        data[i + 2] = z
+        data[i + 3] = 1
+      }
+    } else {
+      // Original Lorenz system
+      const a = preset.sigma
+      const b = preset.rho
+      const c = preset.beta
+
+      let x = 0.1
+      let y = 0.1
+      let z = 0.1
+
+      let minX = x
+      let minY = y
+      let minZ = z
+      let maxX = x
+      let maxY = y
+      let maxZ = z
+
+      for (let i = 0; i < size; i += 4) {
+        let dt = 0.01
+        let dx = a * (y - x) * dt
+        let dy = (x * (b - z) - y) * dt
+        let dz = (x * y - c * z) * dt
+        x = x + dx
+        y = y + dy
+        z = z + dz
+
+        data[i] = x
+        data[i + 1] = y
+        data[i + 2] = z
+        data[i + 3] = 1
+
+        if (x < minX) minX = x
+        if (y < minY) minY = y
+        if (z < minZ) minZ = z
+        if (x > maxX) maxX = x
+        if (y > maxY) maxY = y
+        if (z > maxZ) maxZ = z
+      }
+
+      this.boxCenter.x = (minX + maxX) / 2
+      this.boxCenter.y = (minY + maxY) / 2
+      this.boxCenter.z = (minZ + maxZ) / 2
     }
+
     const dataTexture = new THREE.DataTexture(data, this.params.particlesBufWidth, this.params.particlesBufWidth, THREE.RGBAFormat, THREE.FloatType)
     dataTexture.needsUpdate = true
-    return dataTexture
+
+    return [dataTexture, data]
   }
 }

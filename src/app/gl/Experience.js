@@ -16,8 +16,6 @@ import sources from './sources'
 let instance = null
 
 /*@TODO:
- * add animations
- * add animations on page transition
  * figure out how to reset to initial positions after page transitions
  * add a reset lorenz button
  * differennt positions for each page
@@ -30,6 +28,8 @@ export default class Experience {
     if (instance) return instance
     instance = this
     this.cursor = cursor
+
+    this.isShown = false
 
     // Global access
     window.experience = this
@@ -60,7 +60,7 @@ export default class Experience {
       lorenzColor: this.lorenzColor,
       blending: THREE.AdditiveBlending,
       chromaticAberration: 0,
-      bloomIntensity: 14,
+      bloomIntensity: 20,
       bloomLuminanceThreshold: 0,
       bloomLuminanceSmoothing: 0,
       bloomRadius: 0.64,
@@ -114,8 +114,28 @@ export default class Experience {
     if (this.world.isReady) {
       this.renderer.update(delta)
       this.world.update(this.renderer.instance, delta, elapsed)
-      // @TODO: remove, use gsap
-      this.canvas.style.opacity = 1
+
+      if (!this.isShown) {
+        this.isShown = true
+        if (window.app.isFirstTime) {
+          console.log('Firs time')
+          gsap.fromTo(
+            this.canvas,
+            { opacity: 0 },
+            {
+              opacity: 1,
+              repeat: 9,
+              duration: 0.06,
+            },
+          )
+        } else {
+          gsap.to(this.canvas, {
+            opacity: 1,
+            duration: 1,
+            ease: 'power4.inOut',
+          })
+        }
+      }
     }
   }
 

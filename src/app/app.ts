@@ -19,6 +19,7 @@ import BlogArticleRenderer from './modules/renderers/BlogArticleRenderer'
 import FromBlogArticleTransition from './modules/transitions/fromBlogArticle'
 import AboutRenderer from './modules/renderers/AboutRenderer'
 import FromAboutTransition from './modules/transitions/fromAbout'
+import Preloader from './modules/Preloader'
 
 export default class App {
   experience: Experience
@@ -28,15 +29,22 @@ export default class App {
   typewriter: Typewriter
   taxi: TaxiCore
   isTransitioning: boolean
+  isFirstTime: boolean
+    preloader: Preloader
 
   constructor(public debug = false) {
+    this.isFirstTime = true
+    window.app = this
     this.isTransitioning = true
     this.cursor = new Cursor()
     this.experience = new Experience($('#webgl') as HTMLCanvasElement, this.cursor)
     this.menus = new Menus(this.onToggleDebug.bind(this))
     this.scrambles = new TextScramble()
     this.typewriter = new Typewriter()
-    window.app = this
+    this.preloader = new Preloader(() => {})
+
+    localStorage.setItem('visited', 'true')
+
     this.taxi = new TaxiCore({
       allowInterruption: false,
       reloadCssFilter: (element) => true,
@@ -67,6 +75,8 @@ export default class App {
     this.taxi.addRoute('/blog', '.*', 'fromBlog')
     this.taxi.addRoute('/contact', '.*', 'fromContacts')
     Animations.init(this.cursor, this.experience)
+
+    if(this.isFirstTime) this.preloader.init()
   }
 
   onToggleDebug() {

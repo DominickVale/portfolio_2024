@@ -3,13 +3,15 @@ import gsap from 'gsap'
 import Experience from '../../gl/Experience'
 import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
-import { getZPosition } from '../../utils'
+import { $, getZPosition } from '../../utils'
+import { blurStagger } from '../animations/gsap'
 
 gsap.registerPlugin(TypewriterPlugin)
 
 export default class HomeRenderer extends BaseRenderer {
   experience: Experience
   isFirstRender: boolean
+  static enterTL: gsap.core.Timeline
 
   initialLoad() {
     super.initialLoad()
@@ -24,9 +26,11 @@ export default class HomeRenderer extends BaseRenderer {
     this.handleResize()
     BaseRenderer.resizeHandlers.push(this.handleResize.bind(this))
 
+    const lettersTL = blurStagger($('h1'))
     const attractor = this.experience.world.attractor
-    gsap
-      .timeline()
+    HomeRenderer.enterTL = gsap
+      .timeline({ paused: true })
+      .add(lettersTL)
       .to(attractor.points.position, {
         // x: -1.4,
         // y: -15,
@@ -47,6 +51,12 @@ export default class HomeRenderer extends BaseRenderer {
         },
         '<',
       )
+
+    if (window.app.isFirstTime) {
+      window.addEventListener('preload-end', () => HomeRenderer.enterTL.play())
+    } else {
+      HomeRenderer.enterTL.play()
+    }
   }
 
   onEnterCompleted() {
@@ -63,10 +73,11 @@ export default class HomeRenderer extends BaseRenderer {
   //////////////////////////////////////
 
   handleResize() {
+    if (window.app.isFirstTime) return //@TODO: figure out later
     const attractor = this.experience.world.attractor
     this.experience.params.positionZ = getZPosition()
     const aspect = window.innerWidth / window.innerHeight
-    const newY = aspect > 1 ? this.experience.params.positionY : this.experience.params.positionY + (window.innerHeight / 150)
+    const newY = aspect > 1 ? this.experience.params.positionY : this.experience.params.positionY + window.innerHeight / 150
     gsap.to(attractor.points.position, { z: this.experience.params.positionZ, y: newY, duration: 0.25, ease: 'power4.out' })
   }
 }

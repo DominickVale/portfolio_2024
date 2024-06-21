@@ -1,0 +1,32 @@
+---
+import Btn from '../components/Btn.astro'
+---
+
+<section id="preloader" class="fixed left-0 top-0 z-[100] flex hidden h-full w-full flex-col items-center justify-center text-center">
+  <div class="inner mt-[33.33333vh] h-1/3 flex flex-col items-center gap-14">
+    <div class="flex flex-col items-center">
+      <h1 class="text-mono mb-6 text-sm font-light tracking-widest text-white">LOADING…</h1>
+      <p class="text-mono max-w-[20rem] text-xs text-inactive">0%</p>
+      <div id="progress-bar" class="relative mt-3 h-[0.0625rem] w-52 bg-lines overflow-hidden">
+        <div
+          style="--progress: 0;"
+          class="progress absolute left-0 h-full w-full origin-left scale-x-[var(--progress)] bg-white drop-shadow-glow-harder"
+        >
+        </div>
+      </div>
+    </div>
+
+    <div id="preloader-buttons" class="hidden flex-col items-center gap-6">
+      <Btn
+        href="/"
+        data-text-scramble="ENTER"
+        data-text-scramble-speed="20"
+        class="mx-auto h-20 w-52 justify-center overflow-hidden whitespace-nowrap text-nowrap bg-background-dark-02 backdrop-blur-[16px]"
+        frame>ENTER</Btn
+      >
+      <Btn href="/" class="text-inactive">WITH NO SOUND</Btn>
+    </div>
+  </div>
+</section>
+
+<div id="flash-screen" class="pointer-events-none fixed bottom-0 left-0 right-0 top-0 z-[100] bg-primary-lightest opacity-0 mix-blend-lighten"></div>

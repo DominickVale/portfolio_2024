@@ -12,7 +12,8 @@ import {
   RenderPass,
   SelectiveBloomEffect,
   TextureEffect,
-  SavePass
+  SavePass,
+  ShockWaveEffect,
 } from 'postprocessing'
 
 export default class Renderer {
@@ -46,6 +47,7 @@ export default class Renderer {
     this.instance.setPixelRatio(this.sizes.pixelRatio)
     this.instance.outputEncoding = THREE.sRGBEncoding
 
+    console.log(this.instance.capabilities.maxSamples)
     this.composer = new EffectComposer(this.instance, { frameBufferType: THREE.HalfFloatType })
     this.composer.setSize(this.sizes.width, this.sizes.height)
     const renderPass = new RenderPass(this.scene, this.camera.instance)
@@ -63,12 +65,20 @@ export default class Renderer {
     this.chromaticAberrationEffect = chromaticAberrationEffect
     chromaticAberrationEffect.offset = new THREE.Vector2(0, 0)
 
-    const savePass = new SavePass();
+    const savePass = new SavePass()
     this.textureEffect = new TextureEffect({
-			texture: savePass.renderTarget.texture
-		});
-    this.composer.addPass(new EffectPass(this.camera.instance, this.chromaticAberrationEffect))
+      texture: savePass.renderTarget.texture,
+    })
+    this.shockWaveEffect = new ShockWaveEffect(this.camera.instance, new THREE.Vector3(0, 3, 0), {
+      speed: 1.5,
+      maxRadius: 30,
+      waveSize: 4,
+      amplitude: 5,
+    })
+
     this.composer.addPass(new EffectPass(this.camera.instance, this.bloomEffect))
+    this.composer.addPass(new EffectPass(this.camera.instance, this.chromaticAberrationEffect))
+    this.composer.addPass(new EffectPass(this.camera.instance, this.shockWaveEffect))
     this.createBackground()
     this.resize()
   }

@@ -8,6 +8,7 @@ export default class BaseRenderer extends Renderer {
   #debouncedHandleResizeFn: Function
   #onResizeBound: () => void
   static resizeHandlers: Array<() => void>
+  static enterTL: gsap.core.Timeline
   initialLoad(): void {
     super.initialLoad()
 
@@ -36,8 +37,9 @@ export default class BaseRenderer extends Renderer {
       }
     })
 
-    const enterTL = gsap
+    BaseRenderer.enterTL = gsap
       .timeline({
+        paused: true,
         onStart: () => {
           window['navbar'].classList.remove('opacity-0')
           window['body-wrapper'].classList.remove('opacity-0')
@@ -56,7 +58,11 @@ export default class BaseRenderer extends Renderer {
           each: 0.12,
         },
       })
+
+
+    if(!window.app.isFirstTime) BaseRenderer.enterTL.play()
   }
+
   onEnter() {
     // run after the new content has been added to the Taxi container
     // console.log('renderer onEnter')

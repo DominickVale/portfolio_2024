@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.astro'
 import Footer from '../components/Footer.astro'
 import Contacts from '../components/Contacts.astro'
 import Cursor from '../components/Cursor.astro'
+import Preloader from '../components/Preloader.astro'
 import {
   ContactIcon,
   LabIcon,
@@ -47,7 +48,7 @@ const { title, rowsMax, withContacts, class: classes, renderer, ...props } = Ast
   </style>
   <body id="root" data-page={renderer} class:list={['relative flex h-full max-h-screen w-full flex-col overscroll-none font-body', classes]} {...props}>
     <div class="canvas-container fixed w-full h-screen">
-      <canvas id="webgl" class="block absolute top-0 bg-background-dark opacity-0 transition-opacity duration-1000 ease-in-out"></canvas>
+      <canvas id="webgl" class="block absolute top-0 bg-background-dark opacity-0"></canvas>
     </div>
     <div
       id="bg-blur"
@@ -85,6 +86,8 @@ const { title, rowsMax, withContacts, class: classes, renderer, ...props } = Ast
     </div>
 
     <Cursor />
+
+    <Preloader />
   </body>
   <script>
     import '../app'

@@ -24,6 +24,7 @@
   --blur-radial: 2px;
   --copy: #d3c4c4;
   --golden-glow: 0 0 4px color-mix(in srgb, transparent, var(--primary) 80%);
+  --golden-glow-harder: 0 0 4px color-mix(in srgb, transparent, var(--primary) 100%);
 }
 
 ::selection {

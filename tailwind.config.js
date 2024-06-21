@@ -46,6 +46,7 @@ export default {
       },
       dropShadow: {
         glow: 'var(--golden-glow)',
+        "glow-harder": 'var(--golden-glow-harder)',
       },
       keyframes: {
         shake: {

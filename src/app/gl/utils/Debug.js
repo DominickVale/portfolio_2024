@@ -13,7 +13,6 @@ export default class Debug {
     this.experience = new Experience()
     this.shouldSaveImage = false
     this.enabled = false
-    this.showFBOTextures = false
     this.preset = LORENZ_PRESETS['default']
   }
   start() {
@@ -52,13 +51,14 @@ export default class Debug {
     positioning.add(this.attractor.points.position, 'z', -50, 50).name("Position Z")
     const misc = this.gui.addFolder('Misc')
     misc.add({ saveImage: () => (this.shouldSaveImage = true) }, 'saveImage').name('Save as Image')
-    misc.add(this, 'showFBOTextures', false).name('Show FBO Textures')
     misc.add(this, 'preset', LORENZ_PRESETS).onChange(this.setPreset.bind(this)).name('Preset')
 
     this.controls = new OrbitControls(this.experience.camera.instance, this.experience.appEl)
     this.controls.enableDamping = true
     this.controls.dampingFactor = 0.05
     this.controls.enabled = false
+    this.controls.autoRotate = false
+    this.controls.update()
 
     misc.add(this.controls, 'enabled').name('Orbit controls')
   }
