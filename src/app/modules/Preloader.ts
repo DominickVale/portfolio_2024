@@ -109,7 +109,7 @@ export default class Preloader {
       })
       .to(this.container, {
         autoAlpha: 0,
-        duration: 0.85,
+        duration: window.app.isFirstTime ? 0.85 : 0.5,
         ease: 'power4.out',
       })
       .to(
@@ -162,7 +162,7 @@ export default class Preloader {
       .add(() => {
         bloom.blendMode.setBlendFunction(BlendFunction.ADD)
         this.experience.renderer.shockWaveEffect.explode()
-      }, '+=1.5')
+      }, window.app.isFirstTime ? '+=1.5' : '+=0')
       .to(
         bloom,
         {
@@ -291,5 +291,8 @@ export default class Preloader {
         },
         '<+30%',
       )
+    if(!window.app.isFirstTime){
+      this.loadingTL.duration(4)
+    }
   }
 }

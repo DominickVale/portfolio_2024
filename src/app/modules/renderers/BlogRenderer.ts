@@ -20,7 +20,7 @@ const createLenis = (lenis: Lenis | undefined, scrollWrapper: HTMLElement, isHor
     eventsTarget: isHorizontal ? window : undefined,
   })
   lenis.on('scroll', ScrollTrigger.update)
-  if(onScroll) lenis.on('scroll', onScroll)
+  if (onScroll) lenis.on('scroll', onScroll)
   gsap.ticker.add((time) => {
     lenis.raf(time * 1000)
   })
@@ -34,6 +34,7 @@ export default class BlogRenderer extends BaseRenderer {
   tlStack: gsap.core.Timeline[]
   isFirstRender: boolean
   articles: HTMLElement[]
+  static enterTL: gsap.core.Timeline
   handleActiveArticleBound: (event: UIEvent) => void
   lenis: Lenis
 
@@ -63,7 +64,6 @@ export default class BlogRenderer extends BaseRenderer {
     const lettersTL = blurStagger($('h1'), 0.08, 0.5)
 
     this.resizeTitles()
-    this.handleLorenzResize()
 
     BaseRenderer.resizeHandlers.push(this.resizeTitles.bind(this))
     BaseRenderer.resizeHandlers.push(this.handleLorenzResize.bind(this))
@@ -74,19 +74,19 @@ export default class BlogRenderer extends BaseRenderer {
       article.addEventListener('touchstart', this.handleActiveArticleBound)
     })
 
-    const tl = gsap.timeline({})
-
-    tl.fromTo(
-      '#blog-header',
-      {
-        x: '-50vw',
-      },
-      {
-        x: 0,
-        duration: 1.35,
-        ease: 'power4.inOut',
-      },
-    )
+    BlogRenderer.enterTL = gsap
+      .timeline({ paused: true })
+      .fromTo(
+        '#blog-header',
+        {
+          x: '-50vw',
+        },
+        {
+          x: 0,
+          duration: 1.35,
+          ease: 'power4.inOut',
+        },
+      )
       .add(lettersTL, '<')
       .to(
         statusItems,
@@ -132,16 +132,28 @@ export default class BlogRenderer extends BaseRenderer {
         '<+50%',
       )
 
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: "#blog-header",
-        start: 'top top',
-        scrub: true
-      }
-    }).to(".nav-link", {
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: '#blog-header',
+          start: 'top top',
+          scrub: true,
+        },
+      })
+      .to('.nav-link', {
         opacity: 0,
         duration: 1,
-    })
+      })
+
+    if (window.app.preloaderFinished) {
+      this.handleLorenzResize()
+      BlogRenderer.enterTL.play()
+    } else {
+      window.addEventListener('preload-end', () => {
+        this.handleLorenzResize()
+        BlogRenderer.enterTL.play()
+      })
+    }
   }
 
   onEnterCompleted() {
@@ -286,7 +298,7 @@ export default class BlogRenderer extends BaseRenderer {
         .addLabel('end'),
     )
     this.oldIdx = this.currIdx
-  } 
+  }
 
   resizeTitles() {
     this.articles.forEach((article) => {
@@ -300,7 +312,7 @@ export default class BlogRenderer extends BaseRenderer {
     const aspect = window.innerWidth / window.innerHeight
     const isHorizontal = aspect >= 1
     const scrollWrapper = $('#posts-container')
-    
+
     createLenis(this.lenis, scrollWrapper, isHorizontal)
   }
 
@@ -308,7 +320,7 @@ export default class BlogRenderer extends BaseRenderer {
     const attractor = this.experience.world.attractor
     this.experience.params.positionZ = getZPosition()
     const aspect = window.innerWidth / window.innerHeight
-    const newY = aspect > 1 ? this.experience.params.positionY : this.experience.params.positionY - (window.innerHeight / 100)
+    const newY = aspect > 1 ? this.experience.params.positionY : this.experience.params.positionY - window.innerHeight / 100
     gsap.to(attractor.points.position, { z: this.experience.params.positionZ, y: newY, duration: 0.25, ease: 'power4.out' })
   }
 }

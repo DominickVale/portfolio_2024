@@ -17,7 +17,7 @@ export default class BaseRenderer extends Renderer {
     this.#onResizeBound = this.#onResize.bind(this)
     window.addEventListener('resize', this.#onResizeBound)
 
-    this.navLinks = Array.from($all('nav li a')) as HTMLAnchorElement[]
+   this.navLinks = Array.from($all('nav li a')) as HTMLAnchorElement[]
     $('#navbar').addEventListener('click', (e) => {
       const clickedEl = e.target as HTMLElement
       if (clickedEl.parentElement.classList.contains('nav-link')) {
@@ -62,7 +62,7 @@ export default class BaseRenderer extends Renderer {
       .add(linksTL, '<')
 
 
-    if(!window.app.isFirstTime) BaseRenderer.enterTL.play()
+    if(window.app.preloaderFinished) BaseRenderer.enterTL.play()
   }
 
   onEnter() {

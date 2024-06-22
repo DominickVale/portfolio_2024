@@ -78,8 +78,8 @@ export default class Experience {
     this.renderer = new Renderer(this)
     this.world = new World(this)
 
-    this.camXto = gsap.quickTo(this.camera.instance.rotation, 'x', { duration: 2, ease: 'power3' })
-    this.camYto = gsap.quickTo(this.camera.instance.rotation, 'y', { duration: 2, ease: 'power3' })
+    this.camXto = gsap.quickTo(this.camera.instance.position, 'x', { duration: 2, ease: 'power3' })
+    this.camYto = gsap.quickTo(this.camera.instance.position, 'y', { duration: 2, ease: 'power3' })
 
     this.sizes.on('resize', () => {
       this.resize()
@@ -93,11 +93,11 @@ export default class Experience {
   }
 
   onMouseMove() {
-    if (this.isMobile || !this.cursor) return
+    if (this.isMobile || !this.cursor || !window.app.preloaderFinished) return
     const { pos } = this.cursor
 
-    this.camXto(-(pos.y - this.sizes.width / 2) / 50000)
-    this.camYto(-(pos.x - this.sizes.width / 2) / 50000)
+    this.camXto(-(pos.y - this.sizes.width / 2) / 30000)
+    this.camYto(-(pos.x - this.sizes.width / 2) / 30000)
     this.camera.instance.updateProjectionMatrix()
   }
 

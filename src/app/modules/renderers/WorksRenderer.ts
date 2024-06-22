@@ -13,7 +13,7 @@ export default class WorksRenderer extends BaseRenderer {
   projects: Record<string, { element: HTMLElement; image: string }>
   pIds: string[]
   experience: Experience
-  tl: gsap.core.Timeline
+  static enterTL: gsap.core.Timeline
   isFirstRender: boolean
   canChange: boolean
   handleActiveProjectBound: (event: UIEvent) => void
@@ -113,13 +113,14 @@ export default class WorksRenderer extends BaseRenderer {
         '<',
       )
 
-    this.tl = gsap.timeline({
+    WorksRenderer.enterTL = gsap.timeline({
+      paused: true,
       onComplete: () => {
         this.updateProjectDetails()
       },
     })
 
-    this.tl
+    WorksRenderer.enterTL
       .add(attractorPosTl)
       .add(attractorUniformsTl, '<')
       .to(`${projectTitleQuery} svg`, {
@@ -154,13 +155,20 @@ export default class WorksRenderer extends BaseRenderer {
         },
         '<',
       )
-      .add(this.fuiCornersAnimationActive, '<+50%')
+      .add(this.fuiCornersAnimationActive.bind(this), '<+50%')
       .to('.work-details', {
         opacity: 1,
         duration: 0.35,
         ease: 'power4.out',
       }, "<+50%")
       .add(workDetailsTL('.work-details-mobile'), '<')
+
+
+    if (window.app.preloaderFinished) {
+      WorksRenderer.enterTL.play()
+    } else {
+      window.addEventListener('preload-end', () => WorksRenderer.enterTL.play())
+    }
   }
 
   onEnterCompleted() {
@@ -196,8 +204,9 @@ export default class WorksRenderer extends BaseRenderer {
     const highlightCorner = $('.highlighted-corner', activeProject.element)
     highlightCorner.classList.remove('hidden')
     activeProject.element.setAttribute('data-active', 'true')
+    console.log("recalculated active")
 
-    if (!this.isFirstRender) {
+    if (false) {
       const planeMatUni = this.experience.world.worksImage.planeMat.uniforms
       //can't change el while transitioning
       this.canChange = false

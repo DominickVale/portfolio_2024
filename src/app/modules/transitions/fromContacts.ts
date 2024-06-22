@@ -20,7 +20,7 @@ export default class FromContactsTransition extends BaseTransition {
     //     },
     //   })
     gsap.set("#bg-blur", { opacity: 0 })
-    ContactsRenderer.tl.duration(1).reverse().then(done)
+    ContactsRenderer.enterTL.duration(1).reverse().then(done)
   }
 
   /**

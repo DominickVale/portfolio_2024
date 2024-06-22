@@ -86,10 +86,10 @@ export default class HomeRenderer extends BaseRenderer {
         }, "<50%"
       )
 
-    if (window.app.isFirstTime) {
-      window.addEventListener('preload-end', () => HomeRenderer.enterTL.play())
-    } else {
+    if (window.app.preloaderFinished) {
       HomeRenderer.enterTL.play()
+    } else {
+      window.addEventListener('preload-end', () => HomeRenderer.enterTL.play())
     }
   }
 
@@ -107,7 +107,7 @@ export default class HomeRenderer extends BaseRenderer {
   //////////////////////////////////////
 
   handleResize() {
-    if (window.app.isFirstTime) return //@TODO: figure out later
+    if (!window.app.preloaderFinished) return //@TODO: figure out later
     const attractor = this.experience.world.attractor
     this.experience.params.positionZ = getZPosition()
     const aspect = window.innerWidth / window.innerHeight

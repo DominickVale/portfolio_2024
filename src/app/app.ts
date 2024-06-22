@@ -34,7 +34,8 @@ export default class App {
   preloader: Preloader
 
   constructor(public debug = false) {
-    this.isFirstTime = !localStorage.getItem('visited') || true
+    //@TODO: use cache check
+    this.isFirstTime = !sessionStorage.getItem('visited')
     this.preloaderFinished = false
     window.app = this
     this.isTransitioning = true
@@ -45,7 +46,7 @@ export default class App {
     this.typewriter = new Typewriter()
     this.preloader = new Preloader(() => {})
 
-    localStorage.setItem('visited', 'true')
+    sessionStorage.setItem('visted', 'true')
 
     this.taxi = new TaxiCore({
       allowInterruption: false,
@@ -56,7 +57,7 @@ export default class App {
         fromBlog: FromBlogTransition,
         fromContacts: FromContactsTransition,
         fromBlogArticle: FromBlogArticleTransition,
-        fromAbout: FromAboutTransition
+        fromAbout: FromAboutTransition,
       },
       renderers: {
         default: HomeRenderer,
@@ -64,12 +65,22 @@ export default class App {
         works: WorksRenderer,
         blog: BlogRenderer,
         contact: ContactsRenderer,
-        blogArticle: BlogArticleRenderer
+        blogArticle: BlogArticleRenderer,
       },
     })
     this.taxi.on('NAVIGATE_IN', ({ to, trigger }) => {
       this.scrambles.reload()
       this.cursor.reload()
+
+      const currentUrl = window.location.href
+      $all("nav li a").forEach((link, i) => {
+        const l = link as HTMLAnchorElement
+        if (l.href === currentUrl || (l.href.includes('blog') && currentUrl.includes('blog'))) {
+          l.classList.add('active')
+        } else {
+          l.classList.remove('active')
+        }
+      })
     })
     this.taxi.addRoute('/works', '.*', 'fromWorks')
     this.taxi.addRoute('/about.*', '.*', 'fromAbout')
@@ -78,7 +89,7 @@ export default class App {
     this.taxi.addRoute('/contact', '.*', 'fromContacts')
     Animations.init(this.cursor, this.experience)
 
-    if(!this.preloaderFinished) this.preloader.init()
+    if (!this.preloaderFinished) this.preloader.init()
   }
 
   onToggleDebug() {

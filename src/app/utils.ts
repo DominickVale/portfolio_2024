@@ -152,3 +152,21 @@ export function getZPosition() {
 
   return Math.max(minNumber, Math.min(maxNumber, n))
 }
+
+//https://gist.github.com/cvazac/db99a3fcfd502d3965d21cac7fb99143
+export function wasServedFromBrowserCache(url: string) {
+  //@ts-ignore
+  const {transferSize, decodedBodySize, duration} = performance.getEntriesByName(url)[0]
+  
+  // if we transferred bytes, it must not be a cache hit
+  // (will return false for 304 Not Modified)
+  if (transferSize > 0) return false;
+
+  // if the body size is non-zero, it must mean this is a
+  // ResourceTiming2 browser, this was same-origin or TAO,
+  // and transferSize was 0, so it was in the cache
+  if (decodedBodySize > 0) return true;
+
+  // fall back to duration checking (non-RT2 or cross-origin)
+  return duration < 30;
+}

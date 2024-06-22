@@ -12,15 +12,15 @@ gsap.registerPlugin(TypewriterPlugin)
 
 export default class ContactsRenderer extends BaseRenderer {
   internalRenderer: ContactsInternalRenderer
-  static tl: gsap.core.Timeline
+  static enterTL: gsap.core.Timeline
   initialLoad() {
     super.initialLoad()
   }
 
   onEnter() {
     super.onEnter()
-    ContactsRenderer.tl = gsap.timeline()
-    this.internalRenderer = new ContactsInternalRenderer(this.isDesktop, ContactsRenderer.tl)
+    ContactsRenderer.enterTL = gsap.timeline({ paused: true })
+    this.internalRenderer = new ContactsInternalRenderer(this.isDesktop, ContactsRenderer.enterTL)
     this.internalRenderer.onEnter()
   }
 }
@@ -58,9 +58,6 @@ export class ContactsInternalRenderer {
     const s = (query: string) => $(query, $(this.isContactsPage ? 'main' : '#contacts'))
 
     this.experience = new Experience()
-    if (this.isContactsPage) {
-      gsap.set('#bg-blur', { opacity: 1 })
-    }
     this.setupForm()
     $('#email-button').addEventListener('click', (e) => {
       navigator.clipboard.writeText(EMAIL)
@@ -126,6 +123,18 @@ export class ContactsInternalRenderer {
         '<+20%',
       )
       .set('form > *', { clearProps: 'all' })
+
+    if (this.isContactsPage) {
+      if (window.app.preloaderFinished) {
+        gsap.set('#bg-blur', { opacity: 1 })
+        ContactsRenderer.enterTL.play()
+      } else {
+        window.addEventListener('preload-end', () => {
+          gsap.set('#bg-blur', { opacity: 1 })
+          ContactsRenderer.enterTL.play()
+        })
+      }
+    }
 
     return (
       this.isContactsPage
