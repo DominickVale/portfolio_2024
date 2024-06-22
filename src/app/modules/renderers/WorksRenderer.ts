@@ -212,6 +212,7 @@ export default class WorksRenderer extends BaseRenderer {
       //can't change el while transitioning
       this.canChange = false
       planeMatUni.uNextTexture.value = resources[activeProject.image]
+      this.experience.world.worksImage.currentTexture = resources[activeProject.image]
       planeMatUni.uProgress.value = 0.0
       const tl = gsap.timeline()
       tl.to(planeMatUni.uProgress, {

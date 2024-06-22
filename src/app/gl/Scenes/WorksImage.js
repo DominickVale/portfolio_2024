@@ -16,6 +16,7 @@ export default class WorksImage {
     this.isShown = false
     this.page = window.location.pathname.split('/').pop()
     this.firstRender = true
+    this.currentTexture = null
   }
 
   init() {
@@ -66,6 +67,11 @@ export default class WorksImage {
     if (!this.isShown) return
     const element = $('#works-image')
     const plane = this.worksScene.userData.plane
+    const camera = this.worksScene.userData.camera
+
+    camera.aspect = this.sizes.aspectRatio
+    camera.fov = 2 * Math.atan(window.innerHeight / 2 / camera.position.z) * (180 / Math.PI)
+    camera.updateProjectionMatrix()
 
     const rect = element.getBoundingClientRect()
 
@@ -77,8 +83,7 @@ export default class WorksImage {
     plane.scale.set(rect.width, rect.height, 1)
     plane.position.set(pos.x, pos.y, 1)
 
-    const tex = this.resources.items.reggaecat
-
+    const tex = this.currentTexture || this.resources.items.ambientify1
     plane.material.uniforms.uTexture.value = tex
     plane.material.uniforms.uPlaneSize.value = new THREE.Vector2(rect.width, rect.height)
     plane.material.uniforms.uImageSize.value = new THREE.Vector2(tex.image.naturalWidth, tex.image.naturalHeight)
@@ -98,6 +103,7 @@ export default class WorksImage {
 
   setImage(tex) {
     if (!this.isShown) return
+    this.currentTexture = tex
     this.planeMat.uniforms.uTexture.value = tex
     this.planeMat.uniforms.uImageSize.value = new THREE.Vector2(tex.image.naturalWidth, tex.image.naturalHeight)
   }
