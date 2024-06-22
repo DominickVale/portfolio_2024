@@ -214,6 +214,7 @@ export default class Preloader {
         '<+60%',
       )
       .add(() => {
+        window.app.preloaderFinished = true
         BaseRenderer.enterTL.play()
         window.dispatchEvent(new CustomEvent('preload-end'))
       })

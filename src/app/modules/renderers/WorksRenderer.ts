@@ -164,6 +164,7 @@ export default class WorksRenderer extends BaseRenderer {
       .add(workDetailsTL('.work-details-mobile'), '<')
 
 
+    console.log("window preload finish", window.app.preloaderFinished)
     if (window.app.preloaderFinished) {
       WorksRenderer.enterTL.play()
     } else {
@@ -206,7 +207,7 @@ export default class WorksRenderer extends BaseRenderer {
     activeProject.element.setAttribute('data-active', 'true')
     console.log("recalculated active")
 
-    if (false) {
+    if (!this.isFirstRender) {
       const planeMatUni = this.experience.world.worksImage.planeMat.uniforms
       //can't change el while transitioning
       this.canChange = false
@@ -379,6 +380,7 @@ export default class WorksRenderer extends BaseRenderer {
     this.setupProjectTitles()
     this.recalculateOthers()
     this.recalculateActive()
+    this.experience.world.worksImage.resize()
   }
 
   fuiCornersAnimationActive() {
