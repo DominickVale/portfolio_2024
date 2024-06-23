@@ -1,6 +1,7 @@
 import gsap from 'gsap'
 import BaseTransition from './base'
 import Experience from '../../gl/Experience'
+import WorksRenderer from '../renderers/WorksRenderer'
 
 export default class FromWorkTransition extends BaseTransition {
   /**
@@ -10,7 +11,6 @@ export default class FromWorkTransition extends BaseTransition {
   onLeave({ from, trigger, done }) {
     const experience = new Experience()
     const worksImage = experience.world.worksImage
-    const renderer = experience.renderer
     const params = experience.params
     const attractor = experience.world.attractor
 
@@ -47,11 +47,10 @@ export default class FromWorkTransition extends BaseTransition {
           ease: 'power2.in',
           onComplete: () => {
             gsap.to(params, {
-                speed: 5,
-                duration: 3,
-                ease: 'power2.inOut',
-              },
-            )
+              speed: 5,
+              duration: 3,
+              ease: 'power2.inOut',
+            })
           },
         },
         '<',
@@ -84,6 +83,56 @@ export default class FromWorkTransition extends BaseTransition {
         '<',
       )
 
+    const base = `.project-title[data-active="true"] .fui-corners, .project-title-mobile[data-active="true"] .fui-corners`
+    const fuiCornersTL = gsap.timeline().to(base, {
+      opacity: 0,
+      duration: 0.065,
+      repeat: 6,
+    })
+
+    const reversed = gsap
+      .timeline()
+
+      .to(
+        '.work-details',
+        {
+          opacity: 0,
+          duration: 0.35,
+          ease: 'power4.out',
+        },
+        '<+50%',
+      )
+      .to('.work-details-mobile', { opacity: 0 }, '<')
+      .add(fuiCornersTL, '<+50%')
+      .to(
+        `.project-title-mobile svg, .project-title svg`,
+        {
+          opacity: 0,
+          duration: 0.05,
+          ease: 'linear',
+          stagger: {
+            repeat: 9,
+            each: 0.1,
+            ease: 'expo.in',
+          },
+        },
+        '<',
+      )
+      .to(experience.world.worksImage.planeMat.uniforms.uStrength, {
+        value: 3,
+        duration: 1,
+        ease: 'power4.out',
+      }, "<")
+      .to(
+        '#works-image',
+        {
+          opacity: 0,
+          duration: 0.8,
+          ease: 'power4.inOut',
+        },
+        '<',
+      )
+
     const tl = gsap
       .timeline({
         onComplete: () => {
@@ -94,11 +143,7 @@ export default class FromWorkTransition extends BaseTransition {
       })
       .add(attractorPosTl, '<')
       .add(attractorUniformsTl, '<')
-      .to(worksImage.planeMat.uniforms.uStrength, {
-        value: 3,
-        duration: 0.5,
-        ease: 'power4.in',
-      }, "<")
+      .add(reversed, '<')
   }
 
   /**

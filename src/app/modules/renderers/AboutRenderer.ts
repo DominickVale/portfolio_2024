@@ -12,7 +12,7 @@ gsap.registerPlugin(TypewriterPlugin)
 export default class AboutRenderer extends BaseRenderer {
   experience: Experience
   isFirstRender: boolean
-  tl: gsap.core.Timeline
+  static enterTL: gsap.core.Timeline
   aboutPage: string
 
   initialLoad() {
@@ -37,7 +37,7 @@ export default class AboutRenderer extends BaseRenderer {
     gsap.set('h2:first-of-type', { opacity: 0 })
     gsap.set('h2:last-of-type', { opacity: 0 })
     gsap.set('.intro-paragraph', { opacity: 0 })
-    gsap.set('.btn', { opacity: 0 })
+    gsap.set('.about-btns .btn', { opacity: 0 })
 
 
     const imagesTL = gsap.timeline()
@@ -103,8 +103,8 @@ export default class AboutRenderer extends BaseRenderer {
       imagesTL.add(tl, "<+10%")
     })
 
-    function removeOpacity() {
-      gsap.to(this.targets()[0], { opacity: 1 })
+    const getRemoveOpacity = (v?: number) => function () {
+      gsap.to(this.targets()[0], { opacity: v || 1 })
     }
 
     const fakeCodeTL = gsap
@@ -114,7 +114,7 @@ export default class AboutRenderer extends BaseRenderer {
           charClass: 'text-primary-lightest',
         },
         duration: 0.75,
-        onStart: removeOpacity,
+        onStart: getRemoveOpacity(0.6),
       })
       .to('.fake-logs pre:nth-child(2)', {
         typewrite: {
@@ -122,14 +122,14 @@ export default class AboutRenderer extends BaseRenderer {
         },
         duration: 1,
         delay: 1,
-        onStart: removeOpacity,
+        onStart: getRemoveOpacity(0.6),
       })
       .to('.fake-logs pre:nth-child(3)', {
         typewrite: {
           charClass: 'text-primary-lightest',
         },
         duration: 1,
-        onStart: removeOpacity,
+        onStart: getRemoveOpacity(0.6),
         onComplete: () => {
           setTimeout(() => {
             gsap.to('.fake-logs pre:nth-child(4)', {
@@ -137,7 +137,7 @@ export default class AboutRenderer extends BaseRenderer {
                 charClass: 'text-primary-lightest',
               },
               duration: 1,
-              onStart: removeOpacity,
+              onStart: getRemoveOpacity(0.6),
             })
           }, 1000)
         },
@@ -148,13 +148,10 @@ export default class AboutRenderer extends BaseRenderer {
       .to(
         attractor.points.position,
         {
-          // x: -1.4,
-          // y: -15,
-          // z: -11.5,
           x: -1.4,
           y: isIndexPage ? -21 : -31.5,
           z: -50,
-          duration: attractor.points.position.x === -1.4 ? 0.1 : 2,
+          duration: 2,
           ease: 'power2.inOut',
         },
         '<',
@@ -169,15 +166,16 @@ export default class AboutRenderer extends BaseRenderer {
         },
         '<',
       )
+
     const btnsTL = gsap
       .timeline()
-      .from('.btn', {
+      .from('.about-btns .btn', {
         width: 0,
         duration: 2.6,
         ease: CustomEase.create('custom', 'M0,0 C0.5,0 0.467,0.024 0.511,0.05 0.596,0.101 0.713,0.301 0.713,0.579 0.713,1.062 0.99,0.923 1,1'),
       })
       .to(
-        '.btn',
+        '.about-btns .btn',
         {
           opacity: 1,
           duration: 0.085,
@@ -199,7 +197,7 @@ export default class AboutRenderer extends BaseRenderer {
       .to(
         '.details-services',
         {
-          onStart: removeOpacity,
+          onStart: getRemoveOpacity(),
           typewrite: {},
           duration: 1,
           ease: 'power4.out',
@@ -209,7 +207,7 @@ export default class AboutRenderer extends BaseRenderer {
       .to(
         '.details-company',
         {
-          onStart: removeOpacity,
+          onStart: getRemoveOpacity(),
           typewrite: {},
           duration: 1,
           ease: 'power4.out',
@@ -219,7 +217,7 @@ export default class AboutRenderer extends BaseRenderer {
       .to(
         '.details-main-tech',
         {
-          onStart: removeOpacity,
+          onStart: getRemoveOpacity(),
           typewrite: {},
           duration: 1,
           ease: 'power4.out',
@@ -229,7 +227,7 @@ export default class AboutRenderer extends BaseRenderer {
       .to(
         '.details-tech',
         {
-          onStart: removeOpacity,
+          onStart: getRemoveOpacity(),
           typewrite: {},
           duration: 1.5,
           ease: 'power4.out',
@@ -237,8 +235,9 @@ export default class AboutRenderer extends BaseRenderer {
         '<+20%',
       )
 
-    this.tl = gsap
+    AboutRenderer.enterTL = gsap
       .timeline({
+        paused: true,
         onComplete: () => {
           window.aboutPageVisited = true
         }
@@ -294,6 +293,13 @@ export default class AboutRenderer extends BaseRenderer {
       //   onStart: () => gsap.set('p', { opacity: 1 }),
       // })
       .add(btnsTL, '<')
+
+
+    if (window.app.preloaderFinished) {
+      AboutRenderer.enterTL.play()
+    } else {
+      window.addEventListener('preload-end', () => AboutRenderer.enterTL.play())
+    }
   }
 
   onEnterCompleted() {

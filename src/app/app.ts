@@ -20,6 +20,7 @@ import FromBlogArticleTransition from './modules/transitions/fromBlogArticle'
 import AboutRenderer from './modules/renderers/AboutRenderer'
 import FromAboutTransition from './modules/transitions/fromAbout'
 import Preloader from './modules/Preloader'
+import FromHomeTransition from './modules/transitions/fromHome'
 
 export default class App {
   experience: Experience
@@ -32,12 +33,15 @@ export default class App {
   isFirstTime: boolean
   preloaderFinished: Boolean
   preloader: Preloader
+    overridePreloader: boolean
 
   constructor(public debug = false) {
     //@TODO: use cache check
     this.isFirstTime = !sessionStorage.getItem('visited')
     this.preloaderFinished = false
     window.app = this
+    // used for debugging purposes, skips intro
+    window.app.overridePreloader = import.meta.env.PUBLIC_DEBUG_OVERRIDE_PRELOADER
     this.isTransitioning = true
     this.cursor = new Cursor()
     this.experience = new Experience($('#webgl') as HTMLCanvasElement, this.cursor)
@@ -58,6 +62,7 @@ export default class App {
         fromContacts: FromContactsTransition,
         fromBlogArticle: FromBlogArticleTransition,
         fromAbout: FromAboutTransition,
+        fromHome: FromHomeTransition,
       },
       renderers: {
         default: HomeRenderer,
@@ -87,6 +92,7 @@ export default class App {
     this.taxi.addRoute('/blog/.*', '.*', 'fromBlogArticle')
     this.taxi.addRoute('/blog', '.*', 'fromBlog')
     this.taxi.addRoute('/contact', '.*', 'fromContacts')
+    this.taxi.addRoute('/', '.*', 'fromHome')
     Animations.init(this.cursor, this.experience)
 
     if (!this.preloaderFinished) this.preloader.init()

@@ -36,7 +36,7 @@ export default class Preloader {
     this.experience = new Experience()
     this.experience.params.speed = 0.001
     this.createLoadingFinishedTL()
-    if (window.app.isFirstTime) {
+    if (window.app.isFirstTime && !window.app.overridePreloader) {
       this.experience.resources.on('ready', () => {
         this.progress += 50
         this.onProgress()
@@ -45,6 +45,17 @@ export default class Preloader {
   }
 
   init() {
+    if (window.app.overridePreloader) {
+      window.app.preloaderFinished = true
+      const dpreset = LORENZ_PRESETS['default']
+      this.experience.world.attractor.points.position.z = getZPosition()
+      this.experience.renderer.bloomEffect.blendMode.setBlendFunction(dpreset.bloomBlendFunction)
+      this.experience.params.speed = dpreset.speed
+      this.experience.world.attractor.reset()
+      BaseRenderer.enterTL.play()
+      window.dispatchEvent(new CustomEvent('preload-end'))
+      return
+    }
     this.container.classList.remove('hidden')
     if (window.app.isFirstTime) {
       const iid = setInterval(() => {
@@ -82,6 +93,7 @@ export default class Preloader {
   }
 
   onEnter(withSound?: boolean) {
+    if (window.app.overridePreloader) return
     const preset = LORENZ_PRESETS['collapsedAfter']
     const attractor = this.experience.world.attractor
     const attractorUniforms = attractor.bufferMaterial.uniforms
@@ -159,10 +171,13 @@ export default class Preloader {
         },
         '<',
       )
-      .add(() => {
-        bloom.blendMode.setBlendFunction(BlendFunction.ADD)
-        this.experience.renderer.shockWaveEffect.explode()
-      }, window.app.isFirstTime ? '+=1.5' : '+=0')
+      .add(
+        () => {
+          bloom.blendMode.setBlendFunction(BlendFunction.ADD)
+          this.experience.renderer.shockWaveEffect.explode()
+        },
+        window.app.isFirstTime ? '+=1.5' : '+=0',
+      )
       .to(
         bloom,
         {
@@ -292,7 +307,7 @@ export default class Preloader {
         },
         '<+30%',
       )
-    if(!window.app.isFirstTime){
+    if (!window.app.isFirstTime) {
       this.loadingTL.duration(4)
     }
   }

@@ -19,7 +19,7 @@ const {} = Astro.props
         <div class="image-wrapper relative h-[33vh] p-4 opacity-0 md:h-[45vh]" id="works-image">
           <div class="fui-corners"></div>
         </div>
-        <div class="work-details 2lg:max-w-[30rem] mt-6 hidden max-w-[90%] opacity-0 lg:block">
+        <div class="work-details 2lg:max-w-[30rem] mt-8 hidden max-w-[90%] opacity-0 lg:block">
           <table class="text-xs">
             <WorkDetails project={PROJECTS_LIST[0]} />
           </table>
@@ -56,7 +56,7 @@ const {} = Astro.props
               <Btn href={project.linkCase} class="w-full" data-text-scramble="READ CASE" bottom frame>
                 READ CASE
               </Btn>
-              <Btn href={project.linkWebsite} class="w-full" data-text-scramble="VISIT WEBSITE" bottom frame>
+              <Btn href={project.linkWebsite} class="w-full" data-text-scramble="VISIT WEBSITE" bottom frame  target="_blank" rel="noopener">
                 VISIT WEBSITE
               </Btn>
             </div>

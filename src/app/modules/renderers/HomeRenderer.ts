@@ -23,7 +23,6 @@ export default class HomeRenderer extends BaseRenderer {
     this.isDesktop = window.innerWidth > 1024
 
     this.experience = new Experience()
-    this.handleResize()
     BaseRenderer.resizeHandlers.push(this.handleResize.bind(this))
 
     const statusItems = $all('.status-item')
@@ -60,7 +59,7 @@ export default class HomeRenderer extends BaseRenderer {
         {
           x: this.experience.params.positionX,
           y: this.experience.params.positionY,
-          z: this.experience.params.positionZ,
+          z: getZPosition(),
           duration: 1,
           ease: 'power2.inOut',
         },

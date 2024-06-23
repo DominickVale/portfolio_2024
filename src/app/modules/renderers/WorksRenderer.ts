@@ -19,6 +19,7 @@ export default class WorksRenderer extends BaseRenderer {
   handleActiveProjectBound: (event: UIEvent) => void
   lastTouchY: number
   handleTouchStartBound: (event: UIEvent) => void
+  attrTL: any
 
   initialLoad() {
     super.initialLoad()
@@ -47,20 +48,9 @@ export default class WorksRenderer extends BaseRenderer {
     const workImage = $('#works-image')
     workImage.addEventListener('click', this.onImageClick.bind(this))
     this.experience = new Experience()
-  }
 
-  onImageClick() {
-    window.app.taxi.navigateTo(PROJECTS_LIST[this.currIdx].linkCase)
-  }
-
-  revealImage() {
-    this.experience.world.worksImage.show()
-    this.experience.world.worksImage.setImage(this.experience.resources.items[this.projects[this.currIdx].image])
-    const renderer = this.experience.renderer
     const params = this.experience.params
     const attractor = this.experience.world.attractor
-    const workImage = $('#works-image')
-    const projectTitleQuery = this.isDesktop ? ".project-title" : '.project-title-mobile'
 
     const attractorPosTl = gsap
       .timeline()
@@ -113,29 +103,44 @@ export default class WorksRenderer extends BaseRenderer {
         '<',
       )
 
-    WorksRenderer.enterTL = gsap.timeline({
-      paused: true,
-      onComplete: () => {
-        this.updateProjectDetails()
-      },
-    })
+    this.attrTL = gsap.timeline({ paused: true }).add(attractorPosTl).add(attractorUniformsTl, '<')
 
-    WorksRenderer.enterTL
-      .add(attractorPosTl)
-      .add(attractorUniformsTl, '<')
-      .to(`${projectTitleQuery} svg`, {
-        opacity: 1,
-        duration: 0.05,
-        ease: 'linear',
-        stagger: {
-          repeat: 20,
-          each: 0.1,
-          ease: 'expo.in',
+    if (window.app.preloaderFinished) {
+      this.attrTL.play()
+      this.animateIn()
+    } else {
+      window.addEventListener('preload-end', this.animateIn.bind(this))
+    }
+  }
+
+  onImageClick() {
+    window.app.taxi.navigateTo(PROJECTS_LIST[this.currIdx].linkCase)
+  }
+
+  animateIn() {
+    this.attrTL.play()
+
+    this.setupProjectTitles()
+    this.pIds = Object.keys(this.projects)
+    this.recalculateOthers()
+    this.recalculateActive()
+
+    const createTL = () => {
+      this.experience.world.worksImage.show()
+      this.experience.world.worksImage.setImage(this.experience.resources.items[this.projects[this.currIdx].image])
+      const workImage = $('#works-image')
+      const projectTitleQuery = this.isDesktop ? '.project-title' : '.project-title-mobile'
+
+      WorksRenderer.enterTL = gsap.timeline({
+        delay: 1,
+        paused: true,
+        onComplete: () => {
+          this.updateProjectDetails()
         },
       })
-      .to(
-        this.experience.world.worksImage.planeMat.uniforms.uStrength,
-        {
+
+      WorksRenderer.enterTL
+        .to(this.experience.world.worksImage.planeMat.uniforms.uStrength, {
           value: 0.1,
           duration: 2.5,
           ease: 'power4.inOut',
@@ -143,47 +148,55 @@ export default class WorksRenderer extends BaseRenderer {
             this.isFirstRender = false
             this.canChange = true
           },
-        },
-        '<',
-      )
-      .to(
-        workImage,
-        {
-          opacity: 1,
-          duration: 0.35,
-          ease: 'power4.out',
-        },
-        '<',
-      )
-      .add(this.fuiCornersAnimationActive.bind(this), '<+50%')
-      .to('.work-details', {
-        opacity: 1,
-        duration: 0.35,
-        ease: 'power4.out',
-      }, "<+50%")
-      .add(workDetailsTL('.work-details-mobile'), '<')
+        })
+        .to(
+          workImage,
+          {
+            opacity: 1,
+            duration: 0.35,
+            ease: 'power4.out',
+          },
+          '<',
+        )
+        .to(
+          `${projectTitleQuery} svg`,
+          {
+            opacity: 1,
+            duration: 0.05,
+            ease: 'linear',
+            stagger: {
+              repeat: 20,
+              each: 0.1,
+              ease: 'expo.in',
+            },
+          },
+          '<',
+        )
+        .add(this.fuiCornersAnimationActive.bind(this), '<+50%')
+        .to(
+          '.work-details',
+          {
+            opacity: 1,
+            duration: 0.35,
+            ease: 'power4.out',
+          },
+          '<+50%',
+        )
+        .add(workDetailsTL('.work-details-mobile'), '<')
 
-
-    console.log("window preload finish", window.app.preloaderFinished)
-    if (window.app.preloaderFinished) {
       WorksRenderer.enterTL.play()
+    }
+    if (!this.experience.resources.items[this.projects[this.currIdx].image]) {
+      this.experience.resources.on('ready', () => {
+        createTL()
+      })
     } else {
-      window.addEventListener('preload-end', () => WorksRenderer.enterTL.play())
+      createTL()
     }
   }
 
   onEnterCompleted() {
     // run after the transition.onEnter has fully completed
-    this.setupProjectTitles()
-    this.pIds = Object.keys(this.projects)
-    this.recalculateOthers()
-    this.recalculateActive()
-
-    if (this.experience.resources.isReady) {
-      this.revealImage()
-    } else {
-      this.experience.resources.on('ready', this.revealImage.bind(this))
-    }
   }
 
   onLeave() {
@@ -205,7 +218,7 @@ export default class WorksRenderer extends BaseRenderer {
     const highlightCorner = $('.highlighted-corner', activeProject.element)
     highlightCorner.classList.remove('hidden')
     activeProject.element.setAttribute('data-active', 'true')
-    console.log("recalculated active")
+    console.log('recalculated active')
 
     if (!this.isFirstRender) {
       const planeMatUni = this.experience.world.worksImage.planeMat.uniforms
