@@ -194,6 +194,7 @@ export default class BlogRenderer extends BaseRenderer {
   handleActiveArticle(e) {
     let oldActive: HTMLElement
     this.currIdx = Number(e?.currentTarget?.id || 0)
+    const shouldAnimate = this.currIdx !== this.oldIdx
     if (this.oldIdx !== this.currIdx) {
       oldActive = this.articles[this.oldIdx]
       oldActive.classList.remove('active')
@@ -211,7 +212,9 @@ export default class BlogRenderer extends BaseRenderer {
     })
     this.tlStack = []
 
+    if(!shouldAnimate && !this.isFirstRender) return
     active.classList.add('active')
+    this.isFirstRender = false
 
     if (oldActive) {
       oldActive.classList.remove('active')
@@ -260,15 +263,6 @@ export default class BlogRenderer extends BaseRenderer {
           },
           '<',
         )
-        .from(
-          active,
-          {
-            alpha: 0.4,
-            repeat: 4,
-            duration: 0.08,
-          },
-          '<',
-        )
         .fromTo(
           fuiCornersActive,
           { scale: 0 },
@@ -276,7 +270,7 @@ export default class BlogRenderer extends BaseRenderer {
             scale: 1,
             duration: 0.3,
           },
-          '<+50%',
+          '<',
         )
         .to(
           fuiCornersActive,

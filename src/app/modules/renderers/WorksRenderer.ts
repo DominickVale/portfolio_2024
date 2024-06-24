@@ -44,7 +44,7 @@ export default class WorksRenderer extends BaseRenderer {
 
     window.addEventListener('wheel', this.handleActiveProjectBound)
     window.addEventListener('touchstart', this.handleTouchStart.bind(this))
-    window.addEventListener('touchmove', this.handleActiveProjectBound)
+    $("#works-list-mobile").addEventListener('touchmove', this.handleActiveProjectBound)
     const workImage = $('#works-image')
     workImage.addEventListener('click', this.onImageClick.bind(this))
     this.experience = new Experience()
@@ -361,9 +361,8 @@ export default class WorksRenderer extends BaseRenderer {
   }
 
   handleActiveProject(e) {
-    if (!this.canChange) return
-
     let direction: 'up' | 'down'
+    if(!this.canChange) return
 
     if (typeof e.deltaY !== 'undefined') {
       // Wheel event

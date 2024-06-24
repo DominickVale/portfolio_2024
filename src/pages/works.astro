@@ -66,7 +66,7 @@ const {} = Astro.props
       ))
     }
   </section>
-  <section class="col-span-10 col-start-2 row-start-2 flex flex-col text-center lg:hidden">
+  <section id="works-list-mobile" class="col-span-10 col-start-2 row-start-2 flex flex-col text-center lg:hidden">
     {
       Object.values(PROJECTS_LIST).map((project, i) => (
         <h2 class="project-title-mobile relative h-[5vh] w-full font-display text-2xl font-bold uppercase text-primary-lightest" style={`--i: ${i}`}>

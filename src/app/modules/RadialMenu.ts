@@ -1,7 +1,8 @@
 import { ICON_IDS } from '../constants'
 import type { Vec2 } from '../types'
-import { $, $all, TAU, clamp, degToRad, mag } from '../utils'
+import { $, $all, TAU, clamp, debounce, degToRad, mag } from '../utils'
 import TextScramble from './animations/TextScramble'
+import gsap from 'gsap'
 
 type RadialMenuOptions = {
   innerRadiusPercent?: number
@@ -46,6 +47,7 @@ export default class RadialMenu {
   shown: boolean
   isMobile: boolean
   currTarget: HTMLElement | null
+  canChange: any
 
   constructor(
     id: string,
@@ -59,7 +61,8 @@ export default class RadialMenu {
     this.gap = gap
     this._position = position
     this._bgs = []
-    this._size = size || ( this.isMobile ? 'calc(10rem + 50vw)' : 'calc(10rem + 10vw)' )
+    this._size = size || (this.isMobile ? 'calc(10rem + 50vw)' : 'calc(10rem + 10vw)')
+    this.canChange = true
 
     this.createWrapper()
 
@@ -283,20 +286,60 @@ export default class RadialMenu {
     this._wrapper.classList.remove('radial-menu-hidden')
     this._thumb.classList.add('pressed')
     this.currTarget = target
+
+    gsap
+      .timeline({})
+      .from(this._wrapper, {
+        scale: 0,
+        duration: 0.25,
+        ease: 'power4.inOut',
+      })
+      .fromTo(
+        this._wrapper,
+        {
+          opacity: 0,
+        },
+        {
+          opacity: 1,
+          duration: 0.06,
+          repeat: 6,
+        },
+        '<',
+      )
+      .to(this._wrapper, {
+        opacity: 1,
+        duration: 0,
+        onComplete: function () {
+          gsap.set(this.targets(), { clearProps: 'opacity' })
+        },
+      })
   }
 
   close() {
-    this.currTarget = null
-    this.shown = false
-    this._wrapper.classList.add('radial-menu-hidden')
-    this._thumb.style.setProperty('--x', '50%')
-    this._thumb.style.setProperty('--y', '50%')
-    this._thumb.classList.remove('pressed')
-    const i = this._lastActiveSliceId
-    if (typeof i !== 'number') return
-    this.itemsEl[i].setAttribute('data-highlighted', 'false')
-    this._shape.children[i].setAttribute('data-highlighted', 'false')
-    this._bgs[i].setAttribute('data-highlighted', 'false')
+    const cb = () => {
+      this.currTarget = null
+      this.shown = false
+      this._wrapper.classList.add('radial-menu-hidden')
+      this._thumb.style.setProperty('--x', '50%')
+      this._thumb.style.setProperty('--y', '50%')
+      this._thumb.classList.remove('pressed')
+      const i = this._lastActiveSliceId
+      if (typeof i !== 'number') return
+      this.itemsEl[i].setAttribute('data-highlighted', 'false')
+      this._shape.children[i].setAttribute('data-highlighted', 'false')
+      this._bgs[i].setAttribute('data-highlighted', 'false')
+      this.canChange = true
+    }
+
+    gsap.timeline({}).to(this._wrapper, {
+      opacity: 0,
+      duration: 0.25,
+      ease: 'power4.inOut',
+      onComplete: function () {
+        gsap.set(this.targets(), { clearProps: 'opacity' })
+        cb()
+      },
+    })
   }
 
   set size(size: string) {
@@ -389,8 +432,10 @@ export default class RadialMenu {
   }
 
   handleTouchEnd(ev: TouchEvent) {
-    this.close()
-    this._thumb.classList.remove('pressed')
+    if (this.shown) {
+      this.close()
+      this._thumb.classList.remove('pressed')
+    }
   }
 
   handleThumb(pos: Vec2, ev: TouchEvent | MouseEvent) {
@@ -438,6 +483,8 @@ export default class RadialMenu {
       this._bgs[closest.id].style.setProperty('--progress', progress + '%')
       this._lastActiveSliceId = closest.id
       if (progress > 72 && this.shown) {
+        if (!this.canChange) return
+        this.canChange = false
         this.onSliceActivate(closest.id, ev.target as HTMLElement, ev)
         this.close()
         return
