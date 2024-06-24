@@ -66,7 +66,7 @@ export default class Menus {
   getMenus() {
     const cb = (slice, target) => console.log('CLICL')
     const navigateTo = (url) => () => {
-      window.location.href = url
+      window.app.taxi.navigateTo(url)
     }
 
     const homeSlice: RadialMenuItem = {
