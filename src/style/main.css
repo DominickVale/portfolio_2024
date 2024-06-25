@@ -165,6 +165,33 @@ body {
   background: repeating-linear-gradient(45deg, var(--color), var(--color) 10px, transparent 13px, transparent 20px);
 }
 
+/* scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--lines);
+    border: 1px solid transparent;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--lines) transparent;
+}
+
+scrollbar-button {
+    display: none;
+}
+
 /* RADIAL MENUS */
 
 @media (min-aspect-ratio: 4/4) {
