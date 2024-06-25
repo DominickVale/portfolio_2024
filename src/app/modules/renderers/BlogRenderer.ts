@@ -1,4 +1,4 @@
-import { $, $all, debounce, fitTextToContainerScr, getZPosition, showCursorMessage } from '../../utils'
+import { $, $all, debounce, fitTextToContainerScr, getZPosition } from '../../utils'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 
@@ -8,23 +8,6 @@ import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
 import { blurStagger } from '../animations/gsap'
 import Lenis from 'lenis'
 gsap.registerPlugin(TypewriterPlugin)
-
-const createLenis = (lenis: Lenis | undefined, scrollWrapper: HTMLElement, isHorizontal: boolean, onScroll?: Function) => {
-  if (lenis) lenis.destroy()
-
-  lenis = new Lenis({
-    wrapper: scrollWrapper,
-    duration: 2,
-    smoothWheel: true,
-    orientation: isHorizontal ? 'horizontal' : 'vertical',
-    eventsTarget: isHorizontal ? window : undefined,
-  })
-  lenis.on('scroll', ScrollTrigger.update)
-  if (onScroll) lenis.on('scroll', onScroll)
-  gsap.ticker.add((time) => {
-    lenis.raf(time * 1000)
-  })
-}
 
 export default class BlogRenderer extends BaseRenderer {
   currIdx: number
@@ -52,7 +35,6 @@ export default class BlogRenderer extends BaseRenderer {
 
     const statusItems = $all('#blog-header #blog-status li')
     const subtitle = $('#blog-header h2')
-    const scrollWrapper = $('#posts-container')
 
     gsap.ticker.lagSmoothing(0)
 
@@ -212,7 +194,7 @@ export default class BlogRenderer extends BaseRenderer {
     })
     this.tlStack = []
 
-    if(!shouldAnimate && !this.isFirstRender) return
+    if (!shouldAnimate && !this.isFirstRender) return
     active.classList.add('active')
     this.isFirstRender = false
 
@@ -294,6 +276,29 @@ export default class BlogRenderer extends BaseRenderer {
     this.oldIdx = this.currIdx
   }
 
+  createLenis(scrollWrapper: HTMLElement | (Window & typeof globalThis), isHorizontal: boolean, onScroll?: Function) {
+    if (this.lenis) {
+      gsap.ticker.remove(this.updateScroll)
+      this.lenis.destroy()
+      this.lenis = null
+    }
+
+    this.lenis = new Lenis({
+      wrapper: scrollWrapper,
+      duration: 2,
+      smoothWheel: true,
+      orientation: isHorizontal ? 'horizontal' : 'vertical',
+      eventsTarget: scrollWrapper,
+    })
+    this.lenis.on('scroll', ScrollTrigger.update)
+    if (onScroll) this.lenis.on('scroll', onScroll)
+    gsap.ticker.add(this.updateScroll.bind(this))
+  }
+
+  updateScroll(time: number) {
+    this.lenis?.raf(time * 1000)
+  }
+
   resizeTitles() {
     this.articles.forEach((article) => {
       const articleTitleEl = $('.article-title', article)
@@ -305,9 +310,9 @@ export default class BlogRenderer extends BaseRenderer {
 
     const aspect = window.innerWidth / window.innerHeight
     const isHorizontal = aspect >= 1
-    const scrollWrapper = $('#posts-container')
+    const scrollWrapper = isHorizontal ? $('#posts-container') : window
 
-    createLenis(this.lenis, scrollWrapper, isHorizontal)
+    this.createLenis(scrollWrapper, isHorizontal)
   }
 
   handleLorenzResize() {
