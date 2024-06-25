@@ -25,7 +25,29 @@ export default class HomeRenderer extends BaseRenderer {
 
     this.experience = new Experience()
     BaseRenderer.resizeHandlers.push(this.handleResize.bind(this))
+    this.createEnterAnim()
 
+    if (window.app.preloaderFinished) {
+      HomeRenderer.enterTL.play()
+    } else {
+      window.addEventListener('preload-end', () => HomeRenderer.enterTL.play())
+    }
+  }
+
+  onEnterCompleted() {
+    // run after the transition.onEnter has fully completed
+  }
+
+  onLeave() {
+    // run before the transition.onLeave method is called
+  }
+
+  onLeaveCompleted() {
+    // run after the transition.onleave has fully completed
+  }
+  //////////////////////////////////////
+
+  createEnterAnim(){
     const statusItems = $all('.status-item')
     const itemsTL = gsap.timeline()
 
@@ -52,6 +74,7 @@ export default class HomeRenderer extends BaseRenderer {
     const lettersTL = blurStagger($('h1'))
     const attractor = this.experience.world.attractor
     attractor.resetParams()
+
     HomeRenderer.enterTL = gsap
       .timeline({ paused: true })
       .to(
@@ -101,26 +124,7 @@ export default class HomeRenderer extends BaseRenderer {
           ease: 'power4.inOut',
         }, "<50%"
       )
-
-    if (window.app.preloaderFinished) {
-      HomeRenderer.enterTL.play()
-    } else {
-      window.addEventListener('preload-end', () => HomeRenderer.enterTL.play())
-    }
   }
-
-  onEnterCompleted() {
-    // run after the transition.onEnter has fully completed
-  }
-
-  onLeave() {
-    // run before the transition.onLeave method is called
-  }
-
-  onLeaveCompleted() {
-    // run after the transition.onleave has fully completed
-  }
-  //////////////////////////////////////
 
   handleResize() {
     if (!window.app.preloaderFinished) return //@TODO: figure out later

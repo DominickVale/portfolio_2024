@@ -23,6 +23,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
   static scrollTl: gsap.core.Timeline
   lenis: any
   contactsRenderer: ContactsInternalRenderer
+  els: any
 
   initialLoad() {
     super.initialLoad()
@@ -36,20 +37,13 @@ export default class BlogArticleRenderer extends BaseRenderer {
 
     document.body.dataset.page = 'blogArticle'
     this.experience = new Experience()
-    const titleLettersTL = blurStagger($('#article-title'), 0.01, 0.5)
+
+    this.prepareAnimations()
+
     const debouncedHandleResizeFn = debounce(this.handleResize.bind(this), 100)
     BaseRenderer.resizeHandlers.push(debouncedHandleResizeFn)
-    this.handleResize(true)
-    const imageSectionQuery = this.isDesktop ? '#image-section' : '#image-section-mobile'
-    const mainImageContainerQuery = this.isDesktop ? '#main-image-container' : '#main-image-container-mobile'
-    const mainImageQuery = this.isDesktop ? '#main-image' : '#main-image-mobile'
 
-    const marquee = $('.marquee-container')
-    const imageSmall1 = $(`${mainImageContainerQuery} .small-1`)
-    const imageSmall2 = $(`${mainImageContainerQuery} .small-2`)
-    const imageSectionCable = $(`${imageSectionQuery} .cable`)
     this.lenis = new Lenis({ duration: 2, smoothWheel: true })
-    gsap.set('#bg-blur', { opacity: 1 })
 
     this.lenis.on('scroll', ScrollTrigger.update)
     gsap.ticker.add((time) => {
@@ -58,14 +52,82 @@ export default class BlogArticleRenderer extends BaseRenderer {
     gsap.ticker.lagSmoothing(0)
     this.lenis.scrollTo('top', { immediate: true })
 
-    gsap.set(marquee, { opacity: 0 })
-    gsap.set(imageSmall1, { opacity: 0 })
-    gsap.set(imageSmall2, { opacity: 0 })
+    this.createBlogParagraphsAnims()
+    this.createEnterAnim()
+
+    this.handleResize(true)
+
+    this.contactsRenderer = new ContactsInternalRenderer(this.isDesktop, BlogArticleRenderer.tl)
+    BlogArticleRenderer.contactsTl = this.contactsRenderer.onEnter()
+  }
+
+  onEnterCompleted() {
+    // run after the transition.onEnter has fully completed
+  }
+
+  onLeave() {
+    // run before the transition.onLeave method is called
+  }
+
+  onLeaveCompleted() {
+    // run after the transition.onleave has fully completed
+    this.lenis.destroy()
+  }
+
+  ////////////////////////////////
+  handleResize(firstRender?: boolean) {
+    // shadow title is the original title to be resized
+    const shadowTitle = $('#article-shadow-title')
+    // titleEl is the overlapped one with the split characters
+    const oldTitleEl = $('#article-title')
+    if (firstRender) {
+      const newFontSize = fitTextToContainerScr(shadowTitle, shadowTitle.parentElement, 5)
+
+      Array.from(oldTitleEl.childNodes).forEach((e: HTMLElement) => {
+        e.style.lineHeight = '130%'
+        e.style.fontSize = newFontSize + 'px'
+      })
+      return
+    }
+    // else it's in the resize evt
+    const parent = oldTitleEl.parentNode
+    const newTitleEl = oldTitleEl.cloneNode(true)
+    oldTitleEl.remove()
+    const newFontSize = fitTextToContainerScr(shadowTitle, shadowTitle.parentElement, 5)
+
+    Array.from(newTitleEl.childNodes).forEach((e: HTMLElement) => {
+      e.style.opacity = '1'
+      e.style.filter = ''
+      e.style.lineHeight = '130%'
+      e.style.fontSize = newFontSize + 'px'
+    })
+    // reinsert tmpEl in parent as a child
+    parent.append(newTitleEl)
+  }
+
+  ////////   ANIMS   ////////
+
+  prepareAnimations() {
+    const imageSectionQuery = this.isDesktop ? '#image-section' : '#image-section-mobile'
+    const mainImageContainerQuery = this.isDesktop ? '#main-image-container' : '#main-image-container-mobile'
+
+    this.els = {
+      ...this.els,
+      marquee: $('.marquee-container'),
+      imageSmall1: $(`${mainImageContainerQuery} .small-1`),
+      imageSmall2: $(`${mainImageContainerQuery} .small-2`),
+      imageSectionCable: $(`${imageSectionQuery} .cable`),
+    }
+
+    gsap.set(this.els.marquee, { opacity: 0 })
+    gsap.set(this.els.imageSmall1, { opacity: 0 })
+    gsap.set(this.els.imageSmall2, { opacity: 0 })
     gsap.set('#intro-details', { opacity: 0 })
-    gsap.set(imageSectionCable, { opacity: 0 })
+    gsap.set(this.els.imageSectionCable, { opacity: 0 })
     gsap.set('#open-proj-btn', {
       opacity: 0,
     })
+    gsap.set('#bg-blur', { opacity: 1 })
 
     //contacts bg blur on scroll
     setTimeout(() => {
@@ -82,8 +144,10 @@ export default class BlogArticleRenderer extends BaseRenderer {
           opacity: 0,
         })
     }, 500)
+  }
 
-    const blogParagraphs = $all('.blog-section').forEach((b) => {
+  createBlogParagraphsAnims() {
+    $all('.blog-section').forEach((b) => {
       const img = $('.blog-image', b)
       const smallAlt = $('small:not(.shadow)', img)
       smallAlt.innerText = smallAlt.innerText.replace('3', String((Math.random() * 10).toFixed(0)))
@@ -95,7 +159,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
       gsap.set(title, { opacity: 0 })
       gsap.set($('.alt', img), { opacity: 0 })
       gsap.set(smallAlt, { opacity: 0 })
-      //TODO: use stroke or some path to animate tripes
+      //TODO: use stroke or some path to animate stripes
       const imgtl = gsap
         .timeline({})
         .fromTo(
@@ -164,6 +228,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
           },
           '<',
         )
+
       const blogSectionImageTl = gsap
         .timeline({
           scrollTrigger: {
@@ -194,6 +259,19 @@ export default class BlogArticleRenderer extends BaseRenderer {
           '<',
         )
     })
+  }
+
+  createEnterAnim() {
+    const mainImageQuery = this.isDesktop ? '#main-image' : '#main-image-mobile'
+    const imageSectionQuery = this.isDesktop ? '#image-section' : '#image-section-mobile'
+    const mainImageContainerQuery = this.isDesktop ? '#main-image-container' : '#main-image-container-mobile'
+
+    const marquee = $('.marquee-container')
+
+    const titleLettersTL = blurStagger($('#article-title'), 0.01, 0.5)
+
+    const { imageSectionCable, imageSmall1, imageSmall2 } = this.els
+
     ///
     // IMAGE TIMELINE
     //
@@ -363,52 +441,5 @@ export default class BlogArticleRenderer extends BaseRenderer {
       )
       .to('#intro-details', { opacity: 0.5, ease: 'power4.in' }, '<')
       .add(imageTL, '<')
-
-    this.contactsRenderer = new ContactsInternalRenderer(this.isDesktop, BlogArticleRenderer.tl)
-    BlogArticleRenderer.contactsTl = this.contactsRenderer.onEnter()
-  }
-
-  onEnterCompleted() {
-    // run after the transition.onEnter has fully completed
-  }
-
-  onLeave() {
-    // run before the transition.onLeave method is called
-  }
-
-  onLeaveCompleted() {
-    // run after the transition.onleave has fully completed
-    this.lenis.destroy()
-  }
-
-  ////////////////////////////////
-  handleResize(firstRender?: boolean) {
-    // shadow title is the original title to be resized
-    const shadowTitle = $('#article-shadow-title')
-    // titleEl is the overlapped one with the split characters
-    const oldTitleEl = $('#article-title')
-    if (firstRender) {
-      const newFontSize = fitTextToContainerScr(shadowTitle, shadowTitle.parentElement, 5)
-
-      Array.from(oldTitleEl.childNodes).forEach((e: HTMLElement) => {
-        e.style.lineHeight = '130%'
-        e.style.fontSize = newFontSize + 'px'
-      })
-      return
-    }
-    // else it's in the resize evt
-    const parent = oldTitleEl.parentNode
-    const newTitleEl = oldTitleEl.cloneNode(true)
-    oldTitleEl.remove()
-    const newFontSize = fitTextToContainerScr(shadowTitle, shadowTitle.parentElement, 5)
-
-    Array.from(newTitleEl.childNodes).forEach((e: HTMLElement) => {
-      e.style.opacity = '1'
-      e.style.filter = ''
-      e.style.lineHeight = '130%'
-      e.style.fontSize = newFontSize + 'px'
-    })
-    // reinsert tmpEl in parent as a child
-    parent.append(newTitleEl)
   }
 }

@@ -33,17 +33,9 @@ export default class BlogRenderer extends BaseRenderer {
 
     this.experience = new Experience()
 
-    const statusItems = $all('#blog-header #blog-status li')
-    const subtitle = $('#blog-header h2')
-
-    gsap.ticker.lagSmoothing(0)
-
-    gsap.set(subtitle, { autoAlpha: 0 })
-
     this.articles = Array.from($all('.blog-article'))
     this.aIds = this.articles.map((a) => a.id)
     this.tlStack = []
-    const lettersTL = blurStagger($('h1'), 0.08, 0.5)
 
     this.resizeTitles()
 
@@ -56,77 +48,9 @@ export default class BlogRenderer extends BaseRenderer {
       article.addEventListener('touchstart', this.handleActiveArticleBound)
     })
 
-    BlogRenderer.enterTL = gsap
-      .timeline({ paused: true })
-      .fromTo(
-        '#blog-header',
-        {
-          x: '-50vw',
-        },
-        {
-          x: 0,
-          duration: 1.35,
-          ease: 'power4.inOut',
-        },
-      )
-      .add(lettersTL, '<')
-      .to(
-        statusItems,
-        {
-          typewrite: {
-            speed: 0.3,
-            charClass: 'text-primary-lightest',
-          },
-          ease: 'power4.inOut',
-          onStart: () => {
-            setTimeout(() => {
-              this.handleActiveArticle(null)
-            }, 500)
-          },
-        },
-        '<',
-      )
-      .to(
-        subtitle,
-        {
-          typewrite: {
-            speed: 0.6,
-            charClass: 'text-primary-lightest drop-shadow-glow',
-          },
-          ease: 'power4.inOut',
-          onStart: function () {
-            gsap.set(this.targets()[0], { autoAlpha: 1 })
-          },
-        },
-        '<+30%',
-      )
-      .fromTo(
-        this.articles,
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 0.05,
-          stagger: {
-            repeat: 20,
-            each: 0.1,
-          },
-        },
-        '<+50%',
-      )
 
-    gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: '#blog-header',
-          start: 'top top',
-          scrub: true,
-        },
-      })
-      .to('.nav-link', {
-        opacity: 0,
-        duration: 1,
-      })
-
+    this.prepareAnimations()
+    this.createEnterAnim()
     if (window.app.preloaderFinished) {
       this.handleLorenzResize()
       BlogRenderer.enterTL.play()
@@ -156,6 +80,7 @@ export default class BlogRenderer extends BaseRenderer {
   }
 
   ////////////////////////////////
+
   handleMouseMove(event) {
     const gradientOverlay = $('.gradient-overlay', event.currentTarget)
     const rect = event.currentTarget.getBoundingClientRect()
@@ -321,5 +246,89 @@ export default class BlogRenderer extends BaseRenderer {
     const aspect = window.innerWidth / window.innerHeight
     const newY = aspect > 1 ? this.experience.params.positionY : this.experience.params.positionY - window.innerHeight / 100
     gsap.to(attractor.points.position, { z: this.experience.params.positionZ, y: newY, duration: 0.25, ease: 'power4.out' })
+  }
+
+  ///////// ANIMS ////////////
+  prepareAnimations(){
+    const subtitle = $('#blog-header h2')
+    gsap.ticker.lagSmoothing(0)
+    gsap.set(subtitle, { autoAlpha: 0 })
+  }
+
+  createEnterAnim(){
+    const statusItems = $all('#blog-header #blog-status li')
+    const lettersTL = blurStagger($('h1'), 0.08, 0.5)
+    const subtitle = $('#blog-header h2')
+
+    BlogRenderer.enterTL = gsap
+      .timeline({ paused: true })
+      .fromTo(
+        '#blog-header',
+        {
+          x: '-50vw',
+        },
+        {
+          x: 0,
+          duration: 1.35,
+          ease: 'power4.inOut',
+        },
+      )
+      .add(lettersTL, '<')
+      .to(
+        statusItems,
+        {
+          typewrite: {
+            speed: 0.3,
+            charClass: 'text-primary-lightest',
+          },
+          ease: 'power4.inOut',
+          onStart: () => {
+            setTimeout(() => {
+              this.handleActiveArticle(null)
+            }, 500)
+          },
+        },
+        '<',
+      )
+      .to(
+        subtitle,
+        {
+          typewrite: {
+            speed: 0.6,
+            charClass: 'text-primary-lightest drop-shadow-glow',
+          },
+          ease: 'power4.inOut',
+          onStart: function () {
+            gsap.set(this.targets()[0], { autoAlpha: 1 })
+          },
+        },
+        '<+30%',
+      )
+      .fromTo(
+        this.articles,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.05,
+          stagger: {
+            repeat: 20,
+            each: 0.1,
+          },
+        },
+        '<+50%',
+      )
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: '#blog-header',
+          start: 'top top',
+          scrub: true,
+        },
+      })
+      .to('.nav-link', {
+        opacity: 0,
+        duration: 1,
+      })
   }
 }

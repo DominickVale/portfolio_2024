@@ -14,6 +14,9 @@ export default class AboutRenderer extends BaseRenderer {
   isFirstRender: boolean
   static enterTL: gsap.core.Timeline
   aboutPage: string
+    isIndexPage: boolean
+    isFirstTime: boolean
+    attractor: import("/home/dominick/Projects/portfolio_2024/src/app/gl/Scenes/LorenzAttractor").default
 
   initialLoad() {
     super.initialLoad()
@@ -26,19 +29,45 @@ export default class AboutRenderer extends BaseRenderer {
     this.aboutPage = window.location.pathname
 
     this.experience = new Experience()
-    const attractor = this.experience.world.attractor
+    this.attractor = this.experience.world.attractor
 
-    const isIndexPage = this.aboutPage.split('/').length <= 2
-    const isFirstTime = !window.aboutPageVisited
+    this.isIndexPage = this.aboutPage.split('/').length <= 2
+    this.isFirstTime = !window.aboutPageVisited
+
+    this.createEnterAnim()
+
+    if (window.app.preloaderFinished) {
+      AboutRenderer.enterTL.play()
+    } else {
+      window.addEventListener('preload-end', () => AboutRenderer.enterTL.play())
+    }
+  }
+
+  onEnterCompleted() {
+    // run after the transition.onEnter has fully completed
+  }
+
+  onLeave() {
+    // run before the transition.onLeave method is called
+  }
+
+  onLeaveCompleted() {
+    // run after the transition.onleave has fully completed
+  }
+
+  //////////////////////////////////////////
+  
 
 
+  ////////   ANIMS   ////////
+
+  createEnterAnim() {
     gsap.set('table td, table th', { opacity: 0 })
     gsap.set('.fake-logs > *', { opacity: 0 })
     gsap.set('h2:first-of-type', { opacity: 0 })
     gsap.set('h2:last-of-type', { opacity: 0 })
     gsap.set('.intro-paragraph', { opacity: 0 })
     gsap.set('.about-btns .btn', { opacity: 0 })
-
 
     const imagesTL = gsap.timeline()
 
@@ -146,10 +175,10 @@ export default class AboutRenderer extends BaseRenderer {
     const attractorPosTl = gsap
       .timeline()
       .to(
-        attractor.points.position,
+        this.attractor.points.position,
         {
           x: -1.4,
-          y: isIndexPage ? -21 : -31.5,
+          y: this.isIndexPage ? -21 : -31.5,
           z: -50,
           duration: 2,
           ease: 'power2.inOut',
@@ -157,7 +186,7 @@ export default class AboutRenderer extends BaseRenderer {
         '<',
       )
       .to(
-        attractor.points.rotation,
+        this.attractor.points.rotation,
         {
           x: -0.201061929829747,
           z: -0.746,
@@ -252,7 +281,7 @@ export default class AboutRenderer extends BaseRenderer {
             maxScrambleChars: 1,
           },
           ease: 'power1.out',
-          duration: isIndexPage && isFirstTime ? 1 : 0.75,
+          duration: this.isIndexPage && this.isFirstTime ? 1 : 0.75,
           onStart: () => gsap.set('h2:first-of-type', { opacity: 1 }),
         },
         '<+40%',
@@ -262,24 +291,24 @@ export default class AboutRenderer extends BaseRenderer {
         {
           typewrite: {
             charClass: 'text-primary-lightest drop-shadow-glow',
-            value: isIndexPage && !isFirstTime ? "NICE TO SEE YOU AGAIN!" : undefined,
+            value: this.isIndexPage && !this.isFirstTime ? "NICE TO SEE YOU AGAIN!" : undefined,
             maxScrambleChars: 2,
           },
           ease: 'power1.out',
-          duration: isIndexPage && isFirstTime ? 2 : 1,
+          duration: this.isIndexPage && this.isFirstTime ? 2 : 1,
           onStart: () => gsap.set('h2:last-of-type', { opacity: 1 }),
         },
-        isIndexPage && isFirstTime ? undefined : '<+80%',
+        this.isIndexPage && this.isFirstTime ? undefined : '<+80%',
       )
       .to(
         '.intro-paragraph',
         {
-          delay: isIndexPage && isFirstTime ? 1 : 0,
+          delay: this.isIndexPage && this.isFirstTime ? 1 : 0,
           opacity: 1,
           duration: 1,
           ease: 'power4.in',
         },
-        isIndexPage && isFirstTime ? undefined : '<+80%',
+        this.isIndexPage && this.isFirstTime ? undefined : '<+80%',
       )
       .add(detailsTL)
       .add(imagesTL, "<")
@@ -294,23 +323,5 @@ export default class AboutRenderer extends BaseRenderer {
       // })
       .add(btnsTL, '<')
 
-
-    if (window.app.preloaderFinished) {
-      AboutRenderer.enterTL.play()
-    } else {
-      window.addEventListener('preload-end', () => AboutRenderer.enterTL.play())
-    }
-  }
-
-  onEnterCompleted() {
-    // run after the transition.onEnter has fully completed
-  }
-
-  onLeave() {
-    // run before the transition.onLeave method is called
-  }
-
-  onLeaveCompleted() {
-    // run after the transition.onleave has fully completed
   }
 }

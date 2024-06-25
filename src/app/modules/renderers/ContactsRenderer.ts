@@ -54,9 +54,6 @@ export class ContactsInternalRenderer {
 
     this.tlStack = []
 
-    // scoped selector
-    const s = (query: string) => $(query, $(this.isContactsPage ? 'main' : '#contacts'))
-
     this.experience = new Experience()
     this.setupForm()
     $('#email-button').addEventListener('click', (e) => {
@@ -76,115 +73,8 @@ export class ContactsInternalRenderer {
         ease: 'circ.inOut',
       })
     })
-    gsap.set(s('h2:not(.shadow)'), { autoAlpha: 0 })
-    gsap.set('#smiley', { autoAlpha: 0 })
-    gsap.set('#or', { autoAlpha: 0 })
-    const lettersTL = blurStagger(s('h1'))
 
-    const links = Array.from($all('#socials > *'))
-
-    const linksTL = gsap.timeline().fromTo(
-      links,
-      { autoAlpha: 0 },
-      {
-        autoAlpha: 1,
-        duration: 0.045,
-        stagger: {
-          each: 0.08,
-          repeat: 6,
-          from: 'random',
-        },
-        ease: 'circ.inOut',
-        onComplete: function () {
-          gsap.set(this.targets(), { clearProps: 'all' })
-        },
-      },
-    )
-
-    const formTL = gsap
-      .timeline()
-      .from('form > *', {
-        translateX: '-100vw',
-        duration: 0.25,
-        stagger: 0.1,
-        ease: 'power4.out',
-      })
-      .fromTo(
-        'form > * ',
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 0.05,
-          stagger: {
-            repeat: 15,
-            each: 0.1,
-          },
-        },
-        '<+20%',
-      )
-      .set('form > *', { clearProps: 'all' })
-
-    if (this.isContactsPage) {
-      if (window.app.preloaderFinished) {
-        gsap.set('#bg-blur', { opacity: 1 })
-        ContactsRenderer.enterTL.play()
-      } else {
-        window.addEventListener('preload-end', () => {
-          gsap.set('#bg-blur', { opacity: 1 })
-          ContactsRenderer.enterTL.play()
-        })
-      }
-    }
-
-    return (
-      this.isContactsPage
-        ? this.tl
-        : gsap.timeline({
-            scrollTrigger: {
-              trigger: '#contacts',
-              start: 'top center',
-            },
-          })
-    )
-      .fromTo(
-        s('.h2-bg'),
-        {
-          scaleX: 0,
-        },
-        {
-          delay: 0.5,
-          scaleX: 1,
-          duration: 1.5,
-          ease: 'circ.inOut',
-        },
-      )
-      .fromTo(
-        s('.h2-bg'),
-        { autoAlpha: 0 },
-        {
-          autoAlpha: 1,
-          duration: 0.06,
-          repeat: 20,
-        },
-        '<',
-      )
-      .set(s('h2:not(.shadow)'), { autoAlpha: 1 }, '<+50%')
-      .to(
-        s('h2:not(.shadow)'),
-        {
-          typewrite: {
-            speed: 0.8,
-            charClass: 'text-primary-lightest drop-shadow-glow',
-          },
-          ease: 'power4.inOut',
-        },
-        '<',
-      )
-      .add(lettersTL)
-      .add(this.isDesktop ? formTL : linksTL, '<+30%')
-      .to('#or', { autoAlpha: 1, duration: 1, ease: 'power4.in' }, '<+30%')
-      .add(this.isDesktop ? linksTL : formTL, '<+80%')
-      .to('#smiley', { autoAlpha: 1, duration: 1, ease: 'power4.in' })
+    return this.prepareAnimations()
   }
 
   onEnterCompleted() {
@@ -304,5 +194,122 @@ export class ContactsInternalRenderer {
       showCursorMessage({ message: 'ERROR: ' + (e.text || e), timeout: 10_000, isError: true })
     }
     this.sendingEmail = false
+  }
+
+  ////////   ANIMS   ////////
+  prepareAnimations() {
+    // scoped selector
+    const s = (query: string) => $(query, $(this.isContactsPage ? 'main' : '#contacts'))
+
+    gsap.set(s('h2:not(.shadow)'), { autoAlpha: 0 })
+    gsap.set('#smiley', { autoAlpha: 0 })
+    gsap.set('#or', { autoAlpha: 0 })
+
+    const lettersTL = blurStagger(s('h1'))
+
+    const links = Array.from($all('#socials > *'))
+
+    const linksTL = gsap.timeline().fromTo(
+      links,
+      { autoAlpha: 0 },
+      {
+        autoAlpha: 1,
+        duration: 0.045,
+        stagger: {
+          each: 0.08,
+          repeat: 6,
+          from: 'random',
+        },
+        ease: 'circ.inOut',
+        onComplete: function () {
+          gsap.set(this.targets(), { clearProps: 'all' })
+        },
+      },
+    )
+
+    const formTL = gsap
+      .timeline()
+      .from('form > *', {
+        translateX: '-100vw',
+        duration: 0.25,
+        stagger: 0.1,
+        ease: 'power4.out',
+      })
+      .fromTo(
+        'form > * ',
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.05,
+          stagger: {
+            repeat: 15,
+            each: 0.1,
+          },
+        },
+        '<+20%',
+      )
+      .set('form > *', { clearProps: 'all' })
+
+    if (this.isContactsPage) {
+      if (window.app.preloaderFinished) {
+        gsap.set('#bg-blur', { opacity: 1 })
+        ContactsRenderer.enterTL.play()
+      } else {
+        window.addEventListener('preload-end', () => {
+          gsap.set('#bg-blur', { opacity: 1 })
+          ContactsRenderer.enterTL.play()
+        })
+      }
+    }
+
+    return (
+      this.isContactsPage
+        ? this.tl
+        : gsap.timeline({
+            scrollTrigger: {
+              trigger: '#contacts',
+              start: 'top center',
+            },
+          })
+    )
+      .fromTo(
+        s('.h2-bg'),
+        {
+          scaleX: 0,
+        },
+        {
+          delay: 0.5,
+          scaleX: 1,
+          duration: 1.5,
+          ease: 'circ.inOut',
+        },
+      )
+      .fromTo(
+        s('.h2-bg'),
+        { autoAlpha: 0 },
+        {
+          autoAlpha: 1,
+          duration: 0.06,
+          repeat: 20,
+        },
+        '<',
+      )
+      .set(s('h2:not(.shadow)'), { autoAlpha: 1 }, '<+50%')
+      .to(
+        s('h2:not(.shadow)'),
+        {
+          typewrite: {
+            speed: 0.8,
+            charClass: 'text-primary-lightest drop-shadow-glow',
+          },
+          ease: 'power4.inOut',
+        },
+        '<',
+      )
+      .add(lettersTL)
+      .add(this.isDesktop ? formTL : linksTL, '<+30%')
+      .to('#or', { autoAlpha: 1, duration: 1, ease: 'power4.in' }, '<+30%')
+      .add(this.isDesktop ? linksTL : formTL, '<+80%')
+      .to('#smiley', { autoAlpha: 1, duration: 1, ease: 'power4.in' })
   }
 }

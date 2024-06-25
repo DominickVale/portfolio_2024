@@ -19,7 +19,7 @@ export default class WorksRenderer extends BaseRenderer {
   handleActiveProjectBound: (event: UIEvent) => void
   lastTouchY: number
   handleTouchStartBound: (event: UIEvent) => void
-  attrTL: any
+  attractorTL: any
 
   initialLoad() {
     super.initialLoad()
@@ -44,154 +44,15 @@ export default class WorksRenderer extends BaseRenderer {
 
     window.addEventListener('wheel', this.handleActiveProjectBound)
     window.addEventListener('touchstart', this.handleTouchStart.bind(this))
-    $("#works-list-mobile").addEventListener('touchmove', this.handleActiveProjectBound)
+    $('#works-list-mobile').addEventListener('touchmove', this.handleActiveProjectBound)
     const workImage = $('#works-image')
     workImage.addEventListener('click', this.onImageClick.bind(this))
     this.experience = new Experience()
 
-    const params = this.experience.params
-    const attractor = this.experience.world.attractor
-
-    const attractorPosTl = gsap
-      .timeline()
-      .to(
-        attractor.points.position,
-        {
-          x: this.isDesktop ? params.positionX - 36.2 : params.positionX - 20,
-          y: params.positionY - 2,
-          z: params.positionZ + 8,
-          duration: 2,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-      .to(
-        attractor.points.rotation,
-        {
-          y: 0.565486677646163,
-          z: -0.980176907920016,
-          duration: 2,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-    const attractorUniformsTl = gsap
-      .timeline()
-      .to(
-        params,
-        {
-          speed: 70,
-          duration: 0.8,
-          ease: 'power4.inOut',
-          onComplete: () => {
-            gsap.to(params, {
-              speed: 20,
-              duration: 1.5,
-              ease: 'power2.in',
-            })
-          },
-        },
-        '<',
-      )
-      .to(
-        attractor.bufferMaterial.uniforms.uSigma,
-        {
-          value: -8,
-          duration: 0.01,
-          ease: 'power2.out',
-        },
-        '<',
-      )
-
-    this.attrTL = gsap.timeline({ paused: true }).add(attractorPosTl).add(attractorUniformsTl, '<')
-
     if (window.app.preloaderFinished) {
-      this.attrTL.play()
-      this.animateIn()
+      this.prepareAnimations()
     } else {
-      window.addEventListener('preload-end', this.animateIn.bind(this))
-    }
-  }
-
-  onImageClick() {
-    window.app.taxi.navigateTo(PROJECTS_LIST[this.currIdx].linkCase)
-  }
-
-  animateIn() {
-    this.attrTL.play()
-
-    this.setupProjectTitles()
-    this.pIds = Object.keys(this.projects)
-    this.recalculateOthers()
-    this.recalculateActive()
-
-    const createTL = () => {
-      this.experience.world.worksImage.show()
-      this.experience.world.worksImage.setImage(this.experience.resources.items[this.projects[this.currIdx].image])
-      const workImage = $('#works-image')
-      const projectTitleQuery = this.isDesktop ? '.project-title' : '.project-title-mobile'
-
-      WorksRenderer.enterTL = gsap.timeline({
-        delay: 1,
-        paused: true,
-        onComplete: () => {
-          this.updateProjectDetails()
-        },
-      })
-
-      WorksRenderer.enterTL
-        .to(this.experience.world.worksImage.planeMat.uniforms.uStrength, {
-          value: 0.1,
-          duration: 2.5,
-          ease: 'power4.inOut',
-          onComplete: () => {
-            this.isFirstRender = false
-            this.canChange = true
-          },
-        })
-        .to(
-          workImage,
-          {
-            opacity: 1,
-            duration: 0.35,
-            ease: 'power4.out',
-          },
-          '<',
-        )
-        .to(
-          `${projectTitleQuery} svg`,
-          {
-            opacity: 1,
-            duration: 0.05,
-            ease: 'linear',
-            stagger: {
-              repeat: 20,
-              each: 0.1,
-              ease: 'expo.in',
-            },
-          },
-          '<',
-        )
-        .add(this.fuiCornersAnimationActive.bind(this), '<+50%')
-        .to(
-          '.work-details',
-          {
-            opacity: 1,
-            duration: 0.35,
-            ease: 'power4.out',
-          },
-          '<+50%',
-        )
-        .add(workDetailsTL('.work-details-mobile'), '<')
-
-      WorksRenderer.enterTL.play()
-    }
-    if (!this.experience.resources.items[this.projects[this.currIdx].image]) {
-      this.experience.resources.on('ready', () => {
-        createTL()
-      })
-    } else {
-      createTL()
+      window.addEventListener('preload-end', this.prepareAnimations.bind(this))
     }
   }
 
@@ -211,6 +72,10 @@ export default class WorksRenderer extends BaseRenderer {
   }
 
   ////////////////////////////////
+
+  onImageClick() {
+    window.app.taxi.navigateTo(PROJECTS_LIST[this.currIdx].linkCase)
+  }
 
   recalculateActive() {
     const resources = this.experience.resources.items
@@ -362,7 +227,7 @@ export default class WorksRenderer extends BaseRenderer {
 
   handleActiveProject(e) {
     let direction: 'up' | 'down'
-    if(!this.canChange) return
+    if (!this.canChange) return
 
     if (typeof e.deltaY !== 'undefined') {
       // Wheel event
@@ -393,7 +258,7 @@ export default class WorksRenderer extends BaseRenderer {
     this.setupProjectTitles()
     this.recalculateOthers()
     this.recalculateActive()
-    this.experience.world.worksImage.resize()
+    if (!this.isFirstRender) this.experience.world.worksImage.resize()
   }
 
   fuiCornersAnimationActive() {
@@ -404,5 +269,146 @@ export default class WorksRenderer extends BaseRenderer {
       duration: 0.065,
       repeat: 6,
     })
+  }
+
+  ////////   ANIMS   ////////
+
+  createAttractorTL() {
+    const attractor = this.experience.world.attractor
+    const params = this.experience.params
+
+    const attractorPosTl = gsap
+      .timeline()
+      .to(
+        attractor.points.position,
+        {
+          x: this.isDesktop ? params.positionX - 36.2 : params.positionX - 20,
+          y: params.positionY - 2,
+          z: params.positionZ + 8,
+          duration: 2,
+          ease: 'power2.inOut',
+        },
+        '<',
+      )
+      .to(
+        attractor.points.rotation,
+        {
+          y: 0.565486677646163,
+          z: -0.980176907920016,
+          duration: 2,
+          ease: 'power2.inOut',
+        },
+        '<',
+      )
+    const attractorUniformsTl = gsap
+      .timeline()
+      .to(
+        params,
+        {
+          speed: 70,
+          duration: 0.8,
+          ease: 'power4.inOut',
+          onComplete: () => {
+            gsap.to(params, {
+              speed: 20,
+              duration: 1.5,
+              ease: 'power2.in',
+            })
+          },
+        },
+        '<',
+      )
+      .to(
+        attractor.bufferMaterial.uniforms.uSigma,
+        {
+          value: -8,
+          duration: 0.01,
+          ease: 'power2.out',
+        },
+        '<',
+      )
+
+    this.attractorTL = gsap.timeline({ paused: true }).add(attractorPosTl).add(attractorUniformsTl, '<')
+  }
+
+  prepareAnimations() {
+    this.createAttractorTL()
+
+    this.setupProjectTitles()
+    this.pIds = Object.keys(this.projects)
+    this.recalculateOthers()
+    this.recalculateActive()
+
+    if (!this.experience.resources.items[this.projects[this.currIdx].image]) {
+      this.experience.resources.on('ready', this.animateIn.bind(this))
+    } else {
+      this.animateIn()
+    }
+  }
+
+  animateIn() {
+    this.experience.world.worksImage.show()
+    this.experience.world.worksImage.setImage(this.experience.resources.items[this.projects[this.currIdx].image])
+    this.createEnterAnim()
+    this.attractorTL.play()
+    WorksRenderer.enterTL.play()
+  }
+
+  createEnterAnim() {
+    const workImage = $('#works-image')
+    const projectTitleQuery = this.isDesktop ? '.project-title' : '.project-title-mobile'
+
+    WorksRenderer.enterTL = gsap.timeline({
+      delay: 1,
+      paused: true,
+      onComplete: () => {
+        this.updateProjectDetails()
+      },
+    })
+
+    WorksRenderer.enterTL
+      .to(this.experience.world.worksImage.planeMat.uniforms.uStrength, {
+        value: 0.1,
+        duration: 2.5,
+        ease: 'power4.inOut',
+        onComplete: () => {
+          this.isFirstRender = false
+          this.canChange = true
+        },
+      })
+      .to(
+        workImage,
+        {
+          opacity: 1,
+          duration: 0.35,
+          ease: 'power4.out',
+        },
+        '<',
+      )
+      .to(
+        `${projectTitleQuery} svg`,
+        {
+          opacity: 1,
+          duration: 0.05,
+          ease: 'linear',
+          stagger: {
+            repeat: 20,
+            each: 0.1,
+            ease: 'expo.in',
+          },
+        },
+        '<',
+      )
+      .add(this.fuiCornersAnimationActive.bind(this), '<+50%')
+      .to(
+        '.work-details',
+        {
+          opacity: 1,
+          duration: 0.35,
+          ease: 'power4.out',
+        },
+        '<+50%',
+      )
+      .add(workDetailsTL('.work-details-mobile'), '<')
   }
 }
