@@ -5,6 +5,7 @@ import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
 import { $, $all, getZPosition } from '../../utils'
 import { blurStagger } from '../animations/gsap'
+import { LORENZ_PRESETS } from '../../constants'
 
 gsap.registerPlugin(TypewriterPlugin)
 
@@ -53,6 +54,22 @@ export default class HomeRenderer extends BaseRenderer {
     attractor.resetParams()
     HomeRenderer.enterTL = gsap
       .timeline({ paused: true })
+      .to(
+        this.experience.params,
+        {
+          speed: 60,
+          duration: 0.5,
+          ease: 'power2.in',
+          onComplete: () => {
+            gsap.to(this.experience.params, {
+              speed: LORENZ_PRESETS['default'].speed,
+              duration: 3,
+              ease: 'power2.inOut',
+            })
+          },
+        },
+        '<',
+      )
       .add(lettersTL)
       .to(
         attractor.points.position,

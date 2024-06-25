@@ -55,33 +55,6 @@ export default class FromWorkTransition extends BaseTransition {
         },
         '<',
       )
-      .to(
-        attractor.bufferMaterial.uniforms.uSigma,
-        {
-          value: params.sigma + 4,
-          duration: 0.01,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-      .to(
-        attractor.bufferMaterial.uniforms.uRho,
-        {
-          value: params.rho - 10.29,
-          duration: 0.01,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-      .to(
-        attractor.bufferMaterial.uniforms.uBeta,
-        {
-          value: params.beta - 3.29,
-          duration: 0.01,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
 
     const base = `.project-title[data-active="true"] .fui-corners, .project-title-mobile[data-active="true"] .fui-corners`
     const fuiCornersTL = gsap.timeline().to(base, {

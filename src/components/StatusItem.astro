@@ -2,7 +2,7 @@
 const { highlight, filled, class: classes, ...props } = Astro.props
 ---
 
-<li class:list={['status-item relative pl-3 text-xs font-normal text-inactive min-w-60 min-h-4', { highlight }, { filled }, classes]} data-menu-trigger="text" {...props}>
+<li class:list={['status-item relative pl-3 text-xs font-normal text-inactive min-w-48 min-h-4', { highlight }, { filled }, classes]} data-menu-trigger="text" {...props}>
   <slot />
 </li>
 <style>
