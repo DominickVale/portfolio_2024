@@ -156,7 +156,6 @@ export default class LorenzAttractor {
     this.bufferMaterial.uniforms.uInitialPositions.value = initialTexturePos
   }
 
-  //@TODO: implement
   resize() {}
 
   update(renderer, delta) {

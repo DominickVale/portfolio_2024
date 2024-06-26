@@ -15,13 +15,6 @@ import sources from './sources'
 
 let instance = null
 
-/*@TODO:
- * figure out how to reset to initial positions after page transitions
- * add a reset lorenz button
- * differennt positions for each page
- * (maybe) add some interactions with mouse wheel?
- * (maybe move to ogl)
- */
 export default class Experience {
   constructor(_canvas, cursor) {
     // Singleton
