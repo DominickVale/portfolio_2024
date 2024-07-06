@@ -4,26 +4,26 @@ interface Props {}
 const {} = Astro.props
 ---
 
-<nav id="navbar" class="fixed left-0 z-20 mt-6 w-full text-xs text-inactive sm:mt-12 opacity-0">
+<nav id="navbar" class="fixed left-0 z-20 mt-6 w-full text-xs text-inactive opacity-0 sm:mt-12">
   <ul class="grid grid-cols-12 font-light">
     <li class="nav-link active col-span-1 col-start-2 text-right sm:col-start-1 sm:mr-2">
-      <a href="/" aria-current="page" data-text-scramble="HOME">HOME</a>
+      <a href="/" aria-current="page" data-text-scramble="HOME" data-text-scramble-audio data-audio-pan="-0.5">HOME</a>
     </li>
     <div class="pointer-events-none absolute left-0 right-0 flex justify-center">
       <div class="pointer-events-auto hidden gap-6 sm:flex sm:gap-10">
         <li class="nav-link w-6">
-          <a href="/works" data-text-scramble="WORKS">WORKS</a>
+          <a href="/works" data-text-scramble="WORKS" data-text-scramble-audio data-audio-pan="-0.25">WORKS</a>
         </li>
         <li class="nav-link w-6">
-          <a href="/blog" data-text-scramble="BLOG">BLOG</a>
+          <a href="/blog" data-text-scramble="BLOG" data-text-scramble-audio >BLOG</a>
         </li>
         <li class="nav-link w-6">
-          <a href="/lab" data-text-scramble="LAB">LAB</a>
+          <a href="/lab" data-text-scramble="LAB" data-text-scramble-audio data-audio-pan="0.25">LAB</a>
         </li>
       </div>
     </div>
     <li class="nav-link col-span-2 col-start-10 flex justify-end sm:col-span-1 sm:col-start-12 sm:ml-2 sm:justify-start">
-      <a href="/contact" class="mix-blend-difference" data-text-scramble="CONTACT">CONTACT</a>
+      <a href="/contact" class="mix-blend-difference" data-text-scramble="CONTACT" data-text-scramble-audio data-audio-pan="0.5">CONTACT</a>
     </li>
   </ul>
 </nav>

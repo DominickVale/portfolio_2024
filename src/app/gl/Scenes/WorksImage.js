@@ -83,7 +83,7 @@ export default class WorksImage {
     plane.scale.set(rect.width, rect.height, 1)
     plane.position.set(pos.x, pos.y, 1)
 
-    const tex = this.currentTexture || this.resources.items.ambientify1
+    const tex = this.currentTexture || this.resources.items.ambientify1.file
     plane.material.uniforms.uTexture.value = tex
     plane.material.uniforms.uPlaneSize.value = new THREE.Vector2(rect.width, rect.height)
     plane.material.uniforms.uImageSize.value = new THREE.Vector2(tex.image.naturalWidth, tex.image.naturalHeight)

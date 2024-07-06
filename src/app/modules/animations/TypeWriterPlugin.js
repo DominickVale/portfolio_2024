@@ -9,10 +9,10 @@ let _tempDiv
 export const TypewriterPlugin = {
   version: '1.0.0',
   name: 'typewrite',
-  init(target, value, tween) {
-    typeof value !== 'object' && (value = { value: value })
+  init(target, props, tween) {
+    typeof props !== 'object' && (props = { value: props })
     let data = this,
-      delimiter = (data.delimiter = value.delimiter || ''),
+      delimiter = (data.delimiter = props.delimiter || ''),
       text
 
     data.target = target
@@ -23,28 +23,37 @@ export const TypewriterPlugin = {
     if (!originalContent) {
       target.setAttribute('data-typewrite-content', target.innerHTML)
     }
-    _tempDiv.innerHTML = (typeof value.value === 'string' ? value.value : originalContent || target.innerHTML).replace(/\n/g, '<br/>');
+    _tempDiv.innerHTML = (typeof props.value === 'string' ? props.value : originalContent || target.innerHTML).replace(/\n/g, '<br/>')
     text = splitInnerHTML(_tempDiv, delimiter, false, true)
-    const newSpeed = Math.min((0.05 / value.speed) * text.length, value.maxDuration || 9999)
-    value.speed && tween.duration(newSpeed)
+    const newSpeed = Math.min((0.05 / props.speed) * text.length, props.maxDuration || 9999)
+    props.speed && tween.duration(newSpeed)
     data.speed = newSpeed
     data.text = text
     data._props.push('text')
-    data.maxScrambleChars = value.maxScrambleChars || 4
-    data.charClass = value.charClass
+    data.maxScrambleChars = props.maxScrambleChars || 4
+    data.charClass = props.charClass
     data.duration = tween.vars.duration
+    data.soundId = 'typing_' + Date.now()
+    data.soundVolume = props.soundVolume
+    tween.typewriter = data // this is specific to the Typewriter.ts implementation
   },
   render(progress, data) {
-    if (progress > 1) {
+    if (progress >= 1) {
       progress = 1
     } else if (progress < 0) {
       progress = 0
     }
 
-    let { text, delimiter, target, fillChar, previousProgress, maxScrambleChars, charClass, speed, duration } = data,
+    let { text, delimiter, target, fillChar, previousProgress, maxScrambleChars, charClass, speed, duration, soundId, soundVolume } = data,
       l = text.length,
       i = (progress * l + 0.5) | 0,
       str
+
+    if (i >= l) {
+      if (window.app.audio.activeSounds.get(soundId)) {
+        window.app.audio.stop(soundId)
+      }
+    }
 
     const dp = progress - previousProgress
     const dSpeed = Math.abs(dp)
@@ -60,6 +69,13 @@ export const TypewriterPlugin = {
         str = text.join(delimiter)
       } else if ((speed || duration) * dp < 0.9) {
         const startScrambleIndex = Math.max(0, i - n)
+        if ((startScrambleIndex > 0 || maxScrambleChars > 3) && !data.soundPlaying) {
+          data.soundPlaying = true
+          window.app.audio.play(soundId, 'typing', {
+            loop: true,
+            volume: soundVolume || 1,
+          })
+        }
         let scrambledPart = text
           .slice(startScrambleIndex, i)
           .map(() => randomChar())

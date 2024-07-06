@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes } from 'astro/types'
 import Btn from '../Btn.astro'
-import { twMerge } from 'tailwind-merge';
+import { twMerge } from 'tailwind-merge'
 type Props = {
   l: { link: string; text: string }
   r: { link: string; text: string }
@@ -13,11 +13,32 @@ export const btnClasses = 'bg-background-dark-02 backdrop-blur-[16px] mx-auto h-
 ---
 
 <div
-  class={twMerge([
-    'about-btns',
-    'mt-[8vh] flex w-full flex-col gap-4 items-center justify-center sm:gap-28 text-white sm:w-[28rem] sm:flex-row sm:justify-between md:w-[32rem]',
-  ], classes)}
+  class={twMerge(
+    [
+      'about-btns',
+      'mt-[8vh] flex w-full flex-col gap-4 items-center justify-center sm:gap-28 text-white sm:w-[28rem] sm:flex-row sm:justify-between md:w-[32rem]',
+    ],
+    classes,
+  )}
 >
-  <Btn href={l.link} data-text-scramble={l.text} data-text-scramble-speed="20" class={btnClasses} frame>{l.text}</Btn>
-  <Btn href={r.link} data-text-scramble={r.text} data-text-scramble-speed="20" class={btnClasses} frame>{r.text}</Btn>
+  <Btn
+    href={l.link}
+    data-text-scramble={l.text}
+    data-text-scramble-speed="20"
+    class={btnClasses}
+    frame
+    data-audio
+    data-audio-stopon="mouseout mousedown"
+    data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:-0.25">{l.text}</Btn
+  >
+  <Btn
+    href={r.link}
+    data-text-scramble={r.text}
+    data-text-scramble-speed="20"
+    class={btnClasses}
+    frame
+    data-audio
+    data-audio-stopon="mouseout mousedown"
+    data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:0.25">{r.text}</Btn
+  >
 </div>

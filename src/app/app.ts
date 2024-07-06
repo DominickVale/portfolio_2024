@@ -21,6 +21,8 @@ import AboutRenderer from './modules/renderers/AboutRenderer'
 import FromAboutTransition from './modules/transitions/fromAbout'
 import Preloader from './modules/Preloader'
 import FromHomeTransition from './modules/transitions/fromHome'
+import Audio from './modules/AudioWrapper'
+import * as THREE from 'three'
 
 export default class App {
   experience: Experience
@@ -33,7 +35,8 @@ export default class App {
   isFirstTime: boolean
   preloaderFinished: Boolean
   preloader: Preloader
-    overridePreloader: boolean
+  overridePreloader: boolean
+  audio: Audio
 
   constructor(public debug = false) {
     //@TODO: use cache check
@@ -49,6 +52,8 @@ export default class App {
     this.scrambles = new TextScramble()
     this.typewriter = new Typewriter()
     this.preloader = new Preloader(() => {})
+
+    this.audio = new Audio()
 
     sessionStorage.setItem('visted', 'true')
 
@@ -86,6 +91,9 @@ export default class App {
           l.classList.remove('active')
         }
       })
+
+      // recompute audio events
+      this.audio.setupEvents()
     })
     this.taxi.addRoute('/works', '.*', 'fromWorks')
     this.taxi.addRoute('/about.*', '.*', 'fromAbout')

@@ -89,8 +89,9 @@ export default class WorksRenderer extends BaseRenderer {
       const planeMatUni = this.experience.world.worksImage.planeMat.uniforms
       //can't change el while transitioning
       this.canChange = false
-      planeMatUni.uNextTexture.value = resources[activeProject.image]
-      this.experience.world.worksImage.currentTexture = resources[activeProject.image]
+      const activeImage = resources[activeProject.image].file
+      planeMatUni.uNextTexture.value = activeImage
+      this.experience.world.worksImage.currentTexture = activeImage
       planeMatUni.uProgress.value = 0.0
       const tl = gsap.timeline()
       tl.to(planeMatUni.uProgress, {
@@ -98,7 +99,7 @@ export default class WorksRenderer extends BaseRenderer {
         duration: 0.25,
         ease: 'power4.inOut',
         onComplete: () => {
-          planeMatUni.uTexture.value = resources[activeProject.image]
+          planeMatUni.uTexture.value = activeImage
           this.canChange = true
         },
       })
@@ -190,32 +191,28 @@ export default class WorksRenderer extends BaseRenderer {
 
   updateProjectDetails() {
     const activeProject = PROJECTS_LIST[this.currIdx]
-    gsap.to('.work-details-role', {
-      typewrite: {
-        value: activeProject.data.role,
-      },
-      ease: 'power4.out',
-    })
-    gsap.to('.work-details-client', {
-      typewrite: {
-        value: activeProject.data.client,
-      },
-      duration: 1.5,
-      ease: 'power4.out',
-    })
-    gsap.to('.work-details-year', {
-      typewrite: {
-        value: activeProject.data.year,
-      },
-      duration: 2,
-      ease: 'power4.out',
-    })
-    gsap.to('.work-details-tech', {
-      typewrite: {
-        value: activeProject.data.tech,
-      },
-      duration: 1.5,
-      ease: 'power4.out',
+    Object.keys(activeProject.data).forEach((field, i) => {
+      const value = activeProject.data[field]
+      const el = $(`.work-details-${field}`)
+      if (!el) return
+      const tl = gsap
+        .timeline()
+        .to(
+          el,
+          {
+            typewrite: {
+              charClass: 'text-primary-lightest drop-shadow-glow',
+              maxScrambleChars: 3,
+              soundVolume: 0.25,
+              value,
+            },
+            duration: 1.5,
+            delay: i / 20,
+            ease: 'power4.out',
+          },
+          '<',
+        )
+        .to(el, { opacity: 1, duration: 0.15, ease: 'power4.inOut' }, '<')
     })
   }
 
@@ -339,7 +336,7 @@ export default class WorksRenderer extends BaseRenderer {
     this.recalculateOthers()
     this.recalculateActive()
 
-    if (!this.experience.resources.items[this.projects[this.currIdx].image]) {
+    if (!this.experience.resources.items[this.projects[this.currIdx].image]?.file) {
       this.experience.resources.on('ready', this.animateIn.bind(this))
     } else {
       this.animateIn()
@@ -348,7 +345,7 @@ export default class WorksRenderer extends BaseRenderer {
 
   animateIn() {
     this.experience.world.worksImage.show()
-    this.experience.world.worksImage.setImage(this.experience.resources.items[this.projects[this.currIdx].image])
+    this.experience.world.worksImage.setImage(this.experience.resources.items[this.projects[this.currIdx].image]?.file)
     this.createEnterAnim()
     this.attractorTL.play()
     WorksRenderer.enterTL.play()

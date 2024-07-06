@@ -2,9 +2,7 @@ import type { MessageShowEvent } from './modules/Cursor'
 import type { Vec2 } from './types'
 import * as THREE from 'three'
 
-import resolveConfig from 'tailwindcss/resolveConfig'
-import screens from '../../tailwind.screens'
-import { Power2 } from 'gsap'
+import type { TimelineMax } from 'gsap'
 import { CustomEase } from 'gsap/all'
 
 export const TAU = Math.PI * 2
@@ -169,4 +167,9 @@ export function wasServedFromBrowserCache(url: string) {
 
   // fall back to duration checking (non-RT2 or cross-origin)
   return duration < 30;
+}
+
+export function deepKillTimeline(tl: TimelineMax) {
+	tl.add && tl.getChildren(true, true, true).forEach(animation => animation.kill());
+	tl.kill();
 }

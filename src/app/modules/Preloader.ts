@@ -110,7 +110,26 @@ export default class Preloader {
     // attractor.points.position.y = preset.positionY
     attractor.points.position.z = preset.positionZ
 
+    window.app.audio.play(null, 'g')
     // bloom.blendMode.setBlendFunction(BlendFunction.ADD)
+
+    gsap
+      .timeline()
+      .to(this.experience.renderer.chromaticAberrationEffect.offset, {
+        x: 'random(-0.005, 0.005)',
+        y: 'random(-0.005, 0.005)',
+        duration: 0.05,
+        repeat: 30,
+        ease: 'step(30)',
+      })
+      .to(this.experience.renderer.chromaticAberrationEffect.offset, {
+        x: 'random(-0.0025, 0.0025)',
+        y: 'random(-0.0025, 0.0025)',
+        duration: 0.1,
+        repeat: 20,
+        ease: 'step(20)',
+      })
+
     this.enterTL = gsap
       .timeline({
         onComplete: () => {
@@ -124,41 +143,45 @@ export default class Preloader {
         duration: window.app.isFirstTime ? 0.85 : 0.5,
         ease: 'power4.out',
       })
-      .to(
-        attractor.points.position,
-        {
-          z: -60,
-          duration: 0.35,
-          ease: 'power4.out',
-        },
-        '<',
-      )
+      // .to(
+      //   attractor.points.position,
+      //   {
+      //     z: -60,
+      //     duration: 0.35,
+      //     ease: 'power4.out',
+      //   },
+      //   '<',
+      // )
+      // .to(
+      //   bloom,
+      //   {
+      //     intensity: 8,
+      //     repeat: 6,
+      //     duration: 0.08,
+      //   },
+      //   '<',
+      // )
       .to(
         bloom,
         {
-          intensity: 8,
-          repeat: 6,
-          duration: 0.08,
-        },
-        '<',
-      )
-      .to(bloom, {
-        intensity: 200,
-        // repeat: 6,
-        // duration: 0.08,
-        duration: 0.25,
-        ease: 'power4.inOut',
-      })
-      .to(
-        attractor.points.position,
-        {
-          y: 3,
-          z: 0,
+          intensity: 200,
+          // repeat: 6,
+          // duration: 0.08,
           duration: 0.25,
-          ease: 'power4.out',
+          ease: 'power4.inOut',
         },
         '<',
       )
+      // .to(
+      //   attractor.points.position,
+      //   {
+      //     y: 3,
+      //     z: 0,
+      //     duration: 0.25,
+      //     ease: 'power4.out',
+      //   },
+      //   '<',
+      // )
       .add(() => {
         this.experience.params.speed = this.isMobile ? 80 : 90
       }, '<')
@@ -175,6 +198,17 @@ export default class Preloader {
         () => {
           bloom.blendMode.setBlendFunction(BlendFunction.ADD)
           this.experience.renderer.shockWaveEffect.explode()
+          window.app.audio.play(null, 'boom', {
+            volume: 0.8,
+          })
+          window.app.audio.play('background', 'song', {
+            loop: true,
+          })
+          setTimeout(() => {
+              window.app.audio.play(null, 'woosh', {
+                volume: 0.8,
+              })
+          }, 2000)
         },
         window.app.isFirstTime ? '+=1.5' : '+=0',
       )

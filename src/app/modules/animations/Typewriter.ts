@@ -1,12 +1,12 @@
 import gsap from 'gsap'
-import { $all, delay } from '../../utils'
+import { $all, deepKillTimeline, delay } from '../../utils'
 import { TypewriterPlugin } from './TypeWriterPlugin'
 gsap.registerPlugin(TypewriterPlugin)
 
 export default class Typewriter {
   static #running: Record<string, any> = {}
 
-  constructor() { }
+  constructor() {}
 
   public static async typewrite(
     el: HTMLElement,
@@ -39,6 +39,12 @@ export default class Typewriter {
         charClass: charClass || 'text-primary-lightest',
         maxScrambleChars,
       },
+      onInterrupt() {
+        const id = this.typewriter?.soundId
+        if (window.app.audio.activeSounds.get(id)) {
+          window.app.audio.stop(id)
+        }
+      },
       ease: ease || 'power4.inOut',
     })
   }
@@ -47,7 +53,7 @@ export default class Typewriter {
     const id = typeof el === 'string' ? el : el.getAttribute('data-typewriter-id')
     const running = Typewriter.#running[id]
     if (running) {
-      running.tl.kill()
+      deepKillTimeline(running.tl)
       delete Typewriter.#running[id]
     }
   }

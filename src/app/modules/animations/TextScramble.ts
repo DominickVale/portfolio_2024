@@ -25,6 +25,8 @@ export default class TextScramble {
 
   public static scramble(el: HTMLElement, speed: number = 45) {
     const originalText = el.getAttribute('data-text-scramble')
+    const soundEnabled = el.getAttribute('data-text-scramble-audio')
+    const pan = Number(el.getAttribute('data-audio-pan')) || 0
     if (!originalText) return
 
     const id = el.getAttribute('data-text-scramble-id') || Math.random().toString()
@@ -38,6 +40,15 @@ export default class TextScramble {
     }
 
     let iteration = 0
+
+    if(soundEnabled){
+      window.app.audio.play('typing_'+id, 'typing', {
+        loop: true,
+        volume: 0.45,
+        rate: 0.9,
+        pan
+      })
+    }
 
     TextScramble.#elsIntervals[id] = setInterval(() => {
       el.innerText = originalText
@@ -56,6 +67,7 @@ export default class TextScramble {
         delete TextScramble.#elsIntervals[id]
         el.removeAttribute('data-text-scramble-id')
         el.innerText = originalText
+        if(soundEnabled) window.app.audio.stop('typing_'+id)
       }
 
       iteration += 1 / 2

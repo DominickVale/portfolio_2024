@@ -45,7 +45,9 @@ export default class ChromaticAberrationAnim {
         ${shiftY}px ${shiftXNeg}px 0 blue
       `
 
-      this.experience.renderer.chromaticAberrationEffect.offset.set(shiftX / 1500, shiftY / 1500)
+      if (window.app.preloaderFinished) {
+        this.experience.renderer.chromaticAberrationEffect.offset.set(shiftX / 1500, shiftY / 1500)
+      }
 
       el.style.filter = `blur(${blur}px)`
     }

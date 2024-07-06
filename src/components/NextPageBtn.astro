@@ -8,8 +8,14 @@ const props = Astro.props
 ---
 
 <div class="next-page-btn items-center">
-  <Btn innerClass="!items-start pl-0 flex-col" href="works" {...props}>
-    <div class="pointer-events-none mb-1 w-[96%] sm:w-auto justify-between sm:mr-4 flex items-center sm:justify-center gap-2">
+  <Btn
+    innerClass="!items-start pl-0 flex-col"
+    data-audio
+    data-audio-stopon="mouseout mousedown"
+    data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:0.5"
+    {...props}
+  >
+    <div class="pointer-events-none mb-1 flex w-[96%] items-center justify-between gap-2 sm:mr-4 sm:w-auto sm:justify-center">
       <svg class="opacity-30" width="7" height="8" viewBox="0 0 7 8" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M4.48202 3.99987L0.741077 0.258921L3.2589 0.258921L6.2445 3.24452L5.48915 3.99987L6.2445 4.75521L3.25877 7.74095L0.740947 7.74095L4.48202 3.99987Z"

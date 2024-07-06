@@ -37,6 +37,9 @@ import NextPageBtn from '../components/NextPageBtn.astro'
           data-cursor-delay="2500"
           data-cursor-message="... What are you waiting for? Let's go! :D"
           data-cursor-timeout="0"
+          data-audio
+          data-audio-stopon="mouseout mousedown"
+          data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:-0.5"
           data-text-scramble="READ MORE">READ MORE</Btn
         >
       </div>
@@ -44,8 +47,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
         <NextPageBtn
           class="p-2 text-inactive hover:text-white"
           data-cursor-delay="1000"
-          data-cursor-message="Let's go, in 'n out.<br/>2 minutes adventure."
-          data-cursor-timeout="0">NEXT</NextPageBtn
+          data-cursor-message="Let's go, in 'n out.<br/>2 minutes adventure.">NEXT</NextPageBtn
         >
       </div>
     </div>
@@ -60,7 +62,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
     </h1>
     <!-- <h1 class="sr-only">DOMINICK VALE</h1> -->
     <!-- <img class="mt-6" src={nameSvg.src} /> -->
-    <div class="mb-[10vh] mt-4 flex justify-between lg:gap-[7%] text-sm lg:mt-6">
+    <div class="mb-[10vh] mt-4 flex justify-between text-sm lg:mt-6 lg:gap-[7%]">
       <ul>
         <StatusItem class="text-nowrap" highlight>FRONT-END DEVELOPER</StatusItem>
         <StatusItem class="text-nowrap" highlight>CREATIVE DEVELOPER</StatusItem>
@@ -78,14 +80,14 @@ import NextPageBtn from '../components/NextPageBtn.astro'
           ></StatusItem
         >
       </ul>
-      <ul class="ml-auto hidden md:block lg:flex flex-col gap-[7%]">
+      <ul class="ml-auto hidden flex-col gap-[7%] md:block lg:flex">
         <StatusItem highlight>AWARDS:</StatusItem>
         <StatusItem
           class="before:hidden"
           data-cursor-delay="2000"
           data-cursor-message="My mother says i'm<br/>really good with computers."
-          data-cursor-timeout="0"
-        >COMING SOON :)</StatusItem>
+          data-cursor-timeout="0">COMING SOON :)</StatusItem
+        >
       </ul>
     </div>
   </section>

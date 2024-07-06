@@ -61,6 +61,7 @@ export default class HomeRenderer extends BaseRenderer {
             typewrite: {
               charClass: 'text-primary-lightest drop-shadow-glow',
               maxScrambleChars: 3,
+              soundVolume: 0.25
             },
             duration: 1,
             delay: i / 20,

@@ -62,6 +62,7 @@ export default class BaseRenderer extends Renderer {
       .add(linksTL, '<')
 
 
+    window.app.audio.setupEvents()
     if(window.app.preloaderFinished) BaseRenderer.enterTL.play()
   }
 
