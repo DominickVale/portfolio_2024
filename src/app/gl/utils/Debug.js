@@ -25,9 +25,9 @@ export default class Debug {
 
     this.gui = new GUI()
     const lorenzParams = this.gui.addFolder('Lorenz parameters')
-    lorenzParams.add(this.attractorUniforms.uSigma, 'value', -8, 100).name("α")
-    lorenzParams.add(this.attractorUniforms.uRho, 'value', -100, 100).name("ρ")
-    lorenzParams.add(this.attractorUniforms.uBeta, 'value', -6, 6).name("β")
+    lorenzParams.add(this.attractorUniforms.uSigma, 'value', -8, 100).name('α')
+    lorenzParams.add(this.attractorUniforms.uRho, 'value', -100, 100).name('ρ')
+    lorenzParams.add(this.attractorUniforms.uBeta, 'value', -6, 6).name('β')
     lorenzParams.add(this.params, 'speed', 1, 100)
     const colors = this.gui.addFolder('Colors')
     colors.addColor(this.params, 'lorenzColor').onChange(this.updateLorenzColor.bind(this))
@@ -43,15 +43,33 @@ export default class Debug {
 
     postfx.add(this.params, 'chromaticAberration', -0.01, 0.01, 0.0001).onChange(this.updateChromaticAberration.bind(this))
     const positioning = this.gui.addFolder('Positioning')
-    positioning.add(this.attractor.points.rotation, 'x', -Math.PI, Math.PI).name("Rotation X")
-    positioning.add(this.attractor.points.rotation, 'y', -Math.PI, Math.PI).name("Rotation Y")
-    positioning.add(this.attractor.points.rotation, 'z', -Math.PI, Math.PI).name("Rotation Z")
-    positioning.add(this.attractor.points.position, 'x', -50, 50).name("Position X")
-    positioning.add(this.attractor.points.position, 'y', -50, 50).name("Position Y")
-    positioning.add(this.attractor.points.position, 'z', -50, 50).name("Position Z")
+    positioning.add(this.attractor.points.rotation, 'x', -Math.PI, Math.PI).name('Rotation X')
+    positioning.add(this.attractor.points.rotation, 'y', -Math.PI, Math.PI).name('Rotation Y')
+    positioning.add(this.attractor.points.rotation, 'z', -Math.PI, Math.PI).name('Rotation Z')
+    positioning.add(this.attractor.points.position, 'x', -50, 50).name('Position X')
+    positioning.add(this.attractor.points.position, 'y', -50, 50).name('Position Y')
+    positioning.add(this.attractor.points.position, 'z', -50, 50).name('Position Z')
     const misc = this.gui.addFolder('Misc')
     misc.add({ saveImage: () => (this.shouldSaveImage = true) }, 'saveImage').name('Save as Image')
     misc.add(this, 'preset', LORENZ_PRESETS).onChange(this.setPreset.bind(this)).name('Preset')
+
+    const PASSES = ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass']
+
+    const audio = this.gui.addFolder('Audio')
+    const mock = { v: 10000, type: PASSES[0] }
+    audio
+      .add(mock, 'v', 0, 10000, 1)
+      .name('Filter frequency')
+      .onChange(() => {
+        window.app.audio.backgroundMusic.frequency(mock.v)
+      })
+    audio
+      .add(mock, 'type', PASSES, 1)
+      .name('Filter type')
+      .onChange(() => {
+        window.app.audio.backgroundMusic.filterType(mock.type)
+      })
+    // audio.add(window.app.audio.backgroundMusic.lowPassFilter.Q, 'value', 0, 10, 0.0001).name("Low pass Q")
 
     this.controls = new OrbitControls(this.experience.camera.instance, this.experience.appEl)
     this.controls.enableDamping = true

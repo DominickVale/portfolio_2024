@@ -11,33 +11,47 @@ export type PlayOptions = {
   onend?: (audio: ExtendedHowl) => void
 } & Omit<HowlOptions, 'src' | 'onend'>
 
-interface AudioOptions {
-  name: string
-  loop: boolean
-  pan: number
-  fadeIn: number
-  fadeOut: number
+export interface AudioOptions {
+  name?: string
+  volume?: number
+  loop?: boolean
+  pan?: number
+  fadeIn?: number
+  fadeOut?: number
+  rate?: number
 }
 
+// Needed until @types/howler is updated
 class ExtendedHowl extends Howl {
+  name?: string
   fadeState: 'in' | 'out' | 'none' = 'none'
   fadeIn?: number
   fadeOut?: number
+  filterType(v: string){
+    //@ts-ignore
+    super.filterType(v)
+  }
+  frequency(v: number) {
+    //@ts-ignore
+    super.frequency(v)
+  }
 }
 
 class AudioWrapper {
   activeSounds: Map<string, ExtendedHowl>
+  backgroundMusic: ExtendedHowl
 
   constructor() {
     this.activeSounds = new Map()
   }
 
-  play(id: string, soundName: string, options: PlayOptions = {}): ExtendedHowl {
+  play(id: string | null, soundName: string, options: PlayOptions = {}): ExtendedHowl {
     const { loop = false, volume = 1, rate = 1, seek = 0, pan = 0, fadeIn = 0, fadeOut, onplay, onend, ...rest } = options
 
-    const soundPath = window.app.experience.resources.items[soundName].path
-    let sound = this.activeSounds.get(id) || new ExtendedHowl({ src: [soundPath], loop, ...rest })
+    const soundPath = window.app.experience.resources!.items[soundName].path
+    let sound = (id && this.activeSounds.get(id)) || new ExtendedHowl({ src: [soundPath], loop, ...rest })
 
+    sound.name = soundName
     sound.fadeIn = fadeIn
     sound.fadeOut = fadeOut
 
@@ -51,6 +65,26 @@ class AudioWrapper {
 
     if (rate) sound.rate(rate)
 
+    if (id === 'background') {
+      sound.filterType('lowpass')
+      sound.frequency(this.getFrequency(1))
+      this.backgroundMusic = sound
+    } else if (soundName === 'vibration') {
+      if (!this.backgroundMusic) throw new Error('Background music not loaded')
+      const v = { freq: 1 }
+      gsap.to(v, {
+        freq: 0.35,
+        duration: 0.5,
+        onUpdate: () => {
+          this.backgroundMusic.frequency(this.getFrequency(v.freq))
+        },
+      })
+
+      gsap.to(this.backgroundMusic, {
+        volume: 0.35,
+        duration: 1,
+      })
+    }
     sound.play()
 
     if (pan) sound.stereo(pan)
@@ -77,7 +111,10 @@ class AudioWrapper {
     if (onplay) sound.on('play', onplay)
     if (onend) sound.on('end', () => onend(sound))
     if (seek) sound.seek(seek)
-    if (loop) this.activeSounds.set(id, sound)
+    if (loop) {
+      if (!id) throw new Error('Looping requires an id')
+      this.activeSounds.set(id, sound)
+    }
 
     return sound
   }
@@ -85,11 +122,9 @@ class AudioWrapper {
   stop(id: string): void {
     const sound = this.activeSounds.get(id)
 
-    console.log("Stopping: ", id, sound)
     if (!sound) throw new Error(`Sound ${id} not found`)
 
     const unload = () => {
-      console.log("unloading: ", sound)
       sound.stop()
       sound.fadeState = 'none'
       sound.unload()
@@ -113,6 +148,24 @@ class AudioWrapper {
         onComplete: unload,
       })
     } else unload()
+
+    if (sound.name === 'vibration') {
+      const oldVol = this.backgroundMusic.volume()
+      if (!this.backgroundMusic) throw new Error('Background music not loaded')
+      const v = { freq: 0.35 }
+      gsap.to(v, {
+        freq: 1,
+        duration: 0.5,
+        onUpdate: () => {
+          this.backgroundMusic.frequency(this.getFrequency(v.freq))
+        },
+      })
+
+      gsap.to(this.backgroundMusic, {
+        volume: 0.34,
+        duration: 1,
+      })
+    }
   }
 
   setPan(id: string, pan: number): void {
@@ -136,18 +189,19 @@ class AudioWrapper {
 
   parseAudioAttributes(attributeValue: string): AudioOptions {
     const [name, ...options] = attributeValue.split(' ')
-    const loop = options.includes('loop')
-    const pan = Number(options.find((opt) => opt.startsWith('pan:'))?.replace('pan:', '') || 0)
-    const fadeIn = Number(options.find((opt) => opt.startsWith('fadeIn:'))?.replace('fadeIn:', '') || 0)
-    const fadeOut = Number(options.find((opt) => opt.startsWith('fadeOut:'))?.replace('fadeOut:', '') || 0)
+    const result: AudioOptions = { name }
 
-    return {
-      name,
-      loop,
-      pan,
-      fadeIn,
-      fadeOut,
-    }
+    options.forEach((opt) => {
+      if (opt === 'loop') result.loop = true
+      else {
+        const [key, value] = opt.split(':')
+        if (['pan', 'fadeIn', 'fadeOut', 'rate', 'volume'].includes(key)) {
+          result[key] = Number(value)
+        }
+      }
+    })
+
+    return result
   }
 
   attachAudioEvents(el: Element, id: string) {
@@ -161,30 +215,40 @@ class AudioWrapper {
       if (evtType === 'stopon' && attributeValue) {
         const evts = attributeValue.split(' ') || []
         evts.forEach((e) => {
-          console.log("Attaching stop evt: ", e)
           el.addEventListener(e, () => this.stop(id))
         })
       }
 
-
       if (attributeValue && !['id', 'stopon'].includes(evtType)) {
-        const { name, loop, pan, fadeIn, fadeOut } = this.parseAudioAttributes(attributeValue)
+        const { name, loop, pan = 0, fadeIn, fadeOut, rate = 1, volume = 1 } = this.parseAudioAttributes(attributeValue)
 
-        if(loop) loopCount++
-        if(loopCount > 1) console.warn(`Only one loop per element is allowed, has ${loopCount} instead: `, el)
+        if (!name) return
+        if (loop) loopCount++
+        if (loopCount > 1) console.warn(`Only one loop per element is allowed, has ${loopCount} instead: `, el)
 
         el.addEventListener(evtType, () => {
           if (Howler.ctx.state === 'running') {
             this.play(loop ? id : null, name, {
+              volume,
               loop,
               pan,
               fadeIn,
               fadeOut,
+              rate,
             })
           }
         })
       }
     })
+  }
+
+  getFrequency(inputValue: number) {
+    const minValue = 40
+    const maxValue = Howler.ctx.sampleRate / 2
+    const numberOfOctaves = Math.log(maxValue / minValue) / Math.LN2
+    const multiplier = Math.pow(2, numberOfOctaves * (inputValue - 1.0))
+
+    return maxValue * multiplier
   }
 }
 

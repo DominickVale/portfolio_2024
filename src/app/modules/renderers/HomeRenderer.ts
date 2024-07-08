@@ -47,7 +47,7 @@ export default class HomeRenderer extends BaseRenderer {
   }
   //////////////////////////////////////
 
-  createEnterAnim(){
+  createEnterAnim() {
     const statusItems = $all('.status-item')
     const itemsTL = gsap.timeline()
 
@@ -61,7 +61,9 @@ export default class HomeRenderer extends BaseRenderer {
             typewrite: {
               charClass: 'text-primary-lightest drop-shadow-glow',
               maxScrambleChars: 3,
-              soundVolume: 0.25
+              soundOptions: {
+                volume: 0.25,
+              },
             },
             duration: 1,
             delay: i / 20,
@@ -123,7 +125,8 @@ export default class HomeRenderer extends BaseRenderer {
           opacity: 0,
           duration: 1.5,
           ease: 'power4.inOut',
-        }, "<50%"
+        },
+        '<50%',
       )
   }
 

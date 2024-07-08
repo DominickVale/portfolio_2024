@@ -203,7 +203,9 @@ export default class WorksRenderer extends BaseRenderer {
             typewrite: {
               charClass: 'text-primary-lightest drop-shadow-glow',
               maxScrambleChars: 3,
-              soundVolume: 0.25,
+              soundOptions: {
+                volume: 0.25,
+              },
               value,
             },
             duration: 1.5,

@@ -191,10 +191,19 @@ export default class Menus {
       {
         iconId: 'audio',
         label: 'TOGGLE AUDIO',
-        callback: cb,
+        callback() {
+          // TODO: finish
+          if (window.app.overridePreloader) {
+            window.app.audio.play('background', 'song', {
+              volume: 0.5,
+              loop: true,
+            })
+          }
+
+        },
       },
     ]
-    const settingsMenu = new RadialMenu('settings', settingsItems, { size: "calc(10rem + 5vw)"})
+    const settingsMenu = new RadialMenu('settings', settingsItems, { size: 'calc(10rem + 5vw)' })
 
     const textMenuItems: RadialMenuItem[] = [
       {
@@ -209,7 +218,7 @@ export default class Menus {
       contextSlice,
     ]
 
-    const textMenu = new RadialMenu('text', textMenuItems, { size: "calc(10rem + min(30vw, 10vh))"})
+    const textMenu = new RadialMenu('text', textMenuItems, { size: 'calc(10rem + min(30vw, 10vh))' })
     if (this.isMobile) {
       const menus = [textMenu, settingsMenu]
 
@@ -231,7 +240,7 @@ export default class Menus {
         const defaultMenu = new RadialMenu('default', defaultMenuItems)
         menus.push(defaultMenu)
       }
-      
+
       return menus
     }
   }

@@ -14,12 +14,13 @@
     "@astrojs/mdx": "3.0.0",
     "@astrojs/rss": "^4.0.5",
     "@astrojs/tailwind": "^5.1.0",
+    "@dominickvale/howler": "^3.0.0-dev",
     "@emailjs/browser": "^4.3.3",
     "@tailwindcss/container-queries": "^0.1.1",
+    "@types/howler": "^2.2.11",
     "@unseenco/taxi": "^1.6.0",
     "astro": "4.8.2",
     "gsap": "^3.12.5",
-    "howler": "^2.2.4",
     "lenis": "^1.0.45",
     "postprocessing": "^6.35.4",
     "tailwind-merge": "^2.3.0",
@@ -28,7 +29,6 @@
     "tiny-emitter": "^2.1.0"
   },
   "devDependencies": {
-    "@types/howler": "^2.2.11",
     "@types/three": "^0.164.0",
     "eslint": "^9.2.0",
     "eslint-config-prettier": "^9.1.0",

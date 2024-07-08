@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
 import glsl from 'vite-plugin-glsl'
+import * as path from 'path'
 
 import mdx from '@astrojs/mdx'
 
@@ -25,6 +26,14 @@ export default defineConfig({
   },
   vite: {
     plugins,
+    optimizeDeps: {
+      include: ['howler'],
+    },
+    build: {
+      commonjsOptions: {
+        include: [/howler/, /node_modules/],
+      },
+    },
   },
   markdown: {
     shikiConfig: {

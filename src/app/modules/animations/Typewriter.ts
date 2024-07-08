@@ -1,6 +1,7 @@
 import gsap from 'gsap'
 import { $all, deepKillTimeline, delay } from '../../utils'
 import { TypewriterPlugin } from './TypeWriterPlugin'
+import type { AudioOptions } from '../AudioWrapper'
 gsap.registerPlugin(TypewriterPlugin)
 
 export default class Typewriter {
@@ -10,9 +11,9 @@ export default class Typewriter {
 
   public static async typewrite(
     el: HTMLElement,
-    opts?: { message?: string; speed?: number; charClass?: string; ease?: gsap.EaseString | gsap.EaseFunction; maxScrambleChars?: number },
+    opts?: { message?: string; speed?: number; charClass?: string; ease?: gsap.EaseString | gsap.EaseFunction; maxScrambleChars?: number, soundOptions?: AudioOptions },
   ) {
-    const { message = '', speed = 0.8, charClass, ease, maxScrambleChars } = opts
+    const { message = '', speed = 0.8, charClass, ease, maxScrambleChars, soundOptions } = opts
     if (el.getAttribute('data-typewriter-id')) {
       Typewriter.stop(el)
       await delay(100) // i don't like this one bit, but it'll do for now
@@ -38,6 +39,7 @@ export default class Typewriter {
         speed: speed || 0.8,
         charClass: charClass || 'text-primary-lightest',
         maxScrambleChars,
+        soundOptions: soundOptions,
       },
       onInterrupt() {
         const id = this.typewriter?.soundId

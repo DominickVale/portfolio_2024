@@ -40,11 +40,13 @@ import NextPageBtn from '../components/NextPageBtn.astro'
           data-audio
           data-audio-stopon="mouseout mousedown"
           data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:-0.5"
+          data-audio-click="vibration-click pan:-0.5 volume:0.3"
           data-text-scramble="READ MORE">READ MORE</Btn
         >
       </div>
       <div class="mb-14 hidden sm:flex">
         <NextPageBtn
+          href="/works"
           class="p-2 text-inactive hover:text-white"
           data-cursor-delay="1000"
           data-cursor-message="Let's go, in 'n out.<br/>2 minutes adventure.">NEXT</NextPageBtn

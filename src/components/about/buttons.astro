@@ -29,8 +29,9 @@ export const btnClasses = 'bg-background-dark-02 backdrop-blur-[16px] mx-auto h-
     frame
     data-audio
     data-audio-stopon="mouseout mousedown"
-    data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:-0.25">{l.text}</Btn
-  >
+    data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:-0.25 volume:0.5"
+    data-audio-click="vibration-click pan:-0.25 volume:0.3"
+  >{l.text}</Btn >
   <Btn
     href={r.link}
     data-text-scramble={r.text}
@@ -39,6 +40,7 @@ export const btnClasses = 'bg-background-dark-02 backdrop-blur-[16px] mx-auto h-
     frame
     data-audio
     data-audio-stopon="mouseout mousedown"
-    data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:0.25">{r.text}</Btn
-  >
+    data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:0.25 volume:0.5"
+    data-audio-click="vibration-click pan:0.25 volume:0.3"
+  >{r.text}</Btn >
 </div>

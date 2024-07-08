@@ -22,31 +22,41 @@ export default [
   {
     name: 'g',
     type: 'audio',
-    path: '/sounds/g.ogg',
+    path: '/sounds/g.webm',
   },
   {
     name: 'boom',
     type: 'audio',
-    path: '/sounds/boom.ogg',
+    path: '/sounds/boom.webm',
   },
   {
     name: 'song',
     type: 'audio',
-    path: '/sounds/ShadowsAndDust.mp3',
+    path: '/sounds/ShadowsAndDust.webm',
   },
   {
     name: 'vibration',
     type: 'audio',
-    path: '/sounds/vibration.ogg',
+    path: '/sounds/vibration.webm',
   },
   {
     name: 'woosh',
     type: 'audio',
-    path: '/sounds/woosh.ogg',
+    path: '/sounds/woosh.webm',
   },
   {
     name: 'typing',
     type: 'audio',
-    path: '/sounds/typing.ogg',
+    path: '/sounds/typing.webm',
+  },
+  {
+    name: 'vibration-click',
+    type: 'audio',
+    path: '/sounds/vibration-click.opus',
+  },
+  {
+    name: 'hover-1',
+    type: 'audio',
+    path: '/sounds/hover-1.opus',
   },
 ]

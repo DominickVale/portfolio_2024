@@ -34,7 +34,10 @@ export const TypewriterPlugin = {
     data.charClass = props.charClass
     data.duration = tween.vars.duration
     data.soundId = 'typing_' + Date.now()
-    data.soundVolume = props.soundVolume
+    data.soundOptions = {
+      volume: 0.25,
+      ...props.soundOptions
+    }
     tween.typewriter = data // this is specific to the Typewriter.ts implementation
   },
   render(progress, data) {
@@ -44,7 +47,7 @@ export const TypewriterPlugin = {
       progress = 0
     }
 
-    let { text, delimiter, target, fillChar, previousProgress, maxScrambleChars, charClass, speed, duration, soundId, soundVolume } = data,
+    let { text, delimiter, target, fillChar, previousProgress, maxScrambleChars, charClass, speed, duration, soundId, soundOptions } = data,
       l = text.length,
       i = (progress * l + 0.5) | 0,
       str
@@ -73,7 +76,7 @@ export const TypewriterPlugin = {
           data.soundPlaying = true
           window.app.audio.play(soundId, 'typing', {
             loop: true,
-            volume: soundVolume || 1,
+            ...soundOptions
           })
         }
         let scrambledPart = text
