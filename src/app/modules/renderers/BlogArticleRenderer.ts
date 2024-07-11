@@ -262,6 +262,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
   }
 
   createEnterAnim() {
+    window.app.audio.muffleMusic(true)
     const mainImageQuery = this.isDesktop ? '#main-image' : '#main-image-mobile'
     const imageSectionQuery = this.isDesktop ? '#image-section' : '#image-section-mobile'
     const mainImageContainerQuery = this.isDesktop ? '#main-image-container' : '#main-image-container-mobile'

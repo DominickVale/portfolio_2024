@@ -49,6 +49,14 @@ export default class WorksRenderer extends BaseRenderer {
     workImage.addEventListener('click', this.onImageClick.bind(this))
     this.experience = new Experience()
 
+    window.app.audio.play(null, 'whoosh2', {
+      volume: 0.3,
+    })
+    window.app.audio.play(null, 'shimmer-short', {
+      volume: 0.08,
+      rate: 0.75,
+    })
+
     if (window.app.preloaderFinished) {
       this.prepareAnimations()
     } else {
@@ -117,6 +125,9 @@ export default class WorksRenderer extends BaseRenderer {
           duration: 0.09,
           ease: 'power4.in',
         })
+      window.app.audio.play(null, 'hover-1', {
+        rate: 1,
+      })
     }
 
     if (this.isDesktop) {
@@ -308,6 +319,11 @@ export default class WorksRenderer extends BaseRenderer {
           duration: 0.8,
           ease: 'power4.inOut',
           onComplete: () => {
+            window.app.audio.play(null, 'shimmer-short', {
+              volume: 0.35,
+              rate: 1.35,
+              pan:-0.5
+            })
             gsap.to(params, {
               speed: 20,
               duration: 1.5,

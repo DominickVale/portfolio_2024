@@ -27,14 +27,6 @@ class ExtendedHowl extends Howl {
   fadeState: 'in' | 'out' | 'none' = 'none'
   fadeIn?: number
   fadeOut?: number
-  filterType(v: string){
-    //@ts-ignore
-    super.filterType(v)
-  }
-  frequency(v: number) {
-    //@ts-ignore
-    super.frequency(v)
-  }
 }
 
 class AudioWrapper {
@@ -249,6 +241,17 @@ class AudioWrapper {
     const multiplier = Math.pow(2, numberOfOctaves * (inputValue - 1.0))
 
     return maxValue * multiplier
+  }
+
+  muffleMusic(muffle: boolean){
+    const tmp = { v: muffle ? 1 : 0.2 }
+    gsap.to(tmp, {
+      v: muffle ? 0.2 : 1,
+      duration: 3,
+      onUpdate: () => {
+        this.backgroundMusic.frequency(this.getFrequency(tmp.v))
+      }
+    })
   }
 }
 

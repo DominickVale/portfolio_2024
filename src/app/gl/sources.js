@@ -45,6 +45,16 @@ export default [
     path: '/sounds/woosh.webm',
   },
   {
+    name: 'whoosh2',
+    type: 'audio',
+    path: '/sounds/whoosh2.opus',
+  },
+  {
+    name: 'shimmer-short',
+    type: 'audio',
+    path: '/sounds/shimmer-short.opus',
+  },
+  {
     name: 'typing',
     type: 'audio',
     path: '/sounds/typing.webm',

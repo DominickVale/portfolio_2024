@@ -83,7 +83,7 @@ export default class App {
       this.cursor.reload()
 
       const currentUrl = window.location.href
-      $all("nav li a").forEach((link, i) => {
+      $all('nav li a').forEach((link, i) => {
         const l = link as HTMLAnchorElement
         if (l.href === currentUrl || (l.href.includes('blog') && currentUrl.includes('blog'))) {
           l.classList.add('active')
@@ -95,6 +95,7 @@ export default class App {
       // recompute audio events
       this.audio.setupEvents()
     })
+
     this.taxi.addRoute('/works', '.*', 'fromWorks')
     this.taxi.addRoute('/about.*', '.*', 'fromAbout')
     this.taxi.addRoute('/blog/.*', '.*', 'fromBlogArticle')

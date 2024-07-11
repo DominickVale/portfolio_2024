@@ -24,6 +24,8 @@ export default class FromBlogArticleTransition extends BaseTransition {
       done()
       return
     }
+
+    window.app.audio.muffleMusic(false)
     BlogArticleRenderer.scrollTl.kill()
     BlogArticleRenderer.contactsTl.pause().duration(1).reverse().then(() => {
         gsap.set('#bg-blur', { opacity: 0 })

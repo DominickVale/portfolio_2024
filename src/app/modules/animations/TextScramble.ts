@@ -56,7 +56,7 @@ export default class TextScramble {
       window.app.audio.play(soundId, soundOptions.name || 'typing', {
         loop: true,
         volume: 0.25,
-        rate: 0.9,
+        rate: 1.2,
         ...soundOptions,
       })
     }

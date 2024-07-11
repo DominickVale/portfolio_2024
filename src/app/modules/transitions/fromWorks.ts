@@ -16,6 +16,12 @@ export default class FromWorkTransition extends BaseTransition {
 
     const attractorPosTl = gsap
       .timeline()
+      .add(() => {
+        window.app.audio.play(null, 'shimmer-short', {
+          volume: 0.3,
+          rate: 0.9,
+        })
+      })
       .to(
         attractor.points.position,
         {
@@ -37,24 +43,22 @@ export default class FromWorkTransition extends BaseTransition {
         },
         '<',
       )
-    const attractorUniformsTl = gsap
-      .timeline()
-      .to(
-        params,
-        {
-          speed: 60,
-          duration: 0.5,
-          ease: 'power2.in',
-          onComplete: () => {
-            gsap.to(params, {
-              speed: 5,
-              duration: 3,
-              ease: 'power2.inOut',
-            })
-          },
+    const attractorUniformsTl = gsap.timeline().to(
+      params,
+      {
+        speed: 60,
+        duration: 0.5,
+        ease: 'power2.in',
+        onComplete: () => {
+          gsap.to(params, {
+            speed: 5,
+            duration: 3,
+            ease: 'power2.inOut',
+          })
         },
-        '<',
-      )
+      },
+      '<',
+    )
 
     const base = `.project-title[data-active="true"] .fui-corners, .project-title-mobile[data-active="true"] .fui-corners`
     const fuiCornersTL = gsap.timeline().to(base, {
@@ -91,11 +95,15 @@ export default class FromWorkTransition extends BaseTransition {
         },
         '<',
       )
-      .to(experience.world.worksImage.planeMat.uniforms.uStrength, {
-        value: 3,
-        duration: 1,
-        ease: 'power4.out',
-      }, "<")
+      .to(
+        experience.world.worksImage.planeMat.uniforms.uStrength,
+        {
+          value: 3,
+          duration: 1,
+          ease: 'power4.out',
+        },
+        '<',
+      )
       .to(
         '#works-image',
         {
@@ -106,6 +114,10 @@ export default class FromWorkTransition extends BaseTransition {
         '<',
       )
 
+    window.app.audio.play(null, 'whoosh2', {
+      volume: 0.3,
+      rate: 0.9,
+    })
     const tl = gsap
       .timeline({
         onComplete: () => {

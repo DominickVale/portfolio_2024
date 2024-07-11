@@ -18,7 +18,7 @@ import { EMAIL } from '../app/constants'
       data-audio
       data-audio-stopon="mouseout"
       data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:-0.5 volume:0.25 rate:0.75"
-      data-audio-click="vibration-click pan:-0.5 volume:0.25">SEND IT</Btn
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.25">SEND IT</Btn
     >
   </form>
 </section>
@@ -46,7 +46,13 @@ import { EMAIL } from '../app/constants'
     id="socials"
     class="grid h-fit w-[min(60vw,20rem)] cursor-pointer grid-cols-3 grid-rows-3 items-center justify-center gap-6 sm:mx-0 sm:w-auto sm:gap-x-12 md:gap-x-[calc(4rem+3vw)] md:gap-y-6 xl:gap-x-[3.7vw] [&>*]:mx-auto"
   >
-    <div id="email-button" class="col-span-3 flex items-center gap-3 xl:!ml-1" data-audio data-audio-mouseover="hover-1 pan:0.25 volume:0.1 rate:1.5">
+    <div
+      id="email-button"
+      class="col-span-3 flex items-center gap-3 xl:!ml-1"
+      data-audio
+      data-audio-mouseover="hover-1 pan:0.25 volume:0.1 rate:1.5"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
+    >
       <a class="pointer-events-none" href="#">
         <svg id="mail-icon" width="32" height="26" viewBox="0 0 32 26" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -63,6 +69,7 @@ import { EMAIL } from '../app/constants'
       rel="noopener"
       data-audio
       data-audio-mouseover="hover-1 pan:0.25 volume:0.1 rate:1.5"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
     >
       <svg class="pointer-events-none" width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -71,7 +78,14 @@ import { EMAIL } from '../app/constants'
       </svg>
     </a>
 
-    <a href="https://github.com/DominickVale" target="_blank" rel="noopener" data-audio data-audio-mouseover="hover-1 pan:0.25 volume:0.1 rate:1.5">
+    <a
+      href="https://github.com/DominickVale"
+      target="_blank"
+      rel="noopener"
+      data-audio
+      data-audio-mouseover="hover-1 pan:0.25 volume:0.1 rate:1.5"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
+    >
       <svg class="pointer-events-none" width="31" height="33" viewBox="0 0 31 33" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M8.0308 1.12683C9.23115 1.53345 10.3731 2.09554 11.4274 2.79877C12.9165 2.4182 14.4476 2.22701 15.9845 2.22973C17.5717 2.22973 19.103 2.42794 20.5384 2.79717C21.5923 2.09463 22.7337 1.53308 23.9334 1.12683C25.0475 0.748002 26.6348 0.134211 27.5778 1.17798C28.2172 1.88767 28.377 3.07689 28.4905 3.98479C28.6184 4.99819 28.6488 6.31848 28.3131 7.62918C29.5966 9.28673 30.3702 11.264 30.3702 13.4186C30.3702 16.6826 28.6024 19.5166 25.9858 21.4794C24.7265 22.4122 23.3299 23.1434 21.8459 23.6469C22.188 24.4301 22.3782 25.2965 22.3782 26.206V31.0012C22.3782 31.4251 22.2098 31.8317 21.91 32.1314C21.6102 32.4312 21.2037 32.5996 20.7798 32.5996H11.1893C10.7653 32.5996 10.3588 32.4312 10.059 32.1314C9.75926 31.8317 9.59085 31.4251 9.59085 31.0012V29.4172C8.06437 29.6042 6.78404 29.4379 5.69552 28.976C4.55745 28.4933 3.76463 27.7452 3.16842 27.0291C2.60259 26.3514 1.9856 24.8233 1.09368 24.526C0.894481 24.4597 0.710294 24.3548 0.55164 24.2173C0.392985 24.0797 0.262969 23.9123 0.169015 23.7246C-0.0207335 23.3454 -0.0520748 22.9063 0.0818858 22.504C0.215846 22.1017 0.504135 21.7691 0.883333 21.5794C1.26253 21.3896 1.70157 21.3583 2.10388 21.4922C3.16842 21.8471 3.86214 22.6143 4.33687 23.2313C5.1041 24.2223 5.72749 25.517 6.94228 26.0333C7.44258 26.2459 8.17626 26.385 9.32392 26.2283L9.59085 26.174C9.59391 25.3041 9.77505 24.4441 10.1231 23.6469C8.63914 23.1434 7.24248 22.4122 5.98323 21.4794C3.36663 19.5166 1.59878 16.6842 1.59878 13.4186C1.59878 11.2672 2.37082 9.29153 3.65115 7.63557C3.31548 6.32487 3.34425 5.00138 3.47212 3.98639L3.48012 3.92565C3.5968 2.99537 3.73266 1.90046 4.38482 1.17798C5.32788 0.134211 6.91671 0.7496 8.0292 1.12842L8.0308 1.12683Z"
@@ -79,7 +93,14 @@ import { EMAIL } from '../app/constants'
       </svg>
     </a>
 
-    <a href="https://twitter.com/_DominickVale" target="_blank" rel="noopener" data-audio data-audio-mouseover="hover-1 pan:0.25 volume:0.1 rate:1.5">
+    <a
+      href="https://twitter.com/_DominickVale"
+      target="_blank"
+      rel="noopener"
+      data-audio
+      data-audio-mouseover="hover-1 pan:0.25 volume:0.1 rate:1.5"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
+    >
       <svg class="pointer-events-none" width="40" height="33" viewBox="0 0 40 33" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M39.7489 4.36432C38.2995 5.02314 36.7372 5.45608 35.1183 5.66314C36.7748 4.66549 38.0548 3.08432 38.6572 1.18314C37.0948 2.12432 35.3631 2.78314 33.5372 3.15961C32.0501 1.54079 29.9607 0.599609 27.5889 0.599609C23.1654 0.599609 19.5513 4.21373 19.5513 8.6749C19.5513 9.3149 19.6266 9.93608 19.7584 10.5196C13.0572 10.1808 7.09012 6.96196 3.11835 2.08667C2.42188 3.27255 2.02659 4.66549 2.02659 6.13373C2.02659 8.93843 3.43835 11.4231 5.62188 12.8349C4.28541 12.8349 3.04306 12.4584 1.95129 11.8937V11.9502C1.95129 15.8655 4.73718 19.1408 8.42659 19.8749C7.24207 20.1991 5.99853 20.2442 4.79365 20.0067C5.30491 21.6113 6.30619 23.0154 7.65674 24.0216C9.00729 25.0278 10.6392 25.5854 12.3231 25.6161C9.46871 27.8757 5.93058 29.0971 2.29012 29.0796C1.65012 29.0796 1.01012 29.042 0.370117 28.9667C3.94659 31.2631 8.2007 32.5996 12.756 32.5996C27.5889 32.5996 35.7395 20.289 35.7395 9.61608C35.7395 9.25843 35.7395 8.91961 35.7207 8.56196C37.3019 7.43255 38.6572 6.00196 39.7489 4.36432Z"
@@ -93,6 +114,7 @@ import { EMAIL } from '../app/constants'
       rel="noopener"
       data-audio
       data-audio-mouseover="hover-1 pan:0.25 volume:0.1 rate:1.5"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
     >
       <svg class="pointer-events-none" width="32" height="25" viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -107,6 +129,7 @@ import { EMAIL } from '../app/constants'
       rel="noopener"
       data-audio
       data-audio-mouseover="hover-1 pan:0.25 volume:0.1 rate:1.5"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
     >
       <svg class="pointer-events-none" width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -121,6 +144,7 @@ import { EMAIL } from '../app/constants'
       rel="noopener"
       data-audio
       data-audio-mouseover="hover-1 pan:0.2 volume:0.1 rate:1.5"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
     >
       <svg class="pointer-events-none" width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
