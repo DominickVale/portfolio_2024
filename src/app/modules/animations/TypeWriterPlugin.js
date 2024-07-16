@@ -36,6 +36,7 @@ export const TypewriterPlugin = {
     data.soundId = 'typing_' + Date.now()
     data.soundOptions = {
       volume: 0.25,
+      rate: 1.8,
       ...props.soundOptions
     }
     tween.typewriter = data // this is specific to the Typewriter.ts implementation

@@ -38,10 +38,10 @@ class AudioWrapper {
   }
 
   play(id: string | null, soundName: string, options: PlayOptions = {}): ExtendedHowl {
-    const { loop = false, volume = 1, rate = 1, seek = 0, pan = 0, fadeIn = 0, fadeOut, onplay, onend, ...rest } = options
+    const { loop = false, volume = 1, seek = 0, pan = 0, fadeIn = 0, fadeOut, onplay, onend, sprite, ...rest } = options
 
     const soundPath = window.app.experience.resources!.items[soundName].path
-    let sound = (id && this.activeSounds.get(id)) || new ExtendedHowl({ src: [soundPath], loop, ...rest })
+    let sound = (id && this.activeSounds.get(id)) || new ExtendedHowl({ src: [soundPath], loop, sprite, ...rest })
 
     sound.name = soundName
     sound.fadeIn = fadeIn
@@ -55,14 +55,11 @@ class AudioWrapper {
       sound.load()
     }
 
-    if (rate) sound.rate(rate)
-
     if (id === 'background') {
       sound.filterType('lowpass')
       sound.frequency(this.getFrequency(1))
       this.backgroundMusic = sound
-    } else if (soundName === 'vibration') {
-      if (!this.backgroundMusic) throw new Error('Background music not loaded')
+    } else if (soundName === 'vibration' && this.backgroundMusic) {
       const v = { freq: 1 }
       gsap.to(v, {
         freq: 0.35,
@@ -77,7 +74,13 @@ class AudioWrapper {
         duration: 1,
       })
     }
-    sound.play()
+
+    if (sprite) {
+      const soundFile = Math.floor(Math.random() * 3).toString()
+      sound.play(soundFile)
+    } else {
+      sound.play()
+    }
 
     if (pan) sound.stereo(pan)
     if (fadeIn) {
@@ -141,7 +144,7 @@ class AudioWrapper {
       })
     } else unload()
 
-    if (sound.name === 'vibration') {
+    if (sound.name === 'vibration' && this.backgroundMusic) {
       const oldVol = this.backgroundMusic.volume()
       if (!this.backgroundMusic) throw new Error('Background music not loaded')
       const v = { freq: 0.35 }
@@ -243,14 +246,14 @@ class AudioWrapper {
     return maxValue * multiplier
   }
 
-  muffleMusic(muffle: boolean){
+  muffleMusic(muffle: boolean) {
     const tmp = { v: muffle ? 1 : 0.2 }
     gsap.to(tmp, {
       v: muffle ? 0.2 : 1,
       duration: 3,
       onUpdate: () => {
         this.backgroundMusic.frequency(this.getFrequency(tmp.v))
-      }
+      },
     })
   }
 }

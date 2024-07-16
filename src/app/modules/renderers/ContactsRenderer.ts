@@ -1,10 +1,10 @@
-import { $, $all, debounce, fitTextToContainerScr, showCursorMessage, splitTextChars, translateValidity } from '../../utils'
+import { $, $all, clamp, debounce, fitTextToContainerScr, showCursorMessage, splitTextChars, translateValidity } from '../../utils'
 import gsap from 'gsap'
 
 import Experience from '../../gl/Experience'
 import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
-import { EMAIL } from '../../constants'
+import { EMAIL, INPUT_SOUND_SPRITES } from '../../constants'
 import * as emailjs from '@emailjs/browser'
 import { blurStagger } from '../animations/gsap'
 
@@ -102,10 +102,19 @@ export class ContactsInternalRenderer {
     this.textboxes.forEach((textbox) => {
       textbox.addEventListener('blur', this.handleTextboxBlur.bind(this))
       textbox.addEventListener('input', this.handleTextboxInput.bind(this))
+      textbox.addEventListener('focusin', this.handleTextboxFocus.bind(this))
     })
   }
 
   handleMouseLeave(event) {}
+
+  handleTextboxFocus(event) {
+    window.app.audio.play(null, "input-sprite", {
+      volume: 0.3,
+      //@ts-ignore
+      sprite: INPUT_SOUND_SPRITES
+    })
+  }
 
   handleTextboxBlur(event) {
     const textbox = event.target
@@ -127,6 +136,10 @@ export class ContactsInternalRenderer {
           currErrorKey = k
         }
       }
+
+    window.app.audio.play(null, "error", {
+      volume: 0.2,
+    })
       showCursorMessage({
         message: translateValidity(currErrorKey, textbox.name).toUpperCase(),
         isError: true,
@@ -142,6 +155,12 @@ export class ContactsInternalRenderer {
     const textbox = event.target
     const wrapper = textbox.parentNode
     const isValid = textbox.validity.valid
+
+    window.app.audio.play(null, "input-sprite", {
+      volume: 0.6,
+      //@ts-ignore
+      sprite: INPUT_SOUND_SPRITES
+    })
 
     if (isValid) {
       wrapper.classList.remove('textbox-wrapper-invalid')

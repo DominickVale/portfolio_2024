@@ -110,7 +110,6 @@ export default class Preloader {
     // attractor.points.position.y = preset.positionY
     attractor.points.position.z = preset.positionZ
 
-    window.app.audio.play(null, 'g')
     // bloom.blendMode.setBlendFunction(BlendFunction.ADD)
 
     gsap
@@ -199,14 +198,14 @@ export default class Preloader {
           bloom.blendMode.setBlendFunction(BlendFunction.ADD)
           this.experience.renderer.shockWaveEffect.explode()
           window.app.audio.play(null, 'boom', {
-            volume: 0.8,
+            volume: 0.75,
           })
           window.app.audio.play('background', 'song', {
             loop: true,
           })
           setTimeout(() => {
               window.app.audio.play(null, 'woosh', {
-                volume: 0.8,
+                volume: 0.5,
               })
           }, 2000)
         },

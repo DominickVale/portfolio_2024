@@ -37,7 +37,7 @@ export default [
   {
     name: 'vibration',
     type: 'audio',
-    path: '/sounds/vibration.webm',
+    path: '/sounds/vibration.opus',
   },
   {
     name: 'woosh',
@@ -45,14 +45,14 @@ export default [
     path: '/sounds/woosh.webm',
   },
   {
-    name: 'whoosh2',
-    type: 'audio',
-    path: '/sounds/whoosh2.opus',
-  },
-  {
     name: 'shimmer-short',
     type: 'audio',
     path: '/sounds/shimmer-short.opus',
+  },
+  {
+    name: 'whoosh-short',
+    type: 'audio',
+    path: '/sounds/whoosh-short.opus',
   },
   {
     name: 'typing',
@@ -68,5 +68,20 @@ export default [
     name: 'hover-1',
     type: 'audio',
     path: '/sounds/hover-1.opus',
+  },
+  {
+    name: 'input-sprite',
+    type: 'audio',
+    path: '/sounds/input-sprite.webm',
+  },
+  {
+    name: 'title-reveal',
+    type: 'audio',
+    path: '/sounds/title-reveal.webm',
+  },
+  {
+    name: 'error',
+    type: 'audio',
+    path: '/sounds/error.opus',
   },
 ]

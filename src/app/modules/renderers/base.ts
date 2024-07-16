@@ -17,10 +17,18 @@ export default class BaseRenderer extends Renderer {
     this.#onResizeBound = this.#onResize.bind(this)
     window.addEventListener('resize', this.#onResizeBound)
 
-   this.navLinks = Array.from($all('nav li a')) as HTMLAnchorElement[]
+    this.navLinks = Array.from($all('nav li a')) as HTMLAnchorElement[]
+
     $('#navbar').addEventListener('click', (e) => {
       const clickedEl = e.target as HTMLElement
       if (clickedEl.parentElement.classList.contains('nav-link')) {
+        const audioAttr = clickedEl.getAttribute('data-text-scramble-audio')
+        const params = window.app.audio.parseAudioAttributes(audioAttr)
+        window.app.audio.play(null, 'vibration-click', {
+          pan: params.pan,
+          volume: 0.1,
+        })
+
         this.navLinks.forEach((link) => {
           link.classList.remove('active')
         })
@@ -61,9 +69,8 @@ export default class BaseRenderer extends Renderer {
       })
       .add(linksTL, '<')
 
-
     window.app.audio.setupEvents()
-    if(window.app.preloaderFinished) BaseRenderer.enterTL.play()
+    if (window.app.preloaderFinished) BaseRenderer.enterTL.play()
   }
 
   onEnter() {

@@ -49,14 +49,6 @@ export default class WorksRenderer extends BaseRenderer {
     workImage.addEventListener('click', this.onImageClick.bind(this))
     this.experience = new Experience()
 
-    window.app.audio.play(null, 'whoosh2', {
-      volume: 0.3,
-    })
-    window.app.audio.play(null, 'shimmer-short', {
-      volume: 0.08,
-      rate: 0.75,
-    })
-
     if (window.app.preloaderFinished) {
       this.prepareAnimations()
     } else {
@@ -127,6 +119,7 @@ export default class WorksRenderer extends BaseRenderer {
         })
       window.app.audio.play(null, 'hover-1', {
         rate: 1,
+        volume: 0.2,
       })
     }
 
@@ -289,6 +282,13 @@ export default class WorksRenderer extends BaseRenderer {
 
     const attractorPosTl = gsap
       .timeline()
+      .add(() => {
+        window.app.audio.play(null, 'whoosh-short', {
+          volume: 0.35,
+          rate: 1.35,
+          pan: -0.5,
+        })
+      })
       .to(
         attractor.points.position,
         {
@@ -320,9 +320,9 @@ export default class WorksRenderer extends BaseRenderer {
           ease: 'power4.inOut',
           onComplete: () => {
             window.app.audio.play(null, 'shimmer-short', {
-              volume: 0.35,
+              volume: 0.05,
               rate: 1.35,
-              pan:-0.5
+              pan: -0.5,
             })
             gsap.to(params, {
               speed: 20,

@@ -17,7 +17,7 @@ export default class FromWorkTransition extends BaseTransition {
     const attractorPosTl = gsap
       .timeline()
       .add(() => {
-        window.app.audio.play(null, 'shimmer-short', {
+        window.app.audio.play(null, 'whoosh-short', {
           volume: 0.3,
           rate: 0.9,
         })
@@ -49,6 +49,12 @@ export default class FromWorkTransition extends BaseTransition {
         speed: 60,
         duration: 0.5,
         ease: 'power2.in',
+        onStart: () => {
+        window.app.audio.play(null, 'shimmer-short', {
+          volume: 0.08,
+          rate: 0.9,
+          })
+        },
         onComplete: () => {
           gsap.to(params, {
             speed: 5,
@@ -114,10 +120,6 @@ export default class FromWorkTransition extends BaseTransition {
         '<',
       )
 
-    window.app.audio.play(null, 'whoosh2', {
-      volume: 0.3,
-      rate: 0.9,
-    })
     const tl = gsap
       .timeline({
         onComplete: () => {
