@@ -6,7 +6,7 @@ const {} = Astro.props
 
 <nav id="navbar" class="fixed left-0 z-20 mt-6 w-full text-xs text-inactive opacity-0 sm:mt-12">
   <ul class="grid grid-cols-12 font-light">
-    <li class="nav-link active col-span-1 col-start-2 text-right sm:col-start-1 sm:mr-2">
+    <li class="nav-link col-span-1 col-start-2 text-right sm:col-start-1 sm:mr-2 flex justify-end">
       <a href="/" aria-current="page" data-text-scramble="HOME" data-text-scramble-audio="typing pan:-0.5 volume:0.1">HOME</a>
     </li>
     <div class="pointer-events-none absolute left-0 right-0 flex justify-center">
@@ -15,7 +15,7 @@ const {} = Astro.props
           <a href="/works" data-text-scramble="WORKS" data-text-scramble-audio="typing pan:-0.25 volume:0.1">WORKS</a>
         </li>
         <li class="nav-link w-6">
-          <a href="/blog" data-text-scramble="BLOG" data-text-scramble-audio="typing pan:0 volume:0.15" >BLOG</a>
+          <a href="/blog" data-text-scramble="BLOG" data-text-scramble-audio="typing pan:0 volume:0.15">BLOG</a>
         </li>
         <li class="nav-link w-6">
           <a href="/lab" data-text-scramble="LAB" data-text-scramble-audio="typing pan:0.25 volume:0.1">LAB</a>
@@ -29,22 +29,31 @@ const {} = Astro.props
 </nav>
 
 <style>
-  nav li > a.active {
-    position: relative;
-    @apply font-normal;
-    &::before {
-      content: '';
-      position: absolute;
-      left: -50%;
-      top: 33%;
-      background-color: theme('colors.primary');
-      height: theme('height.1');
-      width: theme('height.1');
-      @apply animate-fui-flash;
-    }
-    @apply text-white;
-  }
-  nav li > a:hover {
-    @apply text-white;
-  }
+nav li a {
+  width: max-content;
+}
+
+nav li a.active {
+  position: relative;
+  @apply font-normal;
+}
+
+nav li a.active::before {
+  content: '';
+  position: absolute;
+  left: -50%;
+  top: 35%;
+  background-color: theme('colors.primary');
+  height: theme('height.1');
+  width: theme('height.1');
+  @apply animate-fui-flash;
+}
+
+nav li a.active  {
+  @apply text-white;
+}
+
+nav li a:hover {
+  @apply text-white;
+}
 </style>

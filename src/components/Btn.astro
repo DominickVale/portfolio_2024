@@ -6,19 +6,19 @@ const { small, class: classes, innerClass, frame, bottom, containerId, ...rest }
 const Component = Astro.props.href ? 'a' : 'button'
 ---
 
-<div
+<Component
   id={containerId}
-  class="btn-wrapper relative hover:animate-shake"
-  class:list={twMerge(['btn relative text-xs font-light tracking-button active:animate-fui-flash', frame && 'frame h-8 w-32 font-bold', classes])}
+  class:list={twMerge([
+    'btn-wrapper block relative text-xs font-light tracking-button hover:animate-shake active:animate-fui-flash w-max ',
+    frame && 'frame h-8 w-32 font-bold',
+    bottom && 'pt-3 pl-3',
+    classes,
+  ])}
+  {...rest}
 >
-  <Component
-    class:list={twMerge(['flex h-full w-full', bottom ? 'items-end justify-start pb-[0.225rem] pl-3' : 'items-center justify-center', innerClass])}
-    {...rest}
-  >
-    <slot />
-  </Component>
+  <slot />
   {frame && <div class="fui-corners pointer-events-none transition-all duration-200 ease-in-out" />}
-</div>
+</Component>
 
 <style>
   .btn-wrapper:active {

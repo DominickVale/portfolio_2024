@@ -14,7 +14,7 @@ export default class TextScramble {
   static onMouseHover(e: MouseEvent) {
     const el = e.currentTarget as HTMLElement
     if (!el) return
-    el.setAttribute('data-text-scramble', el.innerText)
+    // el.setAttribute('data-text-scramble', el.innerText)
     const speed = el.getAttribute('data-text-scramble-speed')
     TextScramble.scramble(el, Number(speed) || undefined)
   }
@@ -24,6 +24,21 @@ export default class TextScramble {
       //this is going to be called on every transition, but identical event handlers are discarded
       //(only if the function is not anonymous)
       el.addEventListener('mouseover', TextScramble.onMouseHover)
+
+      if (!$('.scramble-container', el)) {
+        const textNode = Array.from(el.childNodes).find((node) => node.nodeType === Node.TEXT_NODE)
+        const oldText = textNode?.textContent
+        el.removeChild(textNode)
+        const oldHtml = el.innerHTML
+
+        const scrambleHtml = `
+<div class="scramble-container relative pointer-events-none">
+  <span class="shadow opacity-50 text-red-500">${oldText || ''}</span>
+  <span class="scramble-text text-nowrap absolute left-0 top-0 w-full h-full">${oldText || ''}</span>
+</div>
+`
+        el.innerHTML = oldHtml + scrambleHtml
+      }
     })
   }
 
@@ -32,6 +47,8 @@ export default class TextScramble {
   }
 
   public static scramble(el: HTMLElement, speed: number = 45) {
+    const target = $('.scramble-container .scramble-text', el)
+
     const originalText = el.getAttribute('data-text-scramble')
     const audioAttr = el.getAttribute('data-text-scramble-audio')
     const soundEnabled = !!audioAttr
@@ -45,7 +62,7 @@ export default class TextScramble {
       clearInterval(TextScramble.#elsIntervals[id])
       delete TextScramble.#elsIntervals[id]
       el.removeAttribute('data-text-scramble-id')
-      el.innerText = originalText
+      target.innerText = originalText
     }
 
     let iteration = 0
@@ -62,7 +79,7 @@ export default class TextScramble {
     }
 
     TextScramble.#elsIntervals[id] = setInterval(() => {
-      el.innerText = originalText
+      target.innerText = originalText
         .split('')
         .map((_, index) => {
           const ignoreRegex = /\s|\n/ // ignore spaces and newlines
@@ -77,7 +94,7 @@ export default class TextScramble {
         clearInterval(TextScramble.#elsIntervals[id])
         delete TextScramble.#elsIntervals[id]
         el.removeAttribute('data-text-scramble-id')
-        el.innerText = originalText
+        target.innerText = originalText
         if (soundEnabled) window.app.audio.stop(soundId)
       }
 

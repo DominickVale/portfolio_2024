@@ -82,6 +82,7 @@ class AudioWrapper {
       sound.play()
     }
 
+    if(window.app.debug) console.log("[AUDIO] Playing", soundName, id, "\nwith options: ", options, "\ninner howler:", sound)
     if (pan) sound.stereo(pan)
     if (fadeIn) {
       sound.volume(0)
