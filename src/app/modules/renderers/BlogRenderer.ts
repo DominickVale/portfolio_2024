@@ -213,7 +213,7 @@ export default class BlogRenderer extends BaseRenderer {
       duration: 2,
       smoothWheel: true,
       orientation: isHorizontal ? 'horizontal' : 'vertical',
-      eventsTarget: scrollWrapper,
+      eventsTarget: window,
     })
     this.lenis.on('scroll', ScrollTrigger.update)
     if (onScroll) this.lenis.on('scroll', onScroll)
