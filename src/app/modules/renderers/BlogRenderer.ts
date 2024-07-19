@@ -7,7 +7,10 @@ import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
 import { blurStagger } from '../animations/gsap'
 import Lenis from 'lenis'
+import { LORENZ_PRESETS } from 'src/app/constants'
+import { CustomEase } from 'gsap/all'
 gsap.registerPlugin(TypewriterPlugin)
+gsap.registerPlugin(CustomEase)
 
 export default class BlogRenderer extends BaseRenderer {
   currIdx: number
@@ -47,7 +50,6 @@ export default class BlogRenderer extends BaseRenderer {
       article.addEventListener('mouseover', this.handleActiveArticleBound)
       article.addEventListener('touchstart', this.handleActiveArticleBound)
     })
-
 
     this.prepareAnimations()
     this.createEnterAnim()
@@ -151,6 +153,10 @@ export default class BlogRenderer extends BaseRenderer {
     gradientOverlay.style.setProperty('--x', '50%')
     gradientOverlay.style.setProperty('--y', '50%')
 
+    window.app.audio.play(null, 'hover-1', {
+      volume: 0.05,
+      rate: 2,
+    })
     this.tlStack.push(
       gsap
         .timeline()
@@ -164,6 +170,9 @@ export default class BlogRenderer extends BaseRenderer {
             typewrite: {
               charClass: 'text-primary-lightest drop-shadow-glow',
               maxScrambleChars: 3,
+              soundOptions: {
+                volume: 0,
+              },
             },
             duration: 2,
             ease: 'circ.out',
@@ -249,19 +258,63 @@ export default class BlogRenderer extends BaseRenderer {
   }
 
   ///////// ANIMS ////////////
-  prepareAnimations(){
+  prepareAnimations() {
     const subtitle = $('#blog-header h2')
     gsap.ticker.lagSmoothing(0)
     gsap.set(subtitle, { autoAlpha: 0 })
   }
 
-  createEnterAnim(){
+  createEnterAnim() {
     const statusItems = $all('#blog-header #blog-status li')
     const lettersTL = blurStagger($('h1'), 0.08, 0.5)
     const subtitle = $('#blog-header h2')
+    const attractor = this.experience.world.attractor
 
     BlogRenderer.enterTL = gsap
       .timeline({ paused: true })
+      .to(
+        attractor.bufferMaterial.uniforms.uRho,
+        {
+          value: 35,
+          duration: 1,
+          ease: CustomEase.create("custom", "M0,0 C0.125,0 0.25,0.968 0.5,0.968 0.75,0.968 0.75,0 1,0 "),
+        },
+        '<',
+      )
+      .to(
+        attractor.bufferMaterial.uniforms.uBeta,
+        {
+          value: -Math.PI,
+          duration: 0.1,
+          ease: CustomEase.create("custom", "M0,0 C0.125,0 0.25,0.968 0.5,0.968 0.75,0.968 0.75,0 1,0 "),
+        },
+        '<',
+      )
+      .to(
+        attractor.bufferMaterial.uniforms.uSigma,
+        {
+          value: Math.PI * 10,
+          duration: 0.8,
+          ease: "power4.out"
+        },
+        '<',
+      )
+      .to(
+        this.experience.params,
+        {
+          speed: 90,
+          duration: 0.1,
+          ease: 'power2.in',
+          onComplete: () => {
+            gsap.to(this.experience.params, {
+              speed: LORENZ_PRESETS['default'].speed,
+              duration: 2,
+              ease: 'power2.out',
+            })
+          },
+        },
+        '<',
+      )
       .fromTo(
         '#blog-header',
         {
@@ -272,6 +325,7 @@ export default class BlogRenderer extends BaseRenderer {
           duration: 1.35,
           ease: 'power4.inOut',
         },
+        "<"
       )
       .add(lettersTL, '<')
       .to(
@@ -280,6 +334,9 @@ export default class BlogRenderer extends BaseRenderer {
           typewrite: {
             speed: 0.3,
             charClass: 'text-primary-lightest',
+            soundOptions: {
+              volume: 0,
+            },
           },
           ease: 'power4.inOut',
           onStart: () => {
@@ -296,6 +353,10 @@ export default class BlogRenderer extends BaseRenderer {
           typewrite: {
             speed: 0.6,
             charClass: 'text-primary-lightest drop-shadow-glow',
+            soundOptions: {
+              volume: 0.25,
+              rate: 1.3,
+            },
           },
           ease: 'power4.inOut',
           onStart: function () {

@@ -2,14 +2,12 @@ import gsap from 'gsap'
 
 import Experience from '../../gl/Experience'
 import BaseRenderer from './base'
-import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
 import { $, $all, getZPosition } from '../../utils'
 import { blurStagger } from '../animations/gsap'
 import { LORENZ_PRESETS } from '../../constants'
 
-gsap.registerPlugin(TypewriterPlugin)
 
-export default class HomeRenderer extends BaseRenderer {
+export default class WipRenderer extends BaseRenderer {
   experience: Experience
   isFirstRender: boolean
   static enterTL: gsap.core.Timeline
@@ -20,17 +18,17 @@ export default class HomeRenderer extends BaseRenderer {
 
   onEnter() {
     super.onEnter()
-    this.isFirstRender = true
     this.isDesktop = window.innerWidth > 1024
 
+    console.log("WIP REDNE")
     this.experience = new Experience()
     BaseRenderer.resizeHandlers.push(this.handleResize.bind(this))
     this.createEnterAnim()
 
     if (window.app.preloaderFinished) {
-      HomeRenderer.enterTL.play()
+      WipRenderer.enterTL.play()
     } else {
-      window.addEventListener('preload-end', () => HomeRenderer.enterTL.play())
+      window.addEventListener('preload-end', () => WipRenderer.enterTL.play())
     }
   }
 
@@ -48,49 +46,49 @@ export default class HomeRenderer extends BaseRenderer {
   //////////////////////////////////////
 
   createEnterAnim() {
-    const statusItems = $all('.status-item')
-    const itemsTL = gsap.timeline()
-
-    statusItems.forEach((el, i) => {
-      gsap.set(el, { opacity: 0 })
-      const tl = gsap
-        .timeline()
-        .to(
-          el,
-          {
-            typewrite: {
-              charClass: 'text-primary-lightest drop-shadow-glow',
-              maxScrambleChars: 3,
-              soundOptions: {
-                volume: 0.25,
-              },
-            },
-            duration: 1,
-            delay: i / 20,
-          },
-          '<',
-        )
-        .to(el, { opacity: 1, duration: 0.15, ease: 'power4.inOut' }, '<')
-      itemsTL.add(tl, '<')
-    })
-
     const lettersTL = blurStagger($('h1'))
     const attractor = this.experience.world.attractor
-    attractor.resetParams()
 
-    HomeRenderer.enterTL = gsap
+    WipRenderer.enterTL = gsap
       .timeline({ paused: true })
+      .to(
+        attractor.bufferMaterial.uniforms.uRho,
+        {
+          value: 100,
+          duration: 0.01,
+          ease: 'power2.out',
+        },
+        '<',
+      )
+      .to(
+        attractor.bufferMaterial.uniforms.uBeta,
+        {
+          value: 0.252,
+          duration: 0.01,
+          ease: 'power2.out',
+        },
+        '<',
+      )
+      .to(
+        attractor.bufferMaterial.uniforms.uSigma,
+        {
+          value: -2.16,
+          duration: 0.01,
+          ease: 'power2.out',
+        },
+        '<',
+      )
       .to(
         this.experience.params,
         {
-          speed: 70,
-          duration: 0.5,
+          speed: 60,
+          duration: 0.1,
           ease: 'power2.in',
           onComplete: () => {
             gsap.to(this.experience.params, {
               speed: LORENZ_PRESETS['default'].speed,
-              duration: 5,
-              ease: 'power2.inOut',
+              duration: 2.5,
+              ease: 'power2.out',
             })
           },
         },
@@ -117,16 +115,6 @@ export default class HomeRenderer extends BaseRenderer {
           ease: 'power2.inOut',
         },
         '<',
-      )
-      .add(itemsTL, '<+80%')
-      .from(
-        '#home-about',
-        {
-          opacity: 0,
-          duration: 1.5,
-          ease: 'power4.inOut',
-        },
-        '<50%',
       )
   }
 

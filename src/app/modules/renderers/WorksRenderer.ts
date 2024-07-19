@@ -316,7 +316,7 @@ export default class WorksRenderer extends BaseRenderer {
         params,
         {
           speed: 70,
-          duration: 0.8,
+          duration: 1.2,
           ease: 'power4.inOut',
           onComplete: () => {
             window.app.audio.play(null, 'shimmer-short', {
@@ -337,7 +337,7 @@ export default class WorksRenderer extends BaseRenderer {
         attractor.bufferMaterial.uniforms.uSigma,
         {
           value: -8,
-          duration: 0.01,
+          duration: 0.8,
           ease: 'power2.out',
         },
         '<',

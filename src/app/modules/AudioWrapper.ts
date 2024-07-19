@@ -40,7 +40,12 @@ class AudioWrapper {
   play(id: string | null, soundName: string, options: PlayOptions = {}): ExtendedHowl {
     const { loop = false, volume = 1, seek = 0, pan = 0, fadeIn = 0, fadeOut, onplay, onend, sprite, ...rest } = options
 
-    const soundPath = window.app.experience.resources!.items[soundName].path
+    const soundPath = window.app.experience.resources!.items[soundName]?.path
+
+    if(!soundPath){
+      console.warn("Sound not found: ", soundName)
+      return
+    }
     let sound = (id && this.activeSounds.get(id)) || new ExtendedHowl({ src: [soundPath], loop, sprite, ...rest })
 
     sound.name = soundName

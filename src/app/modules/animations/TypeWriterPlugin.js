@@ -73,7 +73,8 @@ export const TypewriterPlugin = {
         str = text.join(delimiter)
       } else if ((speed || duration) * dp < 0.9) {
         const startScrambleIndex = Math.max(0, i - n)
-        if ((startScrambleIndex > 0 || maxScrambleChars > 3) && !data.soundPlaying) {
+        // if volume 0, don't even play
+        if ((startScrambleIndex > 0 || maxScrambleChars > 3) && !data.soundPlaying && soundOptions.volume) {
           data.soundPlaying = true
           window.app.audio.play(soundId, 'typing', {
             loop: true,

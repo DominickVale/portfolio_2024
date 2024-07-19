@@ -149,7 +149,7 @@ export default class Cursor {
 
   onShowMessage(e: CustomEvent<MessageShowEvent>) {
     const { message, isError, isSuccess, timeout, speed, charClass, ease, maxScrambleChars } = e.detail
-    if (message.length > 1) Typewriter.typewrite(this.textEl, { message, speed, charClass, ease, maxScrambleChars, soundOptions: { volume: 0.25 }})
+    if (message.length > 1) Typewriter.typewrite(this.textEl, { message, speed, charClass, ease, maxScrambleChars, soundOptions: { volume: message.length > 8 ? 0.25 : 0 }})
     else this.textEl.textContent = message
     if (isError) this.textEl.classList.add('error')
     else if (isSuccess) this.textEl.classList.add('success')

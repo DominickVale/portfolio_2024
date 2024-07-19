@@ -23,6 +23,7 @@ import Preloader from './modules/Preloader'
 import FromHomeTransition from './modules/transitions/fromHome'
 import Audio from './modules/AudioWrapper'
 import * as THREE from 'three'
+import WipRenderer from './modules/renderers/WipRenderer'
 
 export default class App {
   experience: Experience
@@ -76,6 +77,8 @@ export default class App {
         blog: BlogRenderer,
         contact: ContactsRenderer,
         blogArticle: BlogArticleRenderer,
+        lab: WipRenderer,
+        '404': WipRenderer,
       },
     })
     this.taxi.on('NAVIGATE_IN', ({ to, trigger }) => {
