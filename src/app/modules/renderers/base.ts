@@ -19,6 +19,10 @@ export default class BaseRenderer extends Renderer {
 
     this.navLinks = Array.from($all('nav li a')) as HTMLAnchorElement[]
 
+    $("#sound-toggled-label").addEventListener('click', () => {
+      window.app.audio.toggle()
+    })
+
     $('#navbar').addEventListener('click', (e) => {
       const clickedEl = e.target as HTMLElement
       if (clickedEl.parentElement.classList.contains('nav-link')) {

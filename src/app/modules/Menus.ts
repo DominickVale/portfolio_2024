@@ -31,7 +31,7 @@ export default class Menus {
     e.preventDefault()
     e.stopPropagation()
 
-    const isTouchOrBound = (window.app.cursor.pos.x <= 3 || window.app.cursor.pos.y <= 3) || e.clientX <= 1 && e.clientY <= 1
+    const isTouchOrBound = window.app.cursor.pos.x <= 3 || window.app.cursor.pos.y <= 3 || (e.clientX <= 1 && e.clientY <= 1)
     const pos = {
       x: isTouchOrBound ? window.innerWidth / 2 : e.clientX,
       y: isTouchOrBound ? window.innerHeight / 2 : e.clientY,
@@ -192,14 +192,7 @@ export default class Menus {
         iconId: 'audio',
         label: 'TOGGLE AUDIO',
         callback() {
-          // TODO: finish
-          if (window.app.overridePreloader) {
-            window.app.audio.play('background', 'song', {
-              volume: 0.5,
-              loop: true,
-            })
-          }
-
+          window.app.audio.toggle()
         },
       },
     ]

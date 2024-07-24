@@ -33,12 +33,48 @@ class ExtendedHowl extends Howl {
 class AudioWrapper {
   activeSounds: Map<string, ExtendedHowl>
   backgroundMusic: ExtendedHowl
+  enabled: boolean
 
   constructor() {
     this.activeSounds = new Map()
+    this.enabled = localStorage.getItem('soundEnabled') === 'true'
+  }
+
+  toggle() {
+    console.log("enabled?", this.enabled)
+    if (this.enabled) this.disable()
+    else {
+      this.enable()
+      this.playBgMusic()
+    }
+  }
+
+  enable() {
+    this.enabled = true
+    $('#sound-toggled-label').innerText = 'SOUND ON'
+    // save setting to localstorage
+    localStorage.setItem('soundEnabled', 'true')
+  }
+
+  disable() {
+    this.enabled = false
+    this.activeSounds.forEach((s) => this.stop(s.id))
+    $('#sound-toggled-label').innerText = 'SOUND OFF'
+    localStorage.setItem('soundEnabled', 'false')
+  }
+
+  playBgMusic() {
+    if (!this.enabled) {
+      console.warn('Audio not enabled, cant start bg music')
+    }
+    this.play('background', 'song', {
+      volume: 0.5,
+      loop: true,
+    })
   }
 
   play(id: string | null, soundName: string, options: PlayOptions = {}): ExtendedHowl {
+    if (!this.enabled) return
     const { loop = false, volume = 1, seek = 0, pan = 0, fadeIn = 0, fadeOut, onplay, onend, sprite, ...rest } = options
 
     const soundPath = window.app.experience.resources!.items[soundName]?.path

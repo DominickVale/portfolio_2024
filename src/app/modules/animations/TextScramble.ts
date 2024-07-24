@@ -49,6 +49,10 @@ export default class TextScramble {
   public static scramble(el: HTMLElement, speed: number = 45) {
     const target = $('.scramble-container .scramble-text', el)
 
+    if(!target) {
+      console.warn("TextScramble: target not found: ", el, target)
+      return
+    }
     const originalText = el.getAttribute('data-text-scramble')
     const audioAttr = el.getAttribute('data-text-scramble-audio')
     const soundEnabled = !!audioAttr

@@ -22,7 +22,7 @@ export default class Preloader {
   loadingTL: gsap.core.Timeline
   enterTL: gsap.core.Timeline
 
-  constructor(public onEnterCb: (withSound: boolean) => void) {
+  constructor() {
     this.container = $('#preloader')
     this.p = $('p', this.container)
     this.title = $('h1', this.container)
@@ -94,6 +94,9 @@ export default class Preloader {
 
   onEnter(withSound?: boolean) {
     if (window.app.overridePreloader) return
+    if (withSound) window.app.audio.enable()
+    else window.app.audio.disable()
+
     const preset = LORENZ_PRESETS['collapsedAfter']
     const attractor = this.experience.world.attractor
     const attractorUniforms = attractor.bufferMaterial.uniforms
@@ -133,7 +136,6 @@ export default class Preloader {
       .timeline({
         onComplete: () => {
           // this.container.style.display = 'none'
-          this.onEnterCb(withSound)
           window.app.isFirstTime = false
         },
       })
@@ -200,13 +202,11 @@ export default class Preloader {
           window.app.audio.play(null, 'boom', {
             volume: 0.75,
           })
-          window.app.audio.play('background', 'song', {
-            loop: true,
-          })
+          window.app.audio.playBgMusic()
           setTimeout(() => {
-              window.app.audio.play(null, 'woosh', {
-                volume: 0.5,
-              })
+            window.app.audio.play(null, 'woosh', {
+              volume: 0.5,
+            })
           }, 2000)
         },
         window.app.isFirstTime ? '+=1.5' : '+=0',

@@ -8,10 +8,10 @@ const {} = Astro.props
 
 <footer class="fixed bottom-10 left-0 z-10 w-full text-xs font-light text-inactive opacity-0 transition-opacity duration-[2s] ease-in lg:bottom-12">
   <ul class="grid grid-cols-12 items-center">
-    <li class="col-span-5 col-start-2 row-span-1 row-start-1 select-none lg:col-span-1 lg:col-start-1 lg:text-right">
-      <p class="lg:mr-3">SOUND ON</p>
+    <li class="col-span-5 col-start-2 row-span-1 row-start-1 select-none lg:col-span-1 lg:col-start-1 lg:text-right flex">
+      <p id="sound-toggled-label" class="lg:mr-3 cursor-pointer hover:text-white">SOUND OFF</p>
     </li>
-    <div class="absolute left-0 right-0 hidden justify-center aspect-4/4:flex">
+    <div class="absolute left-0 right-0 hidden justify-center aspect-4/4:flex pointer-events-none">
       <div class="flex flex-col items-center gap-2">
         <svg class="quick-menu-icon" width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g opacity="0.5">

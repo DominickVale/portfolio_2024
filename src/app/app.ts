@@ -52,7 +52,7 @@ export default class App {
     this.menus = new Menus(this.onToggleDebug.bind(this))
     this.scrambles = new TextScramble()
     this.typewriter = new Typewriter()
-    this.preloader = new Preloader(() => {})
+    this.preloader = new Preloader()
 
     this.audio = new Audio()
 
@@ -102,7 +102,7 @@ export default class App {
     // stop any playing looping audio still playing while transitioning
     this.taxi.on('NAVIGATE_OUT', ({ to, trigger }) => {
       window.app.audio.activeSounds.forEach(s => {
-        if(s?.loop()){
+        if(s?.loop() && s.id != "background"){
           window.app.audio.stop(s.id)
         }
       })
