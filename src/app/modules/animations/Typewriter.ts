@@ -41,12 +41,6 @@ export default class Typewriter {
         maxScrambleChars,
         soundOptions: soundOptions,
       },
-      onInterrupt() {
-        const id = this.typewriter?.soundId
-        if (window.app.audio.activeSounds.get(id)) {
-          window.app.audio.stop(id)
-        }
-      },
       ease: ease || 'power4.inOut',
     })
   }

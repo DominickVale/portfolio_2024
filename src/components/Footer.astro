@@ -33,7 +33,7 @@ const {} = Astro.props
     </div>
     <li class="col-span-5 col-start-7 row-span-1 row-start-1 justify-start lg:col-span-1 lg:col-start-12 lg:ml-2 lg:flex">
       <p id="clock" class="min-w-24 select-none text-right lg:text-left">
-        00<span class="animate-blink-slow">:</span>00 AM<span class="hidden xl:inline">(CET)</span>
+        00<span class="animate-blink-slow">:</span>00 AM
       </p>
     </li>
   </ul>
@@ -69,7 +69,7 @@ const {} = Astro.props
       hour: 'numeric',
       minute: 'numeric',
     })
-    clockEl.innerHTML = `${timeString.replace(/:/g, '<span class="animate-blink-slow">:</span>')} <span class="hidden xl:inline">(CET)</span>`
+    clockEl.innerHTML = `${timeString.replace(/:/g, '<span class="animate-blink-slow">:</span>')} <span class="hidden 2xl:inline">(CET)</span>`
   }
 
   updateClock()

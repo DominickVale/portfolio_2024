@@ -32,7 +32,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
         </p>
         <Btn
           href="/about"
-          class="w-max p-2"
+          class="w-max text-nowrap whitespace-nowrap p-2"
           innerClass="!block"
           data-cursor-delay="2500"
           data-cursor-message="... What are you waiting for? Let's go! :D"
@@ -41,15 +41,11 @@ import NextPageBtn from '../components/NextPageBtn.astro'
           data-audio-stopon="mouseout mousedown"
           data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:-0.5 volume:0.2"
           data-audio-click="vibration-click pan:-0.5 volume:0.3"
-          data-text-scramble="READ MORE">READ MORE</Btn
+          data-text-scramble="READ MORE">READ&nbsp;MORE</Btn
         >
       </div>
       <div class="mb-14 hidden sm:flex">
-        <NextPageBtn
-          href="/works"
-          data-cursor-delay="1000"
-          data-cursor-message="Let's go, in 'n out.<br/>2 minutes adventure.">NEXT</NextPageBtn
-        >
+        <NextPageBtn href="/works" data-cursor-delay="1000" data-cursor-message="Let's go, in 'n out.<br/>2 minutes adventure.">NEXT</NextPageBtn>
       </div>
     </div>
     <h1
@@ -70,15 +66,14 @@ import NextPageBtn from '../components/NextPageBtn.astro'
         <StatusItem class="text-nowrap">WANNABE ARTIST</StatusItem>
         <StatusItem>LEARNER</StatusItem>
       </ul>
-      <ul>
-        <StatusItem highlight
-          >STATUS: <span
-            class="text-success"
-            data-cursor-delay="100"
-            data-cursor-message="(full-time or not)"
-            data-cursor-timeout="2500"
-            data-cursor-type="success">AVAILABLE</span
-          ></StatusItem
+      <ul class="flex justify-start items-start">
+        <StatusItem class="w-0 !min-w-16" highlight>STATUS:</StatusItem><span
+          id="status-available"
+          class="text-success inline-block"
+          data-cursor-delay="100"
+          data-cursor-message="(full-time or not)"
+          data-cursor-timeout="2500"
+          data-cursor-type="success">AVAILABLE</span
         >
       </ul>
       <ul class="ml-auto hidden flex-col gap-[7%] md:block lg:flex">

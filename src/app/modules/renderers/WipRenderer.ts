@@ -20,7 +20,6 @@ export default class WipRenderer extends BaseRenderer {
     super.onEnter()
     this.isDesktop = window.innerWidth > 1024
 
-    console.log("WIP REDNE")
     this.experience = new Experience()
     BaseRenderer.resizeHandlers.push(this.handleResize.bind(this))
     this.createEnterAnim()
@@ -54,7 +53,7 @@ export default class WipRenderer extends BaseRenderer {
       .to(
         attractor.bufferMaterial.uniforms.uRho,
         {
-          value: 100,
+          value: 30,
           duration: 0.01,
           ease: 'power2.out',
         },
@@ -63,7 +62,7 @@ export default class WipRenderer extends BaseRenderer {
       .to(
         attractor.bufferMaterial.uniforms.uBeta,
         {
-          value: 0.252,
+          value: 20.252,
           duration: 0.01,
           ease: 'power2.out',
         },
@@ -81,7 +80,7 @@ export default class WipRenderer extends BaseRenderer {
       .to(
         this.experience.params,
         {
-          speed: 60,
+          speed: 20,
           duration: 0.1,
           ease: 'power2.in',
           onComplete: () => {

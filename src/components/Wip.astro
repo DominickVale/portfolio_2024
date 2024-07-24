@@ -14,11 +14,18 @@ const { title, subtitle, bgText } = Astro.props
     {title}
   </h2>
   <p class="text-center text-sm text-white opacity-80">{subtitle}</p>
-  <Btn href="/" class="bg-blur-harder mt-6 !h-11 w-40 justify-center" frame><span>GO HOME</span></Btn>
+  <Btn
+    href="/"
+    class="bg-blur-harder mt-6 !h-11 w-40 justify-center"
+    frame
+    data-audio
+    data-audio-stopon="mouseout mousedown"
+    data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:-0.25 volume:0.5"
+    data-audio-click="vibration-click pan:-0.25 volume:0.2"><span>GO HOME</span></Btn
+  >
   <h1
     class="font-outline pointer-events-none ml-[3vw] font-display text-[30vw] font-black leading-relaxed tracking-[3vw] text-[rgb(15,15,15)] opacity-50 md:text-[20vw] md:leading-[100%]"
   >
     {bgText}
   </h1>
 </div>
-

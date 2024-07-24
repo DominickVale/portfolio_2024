@@ -34,7 +34,6 @@ export class ContactsInternalRenderer {
   submitButton: HTMLElement
   sendingEmail: boolean
   textboxes: NodeListOf<HTMLInputElement>
-  submitButtonInner: Element
   // Is this the actual page or the embedded version?
   isContactsPage: boolean
   tl: gsap.core.Timeline
@@ -97,7 +96,6 @@ export class ContactsInternalRenderer {
     if (!this.form) return
     this.textboxes = $all('.textbox') as NodeListOf<HTMLInputElement>
     this.submitButton = $('#send', this.form)
-    this.submitButtonInner = this.submitButton.children[0]
 
     this.textboxes.forEach((textbox) => {
       textbox.addEventListener('blur', this.handleTextboxBlur.bind(this))
@@ -167,7 +165,7 @@ export class ContactsInternalRenderer {
       wrapper.classList.add('textbox-wrapper-valid')
     }
     this.updateButtonOpacity()
-    this.submitButtonInner.textContent = 'SEND IT'
+    this.submitButton.textContent = 'SEND IT'
   }
 
   updateButtonOpacity() {

@@ -99,6 +99,15 @@ export default class App {
       this.audio.setupEvents()
     })
 
+    // stop any playing looping audio still playing while transitioning
+    this.taxi.on('NAVIGATE_OUT', ({ to, trigger }) => {
+      window.app.audio.activeSounds.forEach(s => {
+        if(s?.loop()){
+          window.app.audio.stop(s.id)
+        }
+      })
+    })
+
     this.taxi.addRoute('/works', '.*', 'fromWorks')
     this.taxi.addRoute('/about.*', '.*', 'fromAbout')
     this.taxi.addRoute('/blog/.*', '.*', 'fromBlogArticle')

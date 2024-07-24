@@ -9,7 +9,8 @@ type Props = {
 
 const { l, r, class: classes } = Astro.props
 
-export const btnClasses = 'flex justify-center items-center bg-background-dark-02 backdrop-blur-[16px] mx-auto h-20 w-52 justify-center overflow-hidden'
+export const btnClasses =
+  'flex text-nowrap justify-center items-center bg-background-dark-02 backdrop-blur-[16px] mx-auto h-20 w-52 justify-center overflow-hidden'
 ---
 
 <div
@@ -29,9 +30,9 @@ export const btnClasses = 'flex justify-center items-center bg-background-dark-0
     frame
     data-audio
     data-audio-stopon="mouseout mousedown"
-    data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:-0.25 volume:0.5"
-    data-audio-click="vibration-click pan:-0.25 volume:0.2"
-  >{l.text}</Btn >
+    data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:-0.25 volume:0.2"
+    data-audio-click="vibration-click pan:-0.25 volume:0.2">{l.text}</Btn
+  >
   <Btn
     href={r.link}
     data-text-scramble={r.text}
@@ -40,7 +41,7 @@ export const btnClasses = 'flex justify-center items-center bg-background-dark-0
     frame
     data-audio
     data-audio-stopon="mouseout mousedown"
-    data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:0.25 volume:0.5"
-    data-audio-click="vibration-click pan:0.25 volume:0.2"
-  >{r.text}</Btn >
+    data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:0.25 volume:0.2"
+    data-audio-click="vibration-click pan:0.25 volume:0.2">{r.text}</Btn
+  >
 </div>

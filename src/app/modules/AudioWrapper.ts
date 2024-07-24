@@ -23,6 +23,7 @@ export interface AudioOptions {
 
 // Needed until @types/howler is updated
 class ExtendedHowl extends Howl {
+  id: string
   name?: string
   fadeState: 'in' | 'out' | 'none' = 'none'
   fadeIn?: number
@@ -42,8 +43,8 @@ class AudioWrapper {
 
     const soundPath = window.app.experience.resources!.items[soundName]?.path
 
-    if(!soundPath){
-      console.warn("Sound not found: ", soundName)
+    if (!soundPath) {
+      console.warn('Sound not found: ', soundName)
       return
     }
     let sound = (id && this.activeSounds.get(id)) || new ExtendedHowl({ src: [soundPath], loop, sprite, ...rest })
@@ -51,6 +52,7 @@ class AudioWrapper {
     sound.name = soundName
     sound.fadeIn = fadeIn
     sound.fadeOut = fadeOut
+    sound.id = id
 
     if (sound.fadeState === 'out') {
       gsap.killTweensOf(sound)
@@ -87,7 +89,7 @@ class AudioWrapper {
       sound.play()
     }
 
-    if(window.app.debug) console.log("[AUDIO] Playing", soundName, id, "\nwith options: ", options, "\ninner howler:", sound)
+    if (window.app.debug) console.log('[AUDIO] Playing', soundName, id, '\nwith options: ', options, '\ninner howler:', sound)
     if (pan) sound.stereo(pan)
     if (fadeIn) {
       sound.volume(0)
@@ -110,7 +112,12 @@ class AudioWrapper {
     }
 
     if (onplay) sound.on('play', onplay)
-    if (onend) sound.on('end', () => onend(sound))
+    sound.on('end', (iid) => {
+      if (!this.activeSounds.get(id)) {
+        sound.stop(iid)
+        if (onend) onend(sound)
+      }
+    })
     if (seek) sound.seek(seek)
     if (loop) {
       if (!id) throw new Error('Looping requires an id')
@@ -123,12 +130,16 @@ class AudioWrapper {
   stop(id: string): void {
     const sound = this.activeSounds.get(id)
 
-    if (!sound) throw new Error(`Sound ${id} not found`)
+    if (!sound) {
+      console.warn('Sound not found: ', id)
+      return
+    }
 
     const unload = () => {
       sound.stop()
       sound.fadeState = 'none'
       sound.unload()
+      this.activeSounds.delete(id)
     }
 
     if (sound.fadeOut && sound && sound.playing()) {
@@ -176,11 +187,11 @@ class AudioWrapper {
   }
 
   setupEvents(): void {
-    $all('[data-audio]')?.forEach((el) => {
+    $all('[data-audio]')?.forEach((el, i) => {
       let id = el.getAttribute('data-audio-id')
 
       if (!id) {
-        id = `${name}-${Date.now()}`
+        id = `${name}-${Date.now() + i}`
         el.setAttribute('data-audio-id', id)
       }
 
@@ -253,6 +264,7 @@ class AudioWrapper {
   }
 
   muffleMusic(muffle: boolean) {
+    if (!this.backgroundMusic) return
     const tmp = { v: muffle ? 1 : 0.2 }
     gsap.to(tmp, {
       v: muffle ? 0.2 : 1,

@@ -5,6 +5,7 @@ import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
 import { CustomEase } from 'gsap/all'
 import { $, $all } from '../../utils'
+import type LorenzAttractor from 'src/app/gl/Scenes/LorenzAttractor'
 
 gsap.registerPlugin(CustomEase)
 gsap.registerPlugin(TypewriterPlugin)
@@ -14,9 +15,9 @@ export default class AboutRenderer extends BaseRenderer {
   isFirstRender: boolean
   static enterTL: gsap.core.Timeline
   aboutPage: string
-    isIndexPage: boolean
-    isFirstTime: boolean
-    attractor: import("/home/dominick/Projects/portfolio_2024/src/app/gl/Scenes/LorenzAttractor").default
+  isIndexPage: boolean
+  isFirstTime: boolean
+  attractor: LorenzAttractor
 
   initialLoad() {
     super.initialLoad()
@@ -56,8 +57,6 @@ export default class AboutRenderer extends BaseRenderer {
   }
 
   //////////////////////////////////////////
-  
-
 
   ////////   ANIMS   ////////
 
@@ -76,71 +75,75 @@ export default class AboutRenderer extends BaseRenderer {
       const imageSmall2 = $('.small-2', img)
       gsap.set(imageSmall1, { opacity: 0 })
       gsap.set(imageSmall2, { opacity: 0 })
-      const tl = gsap.timeline()
-      .from($('.new-fui-corners', img), {
-        scale: 0,
-        duration: 0.35,
-        ease: 'circ.in',
-      })
-      .fromTo($('.new-fui-corners', img),
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 0.09,
-          stagger: {
-            repeat: 20,
-            each: 0.1,
+      const tl = gsap
+        .timeline()
+        .from($('.new-fui-corners', img), {
+          scale: 0,
+          duration: 0.35,
+          ease: 'circ.in',
+        })
+        .fromTo(
+          $('.new-fui-corners', img),
+          { opacity: 0 },
+          {
+            opacity: 1,
+            duration: 0.09,
+            stagger: {
+              repeat: 20,
+              each: 0.1,
+            },
           },
-        },
-        '<+50%',
-      )
-      .fromTo(
-        $('img', img),
-        {
-          scaleY: 0,
-        },
-        {
-          scaleY: 1,
-          duration: 0.5,
-          ease: 'expo.in',
-        },
-        '<',
-      )
-      .to(imageSmall1, {
-        onStart: function () {
-          gsap.set(imageSmall1, { opacity: 0.4, visibility: 'unset' })
-        },
-        typewrite: {
-          speed: 0.35,
-        },
-        ease: 'power4.in',
-      })
-      .to(
-        imageSmall2,
-        {
+          '<+50%',
+        )
+        .fromTo(
+          $('img', img),
+          {
+            scaleY: 0,
+          },
+          {
+            scaleY: 1,
+            duration: 0.5,
+            ease: 'expo.in',
+          },
+          '<',
+        )
+        .to(imageSmall1, {
           onStart: function () {
-            gsap.set(imageSmall2, { opacity: 0.4, visibility: 'unset' })
+            gsap.set(imageSmall1, { opacity: 0.4, visibility: 'unset' })
           },
           typewrite: {
             speed: 0.35,
           },
           ease: 'power4.in',
-        },
-        '<',
-      )
+        })
+        .to(
+          imageSmall2,
+          {
+            onStart: function () {
+              gsap.set(imageSmall2, { opacity: 0.4, visibility: 'unset' })
+            },
+            typewrite: {
+              speed: 0.35,
+            },
+            ease: 'power4.in',
+          },
+          '<',
+        )
 
-      imagesTL.add(tl, "<+10%")
+      imagesTL.add(tl, '<+10%')
     })
 
-    const getRemoveOpacity = (v?: number) => function () {
-      gsap.to(this.targets()[0], { opacity: v || 1 })
-    }
+    const getRemoveOpacity = (v?: number) =>
+      function () {
+        gsap.to(this.targets()[0], { opacity: v || 1 })
+      }
 
     const fakeCodeTL = gsap
       .timeline()
       .to('.fake-logs pre:nth-child(1)', {
         typewrite: {
           charClass: 'text-primary-lightest',
+          soundOptions: { volume: 0 },
         },
         duration: 0.75,
         onStart: getRemoveOpacity(0.6),
@@ -148,6 +151,7 @@ export default class AboutRenderer extends BaseRenderer {
       .to('.fake-logs pre:nth-child(2)', {
         typewrite: {
           charClass: 'text-primary-lightest',
+          soundOptions: { volume: 0 },
         },
         duration: 1,
         delay: 1,
@@ -156,14 +160,20 @@ export default class AboutRenderer extends BaseRenderer {
       .to('.fake-logs pre:nth-child(3)', {
         typewrite: {
           charClass: 'text-primary-lightest',
+          soundOptions: { volume: 0 },
         },
         duration: 1,
         onStart: getRemoveOpacity(0.6),
+      onUpdate () {
+      console.log(this)
+      },
         onComplete: () => {
+          console.log("completed")
           setTimeout(() => {
             gsap.to('.fake-logs pre:nth-child(4)', {
               typewrite: {
                 charClass: 'text-primary-lightest',
+                soundOptions: { volume: 0 },
               },
               duration: 1,
               onStart: getRemoveOpacity(0.6),
@@ -269,7 +279,7 @@ export default class AboutRenderer extends BaseRenderer {
         paused: true,
         onComplete: () => {
           window.aboutPageVisited = true
-        }
+        },
       })
       .add(attractorPosTl)
       .add(fakeCodeTL, '<')
@@ -291,7 +301,7 @@ export default class AboutRenderer extends BaseRenderer {
         {
           typewrite: {
             charClass: 'text-primary-lightest drop-shadow-glow',
-            value: this.isIndexPage && !this.isFirstTime ? "NICE TO SEE YOU AGAIN!" : undefined,
+            value: this.isIndexPage && !this.isFirstTime ? 'NICE TO SEE YOU AGAIN!' : undefined,
             maxScrambleChars: 2,
           },
           ease: 'power1.out',
@@ -311,7 +321,7 @@ export default class AboutRenderer extends BaseRenderer {
         this.isIndexPage && this.isFirstTime ? undefined : '<+80%',
       )
       .add(detailsTL)
-      .add(imagesTL, "<")
+      .add(imagesTL, '<')
       // .to('.intro-paragraph', {
       //   typewrite: {
       //     charClass: 'text-primary-lightest drop-shadow-glow',
@@ -322,6 +332,5 @@ export default class AboutRenderer extends BaseRenderer {
       //   onStart: () => gsap.set('p', { opacity: 1 }),
       // })
       .add(btnsTL, '<')
-
   }
 }

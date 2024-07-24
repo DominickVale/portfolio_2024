@@ -119,6 +119,12 @@ export default class HomeRenderer extends BaseRenderer {
         '<',
       )
       .add(itemsTL, '<+80%')
+      .from('#status-available', {
+        autoAlpha: 0,
+        duration: 0.1,
+        repeat: 3,
+        ease: 'linear',
+      })
       .from(
         '#home-about',
         {

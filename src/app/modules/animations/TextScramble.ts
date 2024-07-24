@@ -33,8 +33,8 @@ export default class TextScramble {
 
         const scrambleHtml = `
 <div class="scramble-container relative pointer-events-none">
-  <span class="shadow opacity-50 text-red-500">${oldText || ''}</span>
-  <span class="scramble-text text-nowrap absolute left-0 top-0 w-full h-full">${oldText || ''}</span>
+  <span class="shadow opacity-0 text-red-500">${oldText || ''}</span>
+  <span class="scramble-text absolute left-0 top-0 w-full h-full">${oldText || ''}</span>
 </div>
 `
         el.innerHTML = oldHtml + scrambleHtml

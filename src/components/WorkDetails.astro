@@ -13,17 +13,17 @@ const { small, project } = Astro.props
   small ? (
     <table class="w-full flex-1 text-xs">
       <tbody class="flex w-full">
-        <tr class="flex flex-col flex-1">
+        <tr class="flex flex-1 flex-col">
           <th class="pl-0 pr-3 text-left tracking-widest text-primary-darker">ROLE:</th>
           <td class="work-details-role opacity-0">{project?.role}</td>
         </tr>
-        <tr class="flex flex-col justify-center items-center flex-1">
-          <th class="pl-0 text-left tracking-widest text-primary-darker mr-[-0.4rem]">CLIENT:</th>
+        <tr class="flex flex-1 flex-col items-center justify-center">
+          <th class="mr-[-0.4rem] pl-0 text-left tracking-widest text-primary-darker">CLIENT:</th>
           <td class="work-details-client text-center opacity-0">{project?.client}</td>
         </tr>
-        <tr class="flex flex-col flex-1">
+        <tr class="flex flex-1 flex-col">
           <th class="text-right tracking-widest text-primary-darker">YEAR:</th>
-          <td class="work-details-year pr-1 min-w-full text-right opacity-0">{project?.year}</td>
+          <td class="work-details-year min-w-full pr-1 text-right opacity-0">{project?.year}</td>
         </tr>
       </tbody>
     </table>
@@ -32,15 +32,15 @@ const { small, project } = Astro.props
       <tbody class="grid min-w-[30vw] grid-cols-[1fr_2fr] items-start gap-4">
         <tr class="grid grid-cols-[3.5rem_1fr] gap-1">
           <th class="animate-fui-flash pl-0 pr-3 text-left tracking-widest text-primary-darker">ROLE:</th>
-          <td class="work-details-role text-left" />
+          <td class="work-details-role text-left">{project?.role}</td>
           <th class="pl-0 pr-3 text-left tracking-widest text-primary-darker">CLIENT:</th>
-          <td class="work-details-client text-left" />
+          <td class="work-details-client text-left">{project?.client}</td>
         </tr>
         <tr class="grid w-full grid-cols-[3rem_1fr] gap-1">
           <th class="pl-0 pr-3 text-left tracking-widest text-primary-darker">YEAR:</th>
-          <td class="work-details-year text-left" />
+          <td class="work-details-year text-left" >{project?.year}</td>
           <th class="min-h-16 pl-0 pr-3 text-left tracking-widest text-primary-darker">TECH:</th>
-          <td class="work-details-tech min-w-32 text-left" />
+          <td class="work-details-tech min-w-32 text-left">{project?.tech}</td>
         </tr>
       </tbody>
     </table>

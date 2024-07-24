@@ -49,17 +49,17 @@ const Component = Astro.props.area ? 'textarea' : 'input'
     opacity: 0.5;
   }
   .fui-corners {
-    opacity: 1;
-    transform: scale(0.2);
+    opacity: 0;
+    transform: scale(0.5);
     transition: all 0.2s ease-in-out;
   }
   .textbox:focus + .fui-corners {
+    opacity: 1;
     transform: scale(1);
-    animation: slight-flickering 0.3s infinite alternate;
   }
   .textbox-wrapper-invalid .fui-corners {
     --color: red;
-    animation: fast-blink-short 0.2s ease-in 2;
+    animation: fast-blink-short 0.3s ease-in 2;
     transform: scale(1);
   }
 </style>

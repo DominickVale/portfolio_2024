@@ -32,7 +32,8 @@ export default class WorksRenderer extends BaseRenderer {
     this.canChange = false
     // run after the new content has been added to the Taxi container
     this.currIdx = 0
-    this.isDesktop = window.innerWidth > 1024
+    // make this coherent...
+    this.isDesktop = window.innerWidth > 768
     this.projects = {}
     this.pIds = []
     this.lastTouchY = 0
@@ -83,7 +84,6 @@ export default class WorksRenderer extends BaseRenderer {
     const highlightCorner = $('.highlighted-corner', activeProject.element)
     highlightCorner.classList.remove('hidden')
     activeProject.element.setAttribute('data-active', 'true')
-    console.log('recalculated active')
 
     if (!this.isFirstRender) {
       const planeMatUni = this.experience.world.worksImage.planeMat.uniforms
@@ -151,26 +151,26 @@ export default class WorksRenderer extends BaseRenderer {
     }
   }
 
-  recalculateOthers() {
-    this.pIds.forEach((id, i) => {
-      const p = this.projects[id]
-      p.element.setAttribute('data-active', 'false')
+  recalculateInactiveElement(el: HTMLElement, idx?: number) {
+      el.setAttribute('data-active', 'false')
+      const i = idx || Number(el.getAttribute('data-i'))
+
       const newScale = 1 / Math.max(1, Math.abs(i - this.currIdx) + 1 / this.pIds.length)
-      const svg = $('svg', p.element)
+      const svg = $('svg', el)
       gsap.to(svg, {
         scale: newScale,
         duration: 0.45,
         ease: 'power4.out',
       })
       const blur = Math.pow(Math.abs(i - this.currIdx), 2)
-      gsap.to(p.element, {
+      gsap.to(el, {
         opacity: i === this.currIdx ? 1 : 0.5,
         filter: `blur(${blur}px)`,
         duration: 0.45,
         ease: 'power4.out',
       })
       if (i !== this.currIdx) {
-        const highlightCorner = $('.highlighted-corner', p.element)
+        const highlightCorner = $('.highlighted-corner', el)
         gsap.to(highlightCorner, {
           opacity: 0,
           duration: 0.03,
@@ -180,12 +180,35 @@ export default class WorksRenderer extends BaseRenderer {
           },
         })
       }
+  }
+
+  recalculateOthers() {
+    this.pIds.forEach((id, i) => {
+      const p = this.projects[id]
+      this.recalculateInactiveElement(p.element, i)
     })
   }
 
   setupProjectTitles() {
     $all(this.isDesktop ? '.project-title' : '.project-title-mobile').forEach((p, i) => {
       setupSvgText(p, this.isDesktop)
+      p.addEventListener('mouseover', (e) => {
+        gsap.to(e.currentTarget, {
+          opacity: 0.90,
+          duration: 0.35,
+          ease: 'power4.inOut',
+        })
+      })
+      p.addEventListener('mouseout', (e) => {
+        this.recalculateInactiveElement(e.currentTarget as HTMLElement)
+      })
+      p.addEventListener('mousedown', (e) => {
+        e.preventDefault()
+        const el = e.currentTarget as HTMLElement
+        const i =  Number(el.getAttribute('data-i'))
+        this.currIdx = i
+        this.handleActiveProject(null)
+      })
       this.projects[i] = {
         element: p,
         image: PROJECTS_LIST[i].image,
@@ -197,7 +220,7 @@ export default class WorksRenderer extends BaseRenderer {
     const activeProject = PROJECTS_LIST[this.currIdx]
     Object.keys(activeProject.data).forEach((field, i) => {
       const value = activeProject.data[field]
-      const el = $(`.work-details-${field}`)
+      const el = $(`${this.isDesktop ? '.work-details' : '.work-details-mobile'} .work-details-${field}`)
       if (!el) return
       const tl = gsap
         .timeline()
@@ -232,24 +255,23 @@ export default class WorksRenderer extends BaseRenderer {
     let direction: 'up' | 'down'
     if (!this.canChange) return
 
-    if (typeof e.deltaY !== 'undefined') {
+    if (typeof e?.deltaY !== 'undefined') {
       // Wheel event
       direction = e.deltaY > 0 ? 'down' : 'up'
-    } else if (e.touches && e.touches.length > 0) {
+    } else if (e?.touches && e?.touches.length > 0) {
       // Touch event
       const currentTouchY = e.touches[0].clientY
       direction = currentTouchY > this.lastTouchY ? 'up' : 'down'
       this.lastTouchY = currentTouchY
-    } else {
-      return // Ignore if not a wheel or touch event
     }
 
     if (direction === 'down') {
       this.currIdx = (this.currIdx + 1) % this.pIds.length
-    } else {
+    } else if(e) {
       this.currIdx = this.currIdx - 1
       this.currIdx = this.currIdx < 0 ? this.pIds.length - 1 : this.currIdx
     }
+    // if direction !== down and e is null, just update the entries
 
     this.updateProjectDetails()
     this.recalculateOthers()
@@ -258,6 +280,8 @@ export default class WorksRenderer extends BaseRenderer {
   }
 
   handleResize() {
+    this.updateProjectDetails()
+    workDetailsTL(this.isDesktop ? '.works-details' : '.work-details-mobile')
     this.setupProjectTitles()
     this.recalculateOthers()
     this.recalculateActive()

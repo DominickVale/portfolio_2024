@@ -5,6 +5,17 @@ const CHARS = 'ᚠᚢᚦᚨᚩᚬᚭᚯᚰᚱᚲᚳᚴᚵᚶᚷᚸᚹᚺᚻᚼ�
 
 let _tempDiv
 
+const stopSound =
+  (id, cb, handler) =>
+  (...args) => {
+    if (window.app.audio.activeSounds.get(id)) {
+      window.app.audio.stop(id)
+    }
+    if (cb) {
+      cb(...args)
+    }
+  }
+
 //@TODO: Maybe make it a library or something? (Add back the support for rtl, classes etc.)
 export const TypewriterPlugin = {
   version: '1.0.0',
@@ -33,13 +44,17 @@ export const TypewriterPlugin = {
     data.maxScrambleChars = props.maxScrambleChars || 4
     data.charClass = props.charClass
     data.duration = tween.vars.duration
-    data.soundId = 'typing_' + Date.now()
+    data.soundId = 'typing_' + Date.now() + '_' + text
     data.soundOptions = {
       volume: 0.25,
       rate: 1.8,
-      ...props.soundOptions
+      ...props.soundOptions,
     }
     tween.typewriter = data // this is specific to the Typewriter.ts implementation
+    const oldOnInterrupt = tween.vars.onInterrupt
+    const oldOnComplete = tween.vars.onComplete
+    tween.vars.onInterrupt = stopSound(data.soundId, oldOnInterrupt, 'interrupt')
+    tween.vars.onComplete = stopSound(data.soundId, oldOnComplete, 'complete')
   },
   render(progress, data) {
     if (progress >= 1) {
@@ -78,7 +93,7 @@ export const TypewriterPlugin = {
           data.soundPlaying = true
           window.app.audio.play(soundId, 'typing', {
             loop: true,
-            ...soundOptions
+            ...soundOptions,
           })
         }
         let scrambledPart = text

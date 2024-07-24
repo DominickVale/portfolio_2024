@@ -353,7 +353,7 @@ scrollbar-button {
 }
 
 .intro-paragraph {
-  @apply max-w-lg text-center text-sm font-normal text-label;
+  @apply max-w-lg md:max-w-[42%] mx-auto xl:max-w-lg text-center text-sm font-normal text-label;
   text-wrap: pretty;
 }
 
