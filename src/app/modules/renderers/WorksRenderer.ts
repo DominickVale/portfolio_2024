@@ -1,4 +1,4 @@
-import { $, $all, setupSvgText } from '../../utils'
+import { $, $all, isMobile, setupSvgText } from '../../utils'
 import { PROJECTS_LIST } from '../../constants'
 import { radToDeg } from 'three/src/math/MathUtils.js'
 import gsap from 'gsap'
@@ -33,7 +33,7 @@ export default class WorksRenderer extends BaseRenderer {
     // run after the new content has been added to the Taxi container
     this.currIdx = 0
     // make this coherent...
-    this.isDesktop = window.innerWidth > 768
+    this.isDesktop = !(isMobile() || window.innerWidth < 1024)
     this.projects = {}
     this.pIds = []
     this.lastTouchY = 0
@@ -152,34 +152,35 @@ export default class WorksRenderer extends BaseRenderer {
   }
 
   recalculateInactiveElement(el: HTMLElement, idx?: number) {
-      el.setAttribute('data-active', 'false')
-      const i = idx || Number(el.getAttribute('data-i'))
+    el.setAttribute('data-active', 'false')
+    const i = idx || Number(el.getAttribute('data-i'))
 
-      const newScale = 1 / Math.max(1, Math.abs(i - this.currIdx) + 1 / this.pIds.length)
-      const svg = $('svg', el)
-      gsap.to(svg, {
-        scale: newScale,
-        duration: 0.45,
-        ease: 'power4.out',
+    const newScale = 1 / Math.max(1, Math.abs(i - this.currIdx) + 1 / this.pIds.length)
+    const svg = $('svg', el)
+    gsap.to(svg, {
+      scale: newScale,
+      duration: 0.45,
+      ease: 'power4.out',
+    })
+    const blur = Math.pow(Math.abs(i - this.currIdx), 2)
+    console.log("setting opacity to 0.5", !this.currIdx)
+    gsap.to(el, {
+      opacity: i === this.currIdx ? 1 : 0.5,
+      filter: `blur(${blur}px)`,
+      duration: 0.45,
+      ease: 'power4.out',
+    })
+    if (i !== this.currIdx) {
+      const highlightCorner = $('.highlighted-corner', el)
+      gsap.to(highlightCorner, {
+        opacity: 0,
+        duration: 0.03,
+        repeat: 3,
+        onComplete: () => {
+          highlightCorner.classList.add('hidden')
+        },
       })
-      const blur = Math.pow(Math.abs(i - this.currIdx), 2)
-      gsap.to(el, {
-        opacity: i === this.currIdx ? 1 : 0.5,
-        filter: `blur(${blur}px)`,
-        duration: 0.45,
-        ease: 'power4.out',
-      })
-      if (i !== this.currIdx) {
-        const highlightCorner = $('.highlighted-corner', el)
-        gsap.to(highlightCorner, {
-          opacity: 0,
-          duration: 0.03,
-          repeat: 3,
-          onComplete: () => {
-            highlightCorner.classList.add('hidden')
-          },
-        })
-      }
+    }
   }
 
   recalculateOthers() {
@@ -193,8 +194,9 @@ export default class WorksRenderer extends BaseRenderer {
     $all(this.isDesktop ? '.project-title' : '.project-title-mobile').forEach((p, i) => {
       setupSvgText(p, this.isDesktop)
       p.addEventListener('mouseover', (e) => {
+        e.stopPropagation()
         gsap.to(e.currentTarget, {
-          opacity: 0.90,
+          opacity: 0.9,
           duration: 0.35,
           ease: 'power4.inOut',
         })
@@ -205,7 +207,7 @@ export default class WorksRenderer extends BaseRenderer {
       p.addEventListener('mousedown', (e) => {
         e.preventDefault()
         const el = e.currentTarget as HTMLElement
-        const i =  Number(el.getAttribute('data-i'))
+        const i = Number(el.getAttribute('data-i'))
         this.currIdx = i
         this.handleActiveProject(null)
       })
@@ -267,7 +269,7 @@ export default class WorksRenderer extends BaseRenderer {
 
     if (direction === 'down') {
       this.currIdx = (this.currIdx + 1) % this.pIds.length
-    } else if(e) {
+    } else if (e) {
       this.currIdx = this.currIdx - 1
       this.currIdx = this.currIdx < 0 ? this.pIds.length - 1 : this.currIdx
     }
@@ -280,11 +282,26 @@ export default class WorksRenderer extends BaseRenderer {
   }
 
   handleResize() {
+    this.isDesktop = !(isMobile() || window.innerWidth < 1024)
+    const projectTitleQuery = this.isDesktop ? '.project-title' : '.project-title-mobile'
+
+    gsap.to(`${projectTitleQuery} svg`, {
+      opacity: 1,
+      duration: 0.05,
+      ease: 'linear',
+      stagger: {
+        repeat: 20,
+        each: 0.1,
+        ease: 'expo.in',
+      },
+    })
+
     this.updateProjectDetails()
     workDetailsTL(this.isDesktop ? '.works-details' : '.work-details-mobile')
     this.setupProjectTitles()
     this.recalculateOthers()
     this.recalculateActive()
+    this.fuiCornersAnimationActive()
     if (!this.isFirstRender) this.experience.world.worksImage.resize()
   }
 

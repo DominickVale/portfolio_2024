@@ -14,9 +14,9 @@ const {} = Astro.props
   <div
     class="mb-18 col-span-10 col-start-2 row-start-1 flex flex-col justify-center md:mt-12 lg:col-span-4 lg:col-start-2 lg:row-start-1 lg:mt-0 laptop-h:justify-start"
   >
-    <div class="lg:ml-4 lg:mt-[11vh] taller:mt-[20vh]">
+    <div class="lg:ml-4 lg:mt-[11vh] lg:taller:aspect-4/4:mt-[20vh]">
       <div class="relative flex flex-col justify-center">
-        <div class="image-wrapper cursor-pointer relative h-[33vh] p-4 opacity-0 md:h-[45vh]" id="works-image">
+        <div class="image-wrapper relative h-[33vh] cursor-pointer p-4 opacity-0 md:h-[45vh]" id="works-image">
           <div class="fui-corners"></div>
         </div>
         <div class="work-details 2lg:max-w-[30rem] mt-8 hidden max-w-[90%] opacity-0 lg:block">
@@ -40,11 +40,11 @@ const {} = Astro.props
     {
       Object.values(PROJECTS_LIST).map((project, i) => (
         <h2
-          class="project-title relative ml-[-12%] flex h-[10vh] w-full items-center font-display font-bold uppercase text-primary-lightest !cursor-pointer"
+          class="project-title relative ml-[-12%] flex h-[10vh] w-full !cursor-pointer items-center font-display font-bold uppercase text-primary-lightest"
           data-i={i}
           style={`--i: ${i}`}
         >
-          <svg class="absolute left-0 top-0 flex h-full w-full origin-left justify-start fill-primary-lightest opacity-0 pointer-events-none">
+          <svg class="pointer-events-none absolute left-0 top-0 flex h-full w-full origin-left justify-start fill-primary-lightest opacity-0">
             <text>{project.name}</text>
           </svg>
           <div class="fui-corners highlighted-corner z-[100] hidden h-full font-mono opacity-0">
@@ -53,7 +53,7 @@ const {} = Astro.props
               <div class="circle" />
               <div class="dynamic-line" />
             </div>
-            <div class="absolute bottom-[-2.2rem] taller:bottom-[-2.7rem] right-[-1px] flex w-3/4 gap-3">
+            <div class="absolute bottom-[-2.2rem] right-[-1px] flex w-full xl:w-3/4 gap-3 taller:bottom-[-2.7rem]">
               <Btn
                 href={project.linkCase}
                 class="w-full"
@@ -90,8 +90,12 @@ const {} = Astro.props
   <section id="works-list-mobile" class="col-span-10 col-start-2 row-start-2 flex flex-col text-center lg:hidden">
     {
       Object.values(PROJECTS_LIST).map((project, i) => (
-        <h2 class="project-title-mobile relative h-[5vh] w-full font-display text-2xl font-bold uppercase text-primary-lightest" style={`--i: ${i}`}>
-          <a href={`/blog/${project.name}`}>
+        <h2
+          class="project-title-mobile relative h-[5vh] w-full font-display text-2xl font-bold uppercase text-primary-lightest"
+          style={`--i: ${i}`}
+          data-i={i}
+        >
+          <a href={`/blog/${project.name}`} class="pointer-events-none">
             <svg class="absolute left-0 top-0 flex h-full w-full origin-center justify-start fill-primary-lightest opacity-0 lg:origin-left">
               <text>{project.name}</text>
             </svg>

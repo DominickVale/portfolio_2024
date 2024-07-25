@@ -164,11 +164,7 @@ export default class AboutRenderer extends BaseRenderer {
         },
         duration: 1,
         onStart: getRemoveOpacity(0.6),
-      onUpdate () {
-      console.log(this)
-      },
         onComplete: () => {
-          console.log("completed")
           setTimeout(() => {
             gsap.to('.fake-logs pre:nth-child(4)', {
               typewrite: {
