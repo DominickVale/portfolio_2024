@@ -6,7 +6,6 @@
 - Test accessibility
 - Figure out some hacks for font rendering
 - Add more post-processing (blur/aberration on transitions based on position speed etc.)
-- Add preload when dragging thumb after 50% of progress in a slice
 
 # REMINDERS
 

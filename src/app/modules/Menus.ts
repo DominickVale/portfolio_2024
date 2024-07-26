@@ -68,12 +68,16 @@ export default class Menus {
     const navigateTo = (url) => () => {
       window.app.taxi.navigateTo(url)
     }
+    const preloadPage = (url) => () => {
+      window.app.taxi.preload(url)
+    }
 
     const homeSlice: RadialMenuItem = {
       iconId: 'home',
       label: 'HOME',
       position: 2,
       callback: navigateTo('/'),
+      hoverCallback: preloadPage('/'),
     }
 
     const aboutSlice: RadialMenuItem = {
@@ -81,6 +85,7 @@ export default class Menus {
       label: 'ABOUT',
       position: 2,
       callback: navigateTo('/about'),
+      hoverCallback: preloadPage('/about'),
     }
 
     const worksSlice: RadialMenuItem = {
@@ -88,24 +93,28 @@ export default class Menus {
       label: 'WORKS',
       position: 5,
       callback: navigateTo('/works'),
+      hoverCallback: preloadPage('/works'),
     }
     const blogSlice: RadialMenuItem = {
       iconId: 'blog',
       label: 'BLOG',
       position: 1,
       callback: navigateTo('/blog'),
+      hoverCallback: preloadPage('/blog'),
     }
     const contactSlice: RadialMenuItem = {
       iconId: 'contact',
       label: 'CONTACT',
       position: 5,
       callback: navigateTo('/contact'),
+      hoverCallback: preloadPage('/contact'),
     }
     const labSlice: RadialMenuItem = {
       iconId: 'lab',
       label: 'LAB',
       position: 4,
       callback: navigateTo('/lab'),
+      hoverCallback: preloadPage('/lab'),
     }
     const openProjSlice: RadialMenuItem = {
       iconId: 'lab',
@@ -114,6 +123,7 @@ export default class Menus {
       callback: () => {
         navigateTo(($('#open-proj-mobile') as HTMLAnchorElement).href)
       },
+      hoverCallback: null,
     }
     const settingsSlice: RadialMenuItem = {
       iconId: 'settings',
@@ -125,6 +135,7 @@ export default class Menus {
         }
         setTimeout(fn.bind(this), 250)
       },
+      hoverCallback: null,
     }
 
     const contextSlice: RadialMenuItem = {
@@ -137,6 +148,7 @@ export default class Menus {
         }
         setTimeout(fn.bind(this), 250)
       },
+      hoverCallback: null,
     }
 
     let defaultMenuItems: RadialMenuItem[] = [homeSlice, labSlice, aboutSlice, worksSlice, blogSlice, contactSlice, settingsSlice, contextSlice]
@@ -187,6 +199,7 @@ export default class Menus {
         callback: () => {
           this.onToggleDebug()
         },
+        hoverCallback: null,
       },
       {
         iconId: 'audio',
@@ -194,6 +207,7 @@ export default class Menus {
         callback() {
           window.app.audio.toggle()
         },
+        hoverCallback: null,
       },
     ]
     const settingsMenu = new RadialMenu('settings', settingsItems, { size: 'calc(10rem + 5vw)' })
@@ -206,6 +220,7 @@ export default class Menus {
           navigator.clipboard.writeText(origTarget.innerText)
           showCursorMessage({ message: 'Copied to clipboard!' })
         },
+        hoverCallback: null,
       },
       settingsSlice,
       contextSlice,

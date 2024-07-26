@@ -19,6 +19,7 @@ export type RadialMenuItem = {
   label: string
   position?: number
   callback: (event: MouseEvent, target: HTMLElement, originalTarget: HTMLElement) => void
+  hoverCallback: () => void
 }
 
 const SVGNS = 'http://www.w3.org/2000/svg'
@@ -366,11 +367,13 @@ export default class RadialMenu {
   }
   onSliceMouseEnter(ev: MouseEvent) {
     const slice = ev.currentTarget as SVGElement
-    const i = slice.getAttribute('data-i')
-    const item = this.itemsEl[i]
-    item.setAttribute('data-hover', 'true')
-    const label = $('.radial-menu-item-label', item)
+    const i = Number(slice.getAttribute('data-i'))
+    const itemEl = this.itemsEl[i]
+    const item = this.items[i]
+    itemEl.setAttribute('data-hover', 'true')
+    const label = $('.radial-menu-item-label', itemEl)
     TextScramble.scramble(label)
+    if(item.hoverCallback) item.hoverCallback()
   }
   onSliceMouseLeave(ev: MouseEvent) {
     const slice = ev.currentTarget as SVGElement
