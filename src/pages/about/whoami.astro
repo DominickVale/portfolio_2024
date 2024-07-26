@@ -12,7 +12,7 @@ import Layout from '../../layouts/Layout.astro'
     <Image cover class="h-2/3" />
   </div>
   <div class="col-span-10 col-start-2 row-start-1 mt-12 flex flex-col md:col-span-6 md:col-start-2 md:row-start-1 md:mt-0">
-    <div class="fake-logs pointer-events-none ml-4 mt-[8vh] hidden min-h-[7.2rem] flex-col text-xs uppercase text-inactive opacity-80 md:flex">
+    <div class="fake-logs pointer-events-none ml-4 mt-[8vh] hidden min-h-[7.2rem] flex-col text-xs uppercase text-inactive opacity-80 xl:flex">
       <pre>
     {
       `
@@ -61,15 +61,16 @@ import Layout from '../../layouts/Layout.astro'
     <div class="mt-12 flex flex-col items-center justify-center gap-10">
       <div class="flex flex-col">
         <p class="intro-paragraph min-h-20">
-          Lorem ipsum dolor sit amet consectetur. Interdum rutrum fermentum ultrices dictum nisi etiam morbi tincidunt. Massa risus at sapien
-          tristique leo egestas posuere vestibulum.
+          25 years old creative developer from Italy.<br />
+          Throughout my life i have been interested in the broadest range of things: programming, art, working out, philosophy, blacksmithing, gardening,
+          reverse&nbsp;engineering... I should stop before some Gremlin starts OSINT profiling me.<br /><br />
+          Generally, in life i value simplicity, identity, freedom and creativity.<br />
+          I work best with people that value authenticity, sincerity and respect.<br /><br />
         </p>
-        <p class="intro-paragraph">
-          Fermentum ut nulla curabitur odio nisl malesuada fermentum. Amet eget diam elementum tellus nisi quisque nisl suspendisse at. Mi facilisi
-          ridiculus ultrices elit enim posuere ut ultricies et. Aenean mollis pharetra dui leo morbi urna. Tempus adipiscing ligula nisi amet libero
-          nulla ipsum velit. Nunc eget pellentesque at sem.
+        <p class="intro-paragraph">Available for any kind of front-end development job<sup>*</sup>.</p>
+        <p class="intro-paragraph mt-1 !text-xs !text-inactive">
+          <sup>*</sup> Creative, interesting projects from which i can learn and grow my skillset are preferred.
         </p>
-        <p class="intro-paragraph mt-4">Available for any kind of front-end development job, web or not.</p>
       </div>
       <AboutButtons class="mt-0" l={{ link: '/', text: 'OK' }} r={{ link: '/about/whatido', text: 'WHAT ARE YOU?' }} />
     </div>
