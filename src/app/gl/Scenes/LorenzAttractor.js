@@ -74,7 +74,7 @@ export default class LorenzAttractor {
         uInitialPositions: { value: initialTexturePos },
         uColor: { value: new THREE.Color(this.params.lorenzColor) },
         uSize: {
-          value: (this.experience.isMobile ? 50 : 100) * this.sizes.pixelRatio,
+          value: (this.experience.isMobile ? 150 : 120) * this.sizes.pixelRatio,
         },
       },
       vertexShader: renderVert,

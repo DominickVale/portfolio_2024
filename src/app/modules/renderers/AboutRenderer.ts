@@ -5,7 +5,7 @@ import BaseRenderer from './base'
 import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
 import { CustomEase } from 'gsap/all'
 import { $, $all } from '../../utils'
-import type LorenzAttractor from 'src/app/gl/Scenes/LorenzAttractor'
+import { AboutPageAttractorAnim } from '../animations/attractor/AboutPageAttractor'
 
 gsap.registerPlugin(CustomEase)
 gsap.registerPlugin(TypewriterPlugin)
@@ -17,10 +17,12 @@ export default class AboutRenderer extends BaseRenderer {
   aboutPage: string
   isIndexPage: boolean
   isFirstTime: boolean
-  attractor: LorenzAttractor
 
   initialLoad() {
     super.initialLoad()
+    this.experience = new Experience()
+    this.isIndexPage = this.aboutPage.split('/').length <= 2
+    window.addEventListener('preload-end', () => AboutPageAttractorAnim.create(this.isIndexPage ? 'main' : 'other').play())
   }
 
   onEnter() {
@@ -30,7 +32,6 @@ export default class AboutRenderer extends BaseRenderer {
     this.aboutPage = window.location.pathname
 
     this.experience = new Experience()
-    this.attractor = this.experience.world.attractor
 
     this.isIndexPage = this.aboutPage.split('/').length <= 2
     this.isFirstTime = !window.aboutPageVisited
@@ -40,7 +41,9 @@ export default class AboutRenderer extends BaseRenderer {
     if (window.app.preloaderFinished) {
       AboutRenderer.enterTL.play()
     } else {
-      window.addEventListener('preload-end', () => AboutRenderer.enterTL.play())
+      window.addEventListener('preload-end', () => {
+        AboutRenderer.enterTL.play()
+      })
     }
   }
 
@@ -178,30 +181,6 @@ export default class AboutRenderer extends BaseRenderer {
         },
       })
 
-    const attractorPosTl = gsap
-      .timeline()
-      .to(
-        this.attractor.points.position,
-        {
-          x: -1.4,
-          y: this.isIndexPage ? -21 : -31.5,
-          z: -50,
-          duration: 2,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-      .to(
-        this.attractor.points.rotation,
-        {
-          x: -0.201061929829747,
-          z: -0.746,
-          duration: 2,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-
     const btnsTL = gsap
       .timeline()
       .from('.about-btns .btn', {
@@ -277,7 +256,6 @@ export default class AboutRenderer extends BaseRenderer {
           window.aboutPageVisited = true
         },
       })
-      .add(attractorPosTl)
       .add(fakeCodeTL, '<')
       .to(
         'h2:first-of-type',

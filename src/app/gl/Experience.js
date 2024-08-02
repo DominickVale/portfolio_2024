@@ -47,7 +47,7 @@ export default class Experience {
       positionX: this.isMobile ? -2 : -1.6,
       positionY: this.isMobile ? 25 : 4.5,
       positionZ: getZPosition(),
-      particlesBufWidth: this.isMobile ? 200 : 350,
+      particlesBufWidth: this.isMobile ? 150 : 350,
       bgColor: this.bgColor,
       primaryColor: this.primaryColor,
       lorenzColor: this.lorenzColor,

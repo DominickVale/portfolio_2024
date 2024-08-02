@@ -8,84 +8,15 @@ export default class FromBlogTransition extends BaseTransition {
    * Handle the transition leaving the previous page.
    * @param { { from: HTMLElement, trigger: string|HTMLElement|false, done: function } } props
    */
-  onLeave({ from, trigger, done }) {
+  onLeave({ from, trigger, done, toURL }) {
+    super.onLeave({from, trigger, done, toURL})
     const experience = new Experience()
     const worksImage = experience.world.worksImage
     const renderer = experience.renderer
     const params = experience.params
-    const attractor = experience.world.attractor
     const statusItems = $all('#blog-header #blog-status li')
     const subtitle = $('#blog-header h2')
     const articles = Array.from($all('.blog-article'))
-
-    const attractorPosTl = gsap
-      .timeline()
-      .to(
-        attractor.points.position,
-        {
-          x: params.positionX,
-          y: params.positionY,
-          z: params.positionZ,
-          duration: 1,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-      .to(
-        attractor.points.rotation,
-        {
-          y: params.rotationY,
-          z: params.rotationZ,
-          duration: 1,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-    const attractorUniformsTl = gsap
-      .timeline()
-      .to(
-        params,
-        {
-          speed: 60,
-          duration: 0.5,
-          ease: 'power2.in',
-          onComplete: () => {
-            gsap.to(params, {
-              speed: 5,
-              duration: 3,
-              ease: 'power2.inOut',
-            })
-          },
-        },
-        '<',
-      )
-      .to(
-        attractor.bufferMaterial.uniforms.uSigma,
-        {
-          value: params.sigma + 4,
-          duration: 0.01,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-      .to(
-        attractor.bufferMaterial.uniforms.uRho,
-        {
-          value: params.rho - 10.29,
-          duration: 0.01,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-      .to(
-        attractor.bufferMaterial.uniforms.uBeta,
-        {
-          value: params.beta - 3.29,
-          duration: 0.01,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
 
     const tl = gsap
       .timeline({
@@ -107,8 +38,6 @@ export default class FromBlogTransition extends BaseTransition {
           },
         },
       )
-      .add(attractorPosTl, '<')
-      .add(attractorUniformsTl, '<')
       .to(
         '#blog-header',
         {
@@ -140,7 +69,7 @@ export default class FromBlogTransition extends BaseTransition {
    * Handle the transition entering the next page.
    * @param { { to: HTMLElement, trigger: string|HTMLElement|false, done: function } } props
    */
-  onEnter({ to, trigger, done }) {
+  onEnter({ to, trigger, done, toURL }) {
     done()
   }
 }

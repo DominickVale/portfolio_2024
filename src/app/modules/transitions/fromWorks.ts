@@ -8,63 +8,10 @@ export default class FromWorkTransition extends BaseTransition {
    * Handle the transition leaving the previous page.
    * @param { { from: HTMLElement, trigger: string|HTMLElement|false, done: function } } props
    */
-  onLeave({ from, trigger, done }) {
+  onLeave({ from, trigger, done, toURL }) {
+    super.onLeave({from, trigger, done, toURL})
     const experience = new Experience()
     const worksImage = experience.world.worksImage
-    const params = experience.params
-    const attractor = experience.world.attractor
-
-    const attractorPosTl = gsap
-      .timeline()
-      .add(() => {
-        window.app.audio.play(null, 'whoosh-short', {
-          volume: 0.3,
-          rate: 0.9,
-        })
-      })
-      .to(
-        attractor.points.position,
-        {
-          x: params.positionX,
-          y: params.positionY,
-          z: params.positionZ,
-          duration: 1,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-      .to(
-        attractor.points.rotation,
-        {
-          y: params.rotationY,
-          z: params.rotationZ,
-          duration: 1,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-    const attractorUniformsTl = gsap.timeline().to(
-      params,
-      {
-        speed: 60,
-        duration: 0.5,
-        ease: 'power2.in',
-        onStart: () => {
-        window.app.audio.play(null, 'shimmer-short', {
-          volume: 0.08,
-          rate: 0.9,
-          })
-        },
-        onComplete: () => {
-          gsap.to(params, {
-            speed: 5,
-            duration: 3,
-            ease: 'power2.inOut',
-          })
-        },
-      },
-      '<',
-    )
 
     const base = `.project-title[data-active="true"] .fui-corners, .project-title-mobile[data-active="true"] .fui-corners`
     const fuiCornersTL = gsap.timeline().to(base, {
@@ -128,8 +75,6 @@ export default class FromWorkTransition extends BaseTransition {
           done()
         },
       })
-      .add(attractorPosTl, '<')
-      .add(attractorUniformsTl, '<')
       .add(reversed, '<')
   }
 
@@ -137,7 +82,7 @@ export default class FromWorkTransition extends BaseTransition {
    * Handle the transition entering the next page.
    * @param { { to: HTMLElement, trigger: string|HTMLElement|false, done: function } } props
    */
-  onEnter({ to, trigger, done }) {
+  onEnter({ to, trigger, done, toURL }) {
     done()
   }
 }

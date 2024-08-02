@@ -25,14 +25,6 @@ export const lerp = (a: number, b: number, t: number): number => a + (b - a) * t
 
 export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-export function getCurrentPage() {
-  if (window.location.pathname === '/') return 'home'
-  else {
-    const path = window.location.pathname.split('/').slice(1)
-    return path.join('/')
-  }
-}
-
 //debounce with trailing call
 export function debounceTrailing<T extends Function>(cb: T, wait = 20) {
   let timer = 0
@@ -173,3 +165,22 @@ export function deepKillTimeline(tl: TimelineMax) {
 	tl.add && tl.getChildren(true, true, true).forEach(animation => animation.kill());
 	tl.kill();
 }
+
+export function getPageName(url: string): string {
+  const pathname = url.startsWith('/') ? url : new URL(url).pathname;
+  const s = pathname.split('/').filter(Boolean);
+
+  if (s.length === 0) {
+    return 'home';
+  }
+
+  if (s[0] === 'blog') {
+    return s.length > 1 ? 'blogpost' : 'blog';
+  }
+
+  if (s[0] === 'about') {
+    return s.length > 1 ? s[1] : 'about';
+  }
+
+  return s[0];
+};

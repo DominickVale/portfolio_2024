@@ -27,10 +27,12 @@ export default defineConfig({
   vite: {
     plugins,
     optimizeDeps: {
-      include: ['howler'],
+      include: ['howler', '@unseenco/taxi'],
+      force: true //force deps when testing local deps
     },
     build: {
       commonjsOptions: {
+        include: [/@uneenco\/taxi/, /node_modules/],
         include: [/howler/, /node_modules/],
       },
     },

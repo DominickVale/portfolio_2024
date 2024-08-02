@@ -9,6 +9,7 @@ import { blurStagger } from '../animations/gsap'
 import Lenis from 'lenis'
 import { LORENZ_PRESETS } from 'src/app/constants'
 import { CustomEase } from 'gsap/all'
+import { BlogPageAttractorAnim } from '../animations/attractor/BlogPageAttractorAnim'
 gsap.registerPlugin(TypewriterPlugin)
 gsap.registerPlugin(CustomEase)
 
@@ -26,6 +27,7 @@ export default class BlogRenderer extends BaseRenderer {
 
   initialLoad() {
     super.initialLoad()
+    window.addEventListener('preload-end', () => BlogPageAttractorAnim.create())
   }
 
   onEnter() {
@@ -249,6 +251,7 @@ export default class BlogRenderer extends BaseRenderer {
     this.createLenis(scrollWrapper, isHorizontal)
   }
 
+  //@TODO: remove from here, put in base, use `this.attractorZOffset`
   handleLorenzResize() {
     const attractor = this.experience.world.attractor
     this.experience.params.positionZ = getZPosition()
@@ -268,37 +271,9 @@ export default class BlogRenderer extends BaseRenderer {
     const statusItems = $all('#blog-header #blog-status li')
     const lettersTL = blurStagger($('h1'), 0.08, 0.5)
     const subtitle = $('#blog-header h2')
-    const attractor = this.experience.world.attractor
 
     BlogRenderer.enterTL = gsap
       .timeline({ paused: true })
-      .to(
-        attractor.bufferMaterial.uniforms.uRho,
-        {
-          value: 35,
-          duration: 1,
-          ease: CustomEase.create("custom", "M0,0 C0.125,0 0.25,0.968 0.5,0.968 0.75,0.968 0.75,0 1,0 "),
-        },
-        '<',
-      )
-      .to(
-        attractor.bufferMaterial.uniforms.uBeta,
-        {
-          value: -Math.PI,
-          duration: 0.1,
-          ease: CustomEase.create("custom", "M0,0 C0.125,0 0.25,0.968 0.5,0.968 0.75,0.968 0.75,0 1,0 "),
-        },
-        '<',
-      )
-      .to(
-        attractor.bufferMaterial.uniforms.uSigma,
-        {
-          value: Math.PI * 10,
-          duration: 0.8,
-          ease: "power4.out"
-        },
-        '<',
-      )
       .to(
         this.experience.params,
         {
@@ -325,7 +300,7 @@ export default class BlogRenderer extends BaseRenderer {
           duration: 1.35,
           ease: 'power4.inOut',
         },
-        "<"
+        '<',
       )
       .add(lettersTL, '<')
       .to(

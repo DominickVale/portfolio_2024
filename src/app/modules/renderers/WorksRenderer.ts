@@ -7,6 +7,7 @@ import * as taxi from '@unseenco/taxi'
 import Experience from '../../gl/Experience'
 import BaseRenderer from './base'
 import { workDetailsTL } from '../animations/gsap'
+import { WorksPageAttractorAnim } from '../animations/attractor/WorksPageAttractor'
 
 export default class WorksRenderer extends BaseRenderer {
   currIdx: number
@@ -19,10 +20,10 @@ export default class WorksRenderer extends BaseRenderer {
   handleActiveProjectBound: (event: UIEvent) => void
   lastTouchY: number
   handleTouchStartBound: (event: UIEvent) => void
-  attractorTL: any
 
   initialLoad() {
     super.initialLoad()
+    window.addEventListener('preload-end', () => WorksPageAttractorAnim.create())
   }
 
   onEnter() {
@@ -163,7 +164,6 @@ export default class WorksRenderer extends BaseRenderer {
       ease: 'power4.out',
     })
     const blur = Math.pow(Math.abs(i - this.currIdx), 2)
-    console.log("setting opacity to 0.5", !this.currIdx)
     gsap.to(el, {
       opacity: i === this.currIdx ? 1 : 0.5,
       filter: `blur(${blur}px)`,
@@ -315,81 +315,9 @@ export default class WorksRenderer extends BaseRenderer {
     })
   }
 
-  ////////   ANIMS   ////////
-
-  createAttractorTL() {
-    const attractor = this.experience.world.attractor
-    const params = this.experience.params
-
-    const attractorPosTl = gsap
-      .timeline()
-      .add(() => {
-        window.app.audio.play(null, 'whoosh-short', {
-          volume: 0.35,
-          rate: 1.35,
-          pan: -0.5,
-        })
-      })
-      .to(
-        attractor.points.position,
-        {
-          x: this.isDesktop ? params.positionX - 36.2 : params.positionX - 20,
-          y: params.positionY - 2,
-          z: params.positionZ + 8,
-          duration: 2,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-      .to(
-        attractor.points.rotation,
-        {
-          y: 0.565486677646163,
-          z: -0.980176907920016,
-          duration: 2,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-    const attractorUniformsTl = gsap
-      .timeline()
-      .to(
-        params,
-        {
-          speed: 70,
-          duration: 1.2,
-          ease: 'power4.inOut',
-          onComplete: () => {
-            window.app.audio.play(null, 'shimmer-short', {
-              volume: 0.05,
-              rate: 1.35,
-              pan: -0.5,
-            })
-            gsap.to(params, {
-              speed: 20,
-              duration: 1.5,
-              ease: 'power2.in',
-            })
-          },
-        },
-        '<',
-      )
-      .to(
-        attractor.bufferMaterial.uniforms.uSigma,
-        {
-          value: -8,
-          duration: 0.8,
-          ease: 'power2.out',
-        },
-        '<',
-      )
-
-    this.attractorTL = gsap.timeline({ paused: true }).add(attractorPosTl).add(attractorUniformsTl, '<')
-  }
+  ////////   ANIMS   //////// 
 
   prepareAnimations() {
-    this.createAttractorTL()
-
     this.setupProjectTitles()
     this.pIds = Object.keys(this.projects)
     this.recalculateOthers()
@@ -406,7 +334,6 @@ export default class WorksRenderer extends BaseRenderer {
     this.experience.world.worksImage.show()
     this.experience.world.worksImage.setImage(this.experience.resources.items[this.projects[this.currIdx].image]?.file)
     this.createEnterAnim()
-    this.attractorTL.play()
     WorksRenderer.enterTL.play()
   }
 

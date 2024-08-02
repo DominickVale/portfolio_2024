@@ -6,6 +6,7 @@ import { TypewriterPlugin } from '../animations/TypeWriterPlugin'
 import { $, $all, getZPosition } from '../../utils'
 import { blurStagger } from '../animations/gsap'
 import { LORENZ_PRESETS } from '../../constants'
+import { HomePageAttractorAnim } from '../animations/attractor/HomePageAttractorAnim'
 
 gsap.registerPlugin(TypewriterPlugin)
 
@@ -16,6 +17,7 @@ export default class HomeRenderer extends BaseRenderer {
 
   initialLoad() {
     super.initialLoad()
+    window.addEventListener('preload-end', () => HomePageAttractorAnim.create())
   }
 
   onEnter() {
@@ -30,7 +32,9 @@ export default class HomeRenderer extends BaseRenderer {
     if (window.app.preloaderFinished) {
       HomeRenderer.enterTL.play()
     } else {
-      window.addEventListener('preload-end', () => HomeRenderer.enterTL.play())
+      window.addEventListener('preload-end', () => {
+        HomeRenderer.enterTL.play()
+      })
     }
   }
 
@@ -75,49 +79,10 @@ export default class HomeRenderer extends BaseRenderer {
     })
 
     const lettersTL = blurStagger($('h1'))
-    const attractor = this.experience.world.attractor
-    attractor.resetParams()
 
     HomeRenderer.enterTL = gsap
       .timeline({ paused: true })
-      .to(
-        this.experience.params,
-        {
-          speed: 70,
-          duration: 0.5,
-          ease: 'power2.in',
-          onComplete: () => {
-            gsap.to(this.experience.params, {
-              speed: LORENZ_PRESETS['default'].speed,
-              duration: 5,
-              ease: 'power2.inOut',
-            })
-          },
-        },
-        '<',
-      )
       .add(lettersTL)
-      .to(
-        attractor.points.position,
-        {
-          x: this.experience.params.positionX,
-          y: this.experience.params.positionY,
-          z: getZPosition(),
-          duration: 1,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-      .to(
-        attractor.points.rotation,
-        {
-          x: this.experience.params.rotationX,
-          z: this.experience.params.rotationZ,
-          duration: 1,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
       .add(itemsTL, '<+80%')
       .from('#status-available', {
         autoAlpha: 0,
