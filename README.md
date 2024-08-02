@@ -1,5 +1,6 @@
 # TODOs
 
+- fix codecs audios firefox
 - check @TODOS.
 - Reduced animations for prefer-reduced-motion
 - Optimize imports (no import \* from ...) (also split js into as many independent chunks as possible)
