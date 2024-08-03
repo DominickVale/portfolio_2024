@@ -7,7 +7,7 @@ import NextPageBtn from '../components/NextPageBtn.astro'
 
 <Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default">
   <section class="col-span-12 col-start-1 mt-6 flex justify-center sm:hidden">
-    <NextPageBtn>WORKS</NextPageBtn>
+    <NextPageBtn href="/works">WORKS</NextPageBtn>
   </section>
   <section class="col-span-10 col-start-2 row-span-4 row-start-2 flex flex-col content-start justify-end text-xs taller:pt-[17vh]">
     <div class="mt-4 flex justify-between sm:text-left">
@@ -26,12 +26,13 @@ import NextPageBtn from '../components/NextPageBtn.astro'
           </svg>
           whoami
         </h2>
-        <p class="my-3 select-none text-stone-300 sm:max-w-64 md:select-all bg-blur-harder" data-menu-trigger="text">
-          A creative developer from Italy obsessed with individuality (and pizza). I love to create experiences that provide value through creativity and uniqueness.
+        <p class="bg-blur-harder my-3 select-none text-stone-300 sm:max-w-64 md:select-all" data-menu-trigger="text">
+          A creative developer from Italy obsessed with individuality (and pizza). I love to create experiences that provide value through creativity
+          and uniqueness.
         </p>
         <Btn
           href="/about"
-          class="w-max text-nowrap whitespace-nowrap p-2"
+          class="w-max whitespace-nowrap text-nowrap p-2"
           innerClass="!block"
           data-cursor-delay="2500"
           data-cursor-message="... What are you waiting for? Let's go! :D"
@@ -65,10 +66,10 @@ import NextPageBtn from '../components/NextPageBtn.astro'
         <StatusItem class="text-nowrap">WANNABE ARTIST</StatusItem>
         <StatusItem>LEARNER</StatusItem>
       </ul>
-      <ul class="flex justify-start items-start">
+      <ul class="flex items-start justify-start">
         <StatusItem class="w-0 !min-w-16" highlight>STATUS:</StatusItem><span
           id="status-available"
-          class="text-success inline-block"
+          class="inline-block text-xs text-success"
           data-cursor-delay="100"
           data-cursor-message="(full-time or not)"
           data-cursor-timeout="2500"

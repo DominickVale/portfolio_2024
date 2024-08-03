@@ -61,7 +61,7 @@ export const HomePageAttractorAnim = {
           duration: 0.1,
           onComplete: () => {
             gsap.to(experience.params, {
-              speed: LORENZ_PRESETS['default'].speed,
+              speed: 15,
               duration: 3,
               ease: 'power2.in',
             })
@@ -91,6 +91,11 @@ export const HomePageAttractorAnim = {
       },
       '<',
     )
+      .to(experience.params, {
+        speed: LORENZ_PRESETS['default'].speed,
+        duration: 5,
+        ease: 'power2.in',
+      })
 
     return gsap
       .timeline({ onComplete, paused: true, onStart: () => console.log('Starting home attractor') })

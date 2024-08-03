@@ -17,7 +17,6 @@ export default class HomeRenderer extends BaseRenderer {
 
   initialLoad() {
     super.initialLoad()
-    window.addEventListener('preload-end', () => HomePageAttractorAnim.create())
   }
 
   onEnter() {

@@ -23,7 +23,6 @@ export default class WorksRenderer extends BaseRenderer {
 
   initialLoad() {
     super.initialLoad()
-    window.addEventListener('preload-end', () => WorksPageAttractorAnim.create())
   }
 
   onEnter() {

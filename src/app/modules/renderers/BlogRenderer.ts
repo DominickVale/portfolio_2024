@@ -27,7 +27,6 @@ export default class BlogRenderer extends BaseRenderer {
 
   initialLoad() {
     super.initialLoad()
-    window.addEventListener('preload-end', () => BlogPageAttractorAnim.create())
   }
 
   onEnter() {

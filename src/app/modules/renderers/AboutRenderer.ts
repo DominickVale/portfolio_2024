@@ -22,7 +22,6 @@ export default class AboutRenderer extends BaseRenderer {
     super.initialLoad()
     this.experience = new Experience()
     this.isIndexPage = this.aboutPage.split('/').length <= 2
-    window.addEventListener('preload-end', () => AboutPageAttractorAnim.create(this.isIndexPage ? 'main' : 'other').play())
   }
 
   onEnter() {
@@ -185,18 +184,21 @@ export default class AboutRenderer extends BaseRenderer {
       .timeline()
       .from('.about-btns .btn', {
         width: 0,
-        duration: 2.6,
+        duration: 1.2,
         ease: CustomEase.create('custom', 'M0,0 C0.5,0 0.467,0.024 0.511,0.05 0.596,0.101 0.713,0.301 0.713,0.579 0.713,1.062 0.99,0.923 1,1'),
       })
       .to(
         '.about-btns .btn',
         {
           opacity: 1,
-          duration: 0.085,
-          repeat: 28,
+          duration: 0.08,
+          repeat: 18,
         },
         '<',
       )
+      .set('.about-btns .btn', {
+        clearProps: 'all',
+      })
 
     const detailsTL = gsap
       .timeline()

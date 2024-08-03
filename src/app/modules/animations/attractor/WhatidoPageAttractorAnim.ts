@@ -1,7 +1,7 @@
 import gsap from 'gsap'
 import { isMobile } from 'src/app/utils'
 
-export const AboutPageAttractorAnim = {
+export const WhatidoPageAttractorAnim = {
   create(onComplete?: () => void) {
     const experience = window.app.experience
     const attractor = experience.world.attractor
@@ -12,12 +12,12 @@ export const AboutPageAttractorAnim = {
       .to(
         experience.params,
         {
-          speed: 60,
+          speed: 70,
           duration: 0.2,
           ease: 'power4.inOut',
           onComplete: () => {
             gsap.to(experience.params, {
-              speed: 10,
+              speed: isDesktop ? 20 : 30,
               duration: 2.5,
               ease: 'power2.in',
             })
@@ -28,8 +28,8 @@ export const AboutPageAttractorAnim = {
       .to(
         attractor.bufferMaterial.uniforms.uSigma,
         {
-          value: -8,
-          duration: 0.5,
+          value: 10,
+          duration: 0.1,
           ease: 'power2.out',
         },
         '<',
@@ -37,8 +37,8 @@ export const AboutPageAttractorAnim = {
       .to(
         attractor.bufferMaterial.uniforms.uRho,
         {
-          value: 9,
-          duration: 0.1,
+          value: 38.6,
+          duration: 0.8,
           ease: 'power2.out',
         },
         '<',
@@ -46,19 +46,16 @@ export const AboutPageAttractorAnim = {
       .to(
         attractor.bufferMaterial.uniforms.uBeta,
         {
-          value: 6,
-          duration: 0.1,
+          value: -1.08,
+          duration: 0.8,
           ease: 'power2.out',
         },
         '<',
       )
-      .to(attractor.bufferMaterial.uniforms.uSigma, {
-        value: 5,
-        duration: 0.085,
-      })
-      .to(attractor.bufferMaterial.uniforms.uSigma, {
-        value: -15,
-        duration: 0.1,
+      .to(experience.params, {
+        speed: isDesktop ? 10 : 10,
+        duration: 5,
+        ease: 'power2.in',
       })
 
     const posTL = gsap
@@ -66,9 +63,9 @@ export const AboutPageAttractorAnim = {
       .to(
         attractor.points.position,
         {
-          x: isDesktop ? 0.5 : 0.8,
-          y: -23,
-          z: isDesktop ? -30 : -40,
+          x: 0,
+          y: 44,
+          z: -17.6,
           duration: 2,
           ease: 'power2.inOut',
         },
@@ -77,9 +74,9 @@ export const AboutPageAttractorAnim = {
       .to(
         attractor.points.rotation,
         {
-          x: 0,
-          y: isDesktop ? 0 : -0.0251327412287183,
-          z: 0,
+          x: 1.59592906802361,
+          y: 0.0125663706143592,
+          z: -1.1686724671354,
           duration: 2,
           ease: 'power2.inOut',
         },

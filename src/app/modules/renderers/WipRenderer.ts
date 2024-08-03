@@ -15,7 +15,6 @@ export default class WipRenderer extends BaseRenderer {
 
   initialLoad() {
     super.initialLoad()
-    window.addEventListener('preload-end', () => WipPageAttractorAnim.create)
   }
 
   onEnter() {
