@@ -48,6 +48,7 @@ export default class BlogRenderer extends BaseRenderer {
 
     this.handleActiveArticleBound = this.handleActiveArticle.bind(this)
     this.articles.forEach((article) => {
+      article.addEventListener('focus', this.handleActiveArticleBound)
       article.addEventListener('mouseover', this.handleActiveArticleBound)
       article.addEventListener('touchstart', this.handleActiveArticleBound)
     })
@@ -72,10 +73,6 @@ export default class BlogRenderer extends BaseRenderer {
   onLeave() {
     // run before the transition.onLeave method is called
     window.removeEventListener('wheel', this.handleActiveArticleBound)
-    this.articles.forEach((article) => {
-      article.removeEventListener('mousemove', this.handleMouseMove)
-      article.removeEventListener('mouseleave', this.handleMouseLeave)
-    })
   }
 
   onLeaveCompleted() {

@@ -112,6 +112,7 @@ export default class Cursor {
         if (timeout <= 0) {
           this.abortCursorMessage(el, true)
         }
+        this.textEl.textContent = ''
       })
     })
   }

@@ -107,10 +107,10 @@ export class ContactsInternalRenderer {
   handleMouseLeave(event) {}
 
   handleTextboxFocus(event) {
-    window.app.audio.play(null, "input-sprite", {
+    window.app.audio.play(null, 'input-sprite', {
       volume: 0.3,
       //@ts-ignore
-      sprite: INPUT_SOUND_SPRITES
+      sprite: INPUT_SOUND_SPRITES,
     })
   }
 
@@ -118,15 +118,20 @@ export class ContactsInternalRenderer {
     const textbox = event.target
     const wrapper = textbox.parentNode
     const isValid = textbox.validity.valid
+    const errorMessageElement = document.getElementById(`${textbox.name}-error`)
 
     if (!textbox.value) {
       wrapper.classList.remove('textbox-wrapper-valid')
       wrapper.classList.remove('textbox-wrapper-invalid')
+      textbox.removeAttribute('aria-invalid')
+      errorMessageElement.textContent = ''
       return
     }
+
     if (!isValid) {
       wrapper.classList.remove('textbox-wrapper-valid')
       wrapper.classList.add('textbox-wrapper-invalid')
+      textbox.setAttribute('aria-invalid', 'true')
 
       let currErrorKey = ''
       for (const k in textbox.validity) {
@@ -135,14 +140,22 @@ export class ContactsInternalRenderer {
         }
       }
 
-    window.app.audio.play(null, "error", {
-      volume: 0.2,
-    })
+      window.app.audio.play(null, 'error', {
+        volume: 0.2,
+      })
+
+      const errorMessage = translateValidity(currErrorKey, textbox.name).toUpperCase()
       showCursorMessage({
-        message: translateValidity(currErrorKey, textbox.name).toUpperCase(),
+        message: errorMessage,
         isError: true,
         timeout: 2000,
       })
+      errorMessageElement.textContent = errorMessage
+    } else {
+      wrapper.classList.remove('textbox-wrapper-invalid')
+      wrapper.classList.add('textbox-wrapper-valid')
+      textbox.removeAttribute('aria-invalid')
+      errorMessageElement.textContent = ''
     }
 
     this.form.addEventListener('submit', this.handleFormSubmit.bind(this))
@@ -154,10 +167,10 @@ export class ContactsInternalRenderer {
     const wrapper = textbox.parentNode
     const isValid = textbox.validity.valid
 
-    window.app.audio.play(null, "input-sprite", {
+    window.app.audio.play(null, 'input-sprite', {
       volume: 0.6,
       //@ts-ignore
-      sprite: INPUT_SOUND_SPRITES
+      sprite: INPUT_SOUND_SPRITES,
     })
 
     if (isValid) {

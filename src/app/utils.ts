@@ -108,7 +108,7 @@ export function isMobile() {
 }
 
 export function splitTextChars(el: HTMLElement, tag: string, className?: string) {
-  const splitChars = el.textContent.split('').map((c) => `<${tag} ${className ? `class="${className}"` : ''}>${c}</${tag}>`)
+  const splitChars = el.textContent.split('').map((c) => `<${tag} ${className ? `class="${className}" aria-hidden="true"` : ''}>${c}</${tag}>`)
   el.innerHTML = splitChars.join('')
   return el.childNodes
 }

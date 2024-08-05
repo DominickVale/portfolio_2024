@@ -32,6 +32,10 @@
   background-color: var(--primary);
 }
 
+*:focus-visible {
+  outline: 1px solid white;
+}
+
 html,
 body {
   background-color: #111010;

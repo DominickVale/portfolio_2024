@@ -110,7 +110,7 @@ export default class RadialMenu {
     wrapper.classList.add('radial-menu-wrapper', 'radial-menu-hidden', this.isMobile && 'mobile')
     wrapper.style.setProperty('--size', this._size)
     wrapper.innerHTML = `
-  <ul class="radial-menu">
+  <ul class="radial-menu" aria-hidden="true">
     <div id="radial-menu-thumb-${this.id}" class="${`radial-menu-thumb ${this.isMobile && 'mobile'}`}">
       <svg id="_icon_brand" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path

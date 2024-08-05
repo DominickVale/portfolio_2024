@@ -33,6 +33,7 @@ export const TypewriterPlugin = {
     let originalContent = target.getAttribute('data-typewrite-content')
     if (!originalContent) {
       target.setAttribute('data-typewrite-content', target.innerHTML)
+      originalContent = target.innerHTML
     }
     _tempDiv.innerHTML = (typeof props.value === 'string' ? props.value : originalContent || target.innerHTML).replace(/\n/g, '<br/>')
     text = splitInnerHTML(_tempDiv, delimiter, false, true)
@@ -55,6 +56,10 @@ export const TypewriterPlugin = {
     const oldOnComplete = tween.vars.onComplete
     tween.vars.onInterrupt = stopSound(data.soundId, oldOnInterrupt, 'interrupt')
     tween.vars.onComplete = stopSound(data.soundId, oldOnComplete, 'complete')
+
+    if(!target.getAttribute('aria-label')){
+      target.setAttribute('aria-label', originalContent)
+    }
   },
   render(progress, data) {
     if (progress >= 1) {

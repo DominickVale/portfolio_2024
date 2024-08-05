@@ -9,7 +9,7 @@ const {} = Astro.props
 <footer class="fixed bottom-10 left-0 z-10 w-full text-xs font-light text-inactive opacity-0 transition-opacity duration-[2s] ease-in lg:bottom-12">
   <ul class="grid grid-cols-12 items-center">
     <li class="col-span-5 col-start-2 row-span-1 row-start-1 select-none lg:col-span-1 lg:col-start-1 lg:text-right flex">
-      <p id="sound-toggled-label" class="lg:mr-3 cursor-pointer hover:text-white lg:ml-auto bg-background-dark px-1 ml-[-0.25rem]">SOUND OFF</p>
+      <p id="sound-toggled-label" class="lg:mr-3 cursor-pointer hover:text-white lg:ml-auto bg-background-dark px-1 ml-[-0.25rem]" tabindex="1">SOUND OFF</p>
     </li>
     <div class="absolute left-0 right-0 hidden justify-center aspect-4/4:flex pointer-events-none">
       <div class="flex flex-col items-center gap-2">
@@ -28,7 +28,7 @@ const {} = Astro.props
             <path id="right-mouse-btn-icon" d="M10 6.56854H5.38462V0.386719H6.92308C8.62239 0.386719 10 1.77059 10 3.47763V6.56854Z"></path>
           </g>
         </svg>
-        <p class="bg-background-dark">QUICK MENU</p>
+        <p class="bg-background-dark" aria-hidden="true">QUICK MENU</p>
       </div>
     </div>
     <li class="col-span-5 col-start-7 row-span-1 row-start-1 lg:justify-start lg:col-span-1 lg:col-start-12 lg:ml-2 w-full flex items-end justify-end">

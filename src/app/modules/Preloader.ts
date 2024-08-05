@@ -271,6 +271,7 @@ export default class Preloader {
   onProgress() {
     this.p.innerText = Math.min(100, this.progress) + '%'
     this.bar.style.setProperty('--progress', this.progress + '%')
+    this.bar.setAttribute("aria-valuenow", String(this.progress));
     if (this.progress >= 100) {
       this.loadingTL.play()
     }

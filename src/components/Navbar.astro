@@ -4,13 +4,13 @@ interface Props {}
 const {} = Astro.props
 ---
 
-<nav id="navbar" class="fixed left-0 z-20 mt-6 w-full text-xs text-inactive opacity-0 sm:mt-12">
+<nav id="navbar" aria-label="Main navigation" class="fixed left-0 z-20 mt-6 w-full text-xs text-inactive opacity-0 sm:mt-12">
   <ul class="grid grid-cols-12 font-light">
-    <li class="nav-link col-span-1 col-start-2 text-right sm:col-span-2 sm:col-start-2 sm:mr-2 flex">
+    <li class="nav-link col-span-1 col-start-2 row-start-1 text-right sm:col-span-2 sm:col-start-2 sm:mr-2 flex">
       <a href="/" aria-current="page" data-text-scramble="HOME" data-text-scramble-audio="typing pan:-0.5 volume:0.1">HOME</a>
     </li>
-    <div class="pointer-events-none absolute left-0 right-0 flex justify-center">
-      <div class="pointer-events-auto hidden gap-6 xs:flex sm:gap-10">
+    <li class="col-start-2 col-span-10 row-start-1 flex justify-center">
+      <ul class="hidden gap-6 xs:flex sm:gap-10">
         <li class="nav-link w-6">
           <a href="/works" data-text-scramble="WORKS" data-text-scramble-audio="typing pan:-0.25 volume:0.1">WORKS</a>
         </li>
@@ -20,9 +20,9 @@ const {} = Astro.props
         <li class="nav-link w-6">
           <a href="/lab" data-text-scramble="LAB" data-text-scramble-audio="typing pan:0.25 volume:0.1">LAB</a>
         </li>
-      </div>
-    </div>
-    <li class="nav-link col-span-2 col-start-10 flex justify-end md:col-span-1 md:col-start-12 md:ml-2 md:justify-start">
+      </ul>
+    </li>
+    <li class="nav-link col-span-2 col-start-10 row-start-1 flex justify-end md:col-span-1 md:col-start-12 md:justify-start">
       <a href="/contact" class="mix-blend-difference" data-text-scramble="CONTACT" data-text-scramble-audio="typing pan:0.5 volume:0.1">CONTACT</a>
     </li>
   </ul>

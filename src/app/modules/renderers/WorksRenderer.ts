@@ -203,13 +203,16 @@ export default class WorksRenderer extends BaseRenderer {
       p.addEventListener('mouseout', (e) => {
         this.recalculateInactiveElement(e.currentTarget as HTMLElement)
       })
-      p.addEventListener('mousedown', (e) => {
+      const onFocus = (e: MouseEvent) => {
         e.preventDefault()
         const el = e.currentTarget as HTMLElement
         const i = Number(el.getAttribute('data-i'))
         this.currIdx = i
         this.handleActiveProject(null)
-      })
+      }
+      p.addEventListener('focus', onFocus)
+      p.addEventListener('mousedown', onFocus)
+
       this.projects[i] = {
         element: p,
         image: PROJECTS_LIST[i].image,
@@ -314,7 +317,7 @@ export default class WorksRenderer extends BaseRenderer {
     })
   }
 
-  ////////   ANIMS   //////// 
+  ////////   ANIMS   ////////
 
   prepareAnimations() {
     this.setupProjectTitles()
@@ -349,11 +352,15 @@ export default class WorksRenderer extends BaseRenderer {
     })
 
     WorksRenderer.enterTL
-      .to(this.experience.world.worksImage.planeMat.uniforms.uOpacity, {
-        value: 1.0,
-        duration: window.app.reducedMotion ? 1 : 0,
-        ease: 'power4.inOut',
-      }, "<")
+      .to(
+        this.experience.world.worksImage.planeMat.uniforms.uOpacity,
+        {
+          value: 1.0,
+          duration: window.app.reducedMotion ? 1 : 0,
+          ease: 'power4.inOut',
+        },
+        '<',
+      )
       .to(this.experience.world.worksImage.planeMat.uniforms.uStrength, {
         value: 0.1,
         duration: 2.5,

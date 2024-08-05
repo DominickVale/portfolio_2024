@@ -7,7 +7,7 @@ import Btn from '../components/Btn.astro'
     <div class="flex flex-col items-center">
       <h1 class="text-mono mb-6 text-sm font-light tracking-widest text-white">LOADING…</h1>
       <p class="text-mono max-w-[20rem] text-xs text-inactive">0%</p>
-      <div id="progress-bar" class="relative mt-3 h-[0.0625rem] w-52 overflow-hidden bg-lines">
+      <div id="progress-bar" class="relative mt-3 h-[0.0625rem] w-52 overflow-hidden bg-lines" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <div
           style="--progress: 0;"
           class="progress absolute left-0 h-full w-full origin-left scale-x-[var(--progress)] bg-white drop-shadow-glow-harder"

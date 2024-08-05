@@ -11,11 +11,12 @@ const allPosts = await getCollection('blog')
 
 <Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default" renderer="blog">
   <section id="blog-header" class="relative col-span-10 col-start-2">
-    <div class="relative my-8 mb-16 flex h-max flex-col sm:my-0 sm:flex-row">
+    <div class="relative my-8 mb-16 flex h-max flex-col sm:mt-0 sm:mb-4 tallest:mb-0 sm:flex-row">
       <h1
         class="mt-[2vh] font-display text-[15vw] font-black leading-[100%] sm:mt-[8vh] md:text-8xl lg:text-[calc(5vw+6.2vh)]"
         data-aberration="0.8"
         data-menu-trigger="text"
+        aria-label="BLOG"
       >
         BLOG
       </h1>
@@ -32,7 +33,7 @@ const allPosts = await getCollection('blog')
       </div>
     </div>
     <h2
-      class="mb-12 ml-3 hidden min-h-6 whitespace-nowrap font-mono text-xs font-black tracking-button text-inactive sm:block tall:text-base"
+      class="mb-12 ml-3 hidden min-h-6 whitespace-nowrap font-mono text-xs font-black tracking-button text-inactive sm:tallest:block tall:text-base"
       data-menu-trigger="text"
     >
       UNCOORDINATED THOUGHTS AND PROJECT CASES
@@ -41,7 +42,8 @@ const allPosts = await getCollection('blog')
 
   <section
     id="posts-container"
-    class="max-w-screen no-scrollbar justify-center col-span-10 col-start-2 row-start-2 flex flex-row flex-wrap gap-x-[4vw] gap-y-[8vh] overflow-y-visible pb-[15vh]"
+    class="max-w-screen no-scrollbar justify-center col-span-10 col-start-2 row-start-2 flex flex-row flex-wrap gap-x-[4vw] gap-y-[8vh] pb-[15vh]"
+    tabindex="-1"
   >
     {
       allPosts.map((post, i) => (
@@ -78,6 +80,7 @@ const allPosts = await getCollection('blog')
       flex-wrap: nowrap;
       & > a {
         margin-bottom: auto;
+        margin-top: auto;
       }
     }
   }

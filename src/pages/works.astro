@@ -43,6 +43,8 @@ const {} = Astro.props
           class="project-title relative ml-[-12%] flex h-[10vh] w-full !cursor-pointer items-center font-display font-bold uppercase text-primary-lightest"
           data-i={i}
           style={`--i: ${i}`}
+          tabindex="1"
+          aria-label={project.name}
         >
           <svg class="pointer-events-none absolute left-0 top-0 flex h-full w-full origin-left justify-start fill-primary-lightest opacity-0">
             <text>{project.name}</text>
@@ -53,7 +55,7 @@ const {} = Astro.props
               <div class="circle" />
               <div class="dynamic-line" />
             </div>
-            <div class="absolute bottom-[-2.2rem] right-[-1px] flex w-full xl:w-3/4 gap-3 taller:bottom-[-2.7rem]">
+            <div class="absolute bottom-[-2.2rem] right-[-1px] flex w-full gap-3 xl:w-3/4 taller:bottom-[-2.7rem]">
               <Btn
                 href={project.linkCase}
                 class="w-full"
@@ -63,6 +65,7 @@ const {} = Astro.props
                 data-text-scramble="READ CASE"
                 bottom
                 frame
+                tabindex="1"
               >
                 READ CASE
               </Btn>
@@ -77,6 +80,7 @@ const {} = Astro.props
                 frame
                 target="_blank"
                 rel="noopener"
+                tabindex="1"
               >
                 VISIT WEBSITE
               </Btn>
@@ -94,6 +98,8 @@ const {} = Astro.props
           class="project-title-mobile relative h-[5vh] w-full font-display text-2xl font-bold uppercase text-primary-lightest"
           style={`--i: ${i}`}
           data-i={i}
+          tabindex="1"
+          aria-label={project.name}
         >
           <a href={`/blog/${project.name}`} class="pointer-events-none">
             <svg class="absolute left-0 top-0 flex h-full w-full origin-center justify-start fill-primary-lightest opacity-0 lg:origin-left">
