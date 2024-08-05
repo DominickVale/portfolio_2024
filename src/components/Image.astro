@@ -8,23 +8,25 @@ interface Props extends HTMLAttributes<'img'>{
   contain?: boolean
   variant?: "blog" | "default"
   containerId?: string
+  src: string
 }
 
 const { class: classes, containerId, cover, contain, variant, alt, ...props} = Astro.props
 
-//@TODO: Replace placeholderr file names with actual names
 const imageVariant = variant || "default"
+
+const imageFileName = props.src.split("/").pop()
 ---
 
 {imageVariant === "default" ? (
   <div id={containerId} class:list={[ "img-container relative p-4 mr-auto uppercase", classes ] }>
-    <small class="small-1 vertical-text--left absolute bottom-4 left-[-0.25rem] text-[0.5rem] leading-[100%] opacity-40 tracking-widest">IMG_003.jpg</small>
-    <img class:list={[  "w-full", cover && "h-full object-cover", contain && "h-full object-contain" ] } src="/ecorp.png" alt="" {...props} />
+  <small class="small-1 vertical-text--left absolute bottom-4 left-[-0.25rem] text-[0.5rem] leading-[100%] opacity-40 tracking-widest">{imageFileName}</small>
+    <img class:list={[  "w-full", cover && "h-full object-cover", contain && "h-full object-contain" ] } {...props} />
     <!-- <small class="text-xs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
     <div class="absolute right-0 top-0 flex h-full w-3">
       <small
         class="small-2 vertical-text--right mt-11 w-[1.6rem] text-[0.5rem] leading-[100%] opacity-40 tracking-widest"
-        >IMAGE_NAME-2492929.jpg</small
+        >IMG_ACCESS_LVL: PUBLIC</small
       >
     </div>
     <FuiCorners />
@@ -36,10 +38,10 @@ const imageVariant = variant || "default"
       <div class="bg-lines absolute top-1.5 right-[calc(-45%-4px)] w-[1.6rem] h-[1px] origin-top-left rotate-45"></div>
       <div class="bg-lines absolute top-1.5 left-[-10%] w-[120%] h-[1px]"></div>
       <div class="bg-lines absolute top-1.5 left-[calc(-45%-4px)] w-[1.6rem] h-[1px] origin-top-right rotate-[-45deg]"></div>
-      <small class="shadow text-[0.5rem] leading-[50%] opacity-0 pointer-events-none tracking-label" >IMG_003.jpg</small>
-      <small class="absolute left-0 bottom-[-1rem] w-full h-full text-[0.5rem] leading-[50%] tracking-label" >IMG_003.jpg</small>
+      <small class="shadow text-[0.5rem] leading-[50%] opacity-0 pointer-events-none tracking-label" >{imageFileName}</small>
+      <small class="absolute left-0 bottom-[-1rem] w-full h-full text-[0.5rem] leading-[50%] tracking-label" >{imageFileName}</small>
     </div>
-      <img class:list={[  "w-full", cover && "h-full object-cover", contain && "h-full object-contain" ] } src="/ecorp.png" alt={alt} {...props} />
+      <img class:list={[  "w-full", cover && "h-full object-cover", contain && "h-full object-contain" ] } {...props} />
       <span class="alt ml-3 relative image-caption self-start mt-4 text-xs text-copy opacity-80">{alt}</span>
       <FuiCorners class="" dot/>
     </div>

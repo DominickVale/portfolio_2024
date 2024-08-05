@@ -12,7 +12,7 @@ type Props = {
 }
 const { frontmatter, ...rest } = Astro.props
 
-const { id, title, tags, readTime, date, subtitle, lastUpdated, ttr, project, intro } = frontmatter
+const { id, title, tags, readTime, date, image, subtitle, lastUpdated, ttr, project, intro } = frontmatter
 ---
 
 <BaseLayout title="Blog page" rowsMax withContacts data-menu-trigger="default-blog" renderer="blogArticle">
@@ -53,7 +53,7 @@ const { id, title, tags, readTime, date, subtitle, lastUpdated, ttr, project, in
 
     <section id="image-section-mobile" class="mb-16 mt-[4vh] sm:mt-[0vh] lg:hidden">
       <div class="relative">
-        <Image class="mb-3" containerId="main-image-container-mobile" id="main-image-mobile" />
+        <Image src={image} class="mb-3" containerId="main-image-container-mobile" id="main-image-mobile" />
         <Marquee animated tags={project?.tech || tags} class="left-4 right-4 top-4 bg-white text-background-dark" />
       </div>
       {
@@ -79,7 +79,7 @@ const { id, title, tags, readTime, date, subtitle, lastUpdated, ttr, project, in
     id="image-section"
     class="col-span-10 col-start-1 row-start-3 hidden flex-col items-center self-start lg:col-span-4 lg:col-start-8 lg:row-start-2 lg:mt-[8vh] lg:flex"
   >
-    <Image containerId="main-image-container" id="main-image" />
+    <Image src={image} containerId="main-image-container" id="main-image" />
     {
       project ? (
         <>
