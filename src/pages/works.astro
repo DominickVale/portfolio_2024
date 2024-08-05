@@ -20,9 +20,7 @@ const {} = Astro.props
           <div class="fui-corners"></div>
         </div>
         <div class="work-details 2lg:max-w-[30rem] mt-8 hidden max-w-[90%] opacity-0 lg:block">
-          <table class="text-xs">
-            <WorkDetails project={PROJECTS_LIST[0]} />
-          </table>
+          <WorkDetails project={PROJECTS_LIST[0]} />
         </div>
 
         <div class="work-details-mobile mt-4 w-full opacity-0 lg:hidden">
@@ -101,7 +99,7 @@ const {} = Astro.props
           tabindex="1"
           aria-label={project.name}
         >
-          <a href={`/blog/${project.name}`} class="pointer-events-none">
+          <a href={project.linkCase} class="pointer-events-none">
             <svg class="absolute left-0 top-0 flex h-full w-full origin-center justify-start fill-primary-lightest opacity-0 lg:origin-left">
               <text>{project.name}</text>
             </svg>

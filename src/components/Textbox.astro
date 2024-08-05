@@ -9,7 +9,7 @@ const Component = Astro.props.area ? 'textarea' : 'input'
 
 <div class="textbox-wrapper relative">
   <Component
-    type="text"
+    type={ area ? undefined : "text" }
     class:list={[
       'textbox block w-full bg-[rgba(0,0,0,0.9)] px-3 py-1 text-xs focus:outline-none',
       'placeholder:text-[rgba(255,255,255,0.6)]',

@@ -1,15 +1,13 @@
 # TODOs
 
 - fix codecs audios firefox
-- check @TODOS.
 - Optimize imports (no import \* from ...) (also split js into as many independent chunks as possible)
-- Fix errors / validate html/css etc with developer tools
 - Figure out some hacks for font rendering
 - Add more post-processing (blur/aberration on transitions based on position speed etc.)
 
 # REMINDERS
 
-- Sounds should mainly be comprised of lower frequencies, try to make them only hearable headphone users
+- Sounds should mainly be comprised of lower frequencies, try to make them only audible to headphone users
 
 ## 🧞 Commands
 

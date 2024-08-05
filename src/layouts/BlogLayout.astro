@@ -65,11 +65,11 @@ const { id, title, tags, readTime, date, image, subtitle, lastUpdated, ttr, proj
         )
       }
     </section>
-    <span id="intro-details" class="mb-3 mt-6 flex items-center gap-3 text-xs opacity-50">
+    <div id="intro-details" class="mb-3 mt-6 flex items-center gap-3 text-xs opacity-50">
       <p>LAST UPDATE: <date>{lastUpdated}</date></p>
       <div class="h-1 w-1 rounded-full bg-white opacity-70"></div>
       <p>TTR: {ttr} MINUTES</p>
-    </span>
+    </div>
 
     <div id="intro" class="font-copy text-sm font-light tracking-wide text-copy opacity-0 sm:text-sm xl:text-lg">
       {intro}
