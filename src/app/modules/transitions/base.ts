@@ -12,7 +12,13 @@ export default class BaseTransition extends Transition {
     const page = getPageName(toURL)
     const attractorTL = getAttractorByPage(page)
 
-    gsap.timeline({ onComplete: done }).add(attractorTL).play(0)
+    const tl = gsap.timeline({ onComplete: done, paused: true })
+
+    if (window.app.reducedMotion) {
+      console.warn('Prefers-reduced-motion is enabled. Attractor animation hidden.')
+      tl.to('canvas', { opacity: 0, duration: 1, ease: 'power4.inOut' })
+    }
+    tl.add(attractorTL).play(0)
   }
 
   /**
@@ -20,6 +26,10 @@ export default class BaseTransition extends Transition {
    * @param { { to: HTMLElement, trigger: string|HTMLElement|false, done: function } } props
    */
   onEnter({ to, trigger, done, toURL }) {
-    done()
+    if (window.app.reducedMotion) {
+      gsap.to('canvas', { opacity: 1, duration: 3, delay: 1.5, ease: 'power4.in', onComplete: done })
+    } else {
+      done()
+    }
   }
 }

@@ -162,8 +162,10 @@ export default class LorenzAttractor {
     this.points.material.uniforms.uTexture.value = read.texture
     this.bufferMaterial.uniforms.uTexture.value = write.texture
 
+    // prefers-reduced-motion dampening
+    const dampenFactor = window.app.reducedMotion && this.params.speed > 5 ? 0.5 : 1
     this.bufferMaterial.uniforms.uDt = {
-      value: delta * 0.0001 * Math.pow(this.params.speed, 2),
+      value: delta * 0.0001 * Math.pow(this.params.speed, 2) * dampenFactor,
     }
   }
 

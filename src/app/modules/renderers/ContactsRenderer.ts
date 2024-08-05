@@ -234,7 +234,7 @@ export class ContactsInternalRenderer {
         duration: 0.045,
         stagger: {
           each: 0.08,
-          repeat: 6,
+          repeat: window.app.reducedMotion ? 2 : 6,
           from: 'random',
         },
         ease: 'circ.inOut',
@@ -259,7 +259,7 @@ export class ContactsInternalRenderer {
           opacity: 1,
           duration: 0.05,
           stagger: {
-            repeat: 15,
+            repeat: window.app.reducedMotion ? 3 : 15,
             each: 0.1,
           },
         },
@@ -307,7 +307,7 @@ export class ContactsInternalRenderer {
         {
           autoAlpha: 1,
           duration: 0.06,
-          repeat: 20,
+          repeat: window.app.reducedMotion ? 2 : 20,
         },
         '<',
       )

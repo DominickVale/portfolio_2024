@@ -115,8 +115,8 @@ export default class Experience {
           { opacity: 0 },
           {
             opacity: 1,
-            repeat: 9,
-            duration: 0.06,
+            repeat: window.app.reducedMotion ? 0 : 9,
+            duration: window.app.reducedMotion ? 0.5 : 0.06,
           },
         )
       }

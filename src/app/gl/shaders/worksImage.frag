@@ -11,6 +11,7 @@ uniform vec2 uPlaneSize;
 uniform vec2 uImageSize;
 uniform vec2 uNextImageSize;
 uniform float uProgress;
+uniform float uOpacity;
 
 varying vec2 vUv;
         
@@ -99,9 +100,9 @@ void main() {
     discard;
   }
   if(uProgress < 1.0){
-    gl_FragColor = mix(vec4(r, g, b, 1.0), vec4(rn, gn, bn, 1.0), uProgress) * (1.0 - bnMask - bnMask2) + (whiteNoise + blockNoise + blockNoise2 - waveNoise) * vec4(gold, 0.5);
+    gl_FragColor = mix(vec4(r, g, b, uOpacity), vec4(rn, gn, bn, uOpacity), uProgress) * (1.0 - bnMask - bnMask2) + (whiteNoise + blockNoise + blockNoise2 - waveNoise) * vec4(gold, 0.5);
   } else {
-    gl_FragColor = vec4(r, g, b, 1.0) * (1.0 - bnMask - bnMask2) + (whiteNoise + blockNoise + blockNoise2 - waveNoise) * vec4(gold, 0.5);
+    gl_FragColor = vec4(r, g, b, uOpacity) * (1.0 - bnMask - bnMask2) + (whiteNoise + blockNoise + blockNoise2 - waveNoise) * vec4(gold, 0.5);
   }
 }
 

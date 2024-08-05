@@ -77,5 +77,13 @@ export const ContactsPageAttractorAnim = {
       .timeline({ onComplete, paused: true, onStart: () => console.log('Starting contact attractor') })
       .add(uniTL)
       .add(posTL)
+      .to(
+        experience.params,
+        {
+          speed: LORENZ_PRESETS['default'].speed,
+          duration: 1.5,
+          ease: 'power4.inOut',
+        },
+      )
   },
 }

@@ -38,6 +38,7 @@ export default class App {
   preloader: Preloader
   overridePreloader: boolean
   audio: Audio
+  reducedMotion: boolean
 
   constructor(public debug = false) {
     //@TODO: use cache check
@@ -47,6 +48,8 @@ export default class App {
     // used for debugging purposes, skips intro
     window.app.overridePreloader = import.meta.env.PUBLIC_DEBUG_OVERRIDE_PRELOADER
     this.isTransitioning = true
+    this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     this.cursor = new Cursor()
     this.experience = new Experience($('#webgl') as HTMLCanvasElement, this.cursor)
     this.menus = new Menus(this.onToggleDebug.bind(this))

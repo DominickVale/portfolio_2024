@@ -17,7 +17,7 @@ export default class FromWorkTransition extends BaseTransition {
     const fuiCornersTL = gsap.timeline().to(base, {
       opacity: 0,
       duration: 0.065,
-      repeat: 6,
+      repeat: window.app.reducedMotion ? 1 : 6,
     })
 
     const reversed = gsap
@@ -38,10 +38,10 @@ export default class FromWorkTransition extends BaseTransition {
         `.project-title-mobile svg, .project-title svg`,
         {
           opacity: 0,
-          duration: 0.05,
+          duration: window.app.reducedMotion ? 0.5 : 0.05,
           ease: 'linear',
           stagger: {
-            repeat: 9,
+            repeat: window.app.reducedMotion ? 0 : 9,
             each: 0.1,
             ease: 'expo.in',
           },
@@ -83,6 +83,6 @@ export default class FromWorkTransition extends BaseTransition {
    * @param { { to: HTMLElement, trigger: string|HTMLElement|false, done: function } } props
    */
   onEnter({ to, trigger, done, toURL }) {
-    done()
+    super.onEnter({to, trigger, done, toURL})
   }
 }

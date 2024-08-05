@@ -288,32 +288,49 @@ export default class RadialMenu {
     this._thumb.classList.add('pressed')
     this.currTarget = target
 
-    gsap
-      .timeline({})
-      .from(this._wrapper, {
-        scale: 0,
-        duration: 0.25,
-        ease: 'power4.inOut',
-      })
-      .fromTo(
+    if (window.app.reducedMotion) {
+      gsap.timeline({}).fromTo(
         this._wrapper,
         {
           opacity: 0,
         },
         {
           opacity: 1,
-          duration: 0.06,
-          repeat: 6,
+          duration: 0.25,
+          onComplete: function () {
+            gsap.set(this.targets(), { clearProps: 'opacity' })
+          },
         },
         '<',
       )
-      .to(this._wrapper, {
-        opacity: 1,
-        duration: 0,
-        onComplete: function () {
-          gsap.set(this.targets(), { clearProps: 'opacity' })
-        },
-      })
+    } else {
+      gsap
+        .timeline({})
+        .from(this._wrapper, {
+          scale: 0,
+          duration: 0.25,
+          ease: 'power4.inOut',
+        })
+        .fromTo(
+          this._wrapper,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            duration: 0.06,
+            repeat: 6,
+          },
+          '<',
+        )
+        .to(this._wrapper, {
+          opacity: 1,
+          duration: 0,
+          onComplete: function () {
+            gsap.set(this.targets(), { clearProps: 'opacity' })
+          },
+        })
+    }
   }
 
   close() {
@@ -373,7 +390,7 @@ export default class RadialMenu {
     itemEl.setAttribute('data-hover', 'true')
     const label = $('.radial-menu-item-label', itemEl)
     TextScramble.scramble(label)
-    if(item.hoverCallback) item.hoverCallback()
+    if (item.hoverCallback) item.hoverCallback()
   }
   onSliceMouseLeave(ev: MouseEvent) {
     const slice = ev.currentTarget as SVGElement

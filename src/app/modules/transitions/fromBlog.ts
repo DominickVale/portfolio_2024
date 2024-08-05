@@ -33,7 +33,7 @@ export default class FromBlogTransition extends BaseTransition {
           opacity: 0,
           duration: 0.05,
           stagger: {
-            repeat: 20,
+            repeat: window.app.reducedMotion ? 2 : 20,
             each: 0.1,
           },
         },
@@ -41,7 +41,8 @@ export default class FromBlogTransition extends BaseTransition {
       .to(
         '#blog-header',
         {
-          x: '-80vw',
+          x: window.app.reducedMotion ? undefined : '-80vw',
+          opacity: window.app.reducedMotion ? 0 : undefined,
           duration: 1.35,
           ease: 'power4.inOut',
         },
@@ -70,6 +71,6 @@ export default class FromBlogTransition extends BaseTransition {
    * @param { { to: HTMLElement, trigger: string|HTMLElement|false, done: function } } props
    */
   onEnter({ to, trigger, done, toURL }) {
-    done()
+    super.onEnter({to, trigger, done, toURL})
   }
 }

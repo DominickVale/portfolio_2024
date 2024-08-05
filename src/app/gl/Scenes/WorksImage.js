@@ -31,6 +31,7 @@ export default class WorksImage {
         uImageSize: { value: new THREE.Vector2(1, 1) },
         uPlaneSize: { value: new THREE.Vector2(1, 1) },
         uStrength: { value: 3.0 },
+        uOpacity: { value: window.app.reducedMotion ? 0.0 : 1.0 },
         uMouse: { value: new THREE.Vector2(0.0, 0.0) },
       },
       vertexShader: vert,

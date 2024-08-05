@@ -143,7 +143,7 @@ export default class BlogRenderer extends BaseRenderer {
           fuiCornersOld,
           {
             alpha: 0,
-            repeat: 4,
+            repeat: window.app.reducedMotion ? 1 : 4,
             duration: 0.06,
           },
           '<',
@@ -193,7 +193,7 @@ export default class BlogRenderer extends BaseRenderer {
           fuiCornersActive,
           {
             alpha: 1,
-            repeat: 6,
+            repeat: window.app.reducedMotion ? 1 : 6,
             duration: 0.06,
           },
           '<+50%',
@@ -292,10 +292,12 @@ export default class BlogRenderer extends BaseRenderer {
       .fromTo(
         '#blog-header',
         {
-          x: '-50vw',
+          x: window.app.reducedMotion ? undefined : '-50vw',
+          opacity: window.app.reducedMotion ? 0 : undefined,
         },
         {
-          x: 0,
+          x: window.app.reducedMotion ? undefined : 0,
+          opacity: window.app.reducedMotion ? 1 : undefined,
           duration: 1.35,
           ease: 'power4.inOut',
         },
@@ -344,10 +346,10 @@ export default class BlogRenderer extends BaseRenderer {
         { opacity: 0 },
         {
           opacity: 1,
-          duration: 0.05,
+          duration: window.app.reducedMotion ? 2 : 0.05,
           stagger: {
-            repeat: 20,
-            each: 0.1,
+            repeat: window.app.reducedMotion ? 0 : 20,
+            each: window.app.reducedMotion ? 0.2 : 0.1,
           },
         },
         '<+50%',

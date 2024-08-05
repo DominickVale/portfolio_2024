@@ -2,8 +2,8 @@
 
 - fix codecs audios firefox
 - check @TODOS.
-- Reduced animations for prefer-reduced-motion
 - Optimize imports (no import \* from ...) (also split js into as many independent chunks as possible)
+- Fix errors / validate html/css etc with developer tools
 - Test accessibility
 - Figure out some hacks for font rendering
 - Add more post-processing (blur/aberration on transitions based on position speed etc.)

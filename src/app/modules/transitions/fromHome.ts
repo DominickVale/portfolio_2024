@@ -19,6 +19,6 @@ export default class FromHomeTransition extends BaseTransition {
    * @param { { to: HTMLElement, trigger: string|HTMLElement|false, done: function } } props
    */
   onEnter({ to, trigger, done, toURL }) {
-    done()
+    super.onEnter({to, trigger, done, toURL})
   }
 }

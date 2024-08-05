@@ -186,7 +186,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
             opacity: 0,
             duration: 0.075,
             stagger: {
-              repeat: 10,
+              repeat: window.app.reducedMotion ? 1 : 10,
               each: 0.1,
             },
           },
@@ -195,8 +195,9 @@ export default class BlogArticleRenderer extends BaseRenderer {
         .from(
           $('img', img),
           {
-            scaleY: 0,
-            duration: 0.5,
+            scaleY: window.app.reducedMotion ? 1 : 0,
+            opacity: window.app.reducedMotion ? 0 : 1,
+            duration: window.app.reducedMotion ? 1.5 : 0.5,
             ease: 'expo.in',
           },
           '<',
@@ -213,7 +214,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
             opacity: 0,
             duration: 0.075,
             stagger: {
-              repeat: 10,
+              repeat: window.app.reducedMotion ? 1 : 10,
               each: 0.1,
             },
           },
@@ -300,7 +301,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
           opacity: 1,
           duration: 0.09,
           stagger: {
-            repeat: 20,
+            repeat: window.app.reducedMotion ? 2 : 20,
             each: 0.1,
           },
         },
@@ -325,7 +326,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
           opacity: 1,
           duration: 0.09,
           stagger: {
-            repeat: 10,
+            repeat: window.app.reducedMotion ? 1 : 10,
             each: 0.1,
           },
         },
@@ -338,7 +339,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
           opacity: 1,
           duration: 0.07,
           stagger: {
-            repeat: 10,
+            repeat: window.app.reducedMotion ? 1 : 10,
             each: 0.1,
           },
         },
@@ -351,7 +352,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
           opacity: 1,
           duration: 0.09,
           stagger: {
-            repeat: 20,
+            repeat: window.app.reducedMotion ? 1 : 20,
             each: 0.1,
           },
         },

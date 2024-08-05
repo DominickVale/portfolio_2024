@@ -33,8 +33,8 @@ export function blurStagger(el: HTMLElement, duration?: number, delay?: number) 
         { alpha: 0 },
         {
           alpha: 1,
-          duration: 0.05,
-          repeat: 20 * Math.random(),
+          duration: window.app.reducedMotion ? 1 : 0.05,
+          repeat: window.app.reducedMotion ? 0 : 20 * Math.random(),
         },
         '<',
       )

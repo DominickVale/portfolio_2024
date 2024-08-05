@@ -106,7 +106,7 @@ export default class WorksRenderer extends BaseRenderer {
         .to(
           planeMatUni.uStrength,
           {
-            value: 0.4,
+            value: window.app.reducedMotion ? 0.2 : 0.4,
             duration: 0.09,
             ease: 'power4.out',
           },
@@ -159,7 +159,7 @@ export default class WorksRenderer extends BaseRenderer {
     const svg = $('svg', el)
     gsap.to(svg, {
       scale: newScale,
-      duration: 0.45,
+      duration: window.app.reducedMotion ? 0.1 : 0.45,
       ease: 'power4.out',
     })
     const blur = Math.pow(Math.abs(i - this.currIdx), 2)
@@ -310,7 +310,7 @@ export default class WorksRenderer extends BaseRenderer {
     fuiCornersTl.to(base, {
       opacity: 1,
       duration: 0.065,
-      repeat: 6,
+      repeat: window.app.reducedMotion ? 1 : 6,
     })
   }
 
@@ -349,6 +349,11 @@ export default class WorksRenderer extends BaseRenderer {
     })
 
     WorksRenderer.enterTL
+      .to(this.experience.world.worksImage.planeMat.uniforms.uOpacity, {
+        value: 1.0,
+        duration: window.app.reducedMotion ? 1 : 0,
+        ease: 'power4.inOut',
+      }, "<")
       .to(this.experience.world.worksImage.planeMat.uniforms.uStrength, {
         value: 0.1,
         duration: 2.5,
@@ -371,10 +376,10 @@ export default class WorksRenderer extends BaseRenderer {
         `${projectTitleQuery} svg`,
         {
           opacity: 1,
-          duration: 0.05,
+          duration: window.app.reducedMotion ? 1 : 0.05,
           ease: 'linear',
           stagger: {
-            repeat: 20,
+            repeat: window.app.reducedMotion ? 0 : 20,
             each: 0.1,
             ease: 'expo.in',
           },
