@@ -64,7 +64,7 @@ export const WhatidoPageAttractorAnim = {
         attractor.points.position,
         {
           x: 0,
-          y: 44,
+          y: this.isDesktop ? 44 : 46,
           z: -17.6,
           duration: 2,
           ease: 'power2.inOut',

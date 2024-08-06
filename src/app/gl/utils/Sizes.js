@@ -7,7 +7,7 @@ export default class Sizes extends Emitter {
     // Setup
     this.width = window.innerWidth
     this.height = window.innerHeight
-    this.pixelRatio = Math.min(window.devicePixelRatio, 2)
+    this.pixelRatio = Math.min(window.devicePixelRatio, 1.5)
     this.aspectRatio = this.width / this.height
 
     // Resize event
@@ -15,7 +15,7 @@ export default class Sizes extends Emitter {
       this.width = window.innerWidth
       this.height = window.innerHeight
     this.aspectRatio = this.width / this.height
-      this.pixelRatio = Math.min(window.devicePixelRatio, 2)
+      this.pixelRatio = Math.min(window.devicePixelRatio, 1.5)
 
       this.emit('resize')
     })

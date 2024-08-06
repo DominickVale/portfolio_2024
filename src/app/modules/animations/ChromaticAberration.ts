@@ -1,5 +1,5 @@
 import type Experience from '../../gl/Experience'
-import { $all } from '../../utils'
+import { $all, isMobile } from '../../utils'
 import type Cursor from '../Cursor'
 
 const primaryColorWeight = 1.8
@@ -7,6 +7,7 @@ const maxBlur = 0.8
 
 export default class ChromaticAberrationAnim {
   elements: { el: HTMLElement; value: number }[]
+    isDesktop: boolean
   constructor(
     private cursor: Cursor,
     private experience: Experience,
@@ -18,6 +19,7 @@ export default class ChromaticAberrationAnim {
       const value = Number(el.getAttribute('data-aberration'))
       return { el, value: value }
     })
+    this.isDesktop = !isMobile()
   }
 
   update() {
@@ -49,7 +51,9 @@ export default class ChromaticAberrationAnim {
         this.experience.renderer.chromaticAberrationEffect.offset.set(shiftX / 1500, shiftY / 1500)
       }
 
-      el.style.filter = `blur(${blur}px)`
+      if(this.isDesktop){
+        el.style.filter = `blur(${blur}px)`
+      }
     }
   }
 }

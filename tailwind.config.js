@@ -28,6 +28,7 @@ export default {
           dark: 'var(--bg-dark)',
           'dark-02': 'var(--bg-dark-02)',
           'dark-05': 'var(--bg-dark-05)',
+          'dark-09': 'var(--bg-dark-09)',
         },
       },
       fontSize: {

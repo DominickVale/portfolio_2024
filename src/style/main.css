@@ -21,6 +21,7 @@
   --bg-dark-lightest: rgba(66, 64, 64, 0.28);
   --bg-dark-02: rgba(17, 16, 16, 0.2);
   --bg-dark-05: rgba(17, 16, 16, 0.5);
+  --bg-dark-09: rgba(17, 16, 16, 0.9);
   --blur-radial: 2px;
   --copy: #d3c4c4;
   --golden-glow: 0 0 4px color-mix(in srgb, transparent, var(--primary) 80%);
@@ -255,7 +256,6 @@ scrollbar-button {
   width: 100%;
   height: 100%;
   border-radius: 100%;
-  backdrop-filter: blur(var(--blur-radial));
   background: var(--bg-dark-05);
 
   mask: var(--mask);
@@ -263,6 +263,9 @@ scrollbar-button {
   z-index: -1;
   &[data-highlighted='true'] {
     background: radial-gradient(white var(--progress), rgba(255, 255, 255, 0.9) var(--progress));
+  }
+  @media only screen and (min-width: 768px) {
+    backdrop-filter: blur(var(--blur-radial));
   }
 }
 .radial-menu-item {

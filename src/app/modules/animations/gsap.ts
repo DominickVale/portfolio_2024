@@ -1,9 +1,10 @@
 import { TITLE_REVEAL_SOUND_SPRITES } from 'src/app/constants'
-import { $, splitTextChars } from '../../utils'
+import { $, isMobile, splitTextChars } from '../../utils'
 import gsap from 'gsap'
 
 export function blurStagger(el: HTMLElement, duration?: number, delay?: number) {
   const split = splitTextChars(el, 'span')
+  const isDesktop = !isMobile()
 
   const lettersTLduration = duration || 0.1
   const lettersTL = gsap.timeline({ duration: lettersTLduration, delay: delay || 0.9 })
@@ -27,7 +28,7 @@ export function blurStagger(el: HTMLElement, duration?: number, delay?: number) 
           //@ts-ignore
           sprite: TITLE_REVEAL_SOUND_SPRITES,
         })
-      }, "<")
+      }, '<')
       .fromTo(
         rl,
         { alpha: 0 },
@@ -38,7 +39,8 @@ export function blurStagger(el: HTMLElement, duration?: number, delay?: number) 
         },
         '<',
       )
-      .fromTo(
+    if (isDesktop) {
+      ltl.fromTo(
         rl,
         {
           filter: 'blur(10px)',
@@ -50,6 +52,7 @@ export function blurStagger(el: HTMLElement, duration?: number, delay?: number) 
         },
         '<',
       )
+    }
 
     lettersTL.add(ltl, '<')
   })
