@@ -1,5 +1,6 @@
 import { Renderer } from '@unseenco/taxi'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/all'
 import { $all, $, debounceTrailing, isMobile } from '../../utils'
 
 export default class BaseRenderer extends Renderer {
@@ -80,6 +81,7 @@ export default class BaseRenderer extends Renderer {
   onEnter() {
     // run after the new content has been added to the Taxi container
     // console.log('renderer onEnter')
+    ScrollTrigger.normalizeScroll({type:"touch"})
     BaseRenderer.resizeHandlers = []
   }
 
