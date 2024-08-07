@@ -67,7 +67,7 @@ export default class Renderer {
     this.chromaticAberrationEffect = chromaticAberrationEffect
     chromaticAberrationEffect.offset = new THREE.Vector2(0, 0)
 
-    this.shockWaveEffect = new ShockWaveEffect(this.camera.instance, new THREE.Vector3(0, 6, 0), {
+    this.shockWaveEffect = new ShockWaveEffect(this.camera.instance, new THREE.Vector3(0, 13, 0), {
       speed: 1.5,
       maxRadius: 30,
       waveSize: 4,

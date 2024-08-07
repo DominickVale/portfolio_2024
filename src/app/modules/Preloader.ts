@@ -17,7 +17,7 @@ export default class Preloader {
   buttons: NodeListOf<HTMLElement>
   buttonsContainer: HTMLElement
   container: HTMLElement
-  experience: any
+  experience: Experience
   isMobile: boolean
   loadingTL: gsap.core.Timeline
   enterTL: gsap.core.Timeline
@@ -59,15 +59,30 @@ export default class Preloader {
     this.container.classList.remove('hidden')
     if (window.app.isFirstTime) {
       const iid = setInterval(() => {
+        const isReady = this.experience.resources.isReady
         const random = Math.random()
-        if (random < this.progress / 100) return
-        if (this.progress >= 100) {
-          clearInterval(iid)
-          return
+        let probability = 0
+
+        if (!isReady) {
+          probability = Math.max(0.01, 1 - (this.progress / 100) ** 2)
+        } else {
+          probability = 0.1
         }
-        this.progress++
-        this.onProgress()
-      }, 10)
+
+        if (random < probability) {
+          if (!isReady && this.progress >= 99) {
+            this.progress = 99
+          } else if (this.progress < 100) {
+            this.progress++
+          }
+
+          this.onProgress()
+
+          if (this.progress >= 100 && isReady) {
+            clearInterval(iid)
+          }
+        }
+      }, 50)
     } else {
       gsap.set([this.title, this.bar.parentElement, this.p, this.buttons], { opacity: 0 })
       this.loadingTL.play('welcome')
@@ -96,6 +111,10 @@ export default class Preloader {
     if (window.app.overridePreloader) return
     if (withSound) window.app.audio.enable()
     else window.app.audio.disable()
+
+    window.app.audio.play(null, 'g', {
+      volume: 0.5
+    })
 
     const preset = LORENZ_PRESETS['collapsedAfter']
     const attractor = this.experience.world.attractor
@@ -271,7 +290,7 @@ export default class Preloader {
   onProgress() {
     this.p.innerText = Math.min(100, this.progress) + '%'
     this.bar.style.setProperty('--progress', this.progress + '%')
-    this.bar.setAttribute("aria-valuenow", String(this.progress));
+    this.bar.setAttribute('aria-valuenow', String(this.progress))
     if (this.progress >= 100) {
       this.loadingTL.play()
     }

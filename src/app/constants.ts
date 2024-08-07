@@ -91,7 +91,7 @@ export const LORENZ_PRESETS = {
     rotationZ: -0.8733,
     positionX: -0.22,
     positionZ: 25,
-    positionY: 4.5,
+    positionY: 10,
   },
   collapsedAfter: {
     sigma: 100,
@@ -103,7 +103,7 @@ export const LORENZ_PRESETS = {
     rotationY: 0,
     rotationZ: -0.8733,
     positionX: 0.5,
-    positionY: 4.5,
+    positionY: 10,
     positionZ: 25,
     bloomIntensity: 100,
   },
