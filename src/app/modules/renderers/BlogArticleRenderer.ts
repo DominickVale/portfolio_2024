@@ -46,6 +46,9 @@ export default class BlogArticleRenderer extends BaseRenderer {
     this.lenis = new Lenis({ duration: 2, smoothWheel: true })
 
     this.lenis.on('scroll', ScrollTrigger.update)
+    this.lenis.on('scroll', ({ velocity }) => {
+      this.experience.params.speed = Math.max(5, 1.5 * Math.abs(velocity))
+    })
     gsap.ticker.add((time) => {
       this.lenis.raf(time * 1000)
     })
@@ -129,8 +132,8 @@ export default class BlogArticleRenderer extends BaseRenderer {
     })
     gsap.set('#bg-blur', { opacity: 1 })
 
-    //contacts bg blur on scroll
     setTimeout(() => {
+      //contacts bg blur on scroll
       BlogArticleRenderer.scrollTl = gsap
         .timeline({
           scrollTrigger: {
@@ -143,6 +146,62 @@ export default class BlogArticleRenderer extends BaseRenderer {
         .to('#bg-blur', {
           opacity: 0,
         })
+
+      const attractor = this.experience.world.attractor
+
+      const that = this
+      const attractorScrollTL = gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: '#body-wrapper',
+            start: 'top top',
+            end: 'bottom center',
+            scrub: true,
+          },
+        })
+        .to(
+          attractor.bufferMaterial.uniforms.uSigma,
+          {
+            value: -20,
+          },
+          '<',
+        )
+        .to(
+          attractor.bufferMaterial.uniforms.uRho,
+          {
+            value: 60,
+          },
+          '<',
+        )
+        .to(
+          attractor.bufferMaterial.uniforms.uBeta,
+          {
+            value: 2,
+          },
+          '<',
+        )
+      .to(
+        attractor.points.position,
+        {
+          x: -15,
+          y: 16,
+          z: -45,
+          duration: 2,
+          ease: 'power2.inOut',
+        },
+        '<',
+      )
+      .to(
+        attractor.points.rotation,
+        {
+          x: 1.67132729170977,
+          y: 1.13097335529233,
+          z: 0.131946891450771,
+          duration: 2,
+          ease: 'power2.inOut',
+        },
+        '<',
+      )
     }, 500)
   }
 

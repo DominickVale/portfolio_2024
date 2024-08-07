@@ -175,7 +175,7 @@ export function getPageName(url: string): string {
   }
 
   if (s[0] === 'blog') {
-    return s.length > 1 ? 'blogpost' : 'blog';
+    return s.length > 1 ? 'blogarticle' : 'blog';
   }
 
   if (s[0] === 'about') {

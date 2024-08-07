@@ -20,7 +20,7 @@ export default class BaseRenderer extends Renderer {
 
     this.navLinks = Array.from($all('nav li a')) as HTMLAnchorElement[]
 
-    $("#sound-toggled-label").addEventListener('click', () => {
+    $('#sound-toggled-label').addEventListener('click', () => {
       window.app.audio.toggle()
     })
 
@@ -81,7 +81,7 @@ export default class BaseRenderer extends Renderer {
   onEnter() {
     // run after the new content has been added to the Taxi container
     // console.log('renderer onEnter')
-    ScrollTrigger.normalizeScroll({type:"touch"})
+    ScrollTrigger.normalizeScroll({ type: 'touch' })
     BaseRenderer.resizeHandlers = []
   }
 

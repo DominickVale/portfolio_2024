@@ -9,7 +9,7 @@ const { link, class: classes, ...props } = Astro.props
 ---
 
 <a href={link} target="_blank" class:list={['relative items-center justify-center opacity-90 min-w-[50%]', classes]} aria-label="Open project" {...props}>
-  <Btn class="h-full w-full gap-3" innerClass="flex gap-3" data-text-scramble="OPEN PROJECT"> OPEN PROJECT</Btn>
+  <Btn class="h-full w-full gap-3 text-nowrap whitespace-nowrap" innerClass="flex gap-3" data-text-scramble="OPEN PROJECT"> OPEN PROJECT</Btn>
   <div class="pointer-events-none absolute left-0 top-0 h-full w-full shadow">
     <div class="relative flex h-full w-full items-center justify-center gap-10 shadow-inner">
       <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
