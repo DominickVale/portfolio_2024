@@ -102,6 +102,8 @@ export default class RadialMenu {
     this.innerRadius = (this._radius * this.innerRadiusPercent) / 100
     this._centralAngle = (this.isMobile ? 180 : 360) / this.itemsEl.length
     this.innerRadiusBound = this.innerRadius - this._thumbBounds.width / 2
+    // Force a reflow because firefox
+    void this._wrapper.offsetHeight;
   }
 
   createWrapper() {
