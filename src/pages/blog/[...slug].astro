@@ -5,6 +5,7 @@ import BlogSection from '../../components/blog/BlogSection.astro'
 import BlogImage from '../../components/blog/BlogImage.astro'
 import BlogSectionHeader from '../../components/blog/BlogSectionHeader.astro'
 import BlogSectionParagraph from '../../components/blog/BlogSectionParagraph.astro'
+import BlogAnchor from '../../components/blog/BlogAnchor.astro'
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog')
@@ -19,5 +20,5 @@ const { Content } = await entry.render()
 ---
 
 <BlogLayout frontmatter={entry.data}>
-  <Content components={{ section: BlogSection, img: BlogImage, h2: BlogSectionHeader, p: BlogSectionParagraph }} />
+  <Content components={{ section: BlogSection, img: BlogImage, h2: BlogSectionHeader, p: BlogSectionParagraph, a: BlogAnchor }} />
 </BlogLayout>

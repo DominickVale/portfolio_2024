@@ -15,13 +15,13 @@ const { class: classes, containerId, cover, contain, variant, alt, ...props} = A
 
 const imageVariant = variant || "default"
 
-const imageFileName = props.src.split("/").pop()
+const imageFileName = props.src.split("?")[0].split("/").pop()
 ---
 
 {imageVariant === "default" ? (
   <div id={containerId} class:list={[ "img-container relative p-4 mr-auto uppercase", classes ] }>
   <small class="small-1 vertical-text--left absolute bottom-4 left-[-0.25rem] text-[0.5rem] leading-[100%] opacity-40 tracking-widest">{imageFileName}</small>
-    <img class:list={[  "w-full", cover && "h-full object-cover", contain && "h-full object-contain" ] } {...props} />
+    <img class:list={[  "w-full max-h-[50vh]", cover && "h-full object-cover", contain && "h-full object-contain" ] } {...props} />
     <!-- <small class="text-xs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
     <div class="absolute right-0 top-0 flex h-full w-3">
       <small

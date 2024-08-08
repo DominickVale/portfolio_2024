@@ -72,7 +72,7 @@ const { id, title, tags, readTime, date, image, subtitle, lastUpdated, ttr, proj
     </div>
 
     <div id="intro" class="font-copy text-sm font-light tracking-wide text-copy opacity-0 sm:text-sm xl:text-lg">
-      {intro}
+      <Fragment set:html={intro}/>
     </div>
   </section>
   <section

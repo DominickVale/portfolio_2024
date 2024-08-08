@@ -87,6 +87,9 @@ body {
   .text-wrap-pretty {
     text-wrap: pretty;
   }
+  .text-wrap-balance {
+    text-wrap: balance;
+  }
 }
 
 .grid-bars {
