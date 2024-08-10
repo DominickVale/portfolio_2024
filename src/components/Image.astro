@@ -41,7 +41,7 @@ const imageFileName = props.src.split("?")[0].split("/").pop()
       <small class="shadow text-[0.5rem] leading-[50%] opacity-0 pointer-events-none tracking-label" >{imageFileName}</small>
       <small class="absolute left-0 bottom-[-1rem] w-full h-full text-[0.5rem] leading-[50%] tracking-label" >{imageFileName}</small>
     </div>
-      <img class:list={[  "w-full", cover && "h-full object-cover", contain && "h-full object-contain" ] } {...props} />
+      <img class:list={[  "w-full max-h-[50vh]", cover && "h-full object-cover", contain && "h-full object-contain" ] } {...props} />
       <span class="alt ml-3 relative image-caption self-start mt-4 text-xs text-copy opacity-80">{alt}</span>
       <FuiCorners class="" dot/>
     </div>

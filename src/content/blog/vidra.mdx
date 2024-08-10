@@ -1,54 +1,68 @@
 ---
 id: 4
 title: "VIDRA CASE REPORT"
-subtitle: "A BEGINNER'S CHALLENGE"
-description: "Lorem ipsum dolor sit amet consectetur. Iaculis amet erat id quis cras venenatis sed egestas.Lorem ipsum dolor sit amet consectetur. Iaculis amet erat id quis cras venenatis sed egestas..."
-tags: ['PROJECT CASE', 'REACT-NATIVE', 'JSI', 'ANDROID NDK', 'FIREBASE']
-readTime: "1 min read"
+subtitle: "A SHOPIFY COMPETITOR FROM ITALY"
+description: "Vidra was an e-commerce platform developed by Bemind that aimed to simplify the process of running an online store. It was designed to be user-friendly..."
+tags: ['PROJECT CASE', 'REACT-NATIVE', 'REACT', 'HANDLEBARS', 'EXPERIENCE']
+readTime: "2 min read"
 date: "JAN 01 2024"
-image: '/ambientify1.png'
+image: '/vidra-1.png'
 project:
   role: 'EVERYTHING'
   client: 'N/A'
-  year: '2020-ONGOING'
+  year: '2020-2021'
   tech: ['REACT-NATIVE', 'JSI', 'ANDROID NDK', 'FIREBASE']
   linkWebsite: 'https://web.archive.org/web/20210727234808/https://www.vidra.com/'
   linkCase: '/blog/vidra'
+intro: "Vidra was an e-commerce platform developed by Bemind that aimed to simplify the process of running an online store. It was designed to be user-friendly and accessible, offering tools for managing products, tracking orders, handling shipments without needing contracts with couriers, and full customization of stores, along with marketing tools and integration for selling on social media. It was mainly targeted to the Italian population as an alternative to Shopify."
 ---
 import BlogSection from '../../components/blog/BlogSection.astro';
 import BlogSectionContent from '../../components/blog/BlogSectionContent.astro';
+import Image from '../../components/Image.astro'
 
 <BlogSection>
-    ![IMAGE DEPICTING SOMETHING THAT I DON’T YET KNOW](/ecorp.png)
+    ![THE NEW ONBOARDING PAGE](/vidra-onboarding-1.png)
     <BlogSectionContent>
-    ## THE START Vitae odio orci felis adipiscing
-    Aliquam consectetur cursus aliquam praesent sit aliquet. Nascetur adipiscing nulla
-    facilisis interdum adipiscing cursus nunc lorem eget.
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-    Adipisicing architecto facere laborum animi dicta Ipsum libero aperiam facilis illo sequi ipsam est cum, laboriosam. Itaque eos sapiente iure aliquid tempora? Illum autem fuga dolor quia quibusdam Eos consequuntur
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-    Adipisicing architecto facere laborum animi dicta Ipsum libero aperiam facilis illo sequi ipsam est cum, laboriosam. Itaque eos sapiente iure aliquid tempora? Illum autem fuga dolor quia quibusdam Eos consequuntur
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-    Adipisicing architecto facere laborum animi dicta Ipsum libero aperiam facilis illo sequi ipsam est cum, laboriosam. Itaque eos sapiente iure aliquid tempora? Illum autem fuga dolor quia quibusdam Eos consequuntur
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-    Adipisicing architecto facere laborum animi dicta Ipsum libero aperiam facilis illo sequi ipsam est cum, laboriosam. Itaque eos sapiente iure aliquid tempora? Illum autem fuga dolor quia quibusdam Eos consequuntur
+    ## THE START
+    I was initially hired for an apprenticeship with them, which lasted a few months. During that time i was assigned the task to develop a few new internal administration tools and webapps. I then moved on to building their new Onboarding page, consisting in a multistep registration flow with a lot of form validation. Throughout my time with them i worked closely with the Designer, CTO and the CEO to make sure that the design direction was both on point and compatible with development times, while still producing good quality output. We exchanged feedback constantly and kept up to date in the morning standups, as we adopted the Agile workflow.
     </BlogSectionContent>
 </BlogSection>
 
 <BlogSection>
-    ![test](/ecorp.png)
+    ![test](/vidra-storybook-2.png)
     <BlogSectionContent>
-    ## THE START Vitae odio orci felis
-    Aliquam consectetur cursus aliquam praesent sit aliquet. Nascetur adipiscing nulla
-    facilisis interdum adipiscing cursus nunc lorem eget.
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-    Adipisicing architecto facere laborum animi dicta Ipsum libero aperiam facilis illo sequi ipsam est cum, laboriosam. Itaque eos sapiente iure aliquid tempora? Illum autem fuga dolor quia quibusdam Eos consequuntur
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
+    ## WEBSHOPS AND DESIGN SYSTEM
+    Vidra generated user webshops using Handlebar. I was tasked with replacing the old most important interactive parts of the webshops (Cart and checkout page) with new "Micro Front ends" made in React, which were hooked up to the webshops using React Portals. We still didn't have a proper design system components library yet, so i was tasked to build it from scratch, following the design spec closely. I took inspiration from [Shopify's Polaris-react component system](https://github.com/Shopify/polaris)'s structure. Of course i used Storybook for the previews and manual testing.
+<Image src="/vidra-storybook-1.png" alt="A storybook test page for the Dashboard" />
+  For a few months i jumped back and forth between maintaining the front-end part of the webshops system and the component library.
+    </BlogSectionContent>
+</BlogSection>
 
-    Adipisicing architecto facere laborum animi dicta Ipsum libero aperiam facilis illo sequi ipsam est cum, laboriosam. Itaque eos sapiente iure aliquid tempora? Illum autem fuga dolor quia quibusdam Eos consequuntur
-    *test* **test** 
+<BlogSection>
+    ![test](/vidra-mobile.webp)
+    <BlogSectionContent>
+    ## THE MOBILE APP
+    A bit later, i was tasked with developing a new Mobile app using React Native. Being new, the mobile app version of the main Vidra dashboard had the benefit of being super fast, lightweight and performant.
+    </BlogSectionContent>
+</BlogSection>
+
+<BlogSection>
+    ![test](/vidra-products.png)
+    <BlogSectionContent>
+    ## WORKING ON THE DASHBOARD
+    After some development on the mobile App, i was moved to work on the main Vidra Dashboard. Made in a slightly older version of React. It had a moderate amount of tech debt, but nothing too bad. I was tasked to get rid of it as i added new features and fixes. It went rather smoothly for most of the time, but in one special case i got stuck for an entire month. This was the products page. It was by nature a very complex part of the webapp, especially given the product variants. The tech debt wasn't the only part that slowed me down. The backend API worked in a way that made it necessary to use a lot of different singular network requests for each small change, which sometimes had to be chained together, in a precise order, and could fail at any point. For state management we were using the Redux library, but it was fairly different from the modern Redux Toolkit way of doing things. Async requests done that way weren't trivial to deal with. A senior developer came to the rescue, but even he had issues with it. Eventually we managed to push through that as well, and we came out with a more stable and future-proof products page. At that point in time i was also tasked with mentoring our Designer with the basics of front-end development and coding, as he would have to start to make some small changes here and there when the rest of the team was too busy.
+    </BlogSectionContent>
+</BlogSection>
+
+<BlogSection>
+    ![test](/vidra-dashboard.webp)
+    <BlogSectionContent>
+    ## END AND REFLECTIONS ON THE EXPERIENCE
+    Overall, i had a pretty good time with the Bemind team. Everyone was very friendly, straightforward, available and helpful. We were pretty much on the same wave. It was definitely a great learning experience. I learned to manage my time using [Clubhouse](https://web.archive.org/web/20210813005811/https://clubhouse.io/), to prioritize stories based on the importance and client requirements, to troubleshoot on my own, and collaborating with other developers and designers.
+
+    The collaboration ended when some of the team was being split into new, external teams and as Vidra was being bought by Axerve, i decided to not continue with that process and to instead seek out other opportunities. Even up to the last day the Vidra team treated me with friendliness and praise for my work with them, ending with an invitation for future work together.
+
+  I wish i could have provided this article with more screenshots of the Vidra tools/pages, but at the time of the writing, Vidra is no more available, so i had to make do with what i could find.
+  If you are curious enough, here's the link to the [Vidra's official youtube channel with tutorials on how to use it.](https://www.youtube.com/@vidra1405)
     </BlogSectionContent>
 </BlogSection>
