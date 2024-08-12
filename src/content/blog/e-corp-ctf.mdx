@@ -1,54 +1,153 @@
 ---
 id: 2
-title: "E-CORP CTF CHALLENGE CASE REPORT"
-subtitle: "A BEGINNER'S CHALLENGE"
-description: "Lorem ipsum dolor sit amet consectetur. Iaculis amet erat id quis cras venenatis sed egestas.Lorem ipsum dolor sit amet consectetur. Iaculis amet erat id quis cras venenatis sed egestas..."
-tags: ['PROJECT CASE', 'REACT-NATIVE', 'JSI', 'ANDROID NDK', 'FIREBASE']
-readTime: "1 min read"
-date: "JAN 01 2024"
-image: '/ambientify1.png'
+title: 'E-CORP CTF CHALLENGE CASE REPORT'
+subtitle: "A BEGINNER'S BUGBOUNTY CHALLENGE"
+description: "I was looking for ideas for a new project to practice, when i was suggested to create a CTF challenge for Intigrity's 1337UPLIVE event..."
+tags: ['PROJECT CASE', 'NEXTJS', 'GRAPHQL', 'CTF CHALLENGE', 'PENTESTING', 'REVERSE ENGINEERING', 'BURP SUITE']
+readTime: '3 min read'
+date: 'AUG 11 2024'
+image: '/ecorp.png'
 project:
   role: 'EVERYTHING'
-  client: 'N/A'
-  year: '2020-ONGOING'
-  tech: ['REACT-NATIVE', 'JSI', 'ANDROID NDK', 'FIREBASE']
+  client: 'INTIGRITI'
+  year: '2023'
+  tech: ['NEXTJS', 'GRAPHQL/APOLLO', 'POTHOS', 'PRISMA', 'DOCKER', 'DOCKER-COMPOSE', 'PUPPETEER', 'TAILWINDCSS']
   linkWebsite: 'https://ecorp.ctf.intigriti.io'
   linkCase: '/blog/e-corp-ctf'
+intro: "I wanted to practice with the newer version of NextJS and learn something about ThreeJS, so i was looking for interesting ideas for a 'personal project'. I asked around if anyone needed a small web project to be done. One of them was <a class='text-white font-[300]' href='https://twitter.com/_CryptoCat)'>@CryptoCat</a> who told me they were hosting a CTF event that year and they were looking for challenge creators, so i said... Challenge accepted!... <small>(Sorry, i'm not good with jokes)</small><br/><br/>Anyway, it would be a perfect idea for me, as i did my fair share of penetration testing challenges on Tryhackme, Hackthebox, Overthewire etc... back in my hackerman phase, when i used to study this stuff. They said to come up with challenge of my liking. Me being a front-end developer, i chose to make a webapp privilege escalation challenge."
 ---
-import BlogSection from '../../components/blog/BlogSection.astro';
-import BlogSectionContent from '../../components/blog/BlogSectionContent.astro';
+
+import BlogSection from '../../components/blog/BlogSection.astro'
+import BlogSectionContent from '../../components/blog/BlogSectionContent.astro'
+import Image from '../../components/Image.astro'
 
 <BlogSection>
-    ![IMAGE DEPICTING SOMETHING THAT I DON’T YET KNOW](/ecorp.png)
+    ![INTIGIRTI 1337UP LIVE CHALLENGE 2023](/intigriti-banner.webp)
     <BlogSectionContent>
-    ## THE START Vitae odio orci felis adipiscing
-    Aliquam consectetur cursus aliquam praesent sit aliquet. Nascetur adipiscing nulla
-    facilisis interdum adipiscing cursus nunc lorem eget.
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-    Adipisicing architecto facere laborum animi dicta Ipsum libero aperiam facilis illo sequi ipsam est cum, laboriosam. Itaque eos sapiente iure aliquid tempora? Illum autem fuga dolor quia quibusdam Eos consequuntur
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
+    ## COMING UP WITH A STORY
+    Around that time there was some mild hype going around about [Neuralink](https://neuralink.com), which gave me some inspiration for the story.
+    What would happen if a device like Neuralink would end up in the wrong hands? What would that look like in a relatively remote future and have more functionalities than what currently advertised? I thought about it for a few days and came up with this badly written draft about `Neurotap`:
+    <Image src="/ecorp-2.png" contain alt="CONCEPT DRAFT FOR THE EVIL COMPANY ECORP" />
 
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-    Adipisicing architecto facere laborum animi dicta Ipsum libero aperiam facilis illo sequi ipsam est cum, laboriosam. Itaque eos sapiente iure aliquid tempora? Illum autem fuga dolor quia quibusdam Eos consequuntur
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-    Adipisicing architecto facere laborum animi dicta Ipsum libero aperiam facilis illo sequi ipsam est cum, laboriosam. Itaque eos sapiente iure aliquid tempora? Illum autem fuga dolor quia quibusdam Eos consequuntur
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-    Adipisicing architecto facere laborum animi dicta Ipsum libero aperiam facilis illo sequi ipsam est cum, laboriosam. Itaque eos sapiente iure aliquid tempora? Illum autem fuga dolor quia quibusdam Eos consequuntur
+    The company name would be E-CORP, <small>(which i totally did not steal from Mr. Robot's trama, i don't know what you're talking about.)</small>.
+    And would be just what i would think a company with that amount of power would come to be.
+    As always, i'm a sucker for FUIs, so i went with that style.
+    </BlogSectionContent>
+
+</BlogSection>
+
+<BlogSection>
+    ![A FEW SCREENSHOTS OF THE FINAL DESIGN](/ecorp.png)
+    <BlogSectionContent>
+    ## THE ACTUAL CHALLENGE IDEA
+    First of all, they told me, that (understandably) the challenge shouldn't require any sort of brute-forcing to prevent players from DDoSing the servers.
+    I didn't want to do anything complex for the actual challenge. I wanted to focus more on building the front-end as practice, so i came up with a fairly easy challenge.
+    (By the way, don't be fooled. Purposefully designing a vulnerable web application on a whim is harder than you think). Coming up with something realistic and easy at the same time for a company that lives a hundred years in the future is by nature impossible. I don't even think OWASP will even be relevant by then, or even browsers for that matter.
+    Anyway, the idea was for the player to:
+
+    - Discover a hidden dashboard used internally by the team, but mistakenly exposed to the clearnet by looking at a robots.txt file (yeah, another thing that probably won't exist anyway, but still...) by testing all the spammed entries (just to make it slightly more difficult)
+    - Once found the path, the dashboard would only allow for a specific user agent, which would have to be a valid Neuralink serial ID (e.g NEUROTAP-v0.2-BEG!22ML197906873CDA!).
+    - The player would have to do some OSINT research on the blog, to find some personal data about one of the employers, and use it in the login screen of the dashboard, which prompts for the visitor to use the `Neurotap` device to think about a security question.
+    - An alternative way would be hidden in the minified source code of the webapp.
+    - They would then need to intercept some GraphQL queries and test out some introspection queries or other GraphQL faults.
+    [You can read the entire draft here](https://github.com/DominickVale/ecorp-ctf-challenge/blob/master/README.md).
+    </BlogSectionContent>
+
+</BlogSection>
+
+<BlogSection>
+    ![I'M SURE THE KAMINOANS WOULD BE PROUD OF ME, PLEASE COME PICK ME UP](/ecorp-6.png)
+    <BlogSectionContent>
+    ## DESIGNING FOR THE FUTURE IS ALSO HARD
+    Again, i don't live in 2077, so i don't know what design will look like then, but i can try to make the design slightly more alien. One way in which i did that, was to create a fairly interesting navbar:
+    <Image src="/ecorp-3.png" alt="WOW, SUCH NAVBAR, MUCH ALIEN" />
+    For the display font i chose Nulshok because it gives a nostalgic, industrial, futuristic vibe. For the body, Chakra Petch for its geometrical qualities that goes well with Nulshok and adds some contrast to it.
+
+    At one point i was getting carried away with experimentation and FUI design, but i had to stop, as i couldn' afford a lot of time, since i wasn't really getting paid for it and it was just an exercise.
+
+    <Image src="/ecorp-4.png" alt="FUI DESIGN ELEMENTS" />
+
+    Since i wanted to learn ThreeJS, i also added a 3d Brain model that continuously looks at the cursor, to give that extra sense of surveillance going on, along with a small 3d globe. The Brain is just a 3d model from which i sample verteces positions and use them as positions for small round particles. There's an invisible plane upon which a raycaster is used to get the mouse position to look at from the brain.
+
+    <Image src="/ecorp-5.png" alt="3D BRAIN AND GLOBE" />
+
+    The hardest page to design was the Dashboard. I really wanted to make it as FUI as possible, while still being usable. I also didn't want to resort to the usual rectangular based look that most FUIs have. So i decided to make it look more organic, especially given the nature of Neurotap. I wanted a more 'medical device feeling'. For this i got a lot of inspiration from the [Kaminoans in Star wars](https://youtu.be/LXLQaVgCP_Q)
+
+For the login screen i went for a more classic-ish view. In this fictional scenario you'd have to use the Neurotap to think about the question, which would trigger an event that would send a request to their servers. I actually added the code for this, which would be minified and the player would have to find to get the API end point to start testing.
+```ts
+const handleNeurotapEvent = async (e: any) => {
+  // Interaction with the fictional device API
+  const neurotapApi = e.api
+  const encodedMindReader = neurotapApi.initialize()
+
+  let encodedWord = await encodedMindReader.ReadNeurocPassword()
+  if (encodedWord) {
+    loginMutation.mutate({
+      p: encodedWord,
+      i: window.navigator.userAgent,
+    })
+  }
+}
+
+useEffect(() => {
+  window.addEventListener('neurotap-hook-init', handleNeurotapEvent)
+
+  return () => {
+    window.removeEventListener('neurotap-hook-init', handleNeurotapEvent)
+  }
+}, [])
+```
+
+    </BlogSectionContent>
+
+</BlogSection>
+
+<BlogSection>
+    ![SCREENSHOT OF ONE OF THE LAST STEPS](/ecorp-8.png)
+    <BlogSectionContent>
+    ## DEVELOPING A VULNERABLE WEBAPP
+    So, the goal was to create a vulnerable Next.JS with a vulnerable GRAPHQL backend.
+    The front-end part of it was fairly smooth, with minor difficulties with Next.js working against me and the Lenis library. I chose to use TailwindCSS for faster development.
+    The blog was made using `next-mdx-remote` and `gray-matter` as suggested by Nextjs docs.
+    The back-end on the other hand... I didn't have much experience with graphQL, especially on the back-end, so i had to learn it. I know from other developers that it would take some boilerplate code, but i didn't expect this much. Also, i wanted to use the prisma ORM, and i've read around that Pothos would help with schemas, so i picked that up as well.
+    It didn't go smoothly in any way, shape or form. The pothos docs weren't super useful, i had to look up examples from real world open source projects on github (there weren't many) to get a slightly more decent intuition on what was going on.
+    To be honest i also think i made a mistake using the new Nextjs app structure layout, which was still in beta at the time, which added to the issues, but hey, my goal was to make an unstable, vulnerable app, so... ¯\\_(ツ)_/¯
+
+    I hid most of the GraphQL and Apollo based logging and used ApolloArmor, but kept `blockFieldSuggestion` to make it easier for the players to enumerate some of the endpoints.
+
+    I mentioned that the user would have to get the user agent in some way. Well, another way to get that was by contacting support and exploiting another vulnerability: XSS.
+    I simulated that by just creating a bot that, upon receiving a contact form message from the players, would render the entire thing without sanitisation. 
+  ```ts
+  const context: puppeteer.BrowserContext = await browser.createIncognitoBrowserContext();
+  const page: puppeteer.Page = await context.newPage();
+
+  try {
+    //...
+    await page.setUserAgent(userAgent);
+    await page.setJavaScriptEnabled(false);
+    page.setContent(html, { waitUntil: "domcontentloaded", timeout: 2000 });
+    await page.setJavaScriptEnabled(true); // <--- big oof
+    await page.evaluate(() => {
+      return new Promise((resolve) => setTimeout(resolve, 1500)); // give it an abitrary amount of time to load
+    });
+  } catch (err) {
+    console.log(`err in loadPage: ${err}`);
+  }
+  await page.close();
+  await context.close();
+```
+  This was achieve using puppeteer with sandbox disabled.
+  [You can read all of the bot's code here](https://github.com/DominickVale/ecorp-ctf-challenge/blob/master/challenge/bot/bot.ts) and the [contact form api here](https://github.com/DominickVale/ecorp-ctf-challenge/blob/master/challenge/web/app/api/contact/route.ts)
     </BlogSectionContent>
 </BlogSection>
 
 <BlogSection>
-    ![test](/ecorp.png)
+    ![A VERY IMPORTANT BLOG POST FROM THE WEBSITE](/ecorp-9.png)
     <BlogSectionContent>
-    ## THE START Vitae odio orci felis
-    Aliquam consectetur cursus aliquam praesent sit aliquet. Nascetur adipiscing nulla
-    facilisis interdum adipiscing cursus nunc lorem eget.
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-    Adipisicing architecto facere laborum animi dicta Ipsum libero aperiam facilis illo sequi ipsam est cum, laboriosam. Itaque eos sapiente iure aliquid tempora? Illum autem fuga dolor quia quibusdam Eos consequuntur
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
+    ## FINAL THOUGHTS
+    The challenge was fairly liked and received compliments for the design, which made me feel all warm and fuzzy. Although it didn't get as many solves as i hoped, but that was expected. First time designing a CTF, so...
+    After the event was over i received a coupon for the inigriti store and got me some nice stuff and a cool sticker to put on my laptop.
 
-    Adipisicing architecto facere laborum animi dicta Ipsum libero aperiam facilis illo sequi ipsam est cum, laboriosam. Itaque eos sapiente iure aliquid tempora? Illum autem fuga dolor quia quibusdam Eos consequuntur
-    *test* **test** 
+    Again, if you're more curious, [you can read my official writeup here](https://github.com/DominickVale/ecorp-ctf-challenge/blob/master/writeup.md).
     </BlogSectionContent>
 </BlogSection>

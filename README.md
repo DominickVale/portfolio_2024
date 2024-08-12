@@ -4,6 +4,7 @@
 - Optimize imports (no import \* from ...) (also split js into as many independent chunks as possible)
 - Figure out some hacks for font rendering
 - Add more post-processing (blur/aberration on transitions based on position speed etc.)
+- Make clicky things squishy
 
 # REMINDERS
 
