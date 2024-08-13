@@ -155,6 +155,10 @@ body {
   animation: slight-flickering 0.3s infinite alternate;
 }
 
+.writing-vlr {
+  writing-mode: vertical-lr;
+}
+
 .vertical-text--left {
   transform: rotate(-90deg);
   transform-origin: left bottom;

@@ -252,6 +252,18 @@ export default class BlogArticleRenderer extends BaseRenderer {
           '<',
         )
         .from(
+          $all('.img-small-left .bg-lines', img),
+          {
+            opacity: 0,
+            duration: 0.075,
+            stagger: {
+              repeat: window.app.reducedMotion ? 1 : 10,
+              each: 0.1,
+            },
+          },
+          '<+20%',
+        )
+        .from(
           $('img', img),
           {
             scaleY: window.app.reducedMotion ? 1 : 0,
@@ -267,18 +279,6 @@ export default class BlogArticleRenderer extends BaseRenderer {
           duration: 1,
         })
         .set(smallAlt, { autoAlpha: 0.25 }, '<')
-        .from(
-          $all('.img-small-left .bg-lines', img),
-          {
-            opacity: 0,
-            duration: 0.075,
-            stagger: {
-              repeat: window.app.reducedMotion ? 1 : 10,
-              each: 0.1,
-            },
-          },
-          '<',
-        )
         .to(
           smallAlt,
           {

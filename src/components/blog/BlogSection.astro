@@ -19,7 +19,8 @@ apparently isn't supposed to be used for anything more complex than a 1 column, 
       grid-template-areas: 'content content content content . . image image image image';
     }
 
-p,li {
+    p,
+    li {
       @apply text-sm;
       @apply font-copy;
       @apply text-copy;
@@ -38,11 +39,23 @@ p,li {
     }
   }
   .blog-section:nth-child(even) {
+    .blog-image .fui-corners-dot {
+      border-left-width: 1px;
+      border-right-width: 0;
+    }
     .img-small-left {
-      left: auto;
-      top: 20%;
-      right: -3.9rem;
-      transform: rotate(90deg);
+      top: 0;
+      right: 0;
+      transform: rotate(180deg);
+
+      & .img-label {
+        transform: rotate(0deg) scaleY(-1);
+      }
+
+      & .bg-lines:first-of-type {
+        left: -1.4rem;
+        top: 0rem;
+      }
     }
   }
 </style>
