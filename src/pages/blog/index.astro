@@ -11,7 +11,7 @@ const allPosts = await getCollection('blog')
 
 <Layout title="Dominick Vale - ⓒ 2024" data-menu-trigger="default" renderer="blog">
   <section id="blog-header" class="relative col-span-10 col-start-2">
-    <div class="relative my-8 mb-16 flex h-max flex-col sm:mt-0 sm:mb-4 tallest:mb-0 sm:flex-row">
+    <div class="relative my-8 mb-16 flex h-max flex-col sm:mb-4 sm:mt-0 sm:flex-row tallest:mb-0">
       <h1
         class="mt-[2vh] font-display text-[15vw] font-black leading-[100%] sm:mt-[8vh] md:text-8xl lg:text-[calc(5vw+6.2vh)]"
         data-aberration="0.8"
@@ -33,7 +33,7 @@ const allPosts = await getCollection('blog')
       </div>
     </div>
     <h2
-      class="mb-12 ml-3 hidden min-h-6 whitespace-nowrap font-mono text-xs font-black tracking-button text-inactive sm:tallest:block tall:text-base"
+      class="mb-12 ml-3 hidden min-h-6 whitespace-nowrap font-mono text-xs font-black tracking-button text-inactive tall:text-base sm:tallest:block"
       data-menu-trigger="text"
     >
       UNCOORDINATED THOUGHTS AND PROJECT CASES
@@ -42,12 +42,19 @@ const allPosts = await getCollection('blog')
 
   <section
     id="posts-container"
-    class="max-w-screen no-scrollbar justify-center col-span-10 col-start-2 row-start-2 flex flex-row flex-wrap gap-x-[4vw] gap-y-[8vh] pb-[15vh]"
+    class="max-w-screen no-scrollbar col-span-10 col-start-2 row-start-2 flex flex-row flex-wrap justify-center gap-x-[4vw] gap-y-[8vh] pb-[15vh]"
     tabindex="-1"
   >
     {
       allPosts.map((post, i) => (
-        <a id={`${i}`} class="blog-article sm:my-0 xl:mx-[3rem]" href={`/blog/${post.slug}`}>
+        <a
+          id={`${i}`}
+          class="blog-article sm:my-0 xl:mx-[3rem]"
+          href={`/blog/${post.slug}`}
+          data-audio
+          data-audio-mouseover="hover-1 pan:0.25 volume:0.05 rate:1.5"
+          data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.05"
+        >
           <BlogEntry {...post.data} />
         </a>
       ))

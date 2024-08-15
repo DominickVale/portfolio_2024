@@ -34,10 +34,13 @@ class AudioWrapper {
   activeSounds: Map<string, ExtendedHowl>
   backgroundMusic: ExtendedHowl
   enabled: boolean
+  soundLabelEl: HTMLElement
 
   constructor() {
     this.activeSounds = new Map()
     this.enabled = localStorage.getItem('soundEnabled') === 'true'
+    this.soundLabelEl = $('#sound-toggled-label')
+    this.soundLabelEl.innerText = `SOUND ${ this.enabled ? "ON" : "OFF" }`
   }
 
   toggle() {
@@ -51,7 +54,7 @@ class AudioWrapper {
 
   enable() {
     this.enabled = true
-    $('#sound-toggled-label').innerText = 'SOUND ON'
+    this.soundLabelEl.innerText = 'SOUND ON'
     // save setting to localstorage
     localStorage.setItem('soundEnabled', 'true')
   }
@@ -59,7 +62,7 @@ class AudioWrapper {
   disable() {
     this.enabled = false
     this.activeSounds.forEach((s) => this.stop(s.id))
-    $('#sound-toggled-label').innerText = 'SOUND OFF'
+    this.soundLabelEl.innerText = 'SOUND OFF'
     localStorage.setItem('soundEnabled', 'false')
   }
 

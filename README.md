@@ -1,5 +1,6 @@
 # TODOs
 
+- Fix menus not changing between pages (e.g to blog page)
 - fix codecs audios firefox
 - Optimize imports (no import \* from ...) (also split js into as many independent chunks as possible)
 - Figure out some hacks for font rendering

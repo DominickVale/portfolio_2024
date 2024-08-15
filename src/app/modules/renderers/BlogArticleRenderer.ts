@@ -106,6 +106,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
     })
     // reinsert tmpEl in parent as a child
     parent.append(newTitleEl)
+    gsap.timeline().add(this.createBlogDetailsTL())
   }
 
   ////////   ANIMS   ////////
@@ -293,7 +294,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         .timeline({
           scrollTrigger: {
             trigger: img,
-            start: 'top center',
+            start: 'top center+=80vh',
             end: 'bottom center',
           },
         })
@@ -319,6 +320,11 @@ export default class BlogArticleRenderer extends BaseRenderer {
           '<',
         )
     })
+  }
+
+  createBlogDetailsTL(){
+    const imageSectionQuery = this.isDesktop ? '#image-section' : '#image-section-mobile'
+    return workDetailsTL(imageSectionQuery)
   }
 
   createEnterAnim() {
@@ -453,7 +459,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         },
         '<',
       )
-      .add(workDetailsTL(imageSectionQuery), '<')
+      .add(this.createBlogDetailsTL(), '<')
       .to('#open-proj-btn', { opacity: 1, duration: 0.5, ease: 'power4.in' }, '<')
 
     ///

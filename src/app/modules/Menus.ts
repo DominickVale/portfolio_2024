@@ -36,6 +36,10 @@ export default class Menus {
       x: isTouchOrBound ? window.innerWidth / 2 : e.clientX,
       y: isTouchOrBound ? window.innerHeight / 2 : e.clientY,
     }
+
+    window.app.audio.play(null, 'menu-open-alt', {
+      volume: 0.5
+    })
     menu.open(pos.x, pos.y, e.target as HTMLElement)
   }
 
@@ -117,8 +121,8 @@ export default class Menus {
       hoverCallback: preloadPage('/lab'),
     }
     const openProjSlice: RadialMenuItem = {
-      iconId: 'lab',
-      label: 'OPEN<br/>PROJECT',
+      iconId: 'visit',
+      label: 'VISIT',
       position: 4,
       callback: () => {
         navigateTo(($('#open-proj-mobile') as HTMLAnchorElement).href)
