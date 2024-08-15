@@ -84,4 +84,14 @@ export default [
     type: 'audio',
     path: '/sounds/error.opus',
   },
+  {
+    name: 'menu-open',
+    type: 'audio',
+    path: '/sounds/menu-open.opus',
+  },
+  {
+    name: 'menu-open-alt',
+    type: 'audio',
+    path: '/sounds/menu-open-alt.opus',
+  },
 ]
