@@ -15,7 +15,7 @@ const { frontmatter, ...rest } = Astro.props
 const { id, title, tags, readTime, date, image, subtitle, lastUpdated, ttr, project, intro } = frontmatter
 ---
 
-<BaseLayout title="Blog page" rowsMax withContacts data-menu-trigger="default-blog" renderer="blogArticle">
+<BaseLayout title="Blog page" rowsMax withContacts renderer="blogArticle">
   <div class="col-span-12 col-start-1 row-start-1 h-[5vh] w-full lg:block"></div>
   <section class="relative col-span-10 col-start-2 row-start-2 md:col-span-8 md:col-start-3 lg:col-span-4 lg:col-start-2">
     <!-- <Btn -->
@@ -60,7 +60,7 @@ const { id, title, tags, readTime, date, image, subtitle, lastUpdated, ttr, proj
         project && (
           <div class="relative flex flex-col justify-between gap-3 mt-[calc(1vh+1rem)] sm:flex-row">
             <WorkDetails small project={project} />
-            <OpenProjBtn id="open-proj-mobile" class="bg-striped hidden flex-[0.8] sm:flex" link={project.linkWebsite} />
+            <OpenProjBtn id="open-proj-mobile" class="bg-striped flex-[0.8] sm:hidden" link={project.linkWebsite} />
           </div>
         )
       }

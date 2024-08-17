@@ -87,6 +87,7 @@ export default class App {
       },
     })
     this.taxi.on('NAVIGATE_IN', ({ to, trigger }) => {
+      this.menus.reload()
       this.scrambles.reload()
       this.cursor.reload()
 

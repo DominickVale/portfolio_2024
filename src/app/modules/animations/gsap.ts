@@ -2,6 +2,10 @@ import { TITLE_REVEAL_SOUND_SPRITES } from 'src/app/constants'
 import { $, isMobile, splitTextChars } from '../../utils'
 import gsap from 'gsap'
 
+export function resetGsapProps () {
+  gsap.set(this.targets(), { clearProps: 'opacity' })
+}
+
 export function blurStagger(el: HTMLElement, duration?: number, delay?: number) {
   const split = splitTextChars(el, 'span')
   const isDesktop = !isMobile()

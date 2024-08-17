@@ -3,6 +3,7 @@ import type { Vec2 } from '../types'
 import { $, $all, TAU, clamp, debounce, degToRad, mag } from '../utils'
 import TextScramble from './animations/TextScramble'
 import gsap from 'gsap'
+import { resetGsapProps } from './animations/gsap'
 
 type RadialMenuOptions = {
   innerRadiusPercent?: number
@@ -293,19 +294,22 @@ export default class RadialMenu {
 
     const slicesTL = gsap
       .timeline()
+      .from('#' + this._wrapper.id + ' .radial-menu .radial-menu-item', {
+        opacity: 0,
+        duration: 0.05,
+        repeat: 12,
+        onComplete: resetGsapProps,
+      })
       .from(
-        '#' + this._wrapper.id + ' .radial-menu .radial-menu-item',
+        '#' + this._wrapper.id + ' .radial-menu-bgs div',
         {
-          opacity: 0,
-          duration: 0.05,
-          repeat: 12,
+          scale: 0.75,
+          duration: 0.1,
+          stagger: 0.08,
+          onComplete: resetGsapProps,
         },
+        '<+20%',
       )
-      .from('#' + this._wrapper.id + ' .radial-menu-bgs div', {
-        scale: 0.75,
-        duration: 0.1,
-        stagger: 0.08,
-      }, "<+20%")
 
     if (window.app.reducedMotion) {
       gsap.timeline({}).fromTo(
@@ -316,9 +320,7 @@ export default class RadialMenu {
         {
           opacity: 1,
           duration: 0.25,
-          onComplete: function () {
-            gsap.set(this.targets(), { clearProps: 'opacity' })
-          },
+          onComplete: resetGsapProps,
         },
         '<',
       )
@@ -332,6 +334,7 @@ export default class RadialMenu {
             scale: 0,
             duration: 0.25,
             ease: 'power4.inOut',
+            onComplete: resetGsapProps,
           },
           '<',
         )
@@ -344,10 +347,9 @@ export default class RadialMenu {
             opacity: 1,
             duration: 0.06,
             repeat: 6,
-            onComplete: function () {
-              gsap.set(this.targets(), { clearProps: 'opacity' })
-            },
-          },"<"
+            onComplete: resetGsapProps,
+          },
+          '<',
         )
         .fromTo(
           this._menuElContainer,
@@ -358,15 +360,16 @@ export default class RadialMenu {
             opacity: 1,
             duration: 0.06,
             repeat: 6,
-            onComplete: function () {
-              gsap.set(this.targets(), { clearProps: 'opacity' })
-            },
-          }, "<+50%"
+            onComplete: resetGsapProps,
+          },
+          '<+50%',
         )
     }
   }
 
   close() {
+    const itemS = '#' + this._wrapper.id + ' .radial-menu .radial-menu-item'
+    const bgItemS = '#' + this._wrapper.id + ' .radial-menu-bgs div'
     const cb = () => {
       this.currTarget = null
       this.shown = false
@@ -382,15 +385,26 @@ export default class RadialMenu {
       this.canChange = true
     }
 
-    gsap.timeline({}).to(this._wrapper, {
-      opacity: 0,
-      duration: 0.25,
-      ease: 'power4.inOut',
-      onComplete: function () {
-        gsap.set(this.targets(), { clearProps: 'opacity' })
-        cb()
-      },
-    })
+    const slicesTL = gsap
+      .timeline({
+        onComplete: function () {
+          resetGsapProps.bind(this)
+          cb()
+        },
+      })
+      .to(itemS, {
+        opacity: 0,
+        duration: 0.25,
+      })
+      .to(
+        bgItemS,
+        {
+          opacity: 0,
+          duration: 0.25,
+        },
+        '<',
+      )
+
   }
 
   set size(size: string) {
@@ -485,6 +499,7 @@ export default class RadialMenu {
   }
 
   handleTouchMove(ev: TouchEvent) {
+    ev.preventDefault()
     ev.stopPropagation()
     const touch = ev.targetTouches[0]
     const x = touch.clientX

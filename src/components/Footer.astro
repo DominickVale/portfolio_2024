@@ -4,7 +4,9 @@ interface Props {}
 const {} = Astro.props
 ---
 
-<div id="cursor-text-mobile" class=" fixed left-0 bottom-24 w-full z-20 text-center bg-background-dark font-mono text-xs text-inactive"></div>
+<div class="cursor-wrapper fixed left-0 bottom-24 w-full z-20 text-center font-mono text-xs text-inactive flex justify-center">
+  <div id="cursor-text-mobile" class="bg-background-dark"></div>
+</div>
 
 <footer class="fixed bottom-10 left-0 z-10 w-full text-xs font-light text-inactive opacity-0 transition-opacity duration-[2s] ease-in lg:bottom-12">
   <ul class="grid grid-cols-12 items-center">

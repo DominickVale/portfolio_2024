@@ -303,7 +303,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
           title,
           {
             typewrite: {},
-            duration: 2,
+            duration: 1.5,
             ease: 'circ.inOut',
             onStart: removeSetOpacity,
           },
@@ -313,7 +313,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
           content,
           {
             opacity: 1,
-            duration: 2,
+            duration: 1,
             stagger: 0.5,
             ease: 'circ.inOut',
           },
