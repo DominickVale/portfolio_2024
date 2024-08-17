@@ -15,7 +15,7 @@ export default class World {
     this.objects = []
 
     this.resources.on('ready', () => {
-      // this.attractor.setTexture(this.resources.items.star)
+      this.worksImage.show()
       this.isReady = true
       this.resize()
     })

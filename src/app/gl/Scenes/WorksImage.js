@@ -13,7 +13,6 @@ export default class WorksImage {
     this.experience = new Experience()
     this.sizes = this.experience.sizes
     this.resources = this.experience.resources
-    this.isShown = false
     this.page = window.location.pathname.split('/').pop()
     this.firstRender = true
     this.currentTexture = null
@@ -49,24 +48,21 @@ export default class WorksImage {
   }
 
   show() {
-    if (this.isShown) return
     if (this.firstRender) {
       this.firstRender = false
       this.init()
     }
     this.worksScene.add(this.worksScene.userData.plane)
-    this.isShown = true
     this.resize()
   }
 
   hide() {
-    this.isShown = false
     this.worksScene?.remove(this.worksScene.userData.plane)
   }
 
   resize() {
-    if (!this.isShown) return
     const element = $('#works-image')
+    if (!element) return
     const plane = this.worksScene.userData.plane
     const camera = this.worksScene.userData.camera
 
@@ -91,19 +87,16 @@ export default class WorksImage {
   }
 
   update(renderer, delta, elapsed) {
-    if (!this.isShown) return
     this.planeMat.uniforms.uTime.value = elapsed * 100
     this.planeMat.uniforms.uMouse.value = new THREE.Vector2(this.experience.cursor.pos.x, this.experience.cursor.pos.y)
   }
 
   afterRender(renderer, composer) {
-    if (!this.isShown) return
     const camera = this.worksScene.userData.camera
     renderer.render(this.worksScene, camera)
   }
 
   setImage(tex) {
-    if (!this.isShown) return
     this.currentTexture = tex
     this.planeMat.uniforms.uTexture.value = tex
     this.planeMat.uniforms.uImageSize.value = new THREE.Vector2(tex.image.naturalWidth, tex.image.naturalHeight)
