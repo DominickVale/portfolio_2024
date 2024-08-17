@@ -41,22 +41,19 @@ export const WorksPageAttractorAnim = {
 
     const uniTL = gsap
       .timeline()
+      .add(() => {
+        window.app.audio.play(null, 'shimmer-short', {
+          volume: 0.05,
+          rate: 1.35,
+          pan: -0.5,
+        })
+      })
       .set(experience.params, { speed: 70 })
-      .to(
-        experience.params,
-        {
-          speed: 10,
-          duration: 5,
-          ease: 'attractor_speed',
-          onComplete: () => {
-            window.app.audio.play(null, 'shimmer-short', {
-              volume: 0.05,
-              rate: 1.35,
-              pan: -0.5,
-            })
-          },
-        },
-      )
+      .to(experience.params, {
+        speed: 10,
+        duration: 5,
+        ease: 'attractor_speed',
+      })
       .to(
         attractor.bufferMaterial.uniforms.uSigma,
         {

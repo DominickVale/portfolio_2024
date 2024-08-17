@@ -10,14 +10,26 @@ export const HomePageAttractorAnim = {
     const uniTL = gsap
       .timeline()
       .set(experience.params, { speed: 60 })
-      .to(
-        experience.params,
-        {
-          speed: LORENZ_PRESETS['default'].speed,
-          duration: 2,
-          ease: 'attractor_speed'
-        },
-      )
+      .add(() => {
+        window.app.audio.play(null, 'shimmer-short', {
+          volume: 0.04,
+          rate: 0.6,
+        })
+        window.app.audio.play(null, 'whoosh-short', {
+          volume: 0.3,
+        })
+        setTimeout(() => {
+           window.app.audio.play('shimmer-home', 'shimmer-medium', {
+            volume: 0.15,
+            rate: 1.5
+          })
+        }, 850)
+      })
+      .to(experience.params, {
+        speed: LORENZ_PRESETS['default'].speed,
+        duration: 2,
+        ease: 'attractor_speed',
+      })
       .to(
         attractor.bufferMaterial.uniforms.uSigma,
         {
@@ -48,12 +60,6 @@ export const HomePageAttractorAnim = {
 
     const posTL = gsap
       .timeline()
-      .add(() => {
-        window.app.audio.play(null, 'whoosh-short', {
-          volume: 0.1,
-          rate: 0.8,
-        })
-      })
       .to(
         experience.params,
         {
@@ -80,17 +86,17 @@ export const HomePageAttractorAnim = {
         },
         '<',
       )
-    .to(
-      attractor.points.rotation,
-      {
-        x: experience.params.rotationX,
-        y: experience.params.rotationY,
-        z: experience.params.rotationZ,
-        duration: 1,
-        ease: 'power2.inOut',
-      },
-      '<',
-    )
+      .to(
+        attractor.points.rotation,
+        {
+          x: experience.params.rotationX,
+          y: experience.params.rotationY,
+          z: experience.params.rotationZ,
+          duration: 1,
+          ease: 'power2.inOut',
+        },
+        '<',
+      )
       .to(experience.params, {
         speed: LORENZ_PRESETS['default'].speed,
         duration: 5,
@@ -100,6 +106,6 @@ export const HomePageAttractorAnim = {
     return gsap
       .timeline({ onComplete, paused: true, onStart: () => console.log('Starting home attractor') })
       .add(uniTL)
-      .add(posTL, "<+45%")
+      .add(posTL, '<+45%')
   },
 }

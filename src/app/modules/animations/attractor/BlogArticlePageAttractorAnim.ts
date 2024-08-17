@@ -8,15 +8,64 @@ export const BlogArticlePageAttractorAnim = {
 
     const uniTL = gsap
       .timeline()
+      .add(() => {
+        const m = { v: 0, r: 1.5 }
+        console.log('Starting sound')
+        window.app.audio.play(null, 'shimmer-short', {
+          volume: 0.04,
+          rate: 0.9,
+        })
+        const s2 = window.app.audio.play(null, 'whoosh-short', {
+          volume: 0.3,
+          rate: 1,
+        })
+        const s = window.app.audio.play('shimmer-home', 'shimmer-medium', {
+          volume: 0.3,
+          rate: 0.9,
+        })
+
+        gsap
+          .timeline()
+          .fromTo(
+            m,
+            { v: 0.2, r: 1.5 },
+            {
+              v: 0.1,
+              // r: 1,
+              duration: 0.1,
+              repeat: 10,
+              yoyo: true,
+              ease: 'sine.inOut',
+              onUpdate() {
+                s.volume(m.v)
+                s2.volume(m.v)
+                // s.rate(m.v)
+              },
+            },
+          )
+          .to(
+            m,
+            {
+              v: 0.2,
+              // r: 1,
+              duration: 0.35,
+              repeat: 2,
+              yoyo: true,
+              ease: 'sine.inOut',
+              onUpdate() {
+                s.volume(m.v)
+                s2.volume(m.v)
+                // s.rate(m.v)
+              },
+            },
+          )
+      })
       .set(experience.params, { speed: 70 })
-      .to(
-        experience.params,
-        {
-          speed: 5,
-          duration: 3.5,
-          ease: 'power4.inOut',
-        },
-      )
+      .to(experience.params, {
+        speed: 5,
+        duration: 3.5,
+        ease: 'power4.inOut',
+      })
       .to(
         attractor.bufferMaterial.uniforms.uSigma,
         {
@@ -51,14 +100,11 @@ export const BlogArticlePageAttractorAnim = {
         },
         '<',
       )
-      .to(
-        attractor.bufferMaterial.uniforms.uSigma,
-        {
-          value: -8,
-          duration: 0.5,
-          ease: 'power4.out',
-        },
-      )
+      .to(attractor.bufferMaterial.uniforms.uSigma, {
+        value: -8,
+        duration: 0.5,
+        ease: 'power4.out',
+      })
 
     const posTL = gsap
       .timeline()
@@ -84,7 +130,7 @@ export const BlogArticlePageAttractorAnim = {
         },
         '<',
       )
-    
-    return gsap.timeline({ onComplete, paused: true }).add(uniTL).add(posTL, "<")
+
+    return gsap.timeline({ onComplete, paused: true }).add(uniTL).add(posTL, '<')
   },
 }

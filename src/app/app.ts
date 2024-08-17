@@ -24,6 +24,7 @@ import FromHomeTransition from './modules/transitions/fromHome'
 import Audio from './modules/AudioWrapper'
 import * as THREE from 'three'
 import WipRenderer from './modules/renderers/WipRenderer'
+import FromWIPTransition from './modules/transitions/fromWIP'
 
 export default class App {
   experience: Experience
@@ -66,6 +67,7 @@ export default class App {
       reloadCssFilter: (element) => true,
       transitions: {
         default: DefaultTransition,
+        fromWIP: FromWIPTransition,
         fromWorks: FromWorkTransition,
         fromBlog: FromBlogTransition,
         fromContacts: FromContactsTransition,
@@ -117,6 +119,7 @@ export default class App {
     this.taxi.addRoute('/blog', '.*', 'fromBlog')
     this.taxi.addRoute('/contact', '.*', 'fromContacts')
     this.taxi.addRoute('/', '.*', 'fromHome')
+    this.taxi.addRoute('.*', '.*', 'fromWIP')
     Animations.init(this.cursor, this.experience)
 
     if (!this.preloaderFinished) this.preloader.init()

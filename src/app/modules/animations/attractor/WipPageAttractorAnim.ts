@@ -12,14 +12,11 @@ export const WipPageAttractorAnim = {
     const uniTL = gsap
       .timeline()
       .set(experience.params, { speed: 60 })
-      .to(
-        experience.params,
-        {
-          speed: LORENZ_PRESETS['default'].speed,
-          duration: 3,
-          ease: 'attractor_speed'
-        },
-      )
+      .to(experience.params, {
+        speed: LORENZ_PRESETS['default'].speed,
+        duration: 3,
+        ease: 'attractor_speed',
+      })
       .to(
         attractor.bufferMaterial.uniforms.uSigma,
         {
@@ -53,9 +50,9 @@ export const WipPageAttractorAnim = {
       .to(
         attractor.points.position,
         {
-          x: experience.params.positionX,
-          y: experience.params.positionY,
-          z: getZPosition(),
+          x: 50,
+          y: 50,
+          z: -50,
           duration: 1,
           ease: 'power2.inOut',
         },
@@ -64,8 +61,9 @@ export const WipPageAttractorAnim = {
       .to(
         attractor.points.rotation,
         {
-          x: experience.params.rotationX,
-          z: experience.params.rotationZ,
+          x: 0.358141562509236,
+          y: -1.33831847042925,
+          z: 1.82840692438926,
           duration: 1,
           ease: 'power2.inOut',
         },
@@ -73,8 +71,21 @@ export const WipPageAttractorAnim = {
       )
 
     return gsap
-      .timeline({ onComplete, paused: true, onStart: () => console.log('Starting wip attractor') })
+      .timeline({ onComplete, paused: true })
+      .add(() => {
+        window.app.audio.play(null, 'shimmer-short', {
+          volume: 0.04,
+          rate: 0.6,
+        })
+        window.app.audio.play(null, 'whoosh-short', {
+          volume: 0.3,
+        })
+        window.app.audio.play('shimmer-home', 'shimmer-medium', {
+          volume: 0.15,
+          rate: 1.5,
+        })
+      })
       .add(uniTL)
-      .add(posTL)
+      .add(posTL, '<')
   },
 }

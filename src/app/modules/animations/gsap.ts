@@ -22,8 +22,10 @@ export function blurStagger(el: HTMLElement, duration?: number, delay?: number) 
     const ltl = gsap
       .timeline({ delay: randomDelay })
       .add(() => {
+        // only play it forward
+        if(ltl._zTime < 0) return
         window.app.audio.play(null, 'title-reveal', {
-          volume: 0.3,
+          volume: 0.4,
           rate: blurTimeFactor + 0.4,
           //@ts-ignore
           sprite: TITLE_REVEAL_SOUND_SPRITES,

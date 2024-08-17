@@ -8,6 +8,24 @@ export const BlogPageAttractorAnim = {
 
     const uniTL = gsap
       .timeline()
+    .add(() => {
+        window.app.audio.play(null, 'shimmer-short', {
+          volume: 0.08,
+          rate: 0.9,
+        })
+        window.app.audio.play(null, 'whoosh-short', {
+          volume: 0.3,
+          rate: 1.4
+        })
+        setTimeout(() => {
+        window.app.audio.play(null, 'whoosh-short', {
+          volume: 0.3,
+        })
+           window.app.audio.play('shimmer-home', 'shimmer-medium', {
+            volume: 0.2,
+          })
+        }, 250)
+    })
       .set(experience.params, { speed: 70 })
       .to(
         experience.params,

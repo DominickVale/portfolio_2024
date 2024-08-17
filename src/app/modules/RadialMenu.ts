@@ -103,7 +103,7 @@ export default class RadialMenu {
     this._centralAngle = (this.isMobile ? 180 : 360) / this.itemsEl.length
     this.innerRadiusBound = this.innerRadius - this._thumbBounds.width / 2
     // Force a reflow because firefox
-    void this._wrapper.offsetHeight;
+    void this._wrapper.offsetHeight
   }
 
   createWrapper() {
@@ -150,7 +150,7 @@ export default class RadialMenu {
         span.classList.add('radial-menu-item-label')
         span.innerHTML = item.label
         span.setAttribute('data-text-scramble', item.label)
-        span.setAttribute('data-text-scramble-audio', 'typing volume:0.1 rate:1.25')
+        // span.setAttribute('data-text-scramble-audio', 'typing volume:0.1 rate:1.25')
 
         menuEl.appendChild(icon)
         menuEl.appendChild(span)
@@ -291,17 +291,21 @@ export default class RadialMenu {
     this._thumb.classList.add('pressed')
     this.currTarget = target
 
-    const slicesTL = gsap.timeline().
-    from('#' + this._wrapper.id + ' .radial-menu-bgs div', {
-      scale: 0.75,
-      duration: 0.1,
-      stagger: 0.08,
-    })
-    .from('#' + this._wrapper.id + ' .radial-menu .radial-menu-item', {
-      opacity: 0,
-      duration: 0.05,
-      repeat: 12,
-    }, "<")
+    const slicesTL = gsap
+      .timeline()
+      .from(
+        '#' + this._wrapper.id + ' .radial-menu .radial-menu-item',
+        {
+          opacity: 0,
+          duration: 0.05,
+          repeat: 12,
+        },
+      )
+      .from('#' + this._wrapper.id + ' .radial-menu-bgs div', {
+        scale: 0.75,
+        duration: 0.1,
+        stagger: 0.08,
+      }, "<+20%")
 
     if (window.app.reducedMotion) {
       gsap.timeline({}).fromTo(
@@ -322,11 +326,15 @@ export default class RadialMenu {
       gsap
         .timeline({})
         .add(slicesTL)
-        .from(this._wrapper, {
-          scale: 0,
-          duration: 0.25,
-          ease: 'power4.inOut',
-        }, "<")
+        .from(
+          this._wrapper,
+          {
+            scale: 0,
+            duration: 0.25,
+            ease: 'power4.inOut',
+          },
+          '<',
+        )
         .fromTo(
           this._wrapper,
           {
@@ -336,16 +344,25 @@ export default class RadialMenu {
             opacity: 1,
             duration: 0.06,
             repeat: 6,
-          },
-          '<',
+            onComplete: function () {
+              gsap.set(this.targets(), { clearProps: 'opacity' })
+            },
+          },"<"
         )
-        .to(this._wrapper, {
-          opacity: 1,
-          duration: 0,
-          onComplete: function () {
-            gsap.set(this.targets(), { clearProps: 'opacity' })
+        .fromTo(
+          this._menuElContainer,
+          {
+            opacity: 0,
           },
-        })
+          {
+            opacity: 1,
+            duration: 0.06,
+            repeat: 6,
+            onComplete: function () {
+              gsap.set(this.targets(), { clearProps: 'opacity' })
+            },
+          }, "<+50%"
+        )
     }
   }
 
@@ -392,7 +409,7 @@ export default class RadialMenu {
     this.items[id]?.callback?.call(this, ev, target, this.currTarget)
     window.app.audio.play(null, 'vibration-click', {
       volume: 0.2,
-      rate: 1.5
+      rate: 0.9,
     })
   }
 
@@ -411,8 +428,8 @@ export default class RadialMenu {
     const label = $('.radial-menu-item-label', itemEl)
     TextScramble.scramble(label)
     window.app.audio.play(null, 'hover-1', {
-      volume: 0.05,
-      rate: 1.5
+      volume: 0.2,
+      rate: 1.5,
     })
     if (item.hoverCallback) item.hoverCallback()
   }

@@ -97,8 +97,9 @@ export const TypewriterPlugin = {
         if ((startScrambleIndex > 0 || maxScrambleChars > 3) && !data.soundPlaying && soundOptions.volume) {
           data.soundPlaying = true
           window.app.audio.play(soundId, 'typing', {
-            loop: true,
             ...soundOptions,
+            loop: true,
+            rate: 3,
           })
         }
         let scrambledPart = text
