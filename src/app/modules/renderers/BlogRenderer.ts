@@ -73,6 +73,7 @@ export default class BlogRenderer extends BaseRenderer {
   onLeave() {
     // run before the transition.onLeave method is called
     window.removeEventListener('wheel', this.handleActiveArticleBound)
+    this.lenis.destroy()
   }
 
   onLeaveCompleted() {
