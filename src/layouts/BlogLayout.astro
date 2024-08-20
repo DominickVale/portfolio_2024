@@ -53,7 +53,7 @@ const { id, title, tags, readTime, date, image, subtitle, lastUpdated, ttr, proj
 
     <section id="image-section-mobile" class="mb-16 mt-[4vh] sm:mt-[0vh] lg:hidden">
       <div class="relative">
-        <Image src={image} class="mb-3" containerId="main-image-container-mobile" id="main-image-mobile" />
+        <Image src={image} containerClass="mb-3" containerId="main-image-container-mobile" id="main-image-mobile" />
         <Marquee animated tags={project?.tech || tags} class="left-4 right-4 top-4 bg-white text-background-dark" />
       </div>
       {

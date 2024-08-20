@@ -55,6 +55,11 @@ export default [
     path: '/sounds/shimmer-medium.opus',
   },
   {
+    name: 'shimmer-long',
+    type: 'audio',
+    path: '/sounds/shimmer-long.opus',
+  },
+  {
     name: 'whoosh-short',
     type: 'audio',
     path: '/sounds/whoosh-short.opus',

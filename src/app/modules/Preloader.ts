@@ -10,7 +10,7 @@ gsap.registerPlugin(CustomEase)
 
 //@TODO: !IMPORTANT: split loading bar into own chunk and use an svg for the star, otherwise it's useless
 export default class Preloader {
-  p: HTMLElement
+  description: HTMLElement
   progress: number
   bar: HTMLElement
   title: HTMLElement
@@ -24,12 +24,12 @@ export default class Preloader {
 
   constructor() {
     this.container = $('#preloader')
-    this.p = $('p', this.container)
+    this.description = $('p.description', this.container)
     this.title = $('h1', this.container)
     this.bar = $('#progress-bar div')
     this.buttonsContainer = $('#preloader-buttons')
     this.buttons = $all('#preloader-buttons > *')
-    this.progress = 0
+    this.progress = 10
 
     this.isMobile = isMobile()
 
@@ -84,7 +84,7 @@ export default class Preloader {
         }
       }, 50)
     } else {
-      gsap.set([this.title, this.bar.parentElement, this.p, this.buttons], { opacity: 0 })
+      gsap.set([this.title, this.bar.parentElement, this.description, this.buttons], { opacity: 0 })
       this.loadingTL.play('welcome')
     }
 
@@ -288,7 +288,7 @@ export default class Preloader {
   }
 
   onProgress() {
-    this.p.innerText = Math.min(100, this.progress) + '%'
+    this.description.innerText = Math.min(100, this.progress) + '%'
     this.bar.style.setProperty('--progress', this.progress + '%')
     this.bar.setAttribute('aria-valuenow', String(this.progress))
     if (this.progress >= 100) {
@@ -301,24 +301,24 @@ export default class Preloader {
       .timeline({ paused: true })
       .to(this.title, {
         opacity: 0,
-        duration: 1.5,
+        duration: 1,
         ease: 'power4.out',
       })
       .to(this.bar.parentElement, { opacity: 0, duration: 0.6, ease: 'power4.in' }, '<')
-      .to(this.p, { opacity: 0, duration: 0.5, ease: 'power4.in' }, '<+20%')
+      .to(this.description, { opacity: 0, duration: 0.5, ease: 'power4.in' }, '<+20%')
       .set(this.buttons, { opacity: 0 })
       .addLabel('welcome')
       .add(() => {
         this.bar.classList.add('hidden')
         this.buttonsContainer.classList.remove('hidden')
         this.buttonsContainer.classList.add('flex')
-        this.p.innerText = 'This website uses audio to enhance the overall experience. Headphones recommended.'
+        this.description.innerText = 'This website uses audio to enhance the overall experience. Headphones recommended.'
       }, 'welcome')
       .to(
         this.title,
         {
           opacity: 1,
-          duration: 1,
+          duration: 0.85,
           ease: 'power4.out',
         },
         '<',
@@ -336,7 +336,7 @@ export default class Preloader {
         },
         '<',
       )
-      .to(this.p, {
+      .to(this.description, {
         opacity: 1,
         duration: 2.2,
         ease: 'power4.inOut',

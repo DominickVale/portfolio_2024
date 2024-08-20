@@ -338,8 +338,8 @@ export class ContactsInternalRenderer {
       )
       .add(lettersTL)
       .add(this.isDesktop ? formTL : linksTL, '<+30%')
-      .to('#or', { autoAlpha: 1, duration: 1, ease: 'power4.in' }, '<+30%')
-      .add(this.isDesktop ? linksTL : formTL, '<+80%')
+      .to('#or', { autoAlpha: 1, duration: this.isDesktop ? 0 : 1, ease: 'power4.in' }, this.isDesktop ? '<' : '<+30%')
+      .add(this.isDesktop ? linksTL : formTL, '<+30%')
       .to('#smiley', { autoAlpha: 1, duration: 1, ease: 'power4.in' })
   }
 }

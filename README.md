@@ -1,6 +1,7 @@
 # TODOs
 
-- fix codecs audios firefox
+- don't forget IRL photos in about page
+- fix codecs audios firefox (maybe?)
 - Optimize imports (no import \* from ...) (also split js into as many independent chunks as possible)
 - Figure out some hacks for font rendering
 - Add more post-processing (blur/aberration on transitions based on position speed etc.)

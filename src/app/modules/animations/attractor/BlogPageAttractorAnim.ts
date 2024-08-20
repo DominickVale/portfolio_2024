@@ -9,7 +9,7 @@ export const BlogPageAttractorAnim = {
     const uniTL = gsap
       .timeline()
     .add(() => {
-        window.app.audio.play(null, 'shimmer-short', {
+        window.app.audio.play(null, 'shimmer-long', {
           volume: 0.08,
           rate: 0.9,
         })
@@ -31,8 +31,8 @@ export const BlogPageAttractorAnim = {
         experience.params,
         {
           speed: 5,
-          duration: 3.5,
-          ease: 'power4.inOut',
+          duration: 7,
+          ease: 'sine.in',
         },
       )
       .to(

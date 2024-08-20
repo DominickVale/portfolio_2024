@@ -9,21 +9,21 @@ import { EMAIL } from '../app/constants'
 >
   <span id="or" class="mb-[4vh] place-self-center text-xs text-inactive opacity-60 md:hidden">OR</span>
   <form class="flex w-full flex-col justify-center gap-y-3">
-  <Textbox required uppercase minlength="3" pattern="^[a-zA-Z ]{2,30}$" name="name" placeholder="FULL NAME" frame aria-describedby="name-error" />
-  <span id="name-error" class="sr-only" role="alert"></span>
+    <Textbox required uppercase minlength="3" pattern="^[a-zA-Z ]{2,30}$" name="name" placeholder="FULL NAME" frame aria-describedby="name-error" />
+    <span id="name-error" class="sr-only" role="alert"></span>
 
-  <Textbox required type="email" name="email" placeholder="EMAIL" frame aria-describedby="email-error" />
-  <span id="email-error" class="sr-only" role="alert"></span>
+    <Textbox required type="email" name="email" placeholder="EMAIL" frame aria-describedby="email-error" />
+    <span id="email-error" class="sr-only" role="alert"></span>
 
-  <Textbox required minlength="30" maxlength="3000" name="message" area placeholder="MESSAGE" frame aria-describedby="message-error" />
-  <span id="message-error" class="sr-only" role="alert"></span>
+    <Textbox required minlength="30" maxlength="3000" name="message" area placeholder="MESSAGE" frame aria-describedby="message-error" />
+    <span id="message-error" class="sr-only" role="alert"></span>
 
     <Btn
       containerId="send"
       class="btn--disabled mb-24 ml-3 mr-auto mt-3 min-h-6 text-xs font-normal md:mb-0"
       data-audio
       data-audio-stopon="mouseout"
-      data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:-0.5 volume:0.25 rate:0.75"
+      data-audio-mouseover="vibration loop fadeIn:0.7 fadeOut:0.5 pan:-0.5 volume:0.2 rate:0.75"
       data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.25">SEND IT</Btn
     >
   </form>
@@ -57,7 +57,7 @@ import { EMAIL } from '../app/constants'
       class="col-span-3 flex items-center gap-3 xl:!ml-1"
       data-audio
       data-audio-mouseover="hover-1 pan:0.25 volume:0.05 rate:1.5"
-      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.05"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
     >
       <a class="pointer-events-none" href="#" aria-label="email">
         <svg id="mail-icon" width="32" height="26" viewBox="0 0 32 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,7 +75,7 @@ import { EMAIL } from '../app/constants'
       rel="noopener"
       data-audio
       data-audio-mouseover="hover-1 pan:0.25 volume:0.05 rate:1.5"
-      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.05"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
       aria-label="linkedin"
     >
       <svg class="pointer-events-none" width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -91,7 +91,7 @@ import { EMAIL } from '../app/constants'
       rel="noopener"
       data-audio
       data-audio-mouseover="hover-1 pan:0.25 volume:0.05 rate:1.5"
-      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.05"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
       aria-label="github"
     >
       <svg class="pointer-events-none" width="31" height="33" viewBox="0 0 31 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -107,7 +107,7 @@ import { EMAIL } from '../app/constants'
       rel="noopener"
       data-audio
       data-audio-mouseover="hover-1 pan:0.25 volume:0.05 rate:1.5"
-      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.05"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
     >
       <svg class="pointer-events-none" width="40" height="33" viewBox="0 0 40 33" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -122,7 +122,7 @@ import { EMAIL } from '../app/constants'
       rel="noopener"
       data-audio
       data-audio-mouseover="hover-1 pan:0.25 volume:0.05 rate:1.5"
-      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.05"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
       aria-label="personal discord"
     >
       <svg class="pointer-events-none" width="32" height="25" viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -138,7 +138,7 @@ import { EMAIL } from '../app/constants'
       rel="noopener"
       data-audio
       data-audio-mouseover="hover-1 pan:0.25 volume:0.05 rate:1.5"
-      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.05"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
       aria-label="instagram"
     >
       <svg class="pointer-events-none" width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -154,7 +154,7 @@ import { EMAIL } from '../app/constants'
       rel="noopener"
       data-audio
       data-audio-mouseover="hover-1 pan:0.2 volume:0.05 rate:1.5"
-      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.05"
+      data-audio-click="vibration-click rate:1.5 pan:0.2 volume:0.1"
     >
       <svg class="pointer-events-none" width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -190,6 +190,12 @@ import { EMAIL } from '../app/constants'
       fill: white;
     }
     animation: fast-blink-short 0.1s linear;
+  }
+  #socials > *:not(:hover) {
+    animation: blink-off 0.1s linear;
+    & path {
+      transition: fill 0.3s;
+    }
   }
   #socials > *:active {
     @apply animate-fui-flash;

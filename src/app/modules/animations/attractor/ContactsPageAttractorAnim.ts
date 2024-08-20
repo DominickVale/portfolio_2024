@@ -72,7 +72,7 @@ export const ContactsPageAttractorAnim = {
     return gsap
       .timeline({ onComplete, paused: true })
       .add(() => {
-        window.app.audio.play(null, 'shimmer-short', {
+        window.app.audio.play(null, 'shimmer-long', {
           volume: 0.04,
         })
         window.app.audio.play(null, 'whoosh-short', {

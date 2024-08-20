@@ -11,8 +11,8 @@ export const HomePageAttractorAnim = {
       .timeline()
       .set(experience.params, { speed: 60 })
       .add(() => {
-        window.app.audio.play(null, 'shimmer-short', {
-          volume: 0.04,
+        window.app.audio.play(null, 'shimmer-long', {
+          volume: 0.1,
           rate: 0.6,
         })
         window.app.audio.play(null, 'whoosh-short', {
@@ -27,8 +27,8 @@ export const HomePageAttractorAnim = {
       })
       .to(experience.params, {
         speed: LORENZ_PRESETS['default'].speed,
-        duration: 2,
-        ease: 'attractor_speed',
+        duration: 8,
+        ease: 'sine.in',
       })
       .to(
         attractor.bufferMaterial.uniforms.uSigma,
@@ -61,27 +61,12 @@ export const HomePageAttractorAnim = {
     const posTL = gsap
       .timeline()
       .to(
-        experience.params,
-        {
-          speed: 70,
-          duration: 0.1,
-          onComplete: () => {
-            gsap.to(experience.params, {
-              speed: 15,
-              duration: 3,
-              ease: 'power2.in',
-            })
-          },
-        },
-        '<',
-      )
-      .to(
         attractor.points.position,
         {
           x: experience.params.positionX,
           y: experience.params.positionY,
           z: getZPosition(),
-          duration: 1,
+          duration: 2,
           ease: 'power2.inOut',
         },
         '<',
@@ -92,20 +77,15 @@ export const HomePageAttractorAnim = {
           x: experience.params.rotationX,
           y: experience.params.rotationY,
           z: experience.params.rotationZ,
-          duration: 1,
+          duration: 2,
           ease: 'power2.inOut',
         },
         '<',
       )
-      .to(experience.params, {
-        speed: LORENZ_PRESETS['default'].speed,
-        duration: 5,
-        ease: 'power2.in',
-      })
 
     return gsap
       .timeline({ onComplete, paused: true, onStart: () => console.log('Starting home attractor') })
       .add(uniTL)
-      .add(posTL, '<+45%')
+      .add(posTL, '<')
   },
 }

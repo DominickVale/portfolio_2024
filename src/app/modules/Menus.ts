@@ -137,20 +137,17 @@ getMenus() {
       hoverCallback: null,
     }
 
-    const contextSlice: RadialMenuItem = {
-      iconId: 'context-menu',
-      label: 'CONTEXT',
+    const closeSlice: RadialMenuItem = {
+      iconId: 'close',
+      label: 'CLOSE',
       position: 8,
-      callback: (e, slice, origTarget) => {
-        const fn = () => {
-          //contextMenu.open(this.cursor.pos.x, this.cursor.pos.y, slice)
-        }
-        setTimeout(fn.bind(this), 250)
+      callback: () => {
+        // noop
       },
       hoverCallback: null,
     }
 
-    const defaultMenuItems: RadialMenuItem[] = [homeSlice, labSlice, aboutSlice, worksSlice, blogSlice, contactSlice, settingsSlice, contextSlice]
+    const defaultMenuItems: RadialMenuItem[] = [homeSlice, labSlice, aboutSlice, worksSlice, blogSlice, contactSlice, settingsSlice, closeSlice]
 
     const blogPageMenuItems: RadialMenuItem[] = [
       homeSlice,
@@ -160,7 +157,7 @@ getMenus() {
       blogSlice,
       contactSlice,
       settingsSlice,
-      contextSlice,
+      closeSlice,
     ]
 
     const defaultMenuItemsMobile: RadialMenuItem[] = [
@@ -194,6 +191,7 @@ getMenus() {
     ]
 
     const settingsItems: RadialMenuItem[] = [
+      closeSlice,
       {
         iconId: 'debug',
         label: 'DEBUG',
@@ -225,7 +223,7 @@ getMenus() {
         hoverCallback: null,
       },
       settingsSlice,
-      contextSlice,
+      closeSlice,
     ]
 
     const textMenu = new RadialMenu('text', textMenuItems, { size: 'calc(10rem + min(30vw, 10vh))' })

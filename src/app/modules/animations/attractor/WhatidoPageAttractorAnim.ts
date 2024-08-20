@@ -85,6 +85,21 @@ export const WhatidoPageAttractorAnim = {
 
     return gsap
       .timeline({ onComplete, paused: true, onStart: () => console.log('Starting about attractor') })
+      .add(() => {
+        window.app.audio.play(null, 'shimmer-long', {
+          volume: 0.2,
+          rate: 1.35,
+        })
+        window.app.audio.play(null, 'whoosh-short', {
+          volume: 0.3,
+        })
+        setTimeout(() => {
+          window.app.audio.play(null, 'shimmer-short', {
+            volume: 0.45,
+            rate: 0.9,
+          })
+        }, 2000)
+      })
       .add(uniTL)
       .add(posTL, '<+20%')
   },

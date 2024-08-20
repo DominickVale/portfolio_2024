@@ -31,7 +31,7 @@ export default class BaseRenderer extends Renderer {
         const params = window.app.audio.parseAudioAttributes(audioAttr)
         window.app.audio.play(null, 'vibration-click', {
           pan: params.pan,
-          volume: 0.1,
+          volume: 0.3,
         })
 
         this.navLinks.forEach((link) => {

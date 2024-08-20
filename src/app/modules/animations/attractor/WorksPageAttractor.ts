@@ -12,17 +12,16 @@ export const WorksPageAttractorAnim = {
       .timeline()
       .add(() => {
         window.app.audio.play(null, 'whoosh-short', {
-          volume: 0.35,
-          rate: 1.35,
+          volume: 0.15,
           pan: -0.5,
         })
       })
       .to(
         attractor.points.position,
         {
-          x: isDesktop ? params.positionX - 36.2 : params.positionX - 20,
+          x: isDesktop ? -55 : params.positionX - 20,
           y: params.positionY - 2,
-          z: params.positionZ + 8,
+          z: -22,
           duration: 2,
           ease: 'power2.inOut',
         },
@@ -42,16 +41,16 @@ export const WorksPageAttractorAnim = {
     const uniTL = gsap
       .timeline()
       .add(() => {
-        window.app.audio.play(null, 'shimmer-short', {
+        window.app.audio.play(null, 'shimmer-long', {
           volume: 0.05,
           rate: 1.35,
           pan: -0.5,
         })
       })
-      .set(experience.params, { speed: 70 })
+      .set(experience.params, { speed: 80 })
       .to(experience.params, {
         speed: 10,
-        duration: 5,
+        duration: 6,
         ease: 'attractor_speed',
       })
       .to(

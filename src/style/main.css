@@ -22,7 +22,7 @@
   --bg-dark-02: rgba(17, 16, 16, 0.2);
   --bg-dark-05: rgba(17, 16, 16, 0.5);
   --bg-dark-09: rgba(17, 16, 16, 0.9);
-  --blur-radial: 2px;
+  --blur-radial: 6px;
   --copy: #d3c4c4;
   --golden-glow: 0 0 4px color-mix(in srgb, transparent, var(--primary) 80%);
   --golden-glow-harder: 0 0 4px color-mix(in srgb, transparent, var(--primary) 100%);
@@ -263,7 +263,7 @@ scrollbar-button {
   width: 100%;
   height: 100%;
   border-radius: 100%;
-  background: var(--bg-dark-05);
+  background: var(--bg-dark-09);
 
   mask: var(--mask);
   -webkit-mask: var(--mask);
@@ -306,10 +306,11 @@ scrollbar-button {
 .radial-menu-thumb {
   --x: 50%;
   --y: 50%;
+  --size: 2.5rem;
   pointer-events: all;
   position: absolute;
-  height: 2.5rem;
-  width: 2.5rem;
+  height: var(--size);
+  width: var(--size);
   border-radius: 100%;
   background-color: white;
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -498,6 +499,32 @@ html.lenis body {
   }
 
   to {
+    opacity: 1;
+  }
+}
+
+@keyframes blink-off {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  30% {
+    opacity: 0.5;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0;
+  }
+
+  100% {
     opacity: 1;
   }
 }

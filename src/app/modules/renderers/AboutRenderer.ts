@@ -115,6 +115,7 @@ export default class AboutRenderer extends BaseRenderer {
           },
           typewrite: {
             speed: 0.35,
+            soundOptions: { volume: 0 },
           },
           ease: 'power4.in',
         })
@@ -126,6 +127,7 @@ export default class AboutRenderer extends BaseRenderer {
             },
             typewrite: {
               speed: 0.35,
+            soundOptions: { volume: 0 },
             },
             ease: 'power4.in',
           },

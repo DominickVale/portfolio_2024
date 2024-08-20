@@ -29,7 +29,7 @@ import Image from '../../components/Image.astro'
 </BlogSection>
 
 <BlogSection>
-    ![test](/vidra-storybook-2.png)
+    ![screenshot of a textbox component in storybook](/vidra-storybook-2.png)
     <BlogSectionContent>
     ## WEBSHOPS AND DESIGN SYSTEM
     Vidra generated user webshops using Handlebar. I was tasked with replacing the old most important interactive parts of the webshops (Cart and checkout page) with new "Micro Front ends" made in React, which were hooked up to the webshops using React Portals. We still didn't have a proper design system components library yet, so i was tasked to build it from scratch, following the design spec closely. I took inspiration from [Shopify's Polaris-react component system](https://github.com/Shopify/polaris)'s structure. Of course i used Storybook for the previews and manual testing.
@@ -39,7 +39,7 @@ import Image from '../../components/Image.astro'
 </BlogSection>
 
 <BlogSection>
-    ![test](/vidra-mobile.webp)
+    ![login screen of the vidra mobile app](/vidra-mobile.webp)
     <BlogSectionContent>
     ## THE MOBILE APP
     A bit later, i was tasked with developing a new Mobile app using React Native. Being new, the mobile app version of the main Vidra dashboard had the benefit of being super fast, lightweight and performant.
@@ -47,7 +47,7 @@ import Image from '../../components/Image.astro'
 </BlogSection>
 
 <BlogSection>
-    ![test](/vidra-products.png)
+    ![the products creation page](/vidra-products.png)
     <BlogSectionContent>
     ## WORKING ON THE DASHBOARD
     After some development on the mobile App, i was moved to work on the main Vidra Dashboard. Made in a slightly older version of React. It had a moderate amount of tech debt, but nothing too bad. I was tasked to get rid of it as i added new features and fixes. It went rather smoothly for most of the time, but in one special case i got stuck for an entire month. This was the products page. It was by nature a very complex part of the webapp, especially given the product variants. The tech debt wasn't the only part that slowed me down. The backend API worked in a way that made it necessary to use a lot of different singular network requests for each small change, which sometimes had to be chained together, in a precise order, and could fail at any point. For state management we were using the Redux library, but it was fairly different from the modern Redux Toolkit way of doing things. Async requests done that way weren't trivial to deal with. A senior developer came to the rescue, but even he had issues with it. Eventually we managed to push through that as well, and we came out with a more stable and future-proof products page. At that point in time i was also tasked with mentoring our Designer with the basics of front-end development and coding, as he would have to start to make some small changes here and there when the rest of the team was too busy.
@@ -55,7 +55,7 @@ import Image from '../../components/Image.astro'
 </BlogSection>
 
 <BlogSection>
-    ![test](/vidra-dashboard.webp)
+    ![dashboard homepage (onboarding phase)](/vidra-dashboard.webp)
     <BlogSectionContent>
     ## END AND REFLECTIONS ON THE EXPERIENCE
     Overall, i had a pretty good time with the Bemind team. Everyone was very friendly, straightforward, available and helpful. We were pretty much on the same wave. It was definitely a great learning experience. I learned to manage my time using [Clubhouse](https://web.archive.org/web/20210813005811/https://clubhouse.io/), to prioritize stories based on the importance and client requirements, to troubleshoot on my own, and collaborating with other developers and designers.

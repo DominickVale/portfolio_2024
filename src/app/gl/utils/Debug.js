@@ -43,9 +43,9 @@ export default class Debug {
 
     postfx.add(this.params, 'chromaticAberration', -0.01, 0.01, 0.0001).onChange(this.updateChromaticAberration.bind(this))
     const positioning = this.gui.addFolder('Positioning')
-    positioning.add(this.attractor.points.rotation, 'x', -Math.PI, Math.PI).name('Rotation X')
-    positioning.add(this.attractor.points.rotation, 'y', -Math.PI, Math.PI).name('Rotation Y')
-    positioning.add(this.attractor.points.rotation, 'z', -Math.PI, Math.PI).name('Rotation Z')
+    positioning.add(this.attractor.points.rotation, 'x', -TAU, TAU, 0.0001).name('Rotation X')
+    positioning.add(this.attractor.points.rotation, 'y', -TAU, TAU, 0.0001).name('Rotation Y')
+    positioning.add(this.attractor.points.rotation, 'z', -TAU, TAU, 0.0001).name('Rotation Z')
     positioning.add(this.attractor.points.position, 'x', -50, 50).name('Position X')
     positioning.add(this.attractor.points.position, 'y', -50, 50).name('Position Y')
     positioning.add(this.attractor.points.position, 'z', -50, 50).name('Position Z')

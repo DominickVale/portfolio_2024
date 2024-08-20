@@ -11,11 +11,11 @@ export const WipPageAttractorAnim = {
 
     const uniTL = gsap
       .timeline()
-      .set(experience.params, { speed: 60 })
+      .set(experience.params, { speed: 25 })
       .to(experience.params, {
-        speed: LORENZ_PRESETS['default'].speed,
-        duration: 3,
-        ease: 'attractor_speed',
+        speed: LORENZ_PRESETS['default'].speed - 2,
+        duration: 6,
+        ease: 'sine.in',
       })
       .to(
         attractor.bufferMaterial.uniforms.uSigma,
@@ -50,7 +50,7 @@ export const WipPageAttractorAnim = {
       .to(
         attractor.points.position,
         {
-          x: 50,
+          x: 29.1,
           y: 50,
           z: -50,
           duration: 1,
@@ -61,9 +61,9 @@ export const WipPageAttractorAnim = {
       .to(
         attractor.points.rotation,
         {
-          x: 0.358141562509236,
-          y: -1.33831847042925,
-          z: 1.82840692438926,
+          x: 0.420973415581032,
+          y: -1.03044239037745,
+          z: 1.98548655706875,
           duration: 1,
           ease: 'power2.inOut',
         },
@@ -74,14 +74,13 @@ export const WipPageAttractorAnim = {
       .timeline({ onComplete, paused: true })
       .add(() => {
         window.app.audio.play(null, 'shimmer-short', {
-          volume: 0.04,
-          rate: 0.6,
+          volume: 0.35,
         })
         window.app.audio.play(null, 'whoosh-short', {
           volume: 0.3,
         })
         window.app.audio.play('shimmer-home', 'shimmer-medium', {
-          volume: 0.15,
+          volume: 0.25,
           rate: 1.5,
         })
       })

@@ -82,13 +82,13 @@ export default class HomeRenderer extends BaseRenderer {
     HomeRenderer.enterTL = gsap
       .timeline({ paused: true })
       .add(lettersTL)
-      .add(itemsTL, '<+80%')
+      .add(itemsTL, '<+40%')
       .from('#status-available', {
         autoAlpha: 0,
         duration: 0.1,
         repeat: 3,
         ease: 'linear',
-      })
+      }, '<+90%')
       .from(
         '#home-about',
         {
@@ -96,7 +96,7 @@ export default class HomeRenderer extends BaseRenderer {
           duration: 1.5,
           ease: 'power4.inOut',
         },
-        '<50%',
+        '<',
       )
   }
 

@@ -81,6 +81,17 @@ export const WhoamiPageAttractorAnim = {
 
     return gsap
       .timeline({ onComplete, paused: true, onStart: () => console.log('Starting about attractor') })
+      .add(() => {
+        window.app.audio.play(null, 'shimmer-short', {
+          volume: 0.35,
+        })
+        setTimeout(() => {
+          window.app.audio.play(null, 'whoosh-short', {
+            volume: 0.3,
+            rate: 1.5,
+          })
+        }, 400)
+      })
       .add(uniTL)
       .add(posTL, '<+20%')
   },

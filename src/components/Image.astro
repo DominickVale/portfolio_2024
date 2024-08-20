@@ -7,11 +7,12 @@ interface Props extends HTMLAttributes<'img'>{
   cover?: boolean
   contain?: boolean
   variant?: "blog" | "default"
+  containerClass?: string
   containerId?: string
   src: string
 }
 
-const { class: classes, containerId, cover, contain, variant, alt, ...props} = Astro.props
+const { containerClass, class: classes, containerId, cover, contain, variant, alt, ...props} = Astro.props
 
 const imageVariant = variant || "default"
 
@@ -19,9 +20,9 @@ const imageFileName = props.src.split("?")[0].split("/").pop()
 ---
 
 {imageVariant === "default" ? (
-  <div id={containerId} class:list={[ "img-container relative p-4 mr-auto uppercase", classes ] }>
+  <div id={containerId} class:list={[ "img-container relative p-4 mr-auto uppercase", containerClass ] }>
   <small class="small-1 vertical-text--left absolute bottom-4 left-[-0.25rem] text-[0.5rem] leading-[100%] opacity-40 tracking-widest">{imageFileName}</small>
-    <img class:list={[  "w-full max-h-[50vh]", cover && "h-full object-cover", contain && "h-full object-contain" ] } {...props} />
+  <img class:list={[  "w-full max-h-[50vh]", cover && "h-full object-cover", contain && "h-full object-contain", classes ] } {...props} />
     <!-- <small class="text-xs opacity-40 absolute right-0 top-0 vertical-text--right leading-[100%]">IMAGE_NAME-001.jpg</small> -->
     <div class="absolute right-0 top-0 flex h-full w-3">
       <small
@@ -32,7 +33,7 @@ const imageFileName = props.src.split("?")[0].split("/").pop()
     <FuiCorners />
   </div>
 ) : (
-  <div class:list={[ "w-full uppercase @container", classes ] }>
+  <div class:list={[ "w-full uppercase @container", containerClass ] }>
     <div class="relative flex-col w-full h-full flex justify-center items-center p-3">
       <div class="absolute img-small-left left-0 top-0 flex flex-col h-full">
         <div class="bg-lines w-[1px] h-[30%]"></div>
@@ -48,7 +49,7 @@ const imageFileName = props.src.split("?")[0].split("/").pop()
         </div>
         <div class="bg-lines w-[1px] h-[inherit]"></div>
       </div>
-      <img class:list={[  "w-full max-h-[50vh]", cover && "h-full object-cover", contain && "h-full object-contain" ] } {...props} />
+    <img class:list={[  "w-full max-h-[50vh]", cover && "h-full object-cover", contain && "h-full object-contain", classes ] } {...props} />
       <span class="alt ml-3 relative image-caption self-start mt-4 text-xs text-copy opacity-80">{alt}</span>
       <FuiCorners class="border-l-0" dot/>
     </div>

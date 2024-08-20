@@ -271,22 +271,6 @@ export default class BlogRenderer extends BaseRenderer {
 
     BlogRenderer.enterTL = gsap
       .timeline({ paused: true })
-      .to(
-        this.experience.params,
-        {
-          speed: 90,
-          duration: 0.1,
-          ease: 'power2.in',
-          onComplete: () => {
-            gsap.to(this.experience.params, {
-              speed: LORENZ_PRESETS['default'].speed,
-              duration: 2,
-              ease: 'power2.out',
-            })
-          },
-        },
-        '<',
-      )
       .fromTo(
         '#blog-header',
         {

@@ -1,6 +1,6 @@
 import { ICON_IDS } from '../constants'
 import type { Vec2 } from '../types'
-import { $, $all, TAU, clamp, debounce, degToRad, mag } from '../utils'
+import { $, $all, TAU, clamp, debounce, debounceTrailing, degToRad, mag } from '../utils'
 import TextScramble from './animations/TextScramble'
 import gsap from 'gsap'
 import { resetGsapProps } from './animations/gsap'
@@ -54,7 +54,7 @@ export default class RadialMenu {
   constructor(
     id: string,
     public items: RadialMenuItem[],
-    { innerRadiusPercent = 35, gap = 8, position = { x: 0, y: 0 }, isMobile = false, size }: RadialMenuOptions = {},
+    { innerRadiusPercent = 40, gap = 8, position = { x: 0, y: 0 }, isMobile = false, size }: RadialMenuOptions = {},
   ) {
     this.id = id
     this.shown = false
@@ -112,10 +112,12 @@ export default class RadialMenu {
     wrapper.id = 'radial-menu-' + this.id
     wrapper.classList.add('radial-menu-wrapper', 'radial-menu-hidden', this.isMobile && 'mobile')
     wrapper.style.setProperty('--size', this._size)
+    const thumbWrapperSize = this.isMobile ? "2.5rem" : "4rem"
+    const thumbSize = this.isMobile ? 30 : 42
     wrapper.innerHTML = `
-  <ul class="radial-menu" aria-hidden="true">
-    <div id="radial-menu-thumb-${this.id}" class="${`radial-menu-thumb ${this.isMobile && 'mobile'}`}">
-      <svg id="_icon_brand" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <ul class="radial-menu cursor-none" aria-hidden="true">
+    <div id="radial-menu-thumb-${this.id}" class="${`radial-menu-thumb ${this.isMobile && 'mobile'}`}" style="--size:${thumbWrapperSize}">
+      <svg id="_icon_brand" width="${thumbSize}" height="${thumbSize}" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
@@ -127,7 +129,7 @@ export default class RadialMenu {
       <defs class="pointer-events-none"><mask width="110%" height="110%"> </mask> </defs>
     </svg>
   </ul>
-  <div class="radial-menu-bgs"></div>
+  <div class="radial-menu-bgs cursor-none"></div>
 `
     document.body.append(wrapper)
     this._wrapper = wrapper
@@ -219,7 +221,7 @@ export default class RadialMenu {
 
       maskPathData.push(pathData)
       slice.setAttribute('d', pathData)
-      slice.style.cursor = 'pointer'
+      slice.style.cursor = 'none'
       slice.addEventListener('mouseenter', this.onSliceMouseEnter.bind(this))
       slice.addEventListener('mouseup', this.onSliceClick.bind(this))
       slice.addEventListener('mouseleave', this.onSliceMouseLeave.bind(this))
@@ -292,26 +294,7 @@ export default class RadialMenu {
     this._thumb.classList.add('pressed')
     this.currTarget = target
 
-    const slicesTL = gsap
-      .timeline()
-      .from('#' + this._wrapper.id + ' .radial-menu .radial-menu-item', {
-        opacity: 0,
-        duration: 0.05,
-        repeat: 12,
-        onComplete: resetGsapProps,
-      })
-      .from(
-        '#' + this._wrapper.id + ' .radial-menu-bgs div',
-        {
-          scale: 0.75,
-          duration: 0.1,
-          stagger: 0.08,
-          onComplete: resetGsapProps,
-        },
-        '<+20%',
-      )
-
-    if (window.app.reducedMotion) {
+    if (window.app.reducedMotion || this.isMobile) {
       gsap.timeline({}).fromTo(
         this._wrapper,
         {
@@ -325,6 +308,25 @@ export default class RadialMenu {
         '<',
       )
     } else {
+      const slicesTL = gsap
+        .timeline()
+        .from('#' + this._wrapper.id + ' .radial-menu .radial-menu-item', {
+          opacity: 0,
+          duration: 0.05,
+          repeat: 12,
+          onComplete: resetGsapProps,
+        })
+        .from(
+          '#' + this._wrapper.id + ' .radial-menu-bgs div',
+          {
+            scale: 0.75,
+            duration: 0.1,
+            stagger: 0.08,
+            onComplete: resetGsapProps,
+          },
+          '<+20%',
+        )
+
       gsap
         .timeline({})
         .add(slicesTL)
@@ -378,33 +380,36 @@ export default class RadialMenu {
       this._thumb.style.setProperty('--y', '50%')
       this._thumb.classList.remove('pressed')
       const i = this._lastActiveSliceId
-      if (typeof i !== 'number') return
-      this.itemsEl[i].setAttribute('data-highlighted', 'false')
-      this._shape.children[i].setAttribute('data-highlighted', 'false')
-      this._bgs[i].setAttribute('data-highlighted', 'false')
+      if (typeof i === 'number' && this.itemsEl[i]) {
+        this.itemsEl[i].setAttribute('data-highlighted', 'false')
+        this._shape.children[i].setAttribute('data-highlighted', 'false')
+        this._bgs[i].setAttribute('data-highlighted', 'false')
+      }
       this.canChange = true
     }
 
-    const slicesTL = gsap
-      .timeline({
-        onComplete: function () {
-          resetGsapProps.bind(this)
-          cb()
-        },
-      })
-      .to(itemS, {
-        opacity: 0,
-        duration: 0.25,
-      })
-      .to(
-        bgItemS,
-        {
-          opacity: 0,
-          duration: 0.25,
-        },
-        '<',
-      )
+    const slicesTL = gsap.timeline({
+      onComplete: function () {
+        resetGsapProps.bind(this)
+        cb()
+      },
+    })
 
+    // if(!this.isMobile){
+    //   slicesTL.to(itemS, {
+    //     opacity: 0,
+    //     duration: 0.25,
+    //   })
+    //   slicesTL.to(
+    //     bgItemS,
+    //     {
+    //       opacity: 0,
+    //       duration: 0.25,
+    //     },
+    //     '<',
+    //   )
+    //
+    // }
   }
 
   set size(size: string) {
@@ -423,7 +428,7 @@ export default class RadialMenu {
     this.items[id]?.callback?.call(this, ev, target, this.currTarget)
     window.app.audio.play(null, 'vibration-click', {
       volume: 0.2,
-      rate: 0.9,
+      rate: gsap.utils.random(1.3, 1.5),
     })
   }
 
@@ -439,12 +444,6 @@ export default class RadialMenu {
     const itemEl = this.itemsEl[i]
     const item = this.items[i]
     itemEl.setAttribute('data-hover', 'true')
-    const label = $('.radial-menu-item-label', itemEl)
-    TextScramble.scramble(label)
-    window.app.audio.play(null, 'hover-1', {
-      volume: 0.2,
-      rate: 1.5,
-    })
     if (item.hoverCallback) item.hoverCallback()
   }
   onSliceMouseLeave(ev: MouseEvent) {
@@ -499,7 +498,6 @@ export default class RadialMenu {
   }
 
   handleTouchMove(ev: TouchEvent) {
-    ev.preventDefault()
     ev.stopPropagation()
     const touch = ev.targetTouches[0]
     const x = touch.clientX
@@ -553,11 +551,22 @@ export default class RadialMenu {
         this._shape.children[i].setAttribute('data-highlighted', 'false')
         this._bgs[i].setAttribute('data-highlighted', 'false')
       })
-      this.itemsEl[closest.id].setAttribute('data-highlighted', 'true')
+      const closestEl = this.itemsEl[closest.id]
+      closestEl.setAttribute('data-highlighted', 'true')
       this._shape.children[closest.id].setAttribute('data-highlighted', 'true')
       this._bgs[closest.id].setAttribute('data-highlighted', 'true')
       this._bgs[closest.id].style.setProperty('--progress', progress + '%')
+
+      if (this._lastActiveSliceId !== closest.id) {
+        const label = $('.radial-menu-item-label', closestEl)
+        TextScramble.scramble(label)
+        window.app.audio.play(null, 'hover-1', {
+          volume: 0.2,
+          rate: 1.5,
+        })
+      }
       this._lastActiveSliceId = closest.id
+
       if (progress > 72 && this.shown) {
         if (!this.canChange) return
         this.canChange = false
@@ -570,6 +579,7 @@ export default class RadialMenu {
         item.setAttribute('data-highlighted', 'false')
         this._shape.children[i].setAttribute('data-highlighted', 'false')
         this._bgs[i].setAttribute('data-highlighted', 'false')
+        this._lastActiveSliceId = -1
       })
     }
 

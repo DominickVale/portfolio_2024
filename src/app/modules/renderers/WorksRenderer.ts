@@ -47,7 +47,7 @@ export default class WorksRenderer extends BaseRenderer {
     window.addEventListener('touchstart', this.handleTouchStart.bind(this))
     $('#works-list-mobile').addEventListener('touchmove', this.handleActiveProjectBound)
     const workImage = $('#works-image')
-    workImage.addEventListener('click', this.onImageClick.bind(this))
+    workImage.addEventListener('click', this.navigateToProject.bind(this))
     this.experience = new Experience()
 
     if (window.app.preloaderFinished) {
@@ -74,8 +74,11 @@ export default class WorksRenderer extends BaseRenderer {
 
   ////////////////////////////////
 
-  onImageClick() {
+  navigateToProject() {
     window.app.taxi.navigateTo(PROJECTS_LIST[this.currIdx].linkCase)
+    window.app.audio.play(null, 'vibration-click', {
+      volume: 0.3
+    })
   }
 
   recalculateActive() {
@@ -207,8 +210,13 @@ export default class WorksRenderer extends BaseRenderer {
         e.preventDefault()
         const el = e.currentTarget as HTMLElement
         const i = Number(el.getAttribute('data-i'))
-        this.currIdx = i
-        this.handleActiveProject(null)
+        console.log(i, this.currIdx)
+        if (i === this.currIdx) {
+          this.navigateToProject()
+        } else {
+          this.currIdx = i
+          this.handleActiveProject(null)
+        }
       }
       p.addEventListener('focus', onFocus)
       p.addEventListener('mousedown', onFocus)
