@@ -34,7 +34,7 @@ export default class BaseTransition extends Transition {
    */
   onEnter({ to, trigger, done, toURL }) {
     if (window.app.reducedMotion) {
-      gsap.to('canvas', { opacity: 1, duration: 3, delay: 1.5, ease: 'power4.in', onComplete: done })
+      gsap.to('canvas', { opacity: 1, duration: 3.5, delay: 1.5, ease: 'power4.in', onComplete: done })
     } else {
       done()
     }

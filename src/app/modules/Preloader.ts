@@ -38,7 +38,7 @@ export default class Preloader {
 
     this.experience = new Experience()
     this.experience.params.speed = 0.001
-    this.createLoadingFinishedTL()
+    this.createLoadingBarTL()
     if (!window.app.overridePreloader) {
       this.experience.resources.on('ready', () => {
         this.progress += 50
@@ -53,16 +53,12 @@ export default class Preloader {
 
     const tl = gsap.timeline({})
 
-    if (window.app.reducedMotion) {
-      console.warn('Prefers-reduced-motion is enabled. Attractor animation hidden.')
-      tl.to('canvas', { opacity: 0, duration: 1, ease: 'power4.inOut' })
-    }
     tl.add(attractorTL).play(0)
-      BaseRenderer.enterTL.play()
+    BaseRenderer.enterTL.play()
   }
 
   init() {
-    if (window.app.overridePreloader) {
+    if (window.app.overridePreloader || window.app.reducedMotion) {
       window.app.preloaderFinished = true
       const dpreset = LORENZ_PRESETS['default']
       this.experience.world.attractor.points.position.z = getZPosition()
@@ -285,7 +281,7 @@ export default class Preloader {
     }
   }
 
-  createLoadingFinishedTL() {
+  createLoadingBarTL() {
     this.loadingTL = gsap
       .timeline({ paused: true })
       .to(this.title, {
