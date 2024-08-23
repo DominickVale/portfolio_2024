@@ -87,7 +87,7 @@ export const AboutPageAttractorAnim = {
       )
 
     return gsap
-      .timeline({ onComplete, paused: true, onStart: () => console.log('Starting about attractor') })
+      .timeline({ onComplete, paused: true })
       .add(() => {
         window.app.audio.play(null, 'shimmer-long', {
           volume: 0.2,
@@ -97,7 +97,17 @@ export const AboutPageAttractorAnim = {
           volume: 0.3,
         })
       })
-      .add(uniTL)
+      .to(experience.renderer.chromaticAberrationEffect.offset, {
+        x: 'random(-0.003, 0.003)',
+        y: 'random(-0.003, 0.003)',
+        duration: 0.8,
+      })
+      .add(uniTL, "<")
       .add(posTL, '<+20%')
+      .to(experience.renderer.chromaticAberrationEffect.offset, {
+        x: 0,
+        y: 0,
+        duration: 1,
+      })
   },
 }

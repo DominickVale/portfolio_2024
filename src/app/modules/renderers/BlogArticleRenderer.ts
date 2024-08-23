@@ -128,7 +128,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
     gsap.set(this.els.imageSmall2, { opacity: 0 })
     gsap.set('#intro-details', { opacity: 0 })
     gsap.set(this.els.imageSectionCable, { opacity: 0 })
-    gsap.set('#open-proj-btn', {
+    gsap.set(this.isDesktop ? '#open-proj-btn' : '#open-proj-mobile', {
       opacity: 0,
     })
     gsap.set('#bg-blur', { opacity: 1 })
@@ -339,6 +339,8 @@ export default class BlogArticleRenderer extends BaseRenderer {
 
     const { imageSectionCable, imageSmall1, imageSmall2 } = this.els
 
+    const openProjQuery = this.isDesktop ? '#open-proj-btn' : '#open-proj-mobile'
+
     ///
     // IMAGE TIMELINE
     //
@@ -460,7 +462,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         '<',
       )
       .add(this.createBlogDetailsTL(), '<')
-      .to('#open-proj-btn', { opacity: 1, duration: 0.5, ease: 'power4.in' }, '<')
+      .to(openProjQuery, { opacity: 1, duration: 0.5, ease: 'power4.in' }, '<')
 
     ///
     // MAIN TIMELINE

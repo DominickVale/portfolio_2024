@@ -2,7 +2,7 @@ import { TITLE_REVEAL_SOUND_SPRITES } from 'src/app/constants'
 import { $, isMobile, splitTextChars } from '../../utils'
 import gsap from 'gsap'
 
-export function resetGsapProps () {
+export function resetGsapProps() {
   gsap.set(this.targets(), { clearProps: 'opacity' })
 }
 
@@ -27,7 +27,7 @@ export function blurStagger(el: HTMLElement, duration?: number, delay?: number) 
       .timeline({ delay: randomDelay })
       .add(() => {
         // only play it forward
-        if(ltl._zTime < 0) return
+        if (ltl._zTime < 0) return
         window.app.audio.play(null, 'title-reveal', {
           volume: 0.4,
           rate: blurTimeFactor + 0.4,
@@ -63,6 +63,10 @@ export function blurStagger(el: HTMLElement, duration?: number, delay?: number) 
     lettersTL.add(ltl, '<')
   })
 
+  lettersTL.add(() => {
+    window.app.animations.chromaticAberrAnim.updateEls()
+    window.app.animations.init(window.app.cursor, window.app.experience)
+  })
   return lettersTL
 }
 

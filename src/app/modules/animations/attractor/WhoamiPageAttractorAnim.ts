@@ -80,7 +80,7 @@ export const WhoamiPageAttractorAnim = {
       )
 
     return gsap
-      .timeline({ onComplete, paused: true, onStart: () => console.log('Starting about attractor') })
+      .timeline({ onComplete, paused: true })
       .add(() => {
         window.app.audio.play(null, 'shimmer-short', {
           volume: 0.35,

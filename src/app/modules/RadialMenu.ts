@@ -40,6 +40,8 @@ export default class RadialMenu {
   private _lastActiveSliceId: number
   private _size: string
 
+  private _thumbLock: boolean
+
   id: string
   itemsEl: HTMLElement[]
   innerRadiusPercent: number
@@ -63,7 +65,7 @@ export default class RadialMenu {
     this.gap = gap
     this._position = position
     this._bgs = []
-    this._size = size || (this.isMobile ? 'calc(10rem + 50vw)' : 'calc(10rem + 10vw)')
+    this._size = size || (this.isMobile ? 'calc(8rem + 50vw)' : 'calc(10rem + 10vw)')
     this.canChange = true
 
     this.createWrapper()
@@ -495,6 +497,10 @@ export default class RadialMenu {
     if (!el.getAttribute('data-menu-trigger') && el !== this._thumb) return
     this._thumb.classList.add('pressed')
     this.open(this._position.x, this._position.y, this.currTarget)
+    const t = setTimeout(() => {
+      clearTimeout(t)
+      this._thumbLock = true
+    }, 400)
   }
 
   handleTouchMove(ev: TouchEvent) {
@@ -503,12 +509,15 @@ export default class RadialMenu {
     const x = touch.clientX
     const y = touch.clientY
     this.handleThumb({ x, y }, ev)
+    this._thumbLock = false
   }
 
   handleTouchEnd(ev: TouchEvent) {
-    if (this.shown) {
+    if (this.shown && !this._thumbLock) {
       this.close()
       this._thumb.classList.remove('pressed')
+    } else {
+      this._thumbLock = false
     }
   }
 

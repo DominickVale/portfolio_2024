@@ -27,7 +27,7 @@ export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve
 
 //debounce with trailing call
 export function debounceTrailing<T extends Function>(cb: T, wait = 20) {
-  let timer = 0
+  let timer = null
   return function debouncedFn(...args: any) {
     clearTimeout(timer)
     timer = setTimeout(() => cb(...args), wait)
@@ -108,7 +108,7 @@ export function isMobile() {
 }
 
 export function splitTextChars(el: HTMLElement, tag: string, className?: string) {
-  const splitChars = el.textContent.split('').map((c) => `<${tag} ${className ? `class="${className}" aria-hidden="true"` : ''}>${c}</${tag}>`)
+  const splitChars = el.textContent.split('').map((c) => `<${tag} ${className ? `class="${className}" aria-hidden="true"` : ''} data-aberration="1.15">${c}</${tag}>`)
   el.innerHTML = splitChars.join('')
   return el.childNodes
 }

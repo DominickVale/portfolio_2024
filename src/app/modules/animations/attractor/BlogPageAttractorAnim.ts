@@ -1,10 +1,12 @@
 import gsap from 'gsap'
 import { CustomEase } from 'gsap/all'
+import { isMobile as isMobileFn } from 'src/app/utils'
 
 export const BlogPageAttractorAnim = {
   create(onComplete?: () => void) {
     const experience = window.app.experience
     const attractor = experience.world.attractor
+    const isMobile = isMobileFn()
 
     const uniTL = gsap
       .timeline()
@@ -85,7 +87,7 @@ export const BlogPageAttractorAnim = {
         {
           x: -1.5,
           y: 4.5,
-          z: -5,
+          z: isMobile ? -15 : -5,
           duration: 2,
           ease: 'power2.inOut',
         },

@@ -40,10 +40,11 @@ export default class App {
   overridePreloader: boolean
   audio: Audio
   reducedMotion: boolean
+    animations: Animations
 
   constructor(public debug = false) {
     //@TODO: use cache check
-    this.isFirstTime = !sessionStorage.getItem('visited')
+    this.isFirstTime = !localStorage.getItem('visited')
     this.preloaderFinished = false
     window.app = this
     // used for debugging purposes, skips intro
@@ -57,10 +58,10 @@ export default class App {
     this.scrambles = new TextScramble()
     this.typewriter = new Typewriter()
     this.preloader = new Preloader()
+    this.animations = new Animations()
+    this.animations.init(this.cursor, this.experience)
 
     this.audio = new Audio()
-
-    sessionStorage.setItem('visted', 'true')
 
     this.taxi = new TaxiCore({
       allowInterruption: false,
@@ -121,7 +122,6 @@ export default class App {
     this.taxi.addRoute('/contact', '.*', 'fromContacts')
     this.taxi.addRoute('/', '.*', 'fromHome')
     this.taxi.addRoute('.*', '.*', 'fromWIP')
-    Animations.init(this.cursor, this.experience)
 
     if (!this.preloaderFinished) this.preloader.init()
   }

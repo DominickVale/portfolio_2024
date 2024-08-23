@@ -84,7 +84,7 @@ export const WhatidoPageAttractorAnim = {
       )
 
     return gsap
-      .timeline({ onComplete, paused: true, onStart: () => console.log('Starting about attractor') })
+      .timeline({ onComplete, paused: true })
       .add(() => {
         window.app.audio.play(null, 'shimmer-long', {
           volume: 0.2,

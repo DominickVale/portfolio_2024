@@ -1,12 +1,33 @@
 import gsap from 'gsap'
-import { isMobile } from 'src/app/utils'
+import { isMobile as isMobileFn } from 'src/app/utils'
 
 export const WorksPageAttractorAnim = {
   create(onComplete?: () => void) {
-    const isDesktop = !(isMobile() || window.innerWidth < 1024)
+    const isMobile = isMobileFn()
+    const isDesktop = !(isMobile || window.innerWidth < 1024)
     const experience = window.app.experience
     const attractor = experience.world.attractor
     const params = experience.params
+
+    const pos = isMobile
+      ? {
+          x: -6,
+          y: 20,
+          z: -25,
+        }
+      : {
+          x: isDesktop ? -55 : params.positionX - 20,
+          y: params.positionY - 2,
+          z: -22,
+        }
+
+    const uni = isMobile
+      ? {
+          sigma: -7,
+        }
+      : {
+          sigma: -8,
+        }
 
     const posTL = gsap
       .timeline()
@@ -19,9 +40,7 @@ export const WorksPageAttractorAnim = {
       .to(
         attractor.points.position,
         {
-          x: isDesktop ? -55 : params.positionX - 20,
-          y: params.positionY - 2,
-          z: -22,
+          ...pos,
           duration: 2,
           ease: 'power2.inOut',
         },
@@ -56,7 +75,7 @@ export const WorksPageAttractorAnim = {
       .to(
         attractor.bufferMaterial.uniforms.uSigma,
         {
-          value: -8,
+          value: uni.sigma,
           duration: 0.8,
           ease: 'power2.out',
         },
@@ -64,8 +83,18 @@ export const WorksPageAttractorAnim = {
       )
 
     return gsap
-      .timeline({ onComplete, paused: true, onStart: () => console.log('Starting works attractor') })
-      .add(uniTL)
+      .timeline({ onComplete, paused: true })
+      .to(experience.renderer.chromaticAberrationEffect.offset, {
+        x: '-0.03',
+        y: '-0.03',
+        duration: 0.8,
+      })
+      .add(uniTL, '<')
       .add(posTL, '<+20%')
+      .to(experience.renderer.chromaticAberrationEffect.offset, {
+        x: 0,
+        y: 0,
+        duration: 1,
+      })
   },
 }

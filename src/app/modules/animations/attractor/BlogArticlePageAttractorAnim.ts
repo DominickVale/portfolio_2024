@@ -10,7 +10,6 @@ export const BlogArticlePageAttractorAnim = {
       .timeline()
       .add(() => {
         const m = { v: 0, r: 1.5 }
-        console.log('Starting sound')
         window.app.audio.play(null, 'shimmer-short', {
           volume: 0.04,
           rate: 0.9,
@@ -37,28 +36,27 @@ export const BlogArticlePageAttractorAnim = {
               yoyo: true,
               ease: 'sine.inOut',
               onUpdate() {
-                s.volume(m.v)
-                s2.volume(m.v)
-                // s.rate(m.v)
+                if (window.app.audio.enabled) {
+                  s.volume(m.v)
+                  s2.volume(m.v)
+                  // s.rate(m.v)
+                }
               },
             },
           )
-          .to(
-            m,
-            {
-              v: 0.2,
-              // r: 1,
-              duration: 0.35,
-              repeat: 2,
-              yoyo: true,
-              ease: 'sine.inOut',
-              onUpdate() {
-                s.volume(m.v)
-                s2.volume(m.v)
-                // s.rate(m.v)
-              },
+          .to(m, {
+            v: 0.2,
+            // r: 1,
+            duration: 0.35,
+            repeat: 2,
+            yoyo: true,
+            ease: 'sine.inOut',
+            onUpdate() {
+              s.volume(m.v)
+              s2.volume(m.v)
+              // s.rate(m.v)
             },
-          )
+          })
       })
       .set(experience.params, { speed: 70 })
       .to(experience.params, {

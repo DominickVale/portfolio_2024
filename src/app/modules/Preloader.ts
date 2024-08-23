@@ -1,14 +1,16 @@
-import { $, $all, getZPosition, isMobile } from '../utils'
+import { $, $all, getPageName, getZPosition, isMobile } from '../utils'
 import gsap from 'gsap'
 import BaseRenderer from './renderers/base'
 import Experience from '../gl/Experience'
 import { LORENZ_PRESETS } from '../constants'
 import { BlendFunction } from 'postprocessing'
 import { CustomEase } from 'gsap/all'
+import { getAttractorByPage } from './animations/attractor'
 
 gsap.registerPlugin(CustomEase)
 
 //@TODO: !IMPORTANT: split loading bar into own chunk and use an svg for the star, otherwise it's useless
+// add prefers-reduced-motion stuff
 export default class Preloader {
   description: HTMLElement
   progress: number
@@ -21,6 +23,7 @@ export default class Preloader {
   isMobile: boolean
   loadingTL: gsap.core.Timeline
   enterTL: gsap.core.Timeline
+  loaderInterval: Timer
 
   constructor() {
     this.container = $('#preloader')
@@ -36,12 +39,26 @@ export default class Preloader {
     this.experience = new Experience()
     this.experience.params.speed = 0.001
     this.createLoadingFinishedTL()
-    if (window.app.isFirstTime && !window.app.overridePreloader) {
+    if (!window.app.overridePreloader) {
       this.experience.resources.on('ready', () => {
         this.progress += 50
         this.onProgress()
       })
     }
+  }
+
+  playBasePageAnimations() {
+    const page = getPageName(window.location.pathname)
+    const attractorTL = getAttractorByPage(page)
+
+    const tl = gsap.timeline({})
+
+    if (window.app.reducedMotion) {
+      console.warn('Prefers-reduced-motion is enabled. Attractor animation hidden.')
+      tl.to('canvas', { opacity: 0, duration: 1, ease: 'power4.inOut' })
+    }
+    tl.add(attractorTL).play(0)
+      BaseRenderer.enterTL.play()
   }
 
   init() {
@@ -52,41 +69,37 @@ export default class Preloader {
       this.experience.renderer.bloomEffect.blendMode.setBlendFunction(dpreset.bloomBlendFunction)
       this.experience.params.speed = dpreset.speed
       this.experience.world.attractor.reset()
-      BaseRenderer.enterTL.play()
+      this.playBasePageAnimations()
       window.dispatchEvent(new CustomEvent('preload-end'))
       return
     }
     this.container.classList.remove('hidden')
-    if (window.app.isFirstTime) {
-      const iid = setInterval(() => {
-        const isReady = this.experience.resources.isReady
-        const random = Math.random()
-        let probability = 0
+    this.loaderInterval = setInterval(() => {
+      const isReady = this.experience.resources.isReady
 
-        if (!isReady) {
-          probability = Math.max(0.01, 1 - (this.progress / 100) ** 2)
-        } else {
-          probability = 0.1
+      if (this.progress >= 100 && isReady) {
+        clearInterval(this.loaderInterval)
+      }
+
+      this.onProgress()
+
+      const random = Math.random()
+      let probability = 0
+
+      if (!isReady) {
+        probability = Math.max(0.01, 1 - (this.progress / 100) ** 2)
+      } else {
+        probability = 0.1
+      }
+
+      if (random < probability) {
+        if (!isReady && this.progress >= 99) {
+          this.progress = 99
+        } else if (this.progress < 100) {
+          this.progress++
         }
-
-        if (random < probability) {
-          if (!isReady && this.progress >= 99) {
-            this.progress = 99
-          } else if (this.progress < 100) {
-            this.progress++
-          }
-
-          this.onProgress()
-
-          if (this.progress >= 100 && isReady) {
-            clearInterval(iid)
-          }
-        }
-      }, 50)
-    } else {
-      gsap.set([this.title, this.bar.parentElement, this.description, this.buttons], { opacity: 0 })
-      this.loadingTL.play('welcome')
-    }
+      }
+    }, 50)
 
     if (this.isMobile) {
       this.buttons[0].addEventListener('touchstart', () => {
@@ -113,7 +126,7 @@ export default class Preloader {
     else window.app.audio.disable()
 
     window.app.audio.play(null, 'g', {
-      volume: 0.5
+      volume: 0.5,
     })
 
     const preset = LORENZ_PRESETS['collapsedAfter']
@@ -137,71 +150,32 @@ export default class Preloader {
     gsap
       .timeline()
       .to(this.experience.renderer.chromaticAberrationEffect.offset, {
-        x: 'random(-0.005, 0.005)',
-        y: 'random(-0.005, 0.005)',
-        duration: 0.05,
-        repeat: 30,
-        ease: 'step(30)',
+        x: '-0.0036',
+        y: '-0.0036',
+        duration: 0.2,
       })
       .to(this.experience.renderer.chromaticAberrationEffect.offset, {
         x: 'random(-0.0025, 0.0025)',
         y: 'random(-0.0025, 0.0025)',
-        duration: 0.1,
-        repeat: 20,
-        ease: 'step(20)',
+        duration: 2,
       })
 
     this.enterTL = gsap
-      .timeline({
-        onComplete: () => {
-          // this.container.style.display = 'none'
-          window.app.isFirstTime = false
-        },
-      })
+      .timeline({})
       .to(this.container, {
         autoAlpha: 0,
         duration: window.app.isFirstTime ? 0.85 : 0.5,
         ease: 'power4.out',
       })
-      // .to(
-      //   attractor.points.position,
-      //   {
-      //     z: -60,
-      //     duration: 0.35,
-      //     ease: 'power4.out',
-      //   },
-      //   '<',
-      // )
-      // .to(
-      //   bloom,
-      //   {
-      //     intensity: 8,
-      //     repeat: 6,
-      //     duration: 0.08,
-      //   },
-      //   '<',
-      // )
       .to(
         bloom,
         {
           intensity: 200,
-          // repeat: 6,
-          // duration: 0.08,
           duration: 0.25,
           ease: 'power4.inOut',
         },
         '<',
       )
-      // .to(
-      //   attractor.points.position,
-      //   {
-      //     y: 3,
-      //     z: 0,
-      //     duration: 0.25,
-      //     ease: 'power4.out',
-      //   },
-      //   '<',
-      // )
       .add(() => {
         this.experience.params.speed = this.isMobile ? 80 : 90
       }, '<')
@@ -228,7 +202,7 @@ export default class Preloader {
             })
           }, 2000)
         },
-        window.app.isFirstTime ? '+=1.5' : '+=0',
+        window.app.isFirstTime ? '+=1.5' : '+=0.8',
       )
       .to(
         bloom,
@@ -256,9 +230,10 @@ export default class Preloader {
         },
         '<+80%',
       )
+
       .to('#flash-screen', {
         autoAlpha: 0,
-        duration: window.app.isFirstTime ? 4 : 2,
+        duration: 3,
         ease: 'power4.in',
         delay: 1,
         onStart: () => {
@@ -272,17 +247,30 @@ export default class Preloader {
         },
       })
       .to(
+        this.experience.renderer.chromaticAberrationEffect.offset,
+        {
+          x: '0',
+          y: '0',
+          duration: 0,
+        },
+        '<',
+      )
+      .to(
         bloom,
         {
           intensity: LORENZ_PRESETS['default'].bloomIntensity,
           duration: 3,
           ease: 'linear',
         },
-        '<+60%',
+        '<+40%',
       )
       .add(() => {
         window.app.preloaderFinished = true
-        BaseRenderer.enterTL.play()
+        this.playBasePageAnimations()
+        console.log('Preloader finished', window.app.preloaderFinished)
+
+        localStorage.setItem('visited', 'true')
+        window.app.isFirstTime = false
         window.dispatchEvent(new CustomEvent('preload-end'))
       })
   }
@@ -293,6 +281,7 @@ export default class Preloader {
     this.bar.setAttribute('aria-valuenow', String(this.progress))
     if (this.progress >= 100) {
       this.loadingTL.play()
+      clearInterval(this.loaderInterval)
     }
   }
 
@@ -361,7 +350,7 @@ export default class Preloader {
         '<+30%',
       )
     if (!window.app.isFirstTime) {
-      this.loadingTL.duration(4)
+      this.loadingTL.duration(3.5)
     }
   }
 }

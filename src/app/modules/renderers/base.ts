@@ -68,9 +68,6 @@ export default class BaseRenderer extends Renderer {
           window['body-wrapper'].classList.remove('opacity-0')
           $('footer').classList.remove('opacity-0')
         },
-        onComplete: () => {
-          window.app.isTransitioning = false
-        },
       })
       .add(linksTL, '<')
 
@@ -88,14 +85,12 @@ export default class BaseRenderer extends Renderer {
   onEnterCompleted() {
     // run after the transition.onEnter has fully completed
     // console.log('renderer onEnterCompleted')
-    window.app.isTransitioning = false
   }
 
   onLeave() {
     // run before the transition.onLeave method is called
     window.removeEventListener('resize', this.#onResizeBound)
     BaseRenderer.resizeHandlers = []
-    window.app.isTransitioning = true
   }
 
   onLeaveCompleted() {

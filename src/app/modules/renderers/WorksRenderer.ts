@@ -9,9 +9,15 @@ import BaseRenderer from './base'
 import { workDetailsTL } from '../animations/gsap'
 import { WorksPageAttractorAnim } from '../animations/attractor/WorksPageAttractor'
 
+type ProjectListItem = typeof PROJECTS_LIST[number];
+
+type ProjectElement = {
+  element: HTMLElement;
+} & ProjectListItem;
+
 export default class WorksRenderer extends BaseRenderer {
   currIdx: number
-  projects: Record<string, { element: HTMLElement; image: string }>
+  projects: Record<string, ProjectElement> = {}
   pIds: string[]
   experience: Experience
   static enterTL: gsap.core.Timeline
@@ -48,6 +54,7 @@ export default class WorksRenderer extends BaseRenderer {
     $('#works-list-mobile').addEventListener('touchmove', this.handleActiveProjectBound)
     const workImage = $('#works-image')
     workImage.addEventListener('click', this.navigateToProject.bind(this))
+
     this.experience = new Experience()
 
     if (window.app.preloaderFinished) {
@@ -84,7 +91,11 @@ export default class WorksRenderer extends BaseRenderer {
   recalculateActive() {
     const resources = this.experience.resources.items
     const activeProject = this.projects[this.currIdx]
-    const highlightCorner = $('.highlighted-corner', activeProject.element)
+    const highlightCorner = ($('.highlighted-corner', activeProject.element) as HTMLElement);
+
+    ($('#mobile-read-btn') as HTMLAnchorElement).href = activeProject.linkCase;
+    ($('#mobile-visit-btn') as HTMLAnchorElement).href = activeProject.linkWebsite;
+
     highlightCorner.classList.remove('hidden')
     activeProject.element.setAttribute('data-active', 'true')
 
@@ -223,7 +234,7 @@ export default class WorksRenderer extends BaseRenderer {
 
       this.projects[i] = {
         element: p,
-        image: PROJECTS_LIST[i].image,
+        ...PROJECTS_LIST[i],
       }
     })
   }
@@ -412,5 +423,11 @@ export default class WorksRenderer extends BaseRenderer {
         '<+50%',
       )
       .add(workDetailsTL('.work-details-mobile'), '<')
+      .from(['#mobile-read-btn', '#mobile-visit-btn'], {
+        opacity: 0,
+        duration: 0.06,
+        repeat: 8,
+        stagger: 0.01
+      }, "<+20%")
   }
 }

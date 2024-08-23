@@ -9,10 +9,17 @@ export default class BaseTransition extends Transition {
    * @param { { from: HTMLElement, trigger: string|HTMLElement|false, done: function } } props
    */
   onLeave({ from, trigger, done, toURL }) {
+    window.app.isTransitioning = true
     const page = getPageName(toURL)
     const attractorTL = getAttractorByPage(page)
 
-    const tl = gsap.timeline({ onComplete: done, paused: true })
+    const tl = gsap.timeline({
+      onComplete: () => {
+        done()
+        window.app.isTransitioning = false
+      },
+      paused: true,
+    })
 
     if (window.app.reducedMotion) {
       console.warn('Prefers-reduced-motion is enabled. Attractor animation hidden.')

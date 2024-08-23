@@ -84,8 +84,18 @@ export const HomePageAttractorAnim = {
       )
 
     return gsap
-      .timeline({ onComplete, paused: true, onStart: () => console.log('Starting home attractor') })
-      .add(uniTL)
+      .timeline({ onComplete, paused: true })
+      .to(experience.renderer.chromaticAberrationEffect.offset, {
+        x: 'random(-0.002, 0.002)',
+        y: 'random(-0.002, 0.002)',
+        duration: 0.8,
+      })
+      .add(uniTL, "<")
       .add(posTL, '<')
+      .to(experience.renderer.chromaticAberrationEffect.offset, {
+        x: 0,
+        y: 0,
+        duration: 1,
+      })
   },
 }

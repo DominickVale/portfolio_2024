@@ -28,6 +28,7 @@ export default class Menus {
   } 
 
   handleContextMenu = (e: MouseEvent) => {
+    if(!window.app.preloaderFinished) return
     const el = e.target as HTMLElement
     if (el.id.includes('radial-menu-thumb')) return
     e.preventDefault()
@@ -167,10 +168,13 @@ getMenus() {
       },
       aboutSlice,
       { ...blogSlice, position: 3 },
-      labSlice,
       worksSlice,
       {
         ...contactSlice,
+        position: 5,
+      },
+      {
+        ...labSlice,
         position: 6,
       },
     ]
@@ -186,6 +190,10 @@ getMenus() {
       worksSlice,
       {
         ...contactSlice,
+        position: 5,
+      },
+      {
+        ...labSlice,
         position: 6,
       },
     ]
@@ -215,7 +223,7 @@ getMenus() {
     const textMenuItems: RadialMenuItem[] = [
       {
         iconId: 'copy',
-        label: 'COPY TEXT',
+        label: 'COPY',
         callback: (ev, slice, origTarget) => {
           navigator.clipboard.writeText(origTarget.innerText)
           showCursorMessage({ message: 'Copied to clipboard!' })

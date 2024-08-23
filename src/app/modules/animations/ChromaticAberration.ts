@@ -14,15 +14,24 @@ export default class ChromaticAberrationAnim {
   ) {}
 
   init() {
+    this.isDesktop = !isMobile()
+    this.updateEls()
+  }
+
+  updateEls(){
+    console.log("Updating els...")
     const els = Array.from($all('[data-aberration]'))
     this.elements = els.map((el) => {
       const value = Number(el.getAttribute('data-aberration'))
       return { el, value: value }
     })
-    this.isDesktop = !isMobile()
   }
 
   update() {
+    // if(window.app.isTransitioning) {
+    //   console.log("transitioning, ignoring chromaticba anim")
+    //   return
+    // }
     const dx = this.cursor.pos.x - this.cursor.lastPos.x
     const dy = this.cursor.pos.y - this.cursor.lastPos.y
     const velocity = Math.sqrt(dx * dx + dy * dy)
@@ -41,13 +50,12 @@ export default class ChromaticAberrationAnim {
       const shiftY = (offset * dy) / velocity
 
       el.style.textShadow = `
-        ${primaryShift}px ${primaryShift}px 0 var(--primary),
         ${shiftXNeg}px ${shiftYNeg}px 0 red,
         ${shiftYNeg}px ${shiftX}px 0 green,
         ${shiftY}px ${shiftXNeg}px 0 blue
       `
 
-      if (window.app.preloaderFinished) {
+      if (window.app.preloaderFinished && !window.app.isTransitioning) {
         this.experience.renderer.chromaticAberrationEffect.offset.set(shiftX / 1500, shiftY / 1500)
       }
 

@@ -7,7 +7,7 @@ import Btn from '../components/Btn.astro'
 <!--   <p>Psst... In a hurry?</p> -->
 <!--   <a class="text-copy" href="/hurry">If yes, then click here.</a> -->
 <!-- </div> -->
-  <div class="fixed left-6 bottom-6 text-inactive text-xs flex gap-4 opacity-40">
+  <div class="fixed left-6 bottom-6 text-inactive text-xs flex gap-4 opacity-40 hover:opacity-100 transition-opacity duration-300">
     <p>Psst... In a hurry?</p>
     <a class="text-copy" href="/hurry">If yes, click here.</a>
   </div>
@@ -38,7 +38,6 @@ import Btn from '../components/Btn.astro'
 
     <div id="preloader-buttons" class="hidden flex-col items-center gap-6">
       <Btn
-        href="/"
         data-text-scramble="ENTER"
         data-text-scramble-speed="20"
         data-audio
@@ -47,7 +46,7 @@ import Btn from '../components/Btn.astro'
         class="mx-auto h-20 w-52 justify-center overflow-hidden whitespace-nowrap text-nowrap bg-background-dark-02 backdrop-blur-[16px]"
         frame>ENTER</Btn
       >
-      <Btn href="/" class="text-inactive">WITH NO SOUND</Btn>
+      <Btn class="text-inactive">WITH NO SOUND</Btn>
     </div>
   </div>
 </section>

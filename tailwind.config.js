@@ -4,12 +4,12 @@ export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
     fontFamily: {
-      sans: ['Roboto'],
-      serif: ['Inconsolata'],
-      display: ['Orbitron'],
-      body: ['Inconsolata'],
-      mono: ['Inconsolata', 'Roboto Mono'],
-      copy: ['Roboto', 'Arial'],
+      sans: ['Roboto', 'monospace'],
+      serif: ['Inconsolata', 'monospace'],
+      display: ['Orbitron', 'sans-serif'],
+      body: ['Inconsolata', 'monospace'],
+      mono: ['Inconsolata', 'Roboto Mono', 'monospace'],
+      copy: ['Roboto', 'Arial', 'sans-serif'],
     },
     screens: require('./tailwind.screens'),
     extend: {
