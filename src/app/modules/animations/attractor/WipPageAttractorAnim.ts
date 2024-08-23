@@ -74,10 +74,10 @@ export const WipPageAttractorAnim = {
       .timeline({ onComplete, paused: true })
       .add(() => {
         window.app.audio.play(null, 'shimmer-short', {
-          volume: 0.35,
+          volume: 0.25,
         })
         window.app.audio.play(null, 'whoosh-short', {
-          volume: 0.3,
+          volume: 0.25,
         })
         window.app.audio.play('shimmer-home', 'shimmer-medium', {
           volume: 0.25,

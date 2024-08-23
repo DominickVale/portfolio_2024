@@ -63,7 +63,7 @@ export const WhatidoPageAttractorAnim = {
       .to(
         attractor.points.position,
         {
-          x: 0,
+          x: 0.6,
           y: this.isDesktop ? 44 : 46,
           z: -17.6,
           duration: 2,
@@ -87,7 +87,7 @@ export const WhatidoPageAttractorAnim = {
       .timeline({ onComplete, paused: true })
       .add(() => {
         window.app.audio.play(null, 'shimmer-long', {
-          volume: 0.2,
+          volume: 0.1,
           rate: 1.35,
         })
         window.app.audio.play(null, 'whoosh-short', {
@@ -95,7 +95,7 @@ export const WhatidoPageAttractorAnim = {
         })
         setTimeout(() => {
           window.app.audio.play(null, 'shimmer-short', {
-            volume: 0.45,
+            volume: 0.35,
             rate: 0.9,
           })
         }, 2000)

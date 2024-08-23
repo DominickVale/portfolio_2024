@@ -19,7 +19,7 @@ export const BlogArticlePageAttractorAnim = {
           rate: 1,
         })
         const s = window.app.audio.play('shimmer-home', 'shimmer-medium', {
-          volume: 0.3,
+          volume: 0.25,
           rate: 0.9,
         })
 

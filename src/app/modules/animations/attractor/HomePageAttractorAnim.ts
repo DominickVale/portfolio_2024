@@ -20,7 +20,7 @@ export const HomePageAttractorAnim = {
         })
         setTimeout(() => {
            window.app.audio.play('shimmer-home', 'shimmer-medium', {
-            volume: 0.15,
+            volume: 0.08,
             rate: 1.5
           })
         }, 850)

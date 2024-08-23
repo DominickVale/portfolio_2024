@@ -83,7 +83,7 @@ export const WhoamiPageAttractorAnim = {
       .timeline({ onComplete, paused: true })
       .add(() => {
         window.app.audio.play(null, 'shimmer-short', {
-          volume: 0.35,
+          volume: 0.25,
         })
         setTimeout(() => {
           window.app.audio.play(null, 'whoosh-short', {

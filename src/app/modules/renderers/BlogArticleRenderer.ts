@@ -276,14 +276,14 @@ export default class BlogArticleRenderer extends BaseRenderer {
         )
         .set($('.alt', img), { autoAlpha: 1 })
         .to($('.alt', img), {
-          typewrite: {},
+            typewrite: { soundOptions: { volume: 0} },
           duration: 1,
         })
         .set(smallAlt, { autoAlpha: 0.25 }, '<')
         .to(
           smallAlt,
           {
-            typewrite: {},
+            typewrite: { soundOptions: { volume: 0} },
             duration: 1.5,
             ease: 'circ.inOut',
           },
@@ -302,7 +302,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         .to(
           title,
           {
-            typewrite: {},
+            typewrite: { soundOptions: { volume: 0} },
             duration: 1.5,
             ease: 'circ.inOut',
             onStart: removeSetOpacity,

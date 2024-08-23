@@ -96,7 +96,7 @@ export const AboutPageAttractorAnim = {
       .add(() => {
         window.app.audio.play(null, 'shimmer-long', {
           volume: 0.2,
-          rate: 1.35,
+          rate: 1,
         })
         window.app.audio.play(null, 'whoosh-short', {
           volume: 0.3,

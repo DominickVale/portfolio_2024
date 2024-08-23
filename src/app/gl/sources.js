@@ -1,23 +1,23 @@
 export default [
   {
-    name: 'star',
-    type: 'texture',
-    path: '/star.png',
-  },
-  {
-    name: 'ecorp',
+    name: 'ecorp-thumbnail',
     type: 'texture',
     path: '/ecorp.png',
   },
   {
-    name: 'reggaecat',
+    name: 'portfolio1-thumbnail',
     type: 'texture',
-    path: '/reggaecat.jpg',
+    path: '/portfolio-v1-1.png',
   },
   {
-    name: 'ambientify1',
+    name: 'ambientify-thumbnail',
     type: 'texture',
     path: '/ambientify1.png',
+  },
+  {
+    name: 'vidra-thumbnail',
+    type: 'texture',
+    path: '/vidra-1.png',
   },
   {
     name: 'g',

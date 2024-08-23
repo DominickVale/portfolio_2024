@@ -278,7 +278,9 @@ class AudioWrapper {
         if (loopCount > 1) console.warn(`Only one loop per element is allowed, has ${loopCount} instead: `, el)
 
         el.addEventListener(evtType, () => {
-          if (Howler.ctx.state === 'running') {
+          const disabled = el.getAttribute('data-audio-disabled')
+
+          if (Howler.ctx.state === 'running' && !disabled) {
             this.play(loop ? id : null, name, {
               volume,
               loop,
@@ -287,6 +289,14 @@ class AudioWrapper {
               fadeOut,
               rate,
             })
+          }
+
+          // this is another hack to prevent audio playing on hover after a transition
+          if(evtType === 'click' || evtType === 'mousedown'){
+            el.setAttribute('data-audio-disabled', 'true')
+            setTimeout(() => {
+              el.removeAttribute('data-audio-disabled')
+            }, 1000)
           }
         })
       }

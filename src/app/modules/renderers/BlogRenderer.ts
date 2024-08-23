@@ -152,10 +152,6 @@ export default class BlogRenderer extends BaseRenderer {
     gradientOverlay.style.setProperty('--x', '50%')
     gradientOverlay.style.setProperty('--y', '50%')
 
-    window.app.audio.play(null, 'hover-1', {
-      volume: 0.05,
-      rate: 2,
-    })
     this.tlStack.push(
       gsap
         .timeline()

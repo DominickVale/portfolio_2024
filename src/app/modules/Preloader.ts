@@ -24,6 +24,7 @@ export default class Preloader {
   loadingTL: gsap.core.Timeline
   enterTL: gsap.core.Timeline
   loaderInterval: Timer
+  page: string
 
   constructor() {
     this.container = $('#preloader')
@@ -35,21 +36,21 @@ export default class Preloader {
     this.progress = 10
 
     this.isMobile = isMobile()
+    this.page = getPageName(window.location.pathname)
 
     this.experience = new Experience()
     this.experience.params.speed = 0.001
     this.createLoadingBarTL()
     if (!window.app.overridePreloader) {
       this.experience.resources.on('ready', () => {
-        this.progress += 50
+        this.progress += 100
         this.onProgress()
       })
     }
   }
 
   playBasePageAnimations() {
-    const page = getPageName(window.location.pathname)
-    const attractorTL = getAttractorByPage(page)
+    const attractorTL = getAttractorByPage(this.page)
 
     const tl = gsap.timeline({})
 
@@ -58,13 +59,15 @@ export default class Preloader {
   }
 
   init() {
-    if (window.app.overridePreloader || window.app.reducedMotion) {
+    const isBlog = this.page === 'blog' || this.page === 'blogarticle'
+    if (window.app.overridePreloader || window.app.reducedMotion || isBlog) {
       window.app.preloaderFinished = true
       const dpreset = LORENZ_PRESETS['default']
       this.experience.world.attractor.points.position.z = getZPosition()
       this.experience.renderer.bloomEffect.blendMode.setBlendFunction(dpreset.bloomBlendFunction)
       this.experience.params.speed = dpreset.speed
       this.experience.world.attractor.reset()
+      if(isBlog) window.app.audio.disable() // disable audio for blog if the user visited directly.
       this.playBasePageAnimations()
       window.dispatchEvent(new CustomEvent('preload-end'))
       return
@@ -191,12 +194,14 @@ export default class Preloader {
           window.app.audio.play(null, 'boom', {
             volume: 0.75,
           })
-          window.app.audio.playBgMusic()
+          setTimeout(() => {
+            window.app.audio.playBgMusic()
+          }, 1000)
           setTimeout(() => {
             window.app.audio.play(null, 'woosh', {
               volume: 0.5,
             })
-          }, 2000)
+          }, window.app.isFirstTime ? 2000 : 500)
         },
         window.app.isFirstTime ? '+=1.5' : '+=0.8',
       )

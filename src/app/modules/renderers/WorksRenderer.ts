@@ -221,7 +221,6 @@ export default class WorksRenderer extends BaseRenderer {
         e.preventDefault()
         const el = e.currentTarget as HTMLElement
         const i = Number(el.getAttribute('data-i'))
-        console.log(i, this.currIdx)
         if (i === this.currIdx) {
           this.navigateToProject()
         } else {
@@ -386,7 +385,6 @@ export default class WorksRenderer extends BaseRenderer {
         ease: 'power4.inOut',
         onComplete: () => {
           this.isFirstRender = false
-          this.canChange = true
         },
       })
       .to(
@@ -401,6 +399,9 @@ export default class WorksRenderer extends BaseRenderer {
       .to(
         `${projectTitleQuery} svg`,
         {
+          onComplete: () => {
+            this.canChange = true
+          },
           opacity: 1,
           duration: window.app.reducedMotion ? 1 : 0.05,
           ease: 'linear',
