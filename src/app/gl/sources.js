@@ -32,12 +32,12 @@ export default [
   {
     name: 'song',
     type: 'audio',
-    path: '/sounds/ShadowsAndDust.webm',
+    path: '/sounds/song.webm',
   },
   {
     name: 'vibration',
     type: 'audio',
-    path: '/sounds/vibration.opus',
+    path: '/sounds/vibration.webm',
   },
   {
     name: 'woosh',
@@ -47,22 +47,22 @@ export default [
   {
     name: 'shimmer-short',
     type: 'audio',
-    path: '/sounds/shimmer-short.opus',
+    path: '/sounds/shimmer-short.webm',
   },
   {
     name: 'shimmer-medium',
     type: 'audio',
-    path: '/sounds/shimmer-medium.opus',
+    path: '/sounds/shimmer-medium.webm',
   },
   {
     name: 'shimmer-long',
     type: 'audio',
-    path: '/sounds/shimmer-long.opus',
+    path: '/sounds/shimmer-long.webm',
   },
   {
     name: 'whoosh-short',
     type: 'audio',
-    path: '/sounds/whoosh-short.opus',
+    path: '/sounds/whoosh-short.webm',
   },
   {
     name: 'typing',
@@ -72,12 +72,12 @@ export default [
   {
     name: 'vibration-click',
     type: 'audio',
-    path: '/sounds/vibration-click.opus',
+    path: '/sounds/vibration-click.webm',
   },
   {
     name: 'hover-1',
     type: 'audio',
-    path: '/sounds/hover-1.opus',
+    path: '/sounds/hover-1.webm',
   },
   {
     name: 'input-sprite',
@@ -92,16 +92,16 @@ export default [
   {
     name: 'error',
     type: 'audio',
-    path: '/sounds/error.opus',
+    path: '/sounds/error.webm',
   },
   {
     name: 'menu-open',
     type: 'audio',
-    path: '/sounds/menu-open.opus',
+    path: '/sounds/menu-open.webm',
   },
   {
     name: 'menu-open-alt',
     type: 'audio',
-    path: '/sounds/menu-open-alt.opus',
+    path: '/sounds/menu-open-alt.webm',
   },
 ]
