@@ -86,8 +86,8 @@ export const HomePageAttractorAnim = {
     return gsap
       .timeline({ onComplete, paused: true })
       .to(experience.renderer.chromaticAberrationEffect.offset, {
-        x: 'random(-0.002, 0.002)',
-        y: 'random(-0.002, 0.002)',
+        x: '-0.0018',
+        y: '0.0018',
         duration: 0.8,
       })
       .add(uniTL, "<")
@@ -95,7 +95,7 @@ export const HomePageAttractorAnim = {
       .to(experience.renderer.chromaticAberrationEffect.offset, {
         x: 0,
         y: 0,
-        duration: 1,
+        duration: 4,
       })
   },
 }

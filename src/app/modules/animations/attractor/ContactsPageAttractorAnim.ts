@@ -71,6 +71,11 @@ export const ContactsPageAttractorAnim = {
 
     return gsap
       .timeline({ onComplete, paused: true })
+      .to(experience.renderer.chromaticAberrationEffect.offset, {
+        x: '-0.0018',
+        y: '0.0025',
+        duration: 0.8,
+      })
       .add(() => {
         window.app.audio.play(null, 'shimmer-long', {
           volume: 0.04,
@@ -92,6 +97,11 @@ export const ContactsPageAttractorAnim = {
         speed: LORENZ_PRESETS['default'].speed,
         duration: 1.5,
         ease: 'power4.inOut',
+      })
+      .to(experience.renderer.chromaticAberrationEffect.offset, {
+        x: 0,
+        y: 0,
+        duration: 4,
       })
   },
 }

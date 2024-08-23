@@ -104,6 +104,18 @@ export const BlogPageAttractorAnim = {
         },
         '<',
       )
-    return gsap.timeline({ onComplete, paused: true }).add(uniTL).add(posTL, "<")
+    return gsap.timeline({ onComplete, paused: true })
+      .to(experience.renderer.chromaticAberrationEffect.offset, {
+        x: '-0.0018',
+        y: '0.0018',
+        duration: 0.8,
+      })
+      .add(uniTL).add(posTL, "<")
+      .to(experience.renderer.chromaticAberrationEffect.offset, {
+        x: 0,
+        y: 0,
+        duration: 4,
+      })
+
   },
 }
