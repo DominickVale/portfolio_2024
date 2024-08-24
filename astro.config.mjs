@@ -28,7 +28,7 @@ export default defineConfig({
   vite: {
     plugins,
     optimizeDeps: {
-      include: ['howler', '@unseenco/taxi'],
+      include: ['howler', '@dominickvale/taxi'],
       force: true //force deps when testing local deps
     },
     build: {

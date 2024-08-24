@@ -17,7 +17,7 @@
     "@dominickvale/howler": "^3.0.1-dev",
     "@emailjs/browser": "^4.3.3",
     "@tailwindcss/container-queries": "^0.1.1",
-    "@unseenco/taxi": "^1.6.0",
+    "@dominickvale/taxi": "^1.6.1",
     "astro": "4.8.2",
     "gsap": "^3.12.5",
     "lenis": "^1.0.45",

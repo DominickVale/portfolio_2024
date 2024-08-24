@@ -1,4 +1,4 @@
-import { Transition } from '@unseenco/taxi'
+import { Transition } from '@dominickvale/taxi'
 import gsap from 'gsap'
 import { getPageName } from 'src/app/utils'
 import { getAttractorByPage } from '../animations/attractor'

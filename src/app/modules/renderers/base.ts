@@ -1,4 +1,4 @@
-import { Renderer } from '@unseenco/taxi'
+import { Renderer } from '@dominickvale/taxi'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/all'
 import { $all, $, debounceTrailing, isMobile } from '../../utils'

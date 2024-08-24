@@ -2,7 +2,7 @@ import { $, $all, isMobile, setupSvgText } from '../../utils'
 import { PROJECTS_LIST } from '../../constants'
 import { radToDeg } from 'three/src/math/MathUtils.js'
 import gsap from 'gsap'
-import * as taxi from '@unseenco/taxi'
+import * as taxi from '@dominickvale/taxi'
 
 import Experience from '../../gl/Experience'
 import BaseRenderer from './base'
