@@ -36,6 +36,7 @@ export default defineConfig({
         include: [/@uneenco\/taxi/, /node_modules/],
         include: [/howler/, /node_modules/],
       },
+      sourcemap: true,
     },
   },
   markdown: {
