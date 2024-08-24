@@ -19,6 +19,7 @@ const plugins = [
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://domenicovale.it',
   integrations: [tailwind(), mdx()],
   prefetch: {
     prefetchAll: true,
