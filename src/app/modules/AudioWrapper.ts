@@ -1,4 +1,4 @@
-import { Howl, type HowlOptions } from 'howler'
+import { Howl, Howler, type HowlOptions } from 'howler'
 import { $, $all } from '../utils'
 import gsap from 'gsap'
 
@@ -57,10 +57,28 @@ class AudioWrapper {
     this.soundLabelEl.innerText = 'SOUND ON'
     // save setting to localstorage
     localStorage.setItem('soundEnabled', 'true')
+    const t = { v: 0 }
+    gsap.to(t, {
+      duration: 2,
+      v: 1,
+      onUpdate: function() {
+        Howler.volume(t.v);
+      },
+      ease: "power2.out",
+    })
   }
 
   disable() {
     this.enabled = false
+    const t = { v: 1 }
+    gsap.to(t, {
+      duration: 2,
+      v: 0,
+      onUpdate: function() {
+        Howler.volume(t.v);
+      },
+      ease: "power2.out",
+    })
     this.activeSounds.forEach((s) => this.stop(s.id))
     this.soundLabelEl.innerText = 'SOUND OFF'
     localStorage.setItem('soundEnabled', 'false')
