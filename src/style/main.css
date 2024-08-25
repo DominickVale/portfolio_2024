@@ -130,8 +130,8 @@ body {
 
 .fui-corners {
   --frame-bg-stroke-w: 1px;
-  --frame-bg-size: 4px;
-  --color: var(--label);
+  --frame-bg-size: 5px;
+  --color: white;
   bottom: 0;
   left: 0;
   position: absolute;
@@ -239,6 +239,28 @@ scrollbar-button {
   left: 50%;
   top: auto;
   transform: translate(-50%, 50%);
+  .radial-menu-item-label{
+    color: var(--bg-dark);
+  }
+  .radial-menu-item-bg{
+    background-color: white;
+
+    &[data-highlighted='true'] {
+      background: radial-gradient(rgba(85, 80, 80, 0.9) var(--progress), var(--bg-dark) var(--progress));
+    }
+  }
+  .radial-menu-item svg path{
+    fill: var(--bg-dark);
+  }
+  .radial-menu-item[data-highlighted='true'] {
+    path {
+      @apply fill-white;
+    }
+    @apply text-white;
+    .radial-menu-item-label {
+      color: white;
+    }
+  }
 }
 .radial-menu-hidden:not(.mobile) {
   opacity: 0;
