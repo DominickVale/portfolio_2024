@@ -19,6 +19,22 @@ export default class TextScramble {
     TextScramble.scramble(el, Number(speed) || undefined)
   }
 
+  static initScrambleContainer(el: HTMLElement) {
+    const textNode = Array.from(el.childNodes).find((node) => node.nodeType === Node.TEXT_NODE)
+    const oldText = textNode?.textContent
+    el.removeChild(textNode)
+    const oldHtml = el.innerHTML
+
+    const scrambleHtml = `
+<div class="scramble-container relative pointer-events-none">
+  <span class="shadow opacity-0 text-red-500">${oldText || ''}</span>
+  <span class="scramble-text absolute left-0 top-0 w-full h-full">${oldText || ''}</span>
+</div>
+`
+    el.innerHTML = oldHtml + scrambleHtml
+    return $('.scramble-container .scramble-text', el)
+  }
+
   static init() {
     $all('[data-text-scramble]').forEach((el, i) => {
       //this is going to be called on every transition, but identical event handlers are discarded
@@ -26,18 +42,7 @@ export default class TextScramble {
       el.addEventListener('mouseover', TextScramble.onMouseHover)
 
       if (!$('.scramble-container', el)) {
-        const textNode = Array.from(el.childNodes).find((node) => node.nodeType === Node.TEXT_NODE)
-        const oldText = textNode?.textContent
-        el.removeChild(textNode)
-        const oldHtml = el.innerHTML
-
-        const scrambleHtml = `
-<div class="scramble-container relative pointer-events-none">
-  <span class="shadow opacity-0 text-red-500">${oldText || ''}</span>
-  <span class="scramble-text absolute left-0 top-0 w-full h-full">${oldText || ''}</span>
-</div>
-`
-        el.innerHTML = oldHtml + scrambleHtml
+        TextScramble.initScrambleContainer(el)
       }
     })
   }
@@ -47,12 +52,12 @@ export default class TextScramble {
   }
 
   public static scramble(el: HTMLElement, speed: number = 45) {
-    const target = $('.scramble-container .scramble-text', el)
+    let target = $('.scramble-container .scramble-text', el)
 
-    if(!target) {
-      console.warn("TextScramble: target not found: ", el, target)
-      return
+    if (!target) {
+      target = TextScramble.initScrambleContainer(el)
     }
+
     const originalText = el.getAttribute('data-text-scramble')
     const audioAttr = el.getAttribute('data-text-scramble-audio')
     const soundEnabled = !!audioAttr
