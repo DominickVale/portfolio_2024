@@ -268,7 +268,6 @@ export default class Preloader {
       .add(() => {
         window.app.preloaderFinished = true
         this.playBasePageAnimations()
-        console.log('Preloader finished', window.app.preloaderFinished)
 
         localStorage.setItem('visited', 'true')
         window.app.isFirstTime = false

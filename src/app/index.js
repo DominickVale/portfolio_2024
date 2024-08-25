@@ -6,7 +6,21 @@ gsap.registerPlugin(ScrollTrigger)
 gsap.registerPlugin(TextPlugin);
 new App()
 
+function fancyMotd() {
+    const styles = [
+    'color: #FFFFFF',
+    'background-color: #000000',
+    'font-family: monospace',
+    'font-size: 14px',
+    'font-weight: bold',
+    'padding: 10px 20px',
+    'border: 1px solid #FFFFFF'
+  ].join(';');
+
+  console.log('%cWelcome, please enjoy your stay 😸', styles);
+}
+
 ;(() => {
-  console.log('Welcome, and enjoy your stay. This portfolio is open source. You can find it at https://github.com/DominickVale/portfolio_2024')
+  fancyMotd()
   return 0
 })()

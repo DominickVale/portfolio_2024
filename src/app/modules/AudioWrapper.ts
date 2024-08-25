@@ -44,7 +44,6 @@ class AudioWrapper {
   }
 
   toggle() {
-    console.log("enabled?", this.enabled)
     if (this.enabled) this.disable()
     else {
       this.enable()

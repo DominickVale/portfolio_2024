@@ -49,7 +49,6 @@ export default class Renderer {
     this.instance.setPixelRatio(this.sizes.pixelRatio)
     this.instance.outputEncoding = THREE.sRGBEncoding
 
-    console.log(this.instance.capabilities.maxSamples)
     this.composer = new EffectComposer(this.instance, { frameBufferType: THREE.HalfFloatType })
     this.composer.setSize(this.sizes.width, this.sizes.height)
     const renderPass = new RenderPass(this.scene, this.camera.instance)

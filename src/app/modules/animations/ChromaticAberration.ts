@@ -19,7 +19,6 @@ export default class ChromaticAberrationAnim {
   }
 
   updateEls(){
-    console.log("Updating els...")
     const els = Array.from($all('[data-aberration]'))
     this.elements = els.map((el) => {
       const value = Number(el.getAttribute('data-aberration'))
