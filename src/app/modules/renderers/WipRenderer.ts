@@ -46,7 +46,7 @@ export default class WipRenderer extends BaseRenderer {
   //////////////////////////////////////
 
   createEnterAnim() {
-    const lettersTL = blurStagger($('h1'))
+    const lettersTL = blurStagger($('h1'), { noChromaticAb: true })
     const attractor = this.experience.world.attractor
 
     WipRenderer.enterTL = gsap

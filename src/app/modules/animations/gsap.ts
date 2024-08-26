@@ -6,7 +6,12 @@ export function resetGsapProps() {
   gsap.set(this.targets(), { clearProps: 'opacity' })
 }
 
-export function blurStagger(el: HTMLElement, duration?: number, delay?: number) {
+type BlurStaggerProps = {
+  duration?: number
+  delay?: number
+  noChromaticAb?: boolean
+}
+export function blurStagger(el: HTMLElement, { duration, delay, noChromaticAb }: BlurStaggerProps = {}) {
   const split = splitTextChars(el, 'span')
   const isDesktop = !isMobile()
 
@@ -63,10 +68,12 @@ export function blurStagger(el: HTMLElement, duration?: number, delay?: number) 
     lettersTL.add(ltl, '<')
   })
 
-  lettersTL.add(() => {
-    window.app.animations.chromaticAberrAnim.updateEls()
-    window.app.animations.init(window.app.cursor, window.app.experience)
-  })
+  if (!noChromaticAb) {
+    lettersTL.add(() => {
+      window.app.animations.chromaticAberrAnim.updateEls()
+      window.app.animations.init(window.app.cursor, window.app.experience)
+    })
+  }
   return lettersTL
 }
 

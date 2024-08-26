@@ -67,7 +67,7 @@ export default class Preloader {
       this.experience.renderer.bloomEffect.blendMode.setBlendFunction(dpreset.bloomBlendFunction)
       this.experience.params.speed = dpreset.speed
       this.experience.world.attractor.reset()
-      if(isBlog) window.app.audio.disable() // disable audio for blog if the user visited directly.
+      if (isBlog) window.app.audio.disable() // disable audio for blog if the user visited directly.
       this.playBasePageAnimations()
       window.dispatchEvent(new CustomEvent('preload-end'))
       return
@@ -197,11 +197,14 @@ export default class Preloader {
           setTimeout(() => {
             window.app.audio.playBgMusic()
           }, 1000)
-          setTimeout(() => {
-            window.app.audio.play(null, 'woosh', {
-              volume: 0.5,
-            })
-          }, window.app.isFirstTime ? 2000 : 500)
+          setTimeout(
+            () => {
+              window.app.audio.play(null, 'woosh', {
+                volume: 0.5,
+              })
+            },
+            window.app.isFirstTime ? 2000 : 500,
+          )
         },
         window.app.isFirstTime ? '+=1.5' : '+=0.8',
       )
@@ -245,6 +248,13 @@ export default class Preloader {
           bloom.blendMode.setBlendFunction(dpreset.bloomBlendFunction)
           this.experience.params.speed = dpreset.speed
           this.experience.world.attractor.reset()
+
+          window.app.preloaderFinished = true
+          this.playBasePageAnimations()
+
+          localStorage.setItem('visited', 'true')
+          window.app.isFirstTime = false
+          window.dispatchEvent(new CustomEvent('preload-end'))
         },
       })
       .to(
@@ -265,14 +275,6 @@ export default class Preloader {
         },
         '<+40%',
       )
-      .add(() => {
-        window.app.preloaderFinished = true
-        this.playBasePageAnimations()
-
-        localStorage.setItem('visited', 'true')
-        window.app.isFirstTime = false
-        window.dispatchEvent(new CustomEvent('preload-end'))
-      })
   }
 
   onProgress() {

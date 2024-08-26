@@ -24,6 +24,7 @@ export default class ChromaticAberrationAnim {
       const value = Number(el.getAttribute('data-aberration'))
       return { el, value: value }
     })
+    console.log("els: ", this.elements)
   }
 
   update() {

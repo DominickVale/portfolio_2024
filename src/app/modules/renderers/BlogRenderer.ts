@@ -262,7 +262,7 @@ export default class BlogRenderer extends BaseRenderer {
 
   createEnterAnim() {
     const statusItems = $all('#blog-header #blog-status li')
-    const lettersTL = blurStagger($('h1'), 0.08, 0.5)
+    const lettersTL = blurStagger($('h1'), {duration: 0.08, delay: 0.5})
     const subtitle = $('#blog-header h2')
 
     BlogRenderer.enterTL = gsap

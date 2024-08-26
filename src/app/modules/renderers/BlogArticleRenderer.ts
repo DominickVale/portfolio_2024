@@ -335,7 +335,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
 
     const marquee = $('.marquee-container')
 
-    const titleLettersTL = blurStagger($('#article-title'), 0.01, 0.5)
+    const titleLettersTL = blurStagger($('#article-title'), {duration: 0.01, delay: 0.5})
 
     const { imageSectionCable, imageSmall1, imageSmall2 } = this.els
 
