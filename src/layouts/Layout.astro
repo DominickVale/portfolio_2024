@@ -23,7 +23,7 @@ import {
 import type { HTMLAttributes } from 'astro/types'
 
 interface Props extends HTMLAttributes<'div'> {
-  title: string
+  title?: string
   rowsMax?: boolean
   withContacts?: boolean
   renderer?: string
@@ -31,7 +31,7 @@ interface Props extends HTMLAttributes<'div'> {
 
 const { title, rowsMax, withContacts, class: classes, renderer, ...props } = Astro.props
 
-const metaTitle = title || "Domenico Vale —— Creative Developer"
+const metaTitle = title || "Domenico Vale — Creative Developer"
 // @TODO find better ways to blur bg
 ---
 

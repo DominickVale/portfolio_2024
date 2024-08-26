@@ -13,9 +13,10 @@ type Props = {
 const { frontmatter, ...rest } = Astro.props
 
 const { id, title, tags, readTime, date, image, subtitle, lastUpdated, ttr, project, intro } = frontmatter
+const fullTitle = title + "— Domenico Vale"
 ---
 
-<BaseLayout title="Blog page" rowsMax withContacts renderer="blogArticle">
+<BaseLayout title={fullTitle} rowsMax withContacts renderer="blogArticle">
   <div class="col-span-12 col-start-1 row-start-1 h-[5vh] w-full lg:block"></div>
   <section class="relative col-span-10 col-start-2 row-start-2 md:col-span-8 md:col-start-3 lg:col-span-4 lg:col-start-2">
     <!-- <Btn -->
