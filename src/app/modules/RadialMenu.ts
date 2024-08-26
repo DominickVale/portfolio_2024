@@ -115,11 +115,11 @@ export default class RadialMenu {
     wrapper.classList.add('radial-menu-wrapper', 'radial-menu-hidden', this.isMobile && 'mobile')
     wrapper.style.setProperty('--size', this._size)
     const thumbWrapperSize = this.isMobile ? "2.5rem" : "4rem"
-    const thumbSize = this.isMobile ? 30 : 30
+    const thumbSize = this.isMobile ? 18 : 30
     wrapper.innerHTML = `
   <ul class="radial-menu cursor-none" aria-hidden="true">
     <div id="radial-menu-thumb-${this.id}" class="${`radial-menu-thumb ${this.isMobile && 'mobile'}`}" style="--size:${thumbWrapperSize}">
-      <svg id="_icon_brand" width="${thumbSize}" height="${thumbSize}" viewBox="0 0 19 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg id="_icon_brand" width="${thumbSize}" height="${thumbSize}" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M4.85049 0.25L3.05916 4.60453L0.606445 3.59555L7.99953 16.4008V15H10.9995V16.4031L18.54 3.34255L15.4646 4.60768L13.672 0.25H4.85049ZM9.00038 9.00011H10.0004V7.00011H9.00038V9.00011ZM7.65734 12.1614L6.97414 12.5559L3.17747 5.97985L3.86066 5.58541L7.65734 12.1614ZM14.9383 5.50311L15.7975 5.99913L12.0008 12.5752L11.1416 12.0791L14.9383 5.50311Z" fill="#363636"/>
       </svg>
     </div>

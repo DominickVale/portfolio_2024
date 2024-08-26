@@ -70,6 +70,11 @@ export default class BaseRenderer extends Renderer {
         },
       })
       .add(linksTL, '<')
+      .from('.radial-menu-thumb.mobile', {
+        autoAlpha: 0,
+        duration: 0.08,
+        repeat: 9,
+      })
 
     window.app.audio.setupEvents()
     if (window.app.preloaderFinished) BaseRenderer.enterTL.play()
