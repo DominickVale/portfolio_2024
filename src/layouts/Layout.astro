@@ -31,6 +31,7 @@ interface Props extends HTMLAttributes<'div'> {
 
 const { title, rowsMax, withContacts, class: classes, renderer, ...props } = Astro.props
 
+const metaTitle = title || "Domenico Vale —— Creative Developer"
 // @TODO find better ways to blur bg
 ---
 
@@ -44,10 +45,18 @@ const { title, rowsMax, withContacts, class: classes, renderer, ...props } = Ast
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    <meta name="generator" content={Astro.generator} />
+
     <meta property="og:type" content="website">
     <meta property="og:image" content="/meta-preview.png">
-    <meta name="generator" content={Astro.generator} />
-    <title>WIP PORTFOLIO</title>
+
+    <meta name="twitter:card" content="Domenico Vale is a creative developer from Italy.">
+    <meta name="twitter:site" content="@_DominickVale">
+    <meta name="twitter:title" content={metaTitle}>
+    <meta name="twitter:description" content="Domenico Vale is a creative developer from Italy.">
+    <meta name="twitter:image" content="/meta-preview.png">
+
+    <title>{title || ""}</title>
   </head>
   <!-- fonts -->
   <style>
