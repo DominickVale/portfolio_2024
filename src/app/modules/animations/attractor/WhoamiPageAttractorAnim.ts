@@ -18,7 +18,7 @@ export const WhoamiPageAttractorAnim = {
           ease: 'power4.inOut',
           onComplete: () => {
             gsap.to(experience.params, {
-              speed: isDesktop ? 10 : 30,
+              speed: window.app.reducedMotion ? 4 : isDesktop ? 10 : 30,
               duration: 2.5,
               ease: 'power2.in',
             })

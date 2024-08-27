@@ -60,7 +60,7 @@ export default class Preloader {
 
   init() {
     const isBlog = this.page === 'blog' || this.page === 'blogarticle'
-    if (window.app.overridePreloader || window.app.reducedMotion || isBlog) {
+    if (window.app.overridePreloader || isBlog) {
       window.app.preloaderFinished = true
       const dpreset = LORENZ_PRESETS['default']
       this.experience.world.attractor.points.position.z = getZPosition()
@@ -144,137 +144,151 @@ export default class Preloader {
     // attractor.points.position.y = preset.positionY
     attractor.points.position.z = preset.positionZ
 
+    const onPreloaderEnd = () => {
+      const dpreset = LORENZ_PRESETS['default']
+      attractor.points.position.z = getZPosition()
+      bloom.blendMode.setBlendFunction(dpreset.bloomBlendFunction)
+      this.experience.params.speed = dpreset.speed
+      this.experience.world.attractor.reset()
+
+      window.app.preloaderFinished = true
+      this.playBasePageAnimations()
+
+      localStorage.setItem('visited', 'true')
+      window.app.isFirstTime = false
+      window.dispatchEvent(new CustomEvent('preload-end'))
+      gsap.to('canvas', { opacity: 1, duration: 4, ease: 'power4.inOut', delay: 1 })
+    }
     // bloom.blendMode.setBlendFunction(BlendFunction.ADD)
-
-    gsap
-      .timeline()
-      .to(this.experience.renderer.chromaticAberrationEffect.offset, {
-        x: '-0.0036',
-        y: '-0.0036',
-        duration: 0.2,
-      })
-      .to(this.experience.renderer.chromaticAberrationEffect.offset, {
-        x: 'random(-0.0025, 0.0025)',
-        y: 'random(-0.0025, 0.0025)',
-        duration: 2,
-      })
-
-    this.enterTL = gsap
-      .timeline({})
-      .to(this.container, {
-        autoAlpha: 0,
-        duration: window.app.isFirstTime ? 0.85 : 0.5,
-        ease: 'power4.out',
-      })
-      .to(
-        bloom,
-        {
-          intensity: 200,
-          duration: 0.25,
-          ease: 'power4.inOut',
-        },
-        '<',
-      )
-      .add(() => {
-        this.experience.params.speed = this.isMobile ? 80 : 90
-      }, '<')
-      .to(
-        this.experience.params,
-        {
-          speed: 3,
+    if (window.app.reducedMotion) {
+      gsap
+        .timeline()
+        .to(this.container, {
+          autoAlpha: 0,
+          duration: window.app.isFirstTime ? 0.85 : 0.5,
+          ease: 'power4.out',
+        })
+        .to('canvas', { opacity: 0, duration: 1, ease: 'power4.out' }, 0)
+        .add(onPreloaderEnd)
+    } else {
+      gsap
+        .timeline()
+        .to(this.experience.renderer.chromaticAberrationEffect.offset, {
+          x: '-0.0036',
+          y: '-0.0036',
           duration: 0.2,
-          ease: 'circ.in',
-        },
-        '<',
-      )
-      .add(
-        () => {
-          bloom.blendMode.setBlendFunction(BlendFunction.ADD)
-          this.experience.renderer.shockWaveEffect.explode()
-          window.app.audio.play(null, 'boom', {
-            volume: 0.75,
-          })
-          setTimeout(() => {
-            window.app.audio.playBgMusic()
-          }, 1000)
-          setTimeout(
-            () => {
-              window.app.audio.play(null, 'woosh', {
-                volume: 0.5,
-              })
-            },
-            window.app.isFirstTime ? 2000 : 500,
-          )
-        },
-        window.app.isFirstTime ? '+=1.5' : '+=0.8',
-      )
-      .to(
-        bloom,
-        {
-          intensity: preset.bloomIntensity,
-          // repeat: 6,
-          // duration: 0.08,
-          duration: 0.35,
-          ease: 'power4.inOut',
-        },
-        '<',
-      )
-      .to(attractor.points.position, {
-        z: 70,
-        y: 0,
-        duration: window.app.isFirstTime ? 3 : 1.5,
-        ease: 'power4.in',
-      })
-      .to(
-        '#flash-screen',
-        {
-          opacity: 1,
-          duration: 1,
+        })
+        .to(this.experience.renderer.chromaticAberrationEffect.offset, {
+          x: 'random(-0.0025, 0.0025)',
+          y: 'random(-0.0025, 0.0025)',
+          duration: 2,
+        })
+
+      this.enterTL = gsap
+        .timeline({})
+        .to(this.container, {
+          autoAlpha: 0,
+          duration: window.app.isFirstTime ? 0.85 : 0.5,
+          ease: 'power4.out',
+        })
+        .to(
+          bloom,
+          {
+            intensity: 200,
+            duration: 0.25,
+            ease: 'power4.inOut',
+          },
+          '<',
+        )
+        .add(() => {
+          this.experience.params.speed = this.isMobile ? 80 : 90
+        }, '<')
+        .to(
+          this.experience.params,
+          {
+            speed: 3,
+            duration: 0.2,
+            ease: 'circ.in',
+          },
+          '<',
+        )
+        .add(
+          () => {
+            bloom.blendMode.setBlendFunction(BlendFunction.ADD)
+            this.experience.renderer.shockWaveEffect.explode()
+            window.app.audio.play(null, 'boom', {
+              volume: 0.75,
+            })
+            setTimeout(() => {
+              window.app.audio.playBgMusic()
+            }, 1000)
+            setTimeout(
+              () => {
+                window.app.audio.play(null, 'woosh', {
+                  volume: 0.5,
+                })
+              },
+              window.app.isFirstTime ? 2000 : 500,
+            )
+          },
+          window.app.isFirstTime ? '+=1.5' : '+=0.8',
+        )
+        .to(
+          bloom,
+          {
+            intensity: preset.bloomIntensity,
+            // repeat: 6,
+            // duration: 0.08,
+            duration: 0.35,
+            ease: 'power4.inOut',
+          },
+          '<',
+        )
+        .to(attractor.points.position, {
+          z: 70,
+          y: 0,
+          duration: window.app.isFirstTime ? 3 : 1.5,
           ease: 'power4.in',
-        },
-        '<+80%',
-      )
+        })
+        .to(
+          '#flash-screen',
+          {
+            opacity: 1,
+            duration: 1,
+            ease: 'power4.in',
+          },
+          '<+80%',
+        )
 
-      .to('#flash-screen', {
-        autoAlpha: 0,
-        duration: 3,
-        ease: 'power4.in',
-        delay: 1,
-        onStart: () => {
-          $('#flash-screen').classList.remove('mix-blend-lighten')
-
-          const dpreset = LORENZ_PRESETS['default']
-          attractor.points.position.z = getZPosition()
-          bloom.blendMode.setBlendFunction(dpreset.bloomBlendFunction)
-          this.experience.params.speed = dpreset.speed
-          this.experience.world.attractor.reset()
-
-          window.app.preloaderFinished = true
-          this.playBasePageAnimations()
-
-          localStorage.setItem('visited', 'true')
-          window.app.isFirstTime = false
-          window.dispatchEvent(new CustomEvent('preload-end'))
-        },
-      })
-      .to(
-        this.experience.renderer.chromaticAberrationEffect.offset,
-        {
-          x: '0',
-          y: '0',
-          duration: 0,
-        },
-        '<',
-      )
-      .to(
-        bloom,
-        {
-          intensity: LORENZ_PRESETS['default'].bloomIntensity,
+        .to('#flash-screen', {
+          autoAlpha: 0,
           duration: 3,
-          ease: 'linear',
-        },
-        '<+40%',
-      )
+          ease: 'power4.in',
+          delay: 1,
+          onStart: () => {
+            $('#flash-screen').classList.remove('mix-blend-lighten')
+            onPreloaderEnd()
+          },
+        })
+        .to(
+          this.experience.renderer.chromaticAberrationEffect.offset,
+          {
+            x: '0',
+            y: '0',
+            duration: 0,
+          },
+          '<',
+        )
+        .to(
+          bloom,
+          {
+            intensity: LORENZ_PRESETS['default'].bloomIntensity,
+            duration: 3,
+            ease: 'linear',
+          },
+          '<+40%',
+        )
+    }
   }
 
   onProgress() {

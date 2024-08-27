@@ -91,13 +91,27 @@ export default class AboutRenderer extends BaseRenderer {
             opacity: 1,
             duration: 0.09,
             stagger: {
-              repeat: 20,
+              repeat: window.app.reducedMotion ? 1 : 20,
               each: 0.1,
             },
           },
           '<+50%',
         )
-        .fromTo(
+      if (window.app.reducedMotion) {
+        tl.fromTo(
+          $('img', img),
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            duration: 2.5,
+            ease: 'expo.in',
+          },
+          '<',
+        )
+      } else {
+        tl.fromTo(
           $('img', img),
           {
             scaleY: 0,
@@ -109,7 +123,23 @@ export default class AboutRenderer extends BaseRenderer {
           },
           '<',
         )
-        .to(imageSmall1, {
+      }
+      if (window.app.reducedMotion) {
+        tl.to(imageSmall1, {
+          opacity: 1,
+          duration: 3,
+          ease: 'power4.inOut',
+        }).to(
+          imageSmall2,
+          {
+            opacity: 1,
+            duration: 3,
+            ease: 'power4.inOut',
+          },
+          '<',
+        )
+      } else {
+        tl.to(imageSmall1, {
           onStart: function () {
             gsap.set(imageSmall1, { opacity: 0.4, visibility: 'unset' })
           },
@@ -118,8 +148,7 @@ export default class AboutRenderer extends BaseRenderer {
             soundOptions: { volume: 0 },
           },
           ease: 'power4.in',
-        })
-        .to(
+        }).to(
           imageSmall2,
           {
             onStart: function () {
@@ -127,12 +156,13 @@ export default class AboutRenderer extends BaseRenderer {
             },
             typewrite: {
               speed: 0.35,
-            soundOptions: { volume: 0 },
+              soundOptions: { volume: 0 },
             },
             ease: 'power4.in',
           },
           '<',
         )
+      }
 
       imagesTL.add(tl, '<+10%')
     })
@@ -194,7 +224,7 @@ export default class AboutRenderer extends BaseRenderer {
         {
           opacity: 1,
           duration: 0.08,
-          repeat: 18,
+          repeat: window.app.reducedMotion ? 1 : 18,
         },
         '<',
       )
@@ -208,7 +238,7 @@ export default class AboutRenderer extends BaseRenderer {
         opacity: 1,
         duration: 0.075,
         stagger: {
-          repeat: 10,
+          repeat: window.app.reducedMotion ? 1 : 10,
           each: 0.1,
         },
       })

@@ -9,7 +9,7 @@ const Component = Astro.props.href ? 'a' : 'button'
 <Component
   id={containerId}
   class:list={twMerge([
-    'btn-wrapper btn block relative text-xs font-light tracking-button hover:animate-shake active:animate-fui-flash w-max ',
+    'btn-wrapper btn block relative text-xs font-light tracking-button motion-safe:hover:animate-shake active:animate-fui-flash w-max ',
     frame && 'frame h-8 w-32 font-bold',
     bottom ? 'pt-3 pl-3' : 'flex justify-center items-center',
     classes,

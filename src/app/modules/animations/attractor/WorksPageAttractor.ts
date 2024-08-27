@@ -68,7 +68,7 @@ export const WorksPageAttractorAnim = {
       })
       .set(experience.params, { speed: 80 })
       .to(experience.params, {
-        speed: 10,
+        speed: window.app.reducedMotion ? 4 : 10,
         duration: 6,
         ease: 'attractor_speed',
       })

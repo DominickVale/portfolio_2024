@@ -23,7 +23,7 @@ export default class BaseTransition extends Transition {
 
     if (window.app.reducedMotion) {
       console.warn('Prefers-reduced-motion is enabled. Attractor animation hidden.')
-      tl.to('canvas', { opacity: 0, duration: 1, ease: 'power4.inOut' })
+      tl.to('canvas', { opacity: 0, duration: 1.5, ease: 'power4.inOut' })
     }
     tl.add(attractorTL).play(0)
   }
@@ -34,7 +34,7 @@ export default class BaseTransition extends Transition {
    */
   onEnter({ to, trigger, done, toURL }) {
     if (window.app.reducedMotion) {
-      gsap.to('canvas', { opacity: 1, duration: 3.5, delay: 1.5, ease: 'power4.in', onComplete: done })
+      gsap.to('canvas', { opacity: 1, duration: 4, delay: 1.8, ease: 'power4.in', onComplete: done })
     } else {
       done()
     }

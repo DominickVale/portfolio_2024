@@ -1,16 +1,18 @@
 import gsap from 'gsap'
 import { LORENZ_PRESETS } from 'src/app/constants'
+import { isMobile } from 'src/app/utils'
 
 export const UnknownPageAttractorAnim = {
   create(onComplete?: () => void) {
     const experience = window.app.experience
     const attractor = experience.world.attractor
+    const isDesktop = !isMobile()
 
     const uniTL = gsap
       .timeline()
       .set(experience.params, { speed: 50 })
       .to(experience.params, {
-        speed: 15,
+        speed: isDesktop ? 15 : 8,
         duration: 1.5,
         ease: 'power4.inOut',
       })
@@ -49,7 +51,7 @@ export const UnknownPageAttractorAnim = {
         {
           x: 0.8,
           y: 4.5,
-          z: 8.2,
+          z: isDesktop ? 8.2 : -10,
           duration: 1,
           ease: 'power2.inOut',
         },

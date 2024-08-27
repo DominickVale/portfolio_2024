@@ -33,7 +33,7 @@ export const BlogPageAttractorAnim = {
         experience.params,
         {
           speed: 5,
-          duration: 7,
+          duration:  window.app.reducedMotion ? 2 : 7,
           ease: 'sine.in',
         },
       )

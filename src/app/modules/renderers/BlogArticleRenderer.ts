@@ -181,28 +181,28 @@ export default class BlogArticleRenderer extends BaseRenderer {
           },
           '<',
         )
-      .to(
-        attractor.points.position,
-        {
-          x: -15,
-          y: 16,
-          z: -45,
-          duration: 2,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
-      .to(
-        attractor.points.rotation,
-        {
-          x: 1.67132729170977,
-          y: 1.13097335529233,
-          z: 0.131946891450771,
-          duration: 2,
-          ease: 'power2.inOut',
-        },
-        '<',
-      )
+        .to(
+          attractor.points.position,
+          {
+            x: -15,
+            y: 16,
+            z: -45,
+            duration: 2,
+            ease: 'power2.inOut',
+          },
+          '<',
+        )
+        .to(
+          attractor.points.rotation,
+          {
+            x: 1.67132729170977,
+            y: 1.13097335529233,
+            z: 0.131946891450771,
+            duration: 2,
+            ease: 'power2.inOut',
+          },
+          '<',
+        )
     }, 500)
   }
 
@@ -246,7 +246,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
             opacity: 0,
             duration: 0.075,
             stagger: {
-              repeat: window.app.reducedMotion ? 1 : 10,
+              repeat: window.app.reducedMotion ? 0 : 10,
               each: 0.1,
             },
           },
@@ -276,53 +276,75 @@ export default class BlogArticleRenderer extends BaseRenderer {
         )
         .set($('.alt', img), { autoAlpha: 1 })
         .to($('.alt', img), {
-            typewrite: { soundOptions: { volume: 0} },
+          typewrite: { soundOptions: { volume: 0 } },
           duration: 1,
         })
         .set(smallAlt, { autoAlpha: 0.25 }, '<')
         .to(
           smallAlt,
           {
-            typewrite: { soundOptions: { volume: 0} },
+            typewrite: { soundOptions: { volume: 0 } },
             duration: 1.5,
             ease: 'circ.inOut',
           },
           '<',
         )
 
-      const blogSectionImageTl = gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: img,
-            start: 'top center+=80vh',
-            end: 'bottom center',
-          },
-        })
-        .add(imgtl)
-        .to(
-          title,
-          {
-            typewrite: { soundOptions: { volume: 0} },
-            duration: 1.5,
-            ease: 'circ.inOut',
-            onStart: removeSetOpacity,
-          },
-          '<',
-        )
-        .to(
-          content,
-          {
-            opacity: 1,
-            duration: 1,
-            stagger: 0.5,
-            ease: 'circ.inOut',
-          },
-          '<',
-        )
+      const scrt = {
+        trigger: img,
+        start: 'top center+=80vh',
+        end: 'bottom center',
+      }
+      const blogSectionImageTl = window.app.reducedMotion
+        ? gsap
+            .timeline({ scrollTrigger: scrt })
+            .add(imgtl)
+            .to(
+              title,
+              {
+                opacity: 1,
+                duration: 1.5,
+                ease: 'circ.inOut',
+              },
+              '<',
+            )
+            .to(
+              content,
+              {
+                opacity: 1,
+                duration: 1,
+                stagger: 0.5,
+                ease: 'circ.inOut',
+              },
+              '<',
+            )
+        : gsap
+            .timeline({ scrollTrigger: scrt })
+            .add(imgtl)
+            .to(
+              title,
+              {
+                typewrite: { soundOptions: { volume: 0 } },
+                duration: 1.5,
+                ease: 'circ.inOut',
+                onStart: removeSetOpacity,
+              },
+              '<',
+            )
+            .to(
+              content,
+              {
+                opacity: 1,
+                duration: 1,
+                stagger: 0.5,
+                ease: 'circ.inOut',
+              },
+              '<',
+            )
     })
   }
 
-  createBlogDetailsTL(){
+  createBlogDetailsTL() {
     const imageSectionQuery = this.isDesktop ? '#image-section' : '#image-section-mobile'
     return workDetailsTL(imageSectionQuery)
   }
@@ -335,7 +357,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
 
     const marquee = $('.marquee-container')
 
-    const titleLettersTL = blurStagger($('#article-title'), {duration: 0.01, delay: 0.5})
+    const titleLettersTL = blurStagger($('#article-title'), { duration: 0.01, delay: 0.5 })
 
     const { imageSectionCable, imageSmall1, imageSmall2 } = this.els
 
@@ -480,35 +502,59 @@ export default class BlogArticleRenderer extends BaseRenderer {
         },
       })
       .add(titleLettersTL, '<')
-      .to(
-        '#subtitle',
-        {
-          typewrite: {
-            speed: 0.5,
-            charClass: 'text-primary-lightest drop-shadow-glow',
+    if (window.app.reducedMotion) {
+      window['subtitle'].classList.remove('!opacity-0')
+      BlogArticleRenderer.tl
+        .from(
+          '#subtitle',
+          {
+            opacity: 0,
+            duration: 2,
+            ease: 'power4.inOut',
           },
-          ease: 'power4.inOut',
-          onStart: function () {
-            window['subtitle'].classList.remove('!opacity-0')
+          '<+50%',
+        )
+        .to(
+          '#intro',
+          {
+            opacity: 1,
+            duration: 3,
+            ease: 'power4.inOut',
           },
-        },
-        '<+50%',
-      )
-      .to(
-        '#intro',
-        {
-          typewrite: {
-            charClass: 'text-primary-lightest drop-shadow-glow',
+          '<',
+        )
+    } else {
+      BlogArticleRenderer.tl
+        .to(
+          '#subtitle',
+          {
+            typewrite: {
+              speed: 0.5,
+              charClass: 'text-primary-lightest drop-shadow-glow',
+            },
+            ease: 'power4.inOut',
+            onStart: function () {
+              window['subtitle'].classList.remove('!opacity-0')
+            },
           },
-          duration: 3,
-          ease: 'power4.inOut',
-          onStart: function () {
-            window['intro'].classList.remove('opacity-0')
+          '<+50%',
+        )
+        .to(
+          '#intro',
+          {
+            typewrite: {
+              charClass: 'text-primary-lightest drop-shadow-glow',
+            },
+            duration: 3,
+            ease: 'power4.inOut',
+            onStart: function () {
+              window['intro'].classList.remove('opacity-0')
+            },
           },
-        },
-        '<',
-      )
-      .to('#intro-details', { opacity: 0.5, ease: 'power4.in' }, '<')
-      .add(imageTL, '<')
+          '<',
+        )
+    }
+
+    BlogArticleRenderer.tl.to('#intro-details', { opacity: 0.5, ease: 'power4.in' }, '<').add(imageTL, '<')
   }
 }

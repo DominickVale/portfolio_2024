@@ -26,8 +26,8 @@ export const HomePageAttractorAnim = {
         }, 850)
       })
       .to(experience.params, {
-        speed: LORENZ_PRESETS['default'].speed,
-        duration: 8,
+        speed: window.app.reducedMotion ? 3 : LORENZ_PRESETS['default'].speed,
+        duration:  window.app.reducedMotion ? 2 : 8,
         ease: 'sine.in',
       })
       .to(

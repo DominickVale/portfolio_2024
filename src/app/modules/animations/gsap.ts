@@ -45,7 +45,7 @@ export function blurStagger(el: HTMLElement, { duration, delay, noChromaticAb }:
         { alpha: 0 },
         {
           alpha: 1,
-          duration: window.app.reducedMotion ? 1 : 0.05,
+          duration: window.app.reducedMotion ? 2 : 0.05,
           repeat: window.app.reducedMotion ? 0 : 20 * Math.random(),
         },
         '<',
@@ -92,7 +92,7 @@ export function workDetailsTL(imageSectionQuery: string) {
         opacity: 1,
         duration: 0.09,
         stagger: {
-          repeat: 20,
+          repeat: window.app.reducedMotion ? 3 : 20,
           each: 0.1,
         },
       },
