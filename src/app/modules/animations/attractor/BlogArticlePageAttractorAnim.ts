@@ -52,8 +52,10 @@ export const BlogArticlePageAttractorAnim = {
             yoyo: true,
             ease: 'sine.inOut',
             onUpdate() {
-              s.volume(m.v)
-              s2.volume(m.v)
+              if (s) {
+                s.volume(m.v)
+                s2.volume(m.v)
+              }
               // s.rate(m.v)
             },
           })

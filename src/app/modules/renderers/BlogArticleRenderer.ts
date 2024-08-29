@@ -131,9 +131,9 @@ export default class BlogArticleRenderer extends BaseRenderer {
     gsap.set(this.isDesktop ? '#open-proj-btn' : '#open-proj-mobile', {
       opacity: 0,
     })
-    gsap.set('#bg-blur', { opacity: 1 })
 
     setTimeout(() => {
+      const v = { freq: 0.2 }
       //contacts bg blur on scroll
       BlogArticleRenderer.scrollTl = gsap
         .timeline({
@@ -146,11 +146,26 @@ export default class BlogArticleRenderer extends BaseRenderer {
         })
         .to('#bg-blur', {
           opacity: 0,
+          ease: "power2.in"
         })
+        .to(
+          v,
+          {
+            freq: 1,
+            ease: "power2.in",
+            onUpdate: () => {
+              if (window.app.audio.backgroundMusic?.playing()) {
+                const nf = window.app.audio.getFrequency(v.freq)
+                window.app.audio.backgroundMusic.frequency(nf)
+                console.log("New freq: ", nf, v.freq)
+              }
+            },
+          },
+          '<',
+        )
 
       const attractor = this.experience.world.attractor
 
-      const that = this
       const attractorScrollTL = gsap
         .timeline({
           scrollTrigger: {
@@ -490,6 +505,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
     // MAIN TIMELINE
     //
     //
+    gsap.to('#bg-blur', { opacity: 1, duration: 2, ease: "power4.inOut" })
     BlogArticleRenderer.tl = gsap
       .timeline({})
       .to('#case-n', {
@@ -500,7 +516,7 @@ export default class BlogArticleRenderer extends BaseRenderer {
         onStart: function () {
           window['case-n'].classList.remove('!opacity-0')
         },
-      })
+      }, "<")
       .add(titleLettersTL, '<')
     if (window.app.reducedMotion) {
       window['subtitle'].classList.remove('!opacity-0')

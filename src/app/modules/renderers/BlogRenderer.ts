@@ -9,7 +9,6 @@ import { blurStagger } from '../animations/gsap'
 import Lenis from 'lenis'
 import { LORENZ_PRESETS } from 'src/app/constants'
 import { CustomEase } from 'gsap/all'
-import { BlogPageAttractorAnim } from '../animations/attractor/BlogPageAttractorAnim'
 gsap.registerPlugin(TypewriterPlugin)
 gsap.registerPlugin(CustomEase)
 
@@ -56,11 +55,9 @@ export default class BlogRenderer extends BaseRenderer {
     this.prepareAnimations()
     this.createEnterAnim()
     if (window.app.preloaderFinished) {
-      this.handleLorenzResize()
       BlogRenderer.enterTL.play()
     } else {
       window.addEventListener('preload-end', () => {
-        this.handleLorenzResize()
         BlogRenderer.enterTL.play()
       })
     }
@@ -73,6 +70,7 @@ export default class BlogRenderer extends BaseRenderer {
   onLeave() {
     // run before the transition.onLeave method is called
     window.removeEventListener('wheel', this.handleActiveArticleBound)
+    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     this.lenis.destroy()
   }
 

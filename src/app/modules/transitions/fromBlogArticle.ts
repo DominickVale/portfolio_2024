@@ -2,6 +2,7 @@ import BaseTransition from './base'
 import Experience from '../../gl/Experience'
 import BlogArticleRenderer from '../renderers/BlogArticleRenderer'
 import gsap from 'gsap'
+import { getPageName } from 'src/app/utils'
 
 export default class FromBlogArticleTransition extends BaseTransition {
   /**
@@ -11,6 +12,7 @@ export default class FromBlogArticleTransition extends BaseTransition {
   onLeave({ from, trigger, done, toURL }) {
     super.onLeave({from, trigger, done, toURL})
     const experience = new Experience()
+    const page = getPageName(toURL)
 
     // const tl = gsap
     //   .timeline({
@@ -26,11 +28,12 @@ export default class FromBlogArticleTransition extends BaseTransition {
       return
     }
 
+    if(page !== 'blogarticle'){
+      gsap.to('#bg-blur', { opacity: 0, duration: 1, ease: 'power3.in' })
+    }
     window.app.audio.muffleMusic(false)
     BlogArticleRenderer.scrollTl.kill()
-    BlogArticleRenderer.contactsTl.pause().duration(1).reverse().then(() => {
-        gsap.set('#bg-blur', { opacity: 0 })
-    })
+    BlogArticleRenderer.contactsTl.pause().duration(1).reverse()
 
     BlogArticleRenderer.tl
       .pause()

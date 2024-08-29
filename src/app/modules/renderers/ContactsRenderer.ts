@@ -19,7 +19,8 @@ export default class ContactsRenderer extends BaseRenderer {
 
   onEnter() {
     super.onEnter()
-    ContactsRenderer.enterTL = gsap.timeline({ paused: true })
+    ContactsRenderer.enterTL = gsap
+      .timeline({ paused: true })
     this.internalRenderer = new ContactsInternalRenderer(this.isDesktop, ContactsRenderer.enterTL)
     this.internalRenderer.onEnter()
   }
@@ -282,11 +283,11 @@ export class ContactsInternalRenderer {
 
     if (this.isContactsPage) {
       if (window.app.preloaderFinished) {
-        gsap.set('#bg-blur', { opacity: 1 })
+        gsap.to('#bg-blur', { opacity: 1, duration: 1, ease: 'power3.in' })
         ContactsRenderer.enterTL.play()
       } else {
         window.addEventListener('preload-end', () => {
-          gsap.set('#bg-blur', { opacity: 1 })
+          gsap.to('#bg-blur', { opacity: 1, duration: 1, ease: 'power3.in' })
           ContactsRenderer.enterTL.play()
         })
       }

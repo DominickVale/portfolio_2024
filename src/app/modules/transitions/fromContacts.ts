@@ -1,7 +1,7 @@
 import gsap from 'gsap'
 import BaseTransition from './base'
 import Experience from '../../gl/Experience'
-import { $, $all } from '../../utils'
+import { $, $all, getPageName } from '../../utils'
 import ContactsRenderer from '../renderers/ContactsRenderer'
 
 export default class FromContactsTransition extends BaseTransition {
@@ -12,6 +12,7 @@ export default class FromContactsTransition extends BaseTransition {
   onLeave({ from, trigger, done, toURL }) {
     super.onLeave({ from, trigger, done, toURL })
     const experience = new Experience()
+    const page = getPageName(toURL)
 
     // const tl = gsap
     //   .timeline({
@@ -20,10 +21,10 @@ export default class FromContactsTransition extends BaseTransition {
     //       done()
     //     },
     //   })
-    ContactsRenderer.enterTL.duration(1).reverse().then(() => {
-      gsap.to('#bg-blur', { opacity: 0, duration: 0.25, ease: 'power4.inOut' })
-      done()
-    })
+    if(page !== 'blogarticle'){
+      gsap.to('#bg-blur', { opacity: 0, duration: 1, ease: 'power3.in' })
+    }
+    ContactsRenderer.enterTL.duration(1).reverse().then(done)
   }
 
   /**
