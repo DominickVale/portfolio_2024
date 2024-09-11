@@ -123,8 +123,8 @@ export default class RadialMenu {
         <path fill-rule="evenodd" clip-rule="evenodd" d="M4.85049 0.25L3.05916 4.60453L0.606445 3.59555L7.99953 16.4008V15H10.9995V16.4031L18.54 3.34255L15.4646 4.60768L13.672 0.25H4.85049ZM9.00038 9.00011H10.0004V7.00011H9.00038V9.00011ZM7.65734 12.1614L6.97414 12.5559L3.17747 5.97985L3.86066 5.58541L7.65734 12.1614ZM14.9383 5.50311L15.7975 5.99913L12.0008 12.5752L11.1416 12.0791L14.9383 5.50311Z" fill="#363636"/>
       </svg>
     </div>
-    <svg class="radial-menu-shape" width="100%" height="100%">
-      <defs class="pointer-events-none"><mask width="110%" height="110%"> </mask> </defs>
+    <svg class="radial-menu-shape" width="${this._size}" height="${this._size}">
+      <defs class="pointer-events-none"><mask width="${this._size}" height="${this._size}"></mask></defs>
     </svg>
   </ul>
   <div class="radial-menu-bgs cursor-none"></div>
