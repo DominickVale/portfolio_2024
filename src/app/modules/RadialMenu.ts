@@ -168,7 +168,6 @@ export default class RadialMenu {
     const center = this._radius
     const gapRad = degToRad(this.gap / 10)
     const sliceAngle = degToRad(this._centralAngle)
-    const maskPathData: string[] = []
 
     this._shape.setAttribute('viewBox', `0 0 ${this._radius * 2} ${this._radius * 2}`)
     this.itemsEl.forEach((_, i) => {
@@ -217,7 +216,6 @@ export default class RadialMenu {
                       A ${innerRadius} ${innerRadius} 0 0 0 ${innerStartX || 0} ${innerStartY || 0}
                       Z`
 
-      maskPathData.push(pathData)
       slice.setAttribute('d', pathData)
       slice.style.cursor = 'none'
       slice.addEventListener('mouseenter', this.onSliceMouseEnter.bind(this))
@@ -225,26 +223,23 @@ export default class RadialMenu {
       slice.addEventListener('mouseleave', this.onSliceMouseLeave.bind(this))
       slice.addEventListener('touchstart', this.onSliceClick.bind(this))
 
+      // The slice is only used for mouse events. It does not affect the visible shape of the menu.
       this._shape.appendChild(slice)
 
-      const maskId = `radial-menu-mask-${this.id}-${i}`
-      // MASK
+      const clipPathId = `radial-menu-clip-${this.id}-${i}`
       const defs = $('defs', this._shape) ?? document.createElementNS(SVGNS, 'defs')
-      const mask = $(`${maskId}`, defs as HTMLElement) ?? document.createElementNS(SVGNS, 'mask')
+      const clipPath = $(`#${clipPathId}`, defs as HTMLElement) ?? document.createElementNS(SVGNS, 'clipPath')
 
-      mask.setAttribute('id', maskId)
-      mask.setAttribute('viewBox', `0 0 ${this._radius * 2} ${this._radius * 2}`)
+      clipPath.setAttribute('id', clipPathId)
 
-      const gapPath = document.createElementNS(SVGNS, 'path')
-      gapPath.setAttribute('fill', 'white')
-      gapPath.setAttribute('d', pathData)
+      const clipPathPath = document.createElementNS(SVGNS, 'path')
+      clipPathPath.setAttribute('d', pathData)
 
-      mask.appendChild(gapPath)
-      defs.appendChild(mask)
+      clipPath.appendChild(clipPathPath)
+      defs.appendChild(clipPath)
       this._shape.appendChild(defs)
 
-      menuItemBg.style.setProperty('--mask', `url(#${maskId})`)
-      // menuItemBg.style.setProperty('--mask', `url(#${maskId})`)
+      menuItemBg.style.setProperty('--clip-path', `url(#${clipPathId})`)
       $('.radial-menu-bgs', this._wrapper).appendChild(menuItemBg)
       this._bgs.push(menuItemBg)
     })
