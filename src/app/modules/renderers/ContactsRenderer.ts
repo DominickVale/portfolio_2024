@@ -107,7 +107,10 @@ export class ContactsInternalRenderer {
 
   handleMouseLeave(event) {}
 
-  handleTextboxFocus(event) {
+  handleTextboxFocus(event: FocusEvent) {
+    const t = event.target as HTMLInputElement
+    t.scrollIntoView({ block: 'center', behavior: 'smooth' })
+
     window.app.audio.play(null, 'input-sprite', {
       volume: 0.3,
       //@ts-ignore

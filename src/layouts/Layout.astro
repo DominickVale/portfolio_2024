@@ -21,15 +21,17 @@ import {
   CloseIcon
 } from '../components/icons'
 import type { HTMLAttributes } from 'astro/types'
+import { twMerge } from 'tailwind-merge'
 
 interface Props extends HTMLAttributes<'div'> {
   title?: string
   rowsMax?: boolean
   withContacts?: boolean
   renderer?: string
+  innerClasses?: string
 }
 
-const { title, rowsMax, withContacts, class: classes, renderer, ...props } = Astro.props
+const { title, rowsMax, withContacts, class: classes, innerClasses, renderer, ...props } = Astro.props
 
 const metaTitle = title || "Domenico Vale — Creative Developer"
 // @TODO find better ways to blur bg
@@ -40,7 +42,7 @@ const metaTitle = title || "Domenico Vale — Creative Developer"
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Creative developer from Italy. I like to create unique and unforgettable web experiences." />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -70,7 +72,7 @@ const metaTitle = title || "Domenico Vale — Creative Developer"
     <Navbar />
     <div id="body-wrapper" class="relative z-10 my-12 h-full w-full flex-1 opacity-0" data-taxi>
       <main data-taxi-view={renderer || ''} class="h-full w-full min-h-full">
-        <div class="body-inner" class:list={['grid h-full w-full min-h-full flex-1 grid-cols-12', rowsMax && 'auto-rows-max']}>
+        <div class="body-inner" class:list={twMerge(['grid h-full w-full min-h-full flex-1 grid-cols-12', rowsMax && 'auto-rows-max', innerClasses])}>
           <slot />
         </div>
         {

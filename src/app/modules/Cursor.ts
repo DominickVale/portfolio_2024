@@ -1,6 +1,6 @@
 import type { Vec2 } from '../types'
 import gsap from 'gsap'
-import { $, $all, isMobile, lerp, showCursorMessage } from '../utils'
+import { $, $all, debounceTrailing, isMobile, lerp, showCursorMessage } from '../utils'
 import Typewriter from './animations/Typewriter'
 
 export type MessageShowEvent = {
@@ -46,6 +46,9 @@ export default class Cursor {
     window.addEventListener('touchmove', this.onTouchMove.bind(this))
     window.addEventListener('mousedown', this.onClick.bind(this))
     window.addEventListener('show-cursor-message', this.onShowMessage.bind(this))
+
+    const debouncedKeyboardAppear = debounceTrailing(this.handleKeyboardAppear.bind(this), 200)
+    window.visualViewport?.addEventListener('resize', debouncedKeyboardAppear)
     document.body.classList.add('no-cursor')
 
     this.assignListeners()
@@ -63,6 +66,14 @@ export default class Cursor {
       gsap.to(this.el.parentElement, { autoAlpha: 0, duration: 0.5, ease: 'power4.out' })
       this.wasLastClickTouch = true
     }
+  } 
+
+  handleKeyboardAppear() {
+    const toolbarBottomPosition =
+      window.innerHeight -
+      window.visualViewport?.offsetTop -
+      window.visualViewport?.height
+    this.textEl.parentElement.style.bottom = `max(6rem, ${toolbarBottomPosition}px)`
   }
 
   abortCursorMessage(el: HTMLElement, showEmptyMessage: boolean) {
