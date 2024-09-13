@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Height PDF Viewer</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .pdf-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        object {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="pdf-container">
+        <object data="/domenico_vale_cv_13-09-24.pdf" type="application/pdf" width="100%" height="100%">
+            <p>
+                It appears your Web browser is not configured to display PDF files. No worries, just <a href="/domenico_vale_cv_13-09-24.pdf">click here to download the PDF file.</a>
+            </p>
+        </object>
+    </div>
+</body>
+</html>
