@@ -185,7 +185,11 @@ export default class Preloader {
         })
 
       this.enterTL = gsap
-        .timeline({})
+        .timeline({
+          onComplete: () => {
+            window.app.isTransitioning = false
+          },
+        })
         .to(this.container, {
           autoAlpha: 0,
           duration: window.app.isFirstTime ? 0.85 : 0.5,
