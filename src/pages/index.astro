@@ -70,11 +70,11 @@ import NextPageBtn from '../components/NextPageBtn.astro'
       <ul class="flex items-start justify-start">
         <StatusItem class="w-0 !min-w-16" highlight>STATUS:</StatusItem><span
           id="status-available"
-          class="inline-block text-xs text-success"
+          class="inline-block text-xs text-error"
           data-cursor-delay="100"
-          data-cursor-message="(full-time or not)"
-          data-cursor-timeout="2500"
-          data-cursor-type="success">AVAILABLE</span
+          data-cursor-message="Currently building wild stuff at wild.as!"
+          data-cursor-timeout="0"
+          data-cursor-type="error">UNAVAILABLE</span
         >
       </ul>
       <ul class="ml-auto hidden flex-col gap-[7%] md:block lg:flex">
